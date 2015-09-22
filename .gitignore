@@ -61,5 +61,10 @@ $RECYCLE.BIN/
 /CIMS/dist/
 /CIMS/build/
 /sockets/nbproject/private/
+<<<<<<< HEAD
 /sockets/build/
 /sockets/dist/
+=======
+/sockets/dist/
+/sockets/build/
+>>>>>>> bac9a88dc500a9ef6d68a0387c427b371c9ff609
