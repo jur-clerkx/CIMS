@@ -8,15 +8,14 @@ package sockets;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.ServerSocket;
 import java.security.KeyStore;
+import java.util.logging.Level;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
+import static jdk.nashorn.internal.codegen.Compiler.LOG;
 
 /**
  *
@@ -24,10 +23,8 @@ import javax.net.ssl.TrustManagerFactory;
  */
 public class SSLServer {
 
-    public static void main(String args[]) throws Exception {
+    public SSLServer(int port) throws Exception {
         try {
-            String host = "https://host name here";
-            // int port = 9444;
             String certificateName = "abc";
             String path = certificateName + ".jks";
             char[] passphrase = "dreamteam".toCharArray();
@@ -41,13 +38,36 @@ public class SSLServer {
             SSLContext ctx = SSLContext.getInstance("SSL");
             ctx.init(null, tmf.getTrustManagers(), null);
             sslFactory = ctx.getServerSocketFactory();
-            SSLServerSocket s = (SSLServerSocket) sslFactory.createServerSocket(1234);
-            s.accept();
-            
-            
-            
+            SSLServerSocket s = (SSLServerSocket) sslFactory.createServerSocket(port);
+
+            // Connect to clients.
+            Thread connectClients = new Thread() {
+                @Override
+                public void run() {
+                    System.out.println("Searching for clients..");
+                    while (true) {
+                        try {
+                            SSLSocket client = (SSLSocket) s.accept();
+                            System.out.println("New Client Connected: " + client.getInetAddress());
+                            
+                            DataInputStream is = new DataInputStream(client.getInputStream());
+                            String input = is.readUTF();
+                            System.out.println(input);
+                        } catch (IOException e) {
+                            System.out.println("IOException occurred: " + e.getMessage());
+                        }
+                    }
+                }
+            };
+            connectClients.setDaemon(false);
+            connectClients.start();
+
         } catch (IOException e) {
             System.out.print(e);
         }
+    }
+
+    public static void main(String args[]) throws Exception {
+        SSLServer ssls = new SSLServer(1234);
     }
 }

@@ -60,3 +60,6 @@ $RECYCLE.BIN/
 /CIMS/nbproject/private/
 /CIMS/dist/
 /CIMS/build/
+/sockets/nbproject/private/
+/sockets/build/
+/sockets/dist/
