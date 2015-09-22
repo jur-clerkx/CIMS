@@ -6,7 +6,6 @@
 package cims.Field_Operations;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
@@ -102,5 +101,13 @@ public class Task {
         if (!this.units.contains(unit)) {
             this.units.add(unit);
         }
+    }
+    
+    //generate an string with task information
+    public String generateInfo(){
+        String info;
+        int infoInt = this.taskID;
+        info = infoInt + "||" +this.name + "||" + this.urgency+ "||" + this.status+ "||" + this.location+ "||" + this.description;    
+        return info;
     }
 }
