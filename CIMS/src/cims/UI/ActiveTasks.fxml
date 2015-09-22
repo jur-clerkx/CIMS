@@ -16,7 +16,7 @@
             <TableColumn prefWidth="70.0" text="Unit" />
          </columns>
       </TableView>
-      <Button fx:id="buttonDeleteTask" layoutX="454.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" text="Delete" />
+      <Button fx:id="buttonDeleteTask" layoutX="454.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#DeleteTaskClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
       <Button fx:id="buttonNewTask" layoutX="402.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#NewTaskClick" prefHeight="15.0" prefWidth="40.0" text="New" />
    </children>
 </AnchorPane>
