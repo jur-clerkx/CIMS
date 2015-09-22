@@ -22,14 +22,14 @@ public class SSLClient {
         try {
             //Open 1 client socket server with the public and to address identified
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            SSLSocket sslsocket = (SSLSocket) factory.createSocket("Schouten", 1234);
+            SSLSocket sslsocket = (SSLSocket) factory.createSocket("145.93.61.45", 1234);
 
             //Create streams for sending data to the server
             DataOutputStream outputstream = new DataOutputStream(sslsocket.getOutputStream());
             DataInputStream inputstream = new DataInputStream(sslsocket.getInputStream());
 
             //Send data to servers
-            String str = "helloworld";
+            String str = "helloworld\n";
             outputstream.writeBytes(str);
 
             //processed the received data of the server 
