@@ -30,7 +30,7 @@ public class SSLServer {
             char[] passphrase = "dreamteam".toCharArray();
             SSLServerSocketFactory sslFactory = null;
 
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(new FileInputStream(path), passphrase);
 
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

@@ -22,7 +22,7 @@ public class SSLClient {
         try {
             //Open 1 client socket server with the public and to address identified
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            SSLSocket sslsocket = (SSLSocket) factory.createSocket("145.93.61.45", 1234);
+            SSLSocket sslsocket = (SSLSocket) factory.createSocket("127.0.0.1", 1234);
 
             //Create streams for sending data to the server
             DataOutputStream outputstream = new DataOutputStream(sslsocket.getOutputStream());
