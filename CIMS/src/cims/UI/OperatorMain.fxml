@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.media.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="332.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.OperatorMainController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="341.0" prefWidth="256.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label alignment="CENTER" layoutY="171.0" prefHeight="27.0" prefWidth="94.0" style="&#10;" text="Active Operators" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false" />
+            <Separator layoutX="91.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="12.0" />
+            <ListView layoutY="194.0" prefHeight="144.0" prefWidth="94.0" />
+            <Accordion layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="144.0" prefWidth="94.0">
+              <panes>
+                <TitledPane animated="false" onMouseClicked="#ActiveTaskClick" text="Tasks" textAlignment="CENTER">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Hyperlink layoutX="16.0" layoutY="26.0" prefHeight="23.0" prefWidth="55.0" text="Inactive" />
+                              <Hyperlink layoutX="14.0" layoutY="3.0" text="Active" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Units">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Hyperlink layoutX="17.0" layoutY="3.0" text="Active" />
+                              <Hyperlink layoutX="17.0" layoutY="26.0" text="Inactive" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+            <Label layoutX="7.0" layoutY="6.0" prefHeight="17.0" prefWidth="80.0" text="      MENU" textAlignment="CENTER" wrapText="true" />
+            <Label layoutX="149.0" layoutY="138.0" text="Operator Main Screen">
+               <font>
+                  <Font size="44.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="MainField" layoutX="102.0" layoutY="14.0" prefHeight="319.0" prefWidth="523.0" />
+      </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@../GuiOperator/BasicApplication.css" />
+  </stylesheets>
+</VBox>
