@@ -1,9 +1,11 @@
-package RemoteNetwork;
+package Network;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,7 +62,11 @@ public class Client {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+
         //ChatClient c = new Client("192.168.27.124", 4444);
-        Client c = new Client("Schouten", 4444);
+        Client c = new Client("localhost", 4444);
+        String[] credentials = "Jense/Schouten".split("/");
+        c.send(credentials);
+
     }
 }

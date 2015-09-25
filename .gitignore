@@ -68,3 +68,6 @@ $RECYCLE.BIN/
 /sockets/dist/
 /sockets/build/
 >>>>>>> bac9a88dc500a9ef6d68a0387c427b371c9ff609
+/CIMS_Server/nbproject/private/
+/CIMS_Server/build/
+/CIMS_Server/dist/

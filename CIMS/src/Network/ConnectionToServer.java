@@ -1,5 +1,4 @@
-package RemoteNetwork;
-
+package Network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,6 +16,7 @@ public class ConnectionToServer {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Socket socket;
+    private boolean reading;
 
     /**
      * creates an instance of this class, creates the thread for getting
@@ -29,25 +29,39 @@ public class ConnectionToServer {
         this.socket = socket;
         in = new ObjectInputStream(this.socket.getInputStream());
         out = new ObjectOutputStream(this.socket.getOutputStream());
+        reading = true;
 
-        Thread read = new Thread() {
+        Thread read;
+        read = new Thread() {
             @Override
             public void run() {
-                while (true) {
+                while (reading) {
                     try {
                         Object obj = in.readObject();
                         Client.messages.add(obj);
                         System.out.println(obj);
-
                     } catch (ClassNotFoundException | IOException ex) {
+                        reading = false;
                         Logger.getLogger(ConnectionToServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                closeconn();
             }
         };
 
         read.setDaemon(false);
         read.start();
+    }
+
+    private void closeconn() {
+        try {
+            if (!socket.isClosed()) {
+                in.close();
+                out.close();
+                socket.close();
+            }
+        } catch (IOException ex) {
+        }
     }
 
     /**
@@ -59,6 +73,7 @@ public class ConnectionToServer {
         try {
             out.writeObject(obj);
         } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
 }
