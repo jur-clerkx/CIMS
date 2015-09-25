@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -19,7 +22,20 @@ import javafx.scene.layout.GridPane;
 public class CreateTaskController implements Initializable {
     @FXML
     private GridPane TaskInfo;
-
+    @FXML
+    private TextField textfieldTaskID;
+    @FXML
+    private TextField textfieldTaskName;
+    @FXML
+    private TextField textfieldTaskLocation;
+    @FXML 
+    private ListView listviewAvailableUnits;
+    @FXML 
+    private ListView listviewAssignedUnits;
+    @FXML 
+    private Button buttonAssignUnit;
+    @FXML 
+    private Button buttonRevokeUnit;
     /**
      * Initializes the controller class.
      */

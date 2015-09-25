@@ -37,4 +37,8 @@ public class ActiveTasksController implements Initializable {
     private void NewTaskClick(MouseEvent event){
         
     }
+    @FXML
+    private void DeleteTaskClick(MouseEvent event){
+        
+    }
 }

@@ -20,14 +20,18 @@ public class Task {
     private String description;
     private String location;
     private ArrayList<Unit> units;
-
-    public void task(int taskID, String name, String urgency, String status, String location, String description) {
+    private boolean accepted;
+    private ArrayList<Progress> progress;
+    
+    public void Task(int taskID, String name, String urgency, String status, String location, String description) {
         this.taskID = taskID;
         this.name = name;
         this.urgency = urgency;
         this.status = status;
         this.location = location;
         this.description = description;
+        this.accepted = false;
+        this.progress = new ArrayList<Progress>();
     }
 
     public int getTaskID() {
@@ -58,7 +62,7 @@ public class Task {
         return this.status;
     }
 
-    public void setstatus(String status) {
+    private void setStatus(String status) {
         if (!this.status.equals(status)) {
             this.status = status;
         }
@@ -78,7 +82,7 @@ public class Task {
         return this.description;
     }
 
-    public void setdescription(String description) {
+    public void setDescription(String description) {
         if (!this.description.equals(description)) {
             this.description = description;
         }
@@ -96,12 +100,47 @@ public class Task {
         }
         return null;
     }
-
+    /**
+     * Adds a unit to the list of units working on the task
+     * @param unit 
+     */
     public void addUnit(Unit unit) {
         if (!this.units.contains(unit)) {
             this.units.add(unit);
         }
     }
+<<<<<<< HEAD
+    /**
+     * Removes a unit from the list of units working on the task
+     * @param unit 
+     */
+    public void delUnit(Unit unit) {
+        if (this.units.contains(unit)) {
+            this.units.remove(unit);
+        }
+    }
+    /**
+     * Task gets accepted by a unit.
+     */
+    public void operateAcceptance(){
+        this.accepted = !this.accepted;
+    }
+    /**
+     * Sets the status of a task
+     * @param status 
+     */
+    public void operateStatus(String status){
+        this.setStatus(status);
+    }
+    /**
+     * Updates the progress of a task
+     * @param progress 
+     */
+    public void updateProgress(String progress) {
+        if (progress != null) {
+            this.progress.add(new Progress(progress));
+        }
+=======
     
     //generate an string with task information
     public String generateInfo(){
@@ -109,5 +148,6 @@ public class Task {
         int infoInt = this.taskID;
         info = infoInt + "||" +this.name + "||" + this.urgency+ "||" + this.status+ "||" + this.location+ "||" + this.description;    
         return info;
+>>>>>>> origin/master
     }
 }

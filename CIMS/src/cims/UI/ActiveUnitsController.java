@@ -7,7 +7,11 @@ package cims.UI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -16,6 +20,12 @@ import javafx.fxml.Initializable;
  */
 public class ActiveUnitsController implements Initializable {
 
+    @FXML
+    private TableView tableviewActiveUnits;
+    @FXML
+    private Button buttonNewUnit;
+    @FXML
+    private Button buttonDisbandUnit;
     /**
      * Initializes the controller class.
      */
@@ -23,5 +33,13 @@ public class ActiveUnitsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    @FXML
+    private void NewUnitClick(MouseEvent event){
+        
+    }
+    @FXML
+    private void DisbandUnitClick(MouseEvent event){
+        
+    } 
     
 }
