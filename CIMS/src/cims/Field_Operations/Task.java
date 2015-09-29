@@ -22,7 +22,7 @@ public class Task {
     private ArrayList<Unit> units;
     private boolean accepted;
     private ArrayList<Progress> progress;
-    
+
     public void Task(int taskID, String name, String urgency, String status, String location, String description) {
         this.taskID = taskID;
         this.name = name;
@@ -100,54 +100,62 @@ public class Task {
         }
         return null;
     }
+
     /**
      * Adds a unit to the list of units working on the task
-     * @param unit 
+     *
+     * @param unit
      */
     public void addUnit(Unit unit) {
         if (!this.units.contains(unit)) {
             this.units.add(unit);
         }
     }
-<<<<<<< HEAD
+
     /**
      * Removes a unit from the list of units working on the task
-     * @param unit 
+     *
+     * @param unit
      */
     public void delUnit(Unit unit) {
         if (this.units.contains(unit)) {
             this.units.remove(unit);
         }
     }
+
     /**
      * Task gets accepted by a unit.
      */
-    public void operateAcceptance(){
+    public void operateAcceptance() {
         this.accepted = !this.accepted;
     }
+
     /**
      * Sets the status of a task
-     * @param status 
+     *
+     * @param status
      */
-    public void operateStatus(String status){
+    public void operateStatus(String status) {
         this.setStatus(status);
     }
+
     /**
      * Updates the progress of a task
-     * @param progress 
+     *
+     * @param progress
      */
     public void updateProgress(String progress) {
         if (progress != null) {
             this.progress.add(new Progress(progress));
         }
-=======
-    
+    }
+
     //generate an string with task information
-    public String generateInfo(){
+
+    public String generateInfo() {
         String info;
         int infoInt = this.taskID;
-        info = infoInt + "||" +this.name + "||" + this.urgency+ "||" + this.status+ "||" + this.location+ "||" + this.description;    
+        info = infoInt + "||" + this.name + "||" + this.urgency + "||" + this.status + "||" + this.location + "||" + this.description;
         return info;
->>>>>>> origin/master
     }
 }

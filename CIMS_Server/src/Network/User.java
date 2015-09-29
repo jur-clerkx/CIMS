@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims_server;
+package Network;
 
 import java.util.Date;
+import javax.xml.datatype.DatatypeConstants;
 
 /**
  *
@@ -58,15 +59,35 @@ public class User implements Authorization {
         return this.authorized;
     }
 
+    public void setAllData(java.sql.ResultSet rs) {
+        this.user_ID = 0;
+        this.firstname = "";
+        this.lastname = "";
+        this.gender = "";
+        this.rank = "";
+        this.sector = "";
+        this.dateofbirth = new java.util.Date();
+    }
+
     @Override
     public boolean login(String username, String password) {
         if (username == null || password == null) {
             return false;
         }
-        if (username.trim().equals("") || password.equals("")) {
+        if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return false;
         }
-        this.authorized = true;
-        return true;
+        java.sql.ResultSet rs = DatabaseMediator.checkLogin(username, password);
+        if (rs != null) {
+            this.authorized = true;
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return firstname + " " + lastname;
     }
 }

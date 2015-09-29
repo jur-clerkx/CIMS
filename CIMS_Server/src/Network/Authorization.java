@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims_server;
+package Network;
 
 /**
  *
- * @author Jense
+ * @author Jense Schouten
  */
-public interface DatabaseAcces {
-    public boolean connected();
-    public void executeQuery();
-    public void executeNonQuery();
-    
-    
+public interface Authorization{
+    public boolean login(String username, String password);    
 }

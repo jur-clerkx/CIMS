@@ -1,4 +1,4 @@
-package cims_server;
+package Network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,7 +17,6 @@ public class Server {
     private static final Logger LOG = Logger.getLogger(Server.class.getName());
     public static ArrayList<Connection> connections;
     public static LinkedBlockingQueue<Object> objects;
-    public static DbConnection dbconn;
     private ServerSocket serverSocket;
     public boolean searching;
 
@@ -29,7 +28,6 @@ public class Server {
     public Server(int port) {
         objects = new LinkedBlockingQueue<>();
         connections = new ArrayList<>();
-        dbconn = new DbConnection();
 
         // Try co connect to the serversocket.
         try {

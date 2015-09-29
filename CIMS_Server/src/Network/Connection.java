@@ -1,4 +1,4 @@
-package cims_server;
+package Network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,9 +52,9 @@ public class Connection {
                                 String[] credentials = (String[]) obj;
                                 if (credentials.length == 2) {
                                     Authorization authorize = new User();
-                                    if (authorize.login(credentials[0], credentials[1])) {
+                                    if (authorize.login(credentials[0], credentials[1])) {                                        
                                         user = (User) authorize;
-                                        write("connection made, Access approved");
+                                        write(user);
                                         System.out.println("connection made, Access authorized");
                                     } else {
                                         System.out.println("Wrong credentials, Acces denied");
@@ -83,17 +83,19 @@ public class Connection {
 
     public void closeconn() {
         try {
-            if (!socket.isClosed()) {
-                in.close();
-                out.close();
-                socket.close();
-            }
+            in.close();
+            out.close();
         } catch (IOException ex) {
         }
     }
 
     public void kill() {
         reading = false;
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

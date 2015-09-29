@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -13,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class Client {
 
-    private ConnectionToServer server;
+    private ConnectionToServer serverConnect;
     public static LinkedBlockingQueue<Object> messages;
     private Socket socket;
 
@@ -29,7 +27,7 @@ public class Client {
         socket = new Socket(IPAddress, port);
         messages = new LinkedBlockingQueue<>();
         //connetion class for connection of the server.
-        server = new ConnectionToServer(socket);
+        serverConnect = new ConnectionToServer(socket);
     }
 
     /**
@@ -39,7 +37,7 @@ public class Client {
      * @param obj
      */
     public void send(Object obj) {
-        server.write(obj);
+        serverConnect.write(obj);
     }
 
     public Object getMessage() {
@@ -65,7 +63,7 @@ public class Client {
 
         //ChatClient c = new Client("192.168.27.124", 4444);
         Client c = new Client("localhost", 4444);
-        String[] credentials = "Jense/Schouten".split("/");
+        String[] credentials = "JenseSchouten/Schouten".split("/");
         c.send(credentials);
 
     }
