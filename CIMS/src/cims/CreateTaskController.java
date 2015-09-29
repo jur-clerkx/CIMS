@@ -5,13 +5,18 @@
  */
 package cims;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -19,6 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -62,11 +68,11 @@ public class CreateTaskController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
-        comboboxStatus.getItems().addAll("Active", "Inactive");
+        comboboxStatus.getItems().addAll("Open", "Closed");
         //TODO: populate available units from connection to observablelist
         listviewAvailableUnits.setItems(AvailableList);
     }    
-     @FXML
+    @FXML
     private void assignButtonClick(MouseEvent event) {
         int selectedItem = listviewAvailableUnits.getSelectionModel().getSelectedIndex();
         String Content = AvailableList.get(selectedItem);
@@ -74,15 +80,27 @@ public class CreateTaskController implements Initializable {
         AssignedList.add(Content);
         listviewAvailableUnits.setItems(AvailableList);
         listviewAssignedUnits.setItems(AssignedList);
+        
     }
      @FXML
     private void revokeButtonClick(MouseEvent event) {
+        int selectedItem = listviewAssignedUnits.getSelectionModel().getSelectedIndex();
+        String Content = AssignedList.get(selectedItem);
+        AssignedList.remove(selectedItem);
+        AvailableList.add(Content);
+        listviewAssignedUnits.setItems(AssignedList);
+        listviewAvailableUnits.setItems(AvailableList);
     }
      @FXML
     private void createButtonClick(MouseEvent event) {
     }
      @FXML
     private void cancelButtonClick(MouseEvent event) {
+        
+    Stage stage = (Stage) buttonCancel.getScene().getWindow();
+
+    stage.close();
+    
     }
     
     
