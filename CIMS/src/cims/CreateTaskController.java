@@ -5,6 +5,7 @@
  */
 package cims;
 
+import cims.Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -93,6 +94,14 @@ public class CreateTaskController implements Initializable {
     }
      @FXML
     private void createButtonClick(MouseEvent event) {
+        int id = Integer.parseInt(textfieldTaskID.getText());
+        String name = textfieldTaskName.getText();
+        //String urgency = comboboxUrgency.getSelectionModel().getSelectedItem().toString();
+        System.out.println(comboboxUrgency.getValue());
+        //String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
+        String description = textareaDescription.getText();
+        String location = textfieldTaskLocation.getText();
+    
     }
      @FXML
     private void cancelButtonClick(MouseEvent event) {
