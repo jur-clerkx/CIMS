@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveUnitsController">
+<AnchorPane fx:id = "MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveUnitsController">
    <children>
       <Separator layoutX="-3.0" layoutY="52.0" prefHeight="13.0" prefWidth="535.0" />
       <Label layoutX="231.0" layoutY="35.0" text="Active Units" />
@@ -15,6 +15,6 @@
          </columns>
       </TableView>
       <Button fx:id="buttonNew" layoutX="375.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#newButtonClick" prefHeight="15.0" prefWidth="40.0" text="New" />
-      <Button fx:id="buttonDisband" layoutX="427.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#disbandButtonClick" prefHeight="25.0" prefWidth="88.0" text="Disband" />
+     <Button fx:id="buttonDisband" layoutX="427.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#disbandButtonClick" prefHeight="25.0" prefWidth="88.0" text="Disband" />
    </children>
 </AnchorPane>

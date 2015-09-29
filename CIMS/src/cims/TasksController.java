@@ -5,11 +5,24 @@
  */
 package cims;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -21,6 +34,12 @@ public class TasksController implements Initializable {
     private TableView<?> ATaskTable;
     @FXML
     private TableView<?> ITaskTable;
+    @FXML
+    private Button buttonNew;
+    @FXML
+    private Button buttonDelete;
+    @FXML
+    private AnchorPane MainField;
 
     /**
      * Initializes the controller class.
@@ -29,5 +48,26 @@ public class TasksController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
     }    
+
+    @FXML
+    private void newClick(MouseEvent event) {
+            try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Create Task");
+            stage.setScene(new Scene(root1));  
+            stage.show();
+          }
+          catch(Exception x) {
+              System.out.println(x.getMessage());
+          }
+    }
+
+    @FXML
+    private void deleteClick(MouseEvent event) {
+    }
     
 }
