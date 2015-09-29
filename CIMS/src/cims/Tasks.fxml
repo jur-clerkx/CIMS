@@ -14,14 +14,14 @@
             <Label layoutX="213.0" layoutY="151.0" text="Unassigned Task" />
             <Button layoutX="399.0" layoutY="265.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="40.0" text="New" />
             <Button layoutX="451.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" text="Delete" />
-            <TableView layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
+            <TableView fx:id = "ATaskTable" layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="ID" />
                 <TableColumn prefWidth="272.0" text="Name" />
                   <TableColumn prefWidth="137.0" text="Urgency" />
               </columns>
             </TableView>
-            <TableView layoutX="13.0" layoutY="60.0" prefHeight="81.0" prefWidth="485.0">
+            <TableView fx:id = "ITaskTable" layoutX="13.0" layoutY="60.0" prefHeight="81.0" prefWidth="485.0">
               <columns>
                 <TableColumn prefWidth="67.0" text="ID" />
                 <TableColumn minWidth="0.0" prefWidth="259.0" text="Name" />

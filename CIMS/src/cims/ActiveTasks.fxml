@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveTasksController">
+<AnchorPane fx:id="MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveTasksController">
    <children>
       <Separator layoutX="-11.0" layoutY="52.0" prefHeight="13.0" prefWidth="554.0" />
       <Label layoutX="237.0" layoutY="35.0" text="Active Task" />
@@ -16,7 +16,7 @@
             <TableColumn prefWidth="70.0" text="Unit" />
          </columns>
       </TableView>
-      <Button fx:id="buttonDeleteTask" layoutX="454.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#DeleteTaskClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
-      <Button fx:id="buttonNewTask" layoutX="402.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#NewTaskClick" prefHeight="15.0" prefWidth="40.0" text="New" />
+      <Button fx:id="buttonDelete" layoutX="454.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#deleteButtonClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
+      <Button fx:id="buttonNew" layoutX="402.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#newButtonClick" prefHeight="15.0" prefWidth="40.0" text="New" />
    </children>
 </AnchorPane>

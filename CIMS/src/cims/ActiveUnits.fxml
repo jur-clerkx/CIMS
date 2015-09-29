@@ -14,7 +14,7 @@
             <TableColumn minWidth="0.0" prefWidth="437.0" text="Name" />
          </columns>
       </TableView>
-      <Button fx:id="buttonNewUnit" layoutX="375.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#NewUnitClicked" prefHeight="15.0" prefWidth="40.0" text="New" />
-      <Button fx:id="buttonDisbandUnit" layoutX="427.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#DisbandUnitClick" prefHeight="25.0" prefWidth="88.0" text="Disband" />
+      <Button fx:id="buttonNew" layoutX="375.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#newButtonClick" prefHeight="15.0" prefWidth="40.0" text="New" />
+      <Button fx:id="buttonDisband" layoutX="427.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#disbandButtonClick" prefHeight="25.0" prefWidth="88.0" text="Disband" />
    </children>
 </AnchorPane>

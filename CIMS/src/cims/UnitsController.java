@@ -3,18 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims.UI;
+package cims;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
 
 /**
  * FXML Controller class
  *
- * @author rick
+ * @author Nick van der Mullen
  */
-public class UnassignedTasksController implements Initializable {
+public class UnitsController implements Initializable {
+    @FXML
+    private TableView<?> AUnitTable;
+    @FXML
+    private TableView<?> IUnitTable;
 
     /**
      * Initializes the controller class.

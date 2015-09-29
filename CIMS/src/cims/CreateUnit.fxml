@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="276.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.CreateUnitController">
+   <children>
+      <Button layoutX="420.0" layoutY="222.0" mnemonicParsing="false" text="Create" />
+      <Button layoutX="510.0" layoutY="222.0" mnemonicParsing="false" text="Cancel" />
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="346.0">
+         <children>
+            <Label text="Size">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton mnemonicParsing="false" text="small">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="medium">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="large">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <HBox layoutX="14.0" layoutY="57.0" prefHeight="33.0" prefWidth="346.0">
+         <children>
+            <Label text="Type">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton mnemonicParsing="false" text="Police">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Firefighter">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Ambulance">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <TextField layoutX="102.0" layoutY="90.0" />
+      <TextField layoutX="102.0" layoutY="123.0" />
+      <Label layoutX="29.0" layoutY="94.0" text="Name" />
+      <Label layoutX="29.0" layoutY="127.0" text="Location" />
+      <Separator layoutX="338.0" layoutY="3.0" orientation="VERTICAL" prefHeight="394.0" prefWidth="14.0" />
+      <VBox layoutX="381.0" layoutY="35.0" prefHeight="118.0" prefWidth="100.0">
+         <children>
+            <RadioButton mnemonicParsing="false" text="Gas">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Fuel">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Explosion">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Terrorist">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="Earthquake">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </RadioButton>
+         </children>
+      </VBox>
+      <GridPane layoutX="14.0" layoutY="174.0" prefHeight="81.0" prefWidth="322.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="106.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="106.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0" minWidth="10.0" prefWidth="64.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Nr. of Police Cars">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Nr. of Firefighters" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Nr. of Ambulance" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label text="People per car" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="People per car" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="People per car" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField prefHeight="25.0" prefWidth="58.0" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
+      <Label layoutX="381.0" layoutY="6.0" text="Specials" />
+   </children>
+</AnchorPane>

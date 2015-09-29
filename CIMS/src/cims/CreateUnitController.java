@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims.UI;
+package cims;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,9 +12,9 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author rick
+ * @author Nick van der Mullen
  */
-public class TasksController implements Initializable {
+public class CreateUnitController implements Initializable {
 
     /**
      * Initializes the controller class.
