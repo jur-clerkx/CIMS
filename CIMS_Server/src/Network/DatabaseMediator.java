@@ -81,18 +81,28 @@ public class DatabaseMediator {
      * @param password The encrypted password of the user, not null or empty.
      * @return True if information is correct
      */
-    public static ResultSet checkLogin(String username, String password) {
-        ResultSet resultSet = null;
+    public static User checkLogin(String username, String password) {
+        User tempUser = new User();
         if (openConnection()) {
             try {
                 String query = "SELECT * FROM User WHERE username='" + username + "' AND password='" + password + "';";
-                resultSet = executeQuery(query);
+                ResultSet rs = executeQuery(query);
+                rs.next();
+                int user_ID = rs.getInt("id");
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
+                String gender = rs.getString("gender");
+                String rank = rs.getString("rank");
+                String sector = rs.getString("sector");
+                String dateofbirth = rs.getString("dateOfBirth");
+
+                tempUser = new User(true, user_ID, firstname, lastname, gender, rank, sector, dateofbirth);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
             closeConnection();
         }
-        return resultSet;
+        return tempUser;
     }
 
 }

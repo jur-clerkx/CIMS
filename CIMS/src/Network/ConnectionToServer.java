@@ -38,7 +38,7 @@ public class ConnectionToServer {
                 while (reading) {
                     try {
                         Object obj = in.readObject();
-                        Client.messages.add(obj);
+                        //Client.messages.add(obj);
                         System.out.println(obj);
                     } catch (ClassNotFoundException | IOException ex) {
                         reading = false;

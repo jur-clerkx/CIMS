@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,9 +52,7 @@ public class Connection {
                             if (obj instanceof String[]) {
                                 String[] credentials = (String[]) obj;
                                 if (credentials.length == 2) {
-                                    Authorization authorize = new User();
-                                    if (authorize.login(credentials[0], credentials[1])) {                                        
-                                        user = (User) authorize;
+                                    if (login(credentials[0], credentials[1])) {
                                         write(user);
                                         System.out.println("connection made, Access authorized");
                                     } else {
@@ -79,6 +78,21 @@ public class Connection {
 
         read.setDaemon(false); // terminate when main ends
         read.start();
+    }
+
+    public boolean login(String username, String password) {
+        if (username == null || password == null) {
+            return false;
+        }
+        if (username.trim().isEmpty() || password.trim().isEmpty()) {
+            return false;
+        }
+        User us = DatabaseMediator.checkLogin(username, password);
+        if (us.authorized()) {
+            this.user = us;
+            return true;
+        }
+        return false;
     }
 
     public void closeconn() {
