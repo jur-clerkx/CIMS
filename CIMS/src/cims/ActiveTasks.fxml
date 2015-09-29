@@ -10,10 +10,10 @@
       <Label layoutX="237.0" layoutY="35.0" text="Active Task" />
       <TableView fx:id="tableviewActiveTask" layoutX="13.0" layoutY="80.0" prefHeight="174.0" prefWidth="505.0">
          <columns>
-            <TableColumn prefWidth="67.0" text="ID" />
-            <TableColumn minWidth="0.0" prefWidth="259.0" text="Name" />
-            <TableColumn prefWidth="88.0" text="Status" />
-            <TableColumn prefWidth="70.0" text="Unit" />
+            <TableColumn fx:id="tableId" prefWidth="67.0" text="ID" />
+            <TableColumn fx:id="tableTaskName" minWidth="0.0" prefWidth="259.0" text="Name" />
+            <TableColumn fx:id="tableStatus" prefWidth="88.0" text="Status" />
+            <TableColumn fx:id="tableTaskUnit" prefWidth="70.0" text="Unit" />
          </columns>
       </TableView>
       <Button fx:id="buttonDelete" layoutX="454.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#deleteButtonClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
