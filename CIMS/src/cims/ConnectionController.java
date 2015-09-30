@@ -5,6 +5,8 @@
  */
 package cims;
 
+import Network.User;
+import com.sun.javaws.Main;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,16 +24,19 @@ import java.util.logging.Logger;
  */
 public class ConnectionController {
 
-    private String serverAddress;
-    private User user;
-    private Socket s;
-    ObjectOutputStream output;
-    ObjectInputStream input;
+    private static String serverAddress;
+    private static User user;
+    private static Socket s;
+    static ObjectOutputStream output;
+    static ObjectInputStream input;
 
     public ConnectionController() throws IOException {
-        Socket s = new Socket(serverAddress, 9090);
-        output = new ObjectOutputStream(s.getOutputStream());
-        input = new ObjectInputStream(s.getInputStream());
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        serverAddress = "145.93.61.91";
+        Login("NickMullen", "0000");
     }
 
     public boolean DisbandUnit(int ID) throws IOException {
@@ -48,38 +53,42 @@ public class ConnectionController {
         }
     }
 
-    public boolean Login(String username, String password) throws IOException {
-        s = new Socket(serverAddress, 9090);
+    public static boolean Login(String username, String password) throws IOException {
+        s = new Socket(serverAddress, 1234);
         output = new ObjectOutputStream(s.getOutputStream());
         input = new ObjectInputStream(s.getInputStream());
-        
+
         boolean reading = true;
         Thread read;
         read = new Thread() {
             @Override
             public void run() {
                 try {
-                    Object[] myObject = new Object[2];
+                    String[] myObject = new String[2];
                     myObject[0] = username;
                     myObject[1] = password;
                     output.writeObject(myObject);
 
-                    while (reading) {
-                        user = (User) input.readObject();
-                        reading = false;
-                    }
+                    user = (User) input.readObject();
+                    System.out.println(user.toString());
                 } catch (IOException ex) {
                     Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
-                    KillConnection();
+                    try {
+                        KillConnection();
+                    } catch (IOException ex1) {
+                        Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
         };
+        read.start();
+        return true;
     }
 
-    
-    private void KillConnection() throws IOException
-    {
+    private static void KillConnection() throws IOException {
         input.close();
         output.close();
     }
