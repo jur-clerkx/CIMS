@@ -19,17 +19,17 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" text="small">
+                  <RadioButton fx:id = "radiobuttonSmall" mnemonicParsing="false" text="small">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="medium">
+                  <RadioButton fx:id = "radiobuttonMedium" mnemonicParsing="false" text="medium">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="large">
+                  <RadioButton fx:id = "radiobuttonLarge" mnemonicParsing="false" text="large">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -43,51 +43,51 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" text="Police">
+                  <RadioButton fx:id = "radiobuttonPolice" mnemonicParsing="false" text="Police">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Firefighter">
+                  <RadioButton fx:id = "radiobuttonFireFighter" mnemonicParsing="false" text="Firefighter">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Ambulance">
+                  <RadioButton fx:id = "radiobuttonAmbulance" mnemonicParsing="false" text="Ambulance">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </RadioButton>
                </children>
             </HBox>
-            <TextField layoutX="102.0" layoutY="90.0" />
-            <TextField layoutX="102.0" layoutY="123.0" />
+            <TextField fx:id = "textfieldName" layoutX="102.0" layoutY="90.0" />
+            <TextField fx:id = "textfieldLocation" layoutX="102.0" layoutY="123.0" />
             <Label layoutX="29.0" layoutY="94.0" text="Name" />
             <Label layoutX="29.0" layoutY="127.0" text="Location" />
             <Separator layoutX="338.0" layoutY="3.0" orientation="VERTICAL" prefHeight="394.0" prefWidth="14.0" />
             <VBox layoutX="381.0" layoutY="35.0" prefHeight="118.0" prefWidth="100.0">
                <children>
-                  <RadioButton mnemonicParsing="false" text="Gas">
+                  <RadioButton fx:id = "radiobuttonGas" mnemonicParsing="false" text="Gas">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Fuel">
+                  <RadioButton fx:id = "radiobuttonFuel" mnemonicParsing="false" text="Fuel">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Explosion">
+                  <RadioButton fx:id = "radiobuttonExplosion" mnemonicParsing="false" text="Explosion">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Terrorist">
+                  <RadioButton fx:id = "radiobuttonTerrorist" mnemonicParsing="false" text="Terrorist">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Earthquake">
+                  <RadioButton fx:id = "radiobuttonEarthquake" mnemonicParsing="false" text="Earthquake">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
@@ -111,17 +111,17 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1">
+                  <TextField fx:id = "textfieldPoliceCars" prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id = "textfieldFiretrucks" prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id = "textfieldAmbulances"  prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -141,17 +141,17 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="58.0" GridPane.columnIndex="3">
+                  <TextField fx:id = "textfieldPPCPolice" prefHeight="25.0" prefWidth="58.0" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <TextField fx:id = "textfieldPPCFire" prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <TextField fx:id = "textfieldPPCAmbulance" prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -170,8 +170,8 @@
                </rowConstraints>
             </GridPane>
             <Label layoutX="381.0" layoutY="6.0" text="Specials" />
-            <TextField layoutX="122.0" layoutY="305.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
-            <TextField layoutX="122.0" layoutY="274.0" prefHeight="25.0" prefWidth="39.0" />
+            <TextField fx:id = "textfieldTaskname" layoutX="122.0" layoutY="305.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+            <TextField fx:id = "textfieldTaskID" layoutX="122.0" layoutY="274.0" prefHeight="25.0" prefWidth="39.0" />
             <Label layoutX="32.0" layoutY="309.0" text="Task name:" />
             <Label layoutX="34.0" layoutY="278.0" text="TaskID" />
          </children>
