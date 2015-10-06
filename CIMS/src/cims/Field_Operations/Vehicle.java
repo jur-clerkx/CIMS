@@ -5,18 +5,21 @@
  */
 package cims.Field_Operations;
 
+import Network.User;
+
 /**
  *
  * @author sebas
  */
-public class Vehicle extends Material{
+public class Vehicle extends Material {
+
     private String license;
     private String type;
-    
-    public Vehicle(String name, String license, String type) {
-        super(name);
+
+    public Vehicle(int vehicleID, String name, String license, String type, String state, User availability) {
+        super(vehicleID, name, state, availability);
         this.license = license;
         this.type = type;
     }
-    
+
 }

@@ -23,7 +23,6 @@ public class Task {
     private boolean accepted;
     private ArrayList<Progress> progress;
 
-
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
         this.taskID = taskID;
         this.name = name;
@@ -32,7 +31,8 @@ public class Task {
         this.location = location;
         this.description = description;
         this.accepted = false;
-        this.progress = new ArrayList<Progress>();
+        this.progress = new ArrayList<>();
+        this.units = new ArrayList<>();
     }
 
     public int getTaskID() {
@@ -152,7 +152,6 @@ public class Task {
     }
 
     //generate an string with task information
-
     public String generateInfo() {
         String info;
         int infoInt = this.taskID;
