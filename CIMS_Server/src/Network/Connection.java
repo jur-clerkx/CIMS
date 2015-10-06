@@ -96,13 +96,8 @@ public class Connection {
                 break;
             case "FOUS2":
                 o = in.readObject();
-<<<<<<< HEAD
-                u = DatabaseMediator.getUnit(o);
-                //u = DatabaseMediator.getUnitLists(u);
-=======
                 Unit u = DatabaseMediator.getUnit(o);
                 u = DatabaseMediator.getUnitLists(u);
->>>>>>> 926bf9246021f32c22a89c76c752abfe563fcc17
                 write(u);
                 break;
             case "FOUS3":
