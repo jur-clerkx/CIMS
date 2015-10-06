@@ -5,12 +5,14 @@
  */
 package cims;
 
+import cims.Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -36,7 +39,7 @@ import javafx.stage.StageStyle;
 public class ActiveTasksController implements Initializable {
 
     @FXML
-    private TableView tableviewActiveTask;
+    private TableView<Task> tableviewActiveTask;
     @FXML
     private Button buttonDelete;
     @FXML
@@ -44,27 +47,40 @@ public class ActiveTasksController implements Initializable {
     @FXML
     private AnchorPane MainField;
     @FXML
-    private TableColumn<?, ?> tableId;
+    private TableColumn<Task, Number> tableId;
     @FXML
-    private TableColumn<?, ?> tableName;
+    private TableColumn<Task, String> tableTaskName;
     @FXML
-    private TableColumn<?, ?> tableStatus;
+    private TableColumn<Task, String> tableStatus;
     @FXML
-    private TableColumn<?, ?> tableUnit;
+    private TableColumn<Task, String> tableTaskUnit;
     
     private int selectedID;
-
+    
+    private ObservableList<Task> tasks = FXCollections.observableArrayList();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
+        tasks.add(new Task(1, "Task 1", "High", "Active", "Eindhoven", "Fontys"));
+        tasks.add(new Task(3, "Task 3", "Low", "Inactive", "Eindhoven", "TU"));
+        
+        tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskId"));
+        tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
+        //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, String>("unit"));
+        
+        tableviewActiveTask.setItems(tasks);
+        //tableviewActiveTask.getColumns().addAll(tableId, tableTaskName, tableStatus, tableTaskUnit);
     }
 
     @FXML
     private void deleteButtonClick(MouseEvent event) {
-
+        // TODO: No confirmation action yet
+        int ix = tableviewActiveTask.getSelectionModel().getSelectedIndex();
+        Task task = (Task)tableviewActiveTask.getSelectionModel().getSelectedItem();
+        tasks.remove(task);
     }
 
     @FXML
