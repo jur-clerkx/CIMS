@@ -23,7 +23,8 @@ public class Task {
     private boolean accepted;
     private ArrayList<Progress> progress;
 
-    public void Task(int taskID, String name, String urgency, String status, String location, String description) {
+
+    public Task(int taskID, String name, String urgency, String status, String location, String description) {
         this.taskID = taskID;
         this.name = name;
         this.urgency = urgency;
