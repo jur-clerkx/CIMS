@@ -14,19 +14,18 @@
             <Label layoutX="213.0" layoutY="151.0" text="Inactive Units" />
             <Button fx:id= "buttonNew" onMouseClicked="#newClick"  layoutX="382.0" layoutY="265.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="40.0" text="New" />
             <Button fx:id= "buttonDisband" onMouseClicked="#disbandClick" layoutX="442.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="Disband" />
-            <TableView fx:id = "AUnitTable" layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
+            <TableView fx:id = "AUnitTable"   layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="ID" />
-                <TableColumn prefWidth="177.0" text="Name" />
-                  <TableColumn prefWidth="122.0" text="Urgency" />
-                  <TableColumn prefWidth="110.0" text="Shiftday" />
+                <TableColumn fx:id = "IUnitID" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id = "IUnitName" prefWidth="177.0" text="Name" />
+                <TableColumn fx:id = "IUnitStatus" prefWidth="110.0" text="Status" />
               </columns>
             </TableView>
             <TableView fx:id = "IUnitTable" layoutX="13.0" layoutY="60.0" prefHeight="81.0" prefWidth="485.0">
               <columns>
-                <TableColumn prefWidth="67.0" text="ID" />
-                <TableColumn minWidth="0.0" prefWidth="327.0" text="Name" />
-                  <TableColumn prefWidth="90.0" text="Status" />
+                <TableColumn fx:id = "AUnitID" prefWidth="67.0" text="ID" />
+                <TableColumn fx:id = "AUnitName" minWidth="0.0" prefWidth="327.0" text="Name" />
+                  <TableColumn fx:id = "AUnitStatus" prefWidth="90.0" text="Status" />
               </columns>
             </TableView>
          </children>

@@ -5,6 +5,7 @@
  */
 package cims;
 
+import cims.Field_Operations.Task;
 import cims.Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +23,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -43,6 +47,12 @@ public class InactiveUnitsController implements Initializable {
     private Button buttonDisband;
     @FXML
     private AnchorPane MainField;
+    @FXML
+    private TableColumn<Unit, Number> tableId;
+    @FXML
+    private TableColumn<Unit, String> tableUnitName;
+    @FXML
+    private TableColumn<Unit, String> tableStatus;
     
     ObservableList<Unit> InactiveUnits;
 
@@ -52,9 +62,33 @@ public class InactiveUnitsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
-        InactiveUnits = FXCollections.observableArrayList();
-        Unit test = new Unit("test","test");
+        tableId.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
+        tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
         IUnitTable.setItems(InactiveUnits);
+        
+        IUnitTable.setRowFactory(tv -> {
+            TableRow<Unit> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    
+                    Unit myUnit = row.getItem();
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.DECORATED);
+                        stage.setTitle("Unit" + myUnit.getUnitID());
+                        stage.setScene(new Scene(root1));
+                        stage.show();
+                    } catch (Exception x) {
+                        System.out.println(x.getMessage());
+                    }
+                }
+                });
+            return row;
+        });
     }    
 
     @FXML

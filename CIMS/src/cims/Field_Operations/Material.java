@@ -5,48 +5,34 @@
  */
 package cims.Field_Operations;
 
+import Network.User;
+
 /**
  *
  * @author sebas
  */
 public class Material {
+
+    private int materialID;
     private String name;
     private String state;
-    private int availability; // 1 = available | 0 = unavailable
-    private Unit unit;
-    
-    public Material(String name) {
+    private User availability;
+
+    public Material(int materialID, String name, String state, User availability) {
+        this.materialID = materialID;
         this.name = name;
-        this.state = "Good";
-        this.availability = 1;
-        this.unit = null;
+        this.state = state;
+        this.availability = availability;
     }
+
     /**
      * Changes the state of material
-     * @param state 
+     *
+     * @param state
      */
     public void changeState(String state) {
-        if(state != null) {
+        if (state != null) {
             this.state = state;
-        }
-    }
-    /**
-     * Changes the availability of material
-     */
-    public void changeAvailability() {
-        if (this.availability == 0) {
-            this.availability = 1;
-        } else {
-            this.availability = 0;
-        }
-    }
-    /**
-     * Reserves material to a unit
-     * @param unit 
-     */
-    public void setUnit(Unit unit) {
-        if (unit != null) {
-            this.unit = unit;
         }
     }
 }
