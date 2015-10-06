@@ -145,9 +145,9 @@ public class Task {
      *
      * @param progress
      */
-    public void updateProgress(String progress) {
+    public void updateProgress(Progress progress) {
         if (progress != null) {
-            this.progress.add(new Progress(progress));
+            this.progress.add(progress);
         }
     }
 

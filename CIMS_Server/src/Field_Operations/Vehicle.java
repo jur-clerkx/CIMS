@@ -14,12 +14,10 @@ import Network.User;
 public class Vehicle extends Material {
 
     private String license;
-    private String type;
 
-    public Vehicle(int vehicleID, String name, String license, String type, String state, User availability) {
+    public Vehicle(int vehicleID, String name, String license, String state, User availability) {
         super(vehicleID, name, state, availability);
         this.license = license;
-        this.type = type;
     }
 
 }
