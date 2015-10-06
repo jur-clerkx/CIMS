@@ -87,21 +87,35 @@ public class Connection {
 
     private void RequestData(String s) throws IOException, ClassNotFoundException {
         Object o;
-
+        Task t;
+        Unit u;
         switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                Task t = DatabaseMediator.getTask(o);
+                t = DatabaseMediator.getTask(o);
                 t = DatabaseMediator.getTaskLists(t);
                 write(t);
                 break;
             case "FOUS2":
                 o = in.readObject();
-                Unit u = DatabaseMediator.getUnit(o);
+                u = DatabaseMediator.getUnit(o);
                 u = DatabaseMediator.getUnitLists(u);
                 write(u);
                 break;
             case "FOUS3":
+                o = in.readObject();
+                
+                if (DatabaseMediator.updateTaskStatus(o)) {
+                    write("FOUS3: carried out successfully");
+                } else {
+                    write("Could not execute FOUS3");
+                }
+                break;
+            case "FOUS4":
+                o = in.readObject();
+                u = DatabaseMediator.getUnit(o);
+                u = DatabaseMediator.getUnitLists(u);
+                write(u.getTasks());
                 break;
             default:
                 break;

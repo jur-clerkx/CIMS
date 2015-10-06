@@ -124,6 +124,10 @@ public class Unit {
         }
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     @Override
     public String toString() {
         return this.name + " " + this.shift;
