@@ -51,6 +51,8 @@ public class Connection {
                             if (obj instanceof String) {
                                 String s = obj.toString();
                                 RequestData(s);
+                            }else{
+                                write("Not the correct format");
                             }
                             System.out.println("Access already granted, Access approved");
                         } else {
@@ -103,8 +105,7 @@ public class Connection {
                 write(u);
                 break;
             case "FOUS3":
-                o = in.readObject();
-                
+                o = in.readObject();                
                 if (DatabaseMediator.updateTaskStatus(o)) {
                     write("FOUS3: carried out successfully");
                 } else {
