@@ -97,19 +97,19 @@ public class CreateUnitController implements Initializable {
         }
         convertToInt();
 
-        succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(),NrOfPoliceCars,NrOfFireTrucks,NrOfAmbulances,NrOFPolicemen,NRofFireFIghters,NRofAmbulancePeople);
+        succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (succes) {
             alert.setContentText("Unit succesfully created.");
+            alert.showAndWait();
+            Stage stage = (Stage) buttonCancel.getScene().getWindow();
+            stage.close();
         } else {
             alert.setContentText("An error has occured");
         }
 
-        alert.showAndWait();
-        Stage stage = (Stage) buttonCancel.getScene().getWindow();
-        stage.close();
     }
 
     @FXML
@@ -138,6 +138,12 @@ public class CreateUnitController implements Initializable {
         }
         if (radioButtonTerror.isSelected()) {
             selected += "6";
+        }
+        if (radioButtonAmbulance.isSelected()) {
+            selected += "7";
+        }
+        if (radioButtonPolice.isSelected()) {
+            selected += "8";
         }
         return selected;
     }
