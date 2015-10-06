@@ -33,6 +33,7 @@ public class ConnectionController {
     private static Socket s;
     static ObjectOutputStream output;
     static ObjectInputStream input;
+    public static int selectedUnitID = 0;
 
     public ConnectionController() throws IOException {
 
@@ -117,5 +118,20 @@ public class ConnectionController {
 
     boolean editUnitInfo(String text, String text0, int size, String selectedSpecials, TextField textfieldPPCPolice, int NrOfFireTrucks, int NrOfAmbulances, int NrOFPolicemen, int NRofFireFIghters, int NRofAmbulancePeople) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public Unit getUnitInfo(int unitID) throws IOException
+    {
+        try {
+            String outputMessage = "FOOP;1";
+            output.writeObject(outputMessage);
+            output.writeObject(unitID);
+            return (Unit)input.readObject();
+            
+        } catch (IOException | ClassNotFoundException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+        }
+        return null;
     }
 }

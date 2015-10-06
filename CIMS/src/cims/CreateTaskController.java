@@ -60,6 +60,8 @@ public class CreateTaskController implements Initializable {
     @FXML 
     private Button buttonCancel;
     
+    
+    
     ObservableList<String> AvailableList = FXCollections.observableArrayList("Unit 1", "Unit 2", "Unit 3");        
     ObservableList<String> AssignedList = FXCollections.observableArrayList();    
     
