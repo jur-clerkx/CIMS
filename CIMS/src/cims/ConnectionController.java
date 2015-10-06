@@ -108,6 +108,9 @@ public class ConnectionController {
     ArrayList<Task> getActiveTasks(){
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    ArrayList<Task> getUnassignedTasks(){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     void removeActiveTask(Task task) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -116,6 +119,9 @@ public class ConnectionController {
     }
 
     boolean editUnitInfo(String text, String text0, int size, String selectedSpecials, TextField textfieldPPCPolice, int NrOfFireTrucks, int NrOfAmbulances, int NrOFPolicemen, int NRofFireFIghters, int NRofAmbulancePeople) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    void cancelTask(Task task) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

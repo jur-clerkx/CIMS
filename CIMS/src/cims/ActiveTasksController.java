@@ -27,6 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -77,21 +78,42 @@ public class ActiveTasksController implements Initializable {
          }*/
         // Dummy Data:
         tasks = FXCollections.observableArrayList();
-        tasks.add(new Task(1, "Task 1", "High", "Active", "Eindhoven", "Fontys"));
-        tasks.add(new Task(3, "Task 3", "Low", "Inactive", "Eindhoven", "TU"));
+        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
 
         tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
         tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
         tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status")); 
         //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, Number>("units")); - TODO Fill units Column
 
-        tableviewActiveTask.setItems(tasks);
-        //tableviewActiveTask.getColumns().addAll(tableId, tableTaskName, tableStatus, tableTaskUnit);
+        tableviewActiveTask.setItems(tasks);        
+        
+        tableviewActiveTask.setRowFactory(tv -> {
+            TableRow<Task> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    
+                    Task myTask = row.getItem();
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.DECORATED);
+                        stage.setTitle("Task: " + myTask.getTaskID());
+                        stage.setScene(new Scene(root1));
+                        stage.show();
+                    } catch (Exception x) {
+                        System.out.println(x.getMessage());
+                    }
+                }
+                });
+            return row;
+        });
     }
 
     @FXML
     private void deleteButtonClick(MouseEvent event) {
-        int ix = tableviewActiveTask.getSelectionModel().getSelectedIndex();
         Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -100,6 +122,7 @@ public class ActiveTasksController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             tasks.remove(task);
+            task.operateStatus("Cancelled");
             OperatorMainController.myController.removeActiveTask(task);
 
         } else {
