@@ -41,7 +41,7 @@ public class ConnectionController {
 
     public boolean DisbandUnit(int ID) throws IOException {
         try {
-            output.writeObject("Disband");
+            output.writeObject("FO;Disband");
             Object[] myObject = new Object[1];
             myObject[0] = ID;
             output.writeObject(myObject);

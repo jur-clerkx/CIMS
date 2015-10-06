@@ -14,10 +14,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -44,14 +49,19 @@ public class InactiveUnitsController implements Initializable {
 
     @FXML
     private void newClick(MouseEvent event) {   Node node = null;
-        try {
-            node = (Node) FXMLLoader.load(getClass().getResource("CreateUnit.fxml"));
-        } catch (IOException ex) {
-            Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (node != null) {
-            MainField.getChildren().setAll(node);
-        }
+      try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateUnit.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Create Unit");
+            stage.setScene(new Scene(root1));  
+            stage.show();
+          }
+          catch(Exception x) {
+              System.out.println(x.getMessage());
+          }
     }
 
     @FXML

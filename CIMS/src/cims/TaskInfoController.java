@@ -26,23 +26,25 @@ public class TaskInfoController implements Initializable {
     @FXML
     private GridPane TaskInfo;
     @FXML
-    private TextField textID;
+    private Button buttonAdd;
     @FXML
-    private TextField textName;
+    private Button buttonRemove;
     @FXML
-    private ListView<?> AUnitListView;
+    private TextField textFieldID;
     @FXML
-    private TextField textLocation;
+    private TextField textFieldName;
     @FXML
-    private Button buttonOk;
+    private TextField textFieldLocation;
+    @FXML
+    private Button buttonOK;
     @FXML
     private Button buttonCancel;
     @FXML
     private Button buttonDelete;
     @FXML
-    private ComboBox<?> comboBoxUrgency;
+    private ComboBox<?> comboboxUrgency;
     @FXML
-    private ComboBox<?> comboBoxStatus;
+    private ComboBox<?> comboboxStatus;
     @FXML
     private TextArea textAreaDescription;
 
@@ -55,15 +57,20 @@ public class TaskInfoController implements Initializable {
     }    
 
     @FXML
-    private void okClicked(MouseEvent event) {
+    private void buttonAdd(MouseEvent event) {
     }
 
     @FXML
-    private void cancelClick(MouseEvent event) {
+    private void buttonRemove(MouseEvent event) {
     }
 
     @FXML
-    private void deleteClick(MouseEvent event) {
+    private void buttonOK(MouseEvent event) {
     }
+
+    @FXML
+    private void buttonCancel(MouseEvent event) {
+    }
+
     
 }
