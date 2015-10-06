@@ -6,6 +6,7 @@
 package cims;
 
 import Network.User;
+import cims.Field_Operations.Task;
 import cims.Field_Operations.Unit;
 import com.sun.javaws.Main;
 import java.io.BufferedReader;
@@ -54,7 +55,6 @@ public class ConnectionController {
             return false;
         }
     }
-
     public static boolean Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
         output = new ObjectOutputStream(s.getOutputStream());
@@ -102,6 +102,15 @@ public class ConnectionController {
     }
 
     ArrayList<Unit> getInactiveUnits() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    ArrayList<Task> getActiveTasks(){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    void removeActiveTask(Task task) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    boolean createTask() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

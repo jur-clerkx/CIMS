@@ -5,10 +5,12 @@
  */
 package cims;
 
+import static cims.ConnectionController.output;
 import cims.Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +23,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -54,38 +58,58 @@ public class ActiveTasksController implements Initializable {
     private TableColumn<Task, String> tableStatus;
     @FXML
     private TableColumn<Task, String> tableTaskUnit;
-    
+
     private int selectedID;
-    
-    private ObservableList<Task> tasks = FXCollections.observableArrayList();
+
+    private ObservableList<Task> tasks;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        // Database Data:
+        /*try {
+         tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
+         } catch (IOException ex) {
+         Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
+        // Dummy Data:
+        tasks = FXCollections.observableArrayList();
         tasks.add(new Task(1, "Task 1", "High", "Active", "Eindhoven", "Fontys"));
         tasks.add(new Task(3, "Task 3", "Low", "Inactive", "Eindhoven", "TU"));
-        
-        tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskId"));
+
+        tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
         tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
-        //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, String>("unit"));
-        
+        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status")); 
+        //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, Number>("units")); - TODO Fill units Column
+
         tableviewActiveTask.setItems(tasks);
         //tableviewActiveTask.getColumns().addAll(tableId, tableTaskName, tableStatus, tableTaskUnit);
     }
 
     @FXML
     private void deleteButtonClick(MouseEvent event) {
-        // TODO: No confirmation action yet
         int ix = tableviewActiveTask.getSelectionModel().getSelectedIndex();
-        Task task = (Task)tableviewActiveTask.getSelectionModel().getSelectedItem();
-        tasks.remove(task);
+        Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Removing Task: " + task.getName());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            tasks.remove(task);
+            OperatorMainController.myController.removeActiveTask(task);
+
+        } else {
+            alert.close();
+        }
     }
 
     @FXML
     private void newButtonClick(MouseEvent event) {
-    Node node = null;
+        Node node = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
@@ -93,11 +117,10 @@ public class ActiveTasksController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
             stage.setTitle("Create Task");
-            stage.setScene(new Scene(root1));  
+            stage.setScene(new Scene(root1));
             stage.show();
-          }
-          catch(Exception x) {
-              System.out.println(x.getMessage());
-          }
+        } catch (Exception x) {
+            System.out.println(x.getMessage());
+        }
     }
 }
