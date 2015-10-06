@@ -54,7 +54,6 @@ public class Connection {
                             }else{
                                 write("Not the correct format");
                             }
-                            System.out.println("Access already granted, Access approved");
                         } else {
                             if (obj instanceof String[]) {
                                 String[] credentials = (String[]) obj;
@@ -101,7 +100,7 @@ public class Connection {
             case "FOUS2":
                 o = in.readObject();
                 u = DatabaseMediator.getUnit(o);
-                u = DatabaseMediator.getUnitLists(u);
+                //u = DatabaseMediator.getUnitLists(u);
                 write(u);
                 break;
             case "FOUS3":

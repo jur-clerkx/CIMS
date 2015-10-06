@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims.Field_Operations;
+package Field_Operations;
 
 import java.util.ArrayList;
 import java.util.List;
 import Network.User;
+import java.io.Serializable;
 
 /**
  *
  * @author Jense
  */
-public class Unit {
+public class Unit implements Serializable {
 
     private int unitID;
     private String name;
@@ -57,12 +58,9 @@ public class Unit {
      * @param task
      * @param acceptanceReason
      */
-    public void acceptTask(Task task, String acceptanceReason) {
-        if (tasks.isEmpty()) {
-            task.operateAcceptance();
-            tasks.add(task);
-        }
-
+    public void acceptTask(Task task) {
+        task.operateAcceptance();
+        tasks.add(task);
     }
 
     /**
@@ -125,6 +123,10 @@ public class Unit {
         if (materials.contains(material)) {
             this.materials.add(material);
         }
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     @Override

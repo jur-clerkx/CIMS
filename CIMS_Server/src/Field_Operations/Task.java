@@ -5,13 +5,14 @@
  */
 package Field_Operations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Jense
  */
-public class Task {
+public class Task implements Serializable {
 
     private int taskID;
     private String name;

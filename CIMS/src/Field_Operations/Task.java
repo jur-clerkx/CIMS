@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cims.Field_Operations;
+package Field_Operations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Jense
  */
-public class Task {
+public class Task implements Serializable {
 
     private int taskID;
     private String name;
@@ -145,9 +146,9 @@ public class Task {
      *
      * @param progress
      */
-    public void updateProgress(String progress) {
+    public void updateProgress(Progress progress) {
         if (progress != null) {
-            this.progress.add(new Progress(progress));
+            this.progress.add(progress);
         }
     }
 

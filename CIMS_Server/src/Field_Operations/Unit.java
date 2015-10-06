@@ -8,12 +8,13 @@ package Field_Operations;
 import java.util.ArrayList;
 import java.util.List;
 import Network.User;
+import java.io.Serializable;
 
 /**
  *
  * @author Jense
  */
-public class Unit {
+public class Unit implements Serializable {
 
     private int unitID;
     private String name;

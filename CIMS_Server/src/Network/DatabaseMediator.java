@@ -219,7 +219,7 @@ public class DatabaseMediator {
             int unitID = (Integer) o;
             if (openConnection()) {
                 try {
-                    String query = "SELECT * FROM unit WHERE id='" + unitID + "';";
+                    String query = "SELECT * FROM CIMS.Unit WHERE id='" + unitID + "';";
                     ResultSet rs = executeQuery(query);
                     rs.next();
 
