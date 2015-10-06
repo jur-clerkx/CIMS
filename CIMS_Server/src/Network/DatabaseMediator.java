@@ -4,8 +4,10 @@
 package Network;
 
 import Field_Operations.Material;
+import Field_Operations.Progress;
 import Field_Operations.Task;
 import Field_Operations.Unit;
+import Field_Operations.Vehicle;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -77,6 +79,7 @@ public class DatabaseMediator {
         statement.executeUpdate(query);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="users">
     /**
      * Check if the user information that is entered is correct.
      *
@@ -109,6 +112,31 @@ public class DatabaseMediator {
         return new User();
     }
 
+    private static User getUser(int userID) {
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM User WHERE id='" + userID + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
+                String gender = rs.getString("gender");
+                String rank = rs.getString("rank");
+                String sector = rs.getString("sector");
+                String dateofbirth = rs.getString("dateOfBirth");
+                int securityLevel = rs.getInt("level");
+
+                return new User(userID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            closeConnection();
+        }
+        return null;
+    }
+//</editor-fold>
+
     public static Task getTask(Object o) {
         if (o instanceof Integer) {
             int i = (Integer) o;
@@ -136,14 +164,7 @@ public class DatabaseMediator {
                             urgency = "low";
                             break;
                     }
-
-                    Task t = new Task(taskID, name, urgency, status, location, description);
-                    query = "SELECT unitid FROM CIMS.Task_Unit where taskid='" + i + "';";
-                    rs = executeQuery(query);
-                    while (rs.next()) {
-                        t.addUnit(getUnit(rs.getInt("id")));
-                    }
-                    return t;
+                    return new Task(taskID, name, urgency, status, location, description);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -153,64 +174,142 @@ public class DatabaseMediator {
         return null;
     }
 
-    private static Unit getUnit(int unitID) {
+    public static Task getTaskLists(Task t) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM unit WHERE id='" + unitID + "';";
+                String query = "SELECT unitid FROM CIMS.Task_Unit where taskid='" + t.getTaskID() + "';";
                 ResultSet rs = executeQuery(query);
-                rs.next();
+                while (rs.next()) {
+                    t.addUnit(getUnit(rs.getInt("id")));
+                }
 
-                String name = rs.getString("name");
-                String shift = rs.getString("shift");
-                String shiftday = rs.getString("shiftday");
-                String description = rs.getString("description");
-
-                Unit u = new Unit(unitID, name, description, shiftday + ", " + shift);
-                return u;
+                query = "SELECT id FROM CIMS.Progress where taskid='" + t.getTaskID() + "';";
+                rs = executeQuery(query);
+                while (rs.next()) {
+                    t.updateProgress(getProgress(rs.getInt("id")));
+                }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
             closeConnection();
         }
+        return t;
+    }
+
+    public static Unit getUnit(Object o) {
+        if (o instanceof Integer) {
+            int unitID = (Integer) o;
+            if (openConnection()) {
+                try {
+                    String query = "SELECT * FROM unit WHERE id='" + unitID + "';";
+                    ResultSet rs = executeQuery(query);
+                    rs.next();
+
+                    String name = rs.getString("name");
+                    String shift = rs.getString("shift");
+                    String shiftday = rs.getString("shiftday");
+                    String description = rs.getString("description");
+
+                    Unit u = new Unit(unitID, name, description, shiftday + ", " + shift);
+                    return u;
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+            }
+        }
         return null;
     }
 
-    private static Material getMaterial(int materialID) {
+    public static Unit getUnitLists(Unit u) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM material WHERE id='" + materialID + "';";
+                String query = "SELECT unitid FROM CIMS.Task_Unit where taskid='" + u.getUnitID() + "';";
                 ResultSet rs = executeQuery(query);
-                rs.next();
-
-                String name = rs.getString("name");
-                String state = rs.getString("state");
-                int availibility = rs.getInt("availibility");
-
-                return new Material(materialID, name, state, getUser(availibility));
+                while (rs.next()) {
+                    switch (rs.getString("type")) {
+                        case "T":
+                            u.acceptTask(getTask(rs.getInt("containmentid")));
+                            break;
+                        case "M":
+                            u.addMaterial(getMaterial(rs.getInt("containmentid")));
+                            break;
+                        case "U":
+                            u.addUser(getUser(rs.getInt("containmentid")));
+                            break;
+                        case "V":
+                            u.addVehicle(getVehicle(rs.getInt("containmentid")));
+                            break;
+                    }
+                }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
             closeConnection();
         }
+        return u;
+    }
+
+    public static Material getMaterial(Object o) {
+        if (o instanceof Integer) {
+            int materialID = (Integer) o;
+            if (openConnection()) {
+                try {
+                    String query = "SELECT * FROM material WHERE id='" + materialID + "';";
+                    ResultSet rs = executeQuery(query);
+                    rs.next();
+
+                    String name = rs.getString("name");
+                    String state = rs.getString("state");
+                    int availibility = rs.getInt("availibility");
+
+                    return new Material(materialID, name, state, getUser(availibility));
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+            }
+        }
         return null;
     }
 
-    private static User getUser(int userID) {
+    public static Vehicle getVehicle(Object o) {
+        if (o instanceof Integer) {
+            int vehicleID = (Integer) o;
+            if (openConnection()) {
+                try {
+                    String query = "SELECT v.*, vt.* FROM CIMS.Vehicle v, CIMS.Vehicle_Type vt "
+                            + "WHERE v.Vehicle_Typeid = vt.id AND id='" + vehicleID + "';";
+                    ResultSet rs = executeQuery(query);
+                    rs.next();
+
+                    String name = rs.getString("name");
+                    String licence = rs.getString("licence");
+                    String state = rs.getString("state");
+                    int availibility = rs.getInt("v.availibility");
+
+                    return new Vehicle(vehicleID, name, licence, state, getUser(availibility));
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+            }
+        }
+        return null;
+    }
+
+    public static Progress getProgress(int progresID) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM User WHERE id='" + userID + "';";
+                String query = "SELECT * FROM progress WHERE id='" + progresID + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String gender = rs.getString("gender");
-                String rank = rs.getString("rank");
-                String sector = rs.getString("sector");
-                String dateofbirth = rs.getString("dateOfBirth");
-                int securityLevel = rs.getInt("level");
+                int userID = rs.getInt("userid");
+                int taskID = rs.getInt("taskid");
+                String message = rs.getString("message");
 
-                return new User(userID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+                return new Progress(progresID, getUser(userID), getTask(taskID), message);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

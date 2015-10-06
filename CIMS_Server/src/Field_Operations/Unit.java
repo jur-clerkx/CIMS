@@ -57,12 +57,9 @@ public class Unit {
      * @param task
      * @param acceptanceReason
      */
-    public void acceptTask(Task task, String acceptanceReason) {
-        if (tasks.isEmpty()) {
-            task.operateAcceptance();
-            tasks.add(task);
-        }
-
+    public void acceptTask(Task task) {
+        task.operateAcceptance();
+        tasks.add(task);
     }
 
     /**

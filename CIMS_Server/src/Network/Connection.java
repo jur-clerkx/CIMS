@@ -1,6 +1,7 @@
 package Network;
 
 import Field_Operations.Task;
+import Field_Operations.Unit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -85,14 +86,20 @@ public class Connection {
     }
 
     private void RequestData(String s) throws IOException, ClassNotFoundException {
+        Object o;
+
         switch (s.toUpperCase()) {
             case "FOUS1":
-                Object o = in.readObject();
+                o = in.readObject();
                 Task t = DatabaseMediator.getTask(o);
-                //t = DatabaseMediator.getTaskLists(t);
+                t = DatabaseMediator.getTaskLists(t);
                 write(t);
                 break;
             case "FOUS2":
+                o = in.readObject();
+                Unit u = DatabaseMediator.getUnit(o);
+                u = DatabaseMediator.getUnitLists(u);
+                write(u);
                 break;
             case "FOUS3":
                 break;
