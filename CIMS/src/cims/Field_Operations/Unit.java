@@ -21,8 +21,9 @@ public class Unit {
     private List<Material> materials;
     private List<Task> tasks;
     private List<Vehicle> vehicles;
-    
-    public void Unit(String name, String description) {
+
+   
+    public Unit(String name, String description) {
         this.name = name;
         this.description = description;
         this.members = new ArrayList<User>();

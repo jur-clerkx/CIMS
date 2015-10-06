@@ -6,6 +6,7 @@
 package cims;
 
 import Network.User;
+import cims.Field_Operations.Unit;
 import com.sun.javaws.Main;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,5 +93,15 @@ public class ConnectionController {
     private static void KillConnection() throws IOException {
         input.close();
         output.close();
+    }
+
+    
+
+    boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) {
+        return true;
+    }
+
+    ArrayList<Unit> getInactiveUnits() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

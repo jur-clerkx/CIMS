@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class OperatorMainController implements Initializable {
 
+    static ConnectionController myController;
     @FXML
     private AnchorPane MainField;
     @FXML
@@ -42,7 +43,11 @@ public class OperatorMainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            myController = new ConnectionController();
+        } catch (IOException ex) {
+            Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
