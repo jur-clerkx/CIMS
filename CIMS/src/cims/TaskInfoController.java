@@ -16,6 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -58,18 +59,23 @@ public class TaskInfoController implements Initializable {
 
     @FXML
     private void buttonAdd(MouseEvent event) {
+        
     }
 
     @FXML
     private void buttonRemove(MouseEvent event) {
+        
     }
 
     @FXML
     private void buttonOK(MouseEvent event) {
+        
     }
 
     @FXML
     private void buttonCancel(MouseEvent event) {
+        Stage stage = (Stage) buttonCancel.getScene().getWindow();
+        stage.close();
     }
 
     

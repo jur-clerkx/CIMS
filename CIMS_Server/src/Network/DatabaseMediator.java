@@ -13,7 +13,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 /**
  * Database connection class
@@ -195,23 +194,6 @@ public class DatabaseMediator {
             closeConnection();
         }
         return t;
-    }
-
-    public static boolean updateTaskStatus(Object o) {
-        if (o instanceof Object[]) {
-            Object[] objects = (Object[]) o;
-            if (openConnection()) {
-                try {
-                    String query = "UPDATE CIMS.Task SET status='" + objects[1] + "' WHERE id='" + objects[0] + "';";
-                    executeNonQuery(query);
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-                closeConnection();
-                return true;
-            }
-        }
-        return false;
     }
 
     public static Unit getUnit(Object o) {

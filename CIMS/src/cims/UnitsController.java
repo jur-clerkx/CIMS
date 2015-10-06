@@ -83,6 +83,7 @@ public class UnitsController implements Initializable {
                         Stage stage = new Stage();
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initStyle(StageStyle.DECORATED);
+                        OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
                         stage.setTitle("Unit" + myUnit.getUnitID());
                         stage.setScene(new Scene(root1));
                         stage.show();

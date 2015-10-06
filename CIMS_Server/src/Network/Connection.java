@@ -51,8 +51,6 @@ public class Connection {
                             if (obj instanceof String) {
                                 String s = obj.toString();
                                 RequestData(s);
-                            }else{
-                                write("Not the correct format");
                             }
                         } else {
                             if (obj instanceof String[]) {
@@ -88,34 +86,26 @@ public class Connection {
 
     private void RequestData(String s) throws IOException, ClassNotFoundException {
         Object o;
-        Task t;
-        Unit u;
+
         switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                t = DatabaseMediator.getTask(o);
+                Task t = DatabaseMediator.getTask(o);
                 t = DatabaseMediator.getTaskLists(t);
                 write(t);
                 break;
             case "FOUS2":
                 o = in.readObject();
+<<<<<<< HEAD
                 u = DatabaseMediator.getUnit(o);
                 //u = DatabaseMediator.getUnitLists(u);
+=======
+                Unit u = DatabaseMediator.getUnit(o);
+                u = DatabaseMediator.getUnitLists(u);
+>>>>>>> 926bf9246021f32c22a89c76c752abfe563fcc17
                 write(u);
                 break;
             case "FOUS3":
-                o = in.readObject();                
-                if (DatabaseMediator.updateTaskStatus(o)) {
-                    write("FOUS3: carried out successfully");
-                } else {
-                    write("Could not execute FOUS3");
-                }
-                break;
-            case "FOUS4":
-                o = in.readObject();
-                u = DatabaseMediator.getUnit(o);
-                u = DatabaseMediator.getUnitLists(u);
-                write(u.getTasks());
                 break;
             default:
                 break;

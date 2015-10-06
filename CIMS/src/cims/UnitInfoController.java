@@ -5,8 +5,13 @@
  */
 package cims;
 
+import cims.Field_Operations.Unit;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -82,7 +87,20 @@ public class UnitInfoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       int ID = OperatorMainController.myController.selectedUnitID;
+       Unit mySelectedUnit = null;
+        try {
+           mySelectedUnit =  OperatorMainController.myController.getUnitInfo(ID);
+        } catch (IOException ex) {
+            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       /* if(mySelectedUnit != null)
+        {
+            textfieldName.setText(mySelectedUnit.getName());
+           // textfieldLocation.setText(mySelectedUnit.getLocation());
+            radiobuttonLarge.disableProperty();
+            radiobuttonMedium.disableProperty();
+        }*/
     }
 
     @FXML
@@ -119,6 +137,10 @@ public class UnitInfoController implements Initializable {
 
     }
 
+    /*private Object[] checkDifference()
+    {
+        
+    }*/ 
     private String getSelectedSpecials() {
         String selected = "F";
 

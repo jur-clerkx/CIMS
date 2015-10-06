@@ -33,14 +33,22 @@ public class ConnectionController {
     private static Socket s;
     static ObjectOutputStream output;
     static ObjectInputStream input;
+    public static int selectedUnitID = 0;
+    private static Unit unitinfo;
 
     public ConnectionController() throws IOException {
 
     }
 
     public static void main(String[] args) throws IOException {
-        serverAddress = "145.93.61.91";
+        user = new User();
+        serverAddress = "145.93.60.189";
         Login("NickMullen", "0000");
+        while (!user.authorized()) // unitinfo = getUnitInfo(1);
+        {
+        }
+        unitinfo = getUnitInfo(1);
+        System.out.println(unitinfo.toString());
     }
 
     public boolean DisbandUnit(int ID) throws IOException {
@@ -56,6 +64,7 @@ public class ConnectionController {
             return false;
         }
     }
+
     public static boolean Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
         output = new ObjectOutputStream(s.getOutputStream());
@@ -96,8 +105,6 @@ public class ConnectionController {
         output.close();
     }
 
-    
-
     boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) {
         return true;
     }
@@ -105,17 +112,43 @@ public class ConnectionController {
     ArrayList<Unit> getInactiveUnits() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    ArrayList<Task> getActiveTasks(){
+
+    ArrayList<Task> getActiveTasks() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    ArrayList<Task> getUnassignedTasks() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     void removeActiveTask(Task task) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     boolean createTask() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     boolean editUnitInfo(String text, String text0, int size, String selectedSpecials, TextField textfieldPPCPolice, int NrOfFireTrucks, int NrOfAmbulances, int NrOFPolicemen, int NRofFireFIghters, int NRofAmbulancePeople) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public static Unit getUnitInfo(int unitID) throws IOException {
+        try {
+            String outputMessage = "FOUS2";
+
+            output.writeObject(outputMessage);
+            output.writeObject(unitID);
+            return (Unit) input.readObject();
+
+        } catch (IOException | ClassNotFoundException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+        }
+        return null;
+    }
+
+    void cancelTask(Task task) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
