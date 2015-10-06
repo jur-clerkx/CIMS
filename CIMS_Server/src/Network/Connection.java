@@ -1,10 +1,10 @@
 package Network;
 
+import Field_Operations.Task;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +47,10 @@ public class Connection {
                     try {
                         Object obj = in.readObject();
                         if (user.authorized()) {
+                            if (obj instanceof String) {
+                                String s = obj.toString();
+                                RequestData(s);
+                            }
                             System.out.println("Access already granted, Access approved");
                         } else {
                             if (obj instanceof String[]) {
@@ -80,7 +84,24 @@ public class Connection {
         read.start();
     }
 
-    public boolean login(String username, String password) {
+    private void RequestData(String s) throws IOException, ClassNotFoundException {
+        switch (s.toUpperCase()) {
+            case "FOUS1":
+                Object o = in.readObject();
+                Task t = DatabaseMediator.getTask(o);
+                //t = DatabaseMediator.getTaskLists(t);
+                write(t);
+                break;
+            case "FOUS2":
+                break;
+            case "FOUS3":
+                break;
+            default:
+                break;
+        }
+    }
+
+    private boolean login(String username, String password) {
         if (username == null || password == null) {
             return false;
         }
