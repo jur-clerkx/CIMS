@@ -113,7 +113,7 @@ public class ActiveTasksController implements Initializable {
     }
 
     @FXML
-    private void deleteButtonClick(MouseEvent event) {
+    private void deleteButtonClick(MouseEvent event) throws IOException {
         Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
