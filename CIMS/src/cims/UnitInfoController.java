@@ -5,7 +5,11 @@
  */
 package cims;
 
+import Field_Operations.Material;
+import Field_Operations.Task;
 import Field_Operations.Unit;
+import Field_Operations.Vehicle;
+import Network.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -81,20 +85,25 @@ public class UnitInfoController implements Initializable {
     private int NrOFPolicemen;
     private int NRofAmbulancePeople;
     private int NRofFireFIghters;
+    private Unit mySelectedUnit;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       int ID = OperatorMainController.myController.selectedUnitID;
-       Unit mySelectedUnit = null;
-////        try {
-////           mySelectedUnit =  OperatorMainController.myController.getUnitInfo(ID);
-////        } catch (IOException ex) {
-////            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
-////        }
-     
+        int ID = ConnectionController.selectedUnitID;
+        mySelectedUnit = null;
+        try {
+            mySelectedUnit = ConnectionController.getUnitInfo(ID);
+        } catch (IOException ex) {
+            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(mySelectedUnit != null)
+        {
+            fillPage();
+        }
+
     }
 
     @FXML
@@ -109,11 +118,10 @@ public class UnitInfoController implements Initializable {
             size = 3;
         }
         convertToInt();
-        try
-        {
-        succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+        try {
+            succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+        } catch (Exception ex) {
         }
-        catch(Exception ex){}
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (succes) {
@@ -134,10 +142,7 @@ public class UnitInfoController implements Initializable {
 
     }
 
-    /*private Object[] checkDifference()
-    {
-        
-    }*/ 
+ 
     private String getSelectedSpecials() {
         String selected = "F";
 
@@ -191,6 +196,90 @@ public class UnitInfoController implements Initializable {
             NRofAmbulancePeople = Integer.parseInt(textfieldPPCAmbulance.getText());
         }
 
+    }
+
+    private void fillPage() {
+
+        int policeUsers = 0;
+        int ambulanceUsers = 0;
+        int firefighters = 0;
+        int policeCars = 0;
+        int firetrucks = 0;
+        int ambulance = 0;
+        
+        if (!mySelectedUnit.getName().isEmpty()) {
+            textfieldName.setText(mySelectedUnit.getName());
+        }
+        if (mySelectedUnit.getSize() <= 5) {
+            radiobuttonSmall.arm();
+        } else if (mySelectedUnit.getSize() > 6 && mySelectedUnit.getSize() < 10) {
+            radiobuttonMedium.arm();
+        } else {
+            radiobuttonLarge.arm();
+        }
+        if (mySelectedUnit.getTask() != null) {
+            Task task = (Task) mySelectedUnit.getTask();
+            textfieldTaskID.setText(Integer.toString(task.getTaskID()));
+            textfieldTaskname.setText(task.getName());
+        }
+
+        for (Material m : mySelectedUnit.getMaterials()) {
+            if (m.getName().contains("Gas")) {
+                radiobuttonGas.arm();
+            }
+            if (m.getName().contains("Fuel")) {
+                radiobuttonFuel.arm();
+            }
+            if (m.getName().contains("Explosion")) {
+                radiobuttonExplosion.arm();
+            }
+            if (m.getName().contains("Earth")) {
+                radiobuttonEarthquake.arm();
+            }
+            if (m.getName().contains("Terror")) {
+                radiobuttonTerrorist.arm();
+            }
+        }
+
+        for (User u : mySelectedUnit.getMembers()) {
+
+            if (u.getRank().contains("Police")) {
+                policeUsers++;
+            }
+            else if(u.getRank().contains("Ambulance"))
+            {
+                ambulanceUsers++;
+            }
+            else if(u.getRank().contains("Fire"))
+            {
+                firefighters++;
+            }
+        }
+        
+        for(Vehicle v : mySelectedUnit.getVehicles())
+        {
+            if(v.getCarType().contains("Fire"))
+            {
+                firetrucks++;
+            }
+            else if(v.getCarType().contains("Police"))
+            {
+                policeCars++;
+            }
+            else if(v.getCarType().contains("Ambulance"))
+            {
+                ambulance++;
+            }
+        }
+        
+        textfieldPPCAmbulance.setText(Integer.toString(ambulanceUsers));
+        textfieldPPCFire.setText(Integer.toString(firefighters));
+        textfieldPPCPolice.setText(Integer.toString(policeUsers));
+        textfieldPoliceCars.setText(Integer.toString(policeCars));
+        textfieldFiretrucks.setText(Integer.toString(firetrucks));
+        textfieldAmbulances.setText(Integer.toString(ambulance));
+       
+        
     }
 
 }

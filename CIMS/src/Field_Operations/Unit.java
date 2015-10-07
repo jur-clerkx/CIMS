@@ -21,9 +21,17 @@ public class Unit implements Serializable {
     private String description;
     private String shift;
     private List<User> members;
+
+    public List<User> getMembers() {
+        return members;
+    }
     private List<Material> materials;
     private List<Task> tasks;
     private List<Vehicle> vehicles;
+
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
 
     public Unit(int unitID, String name, String description, String shift) {
         this.unitID = unitID;
@@ -34,6 +42,10 @@ public class Unit implements Serializable {
         this.materials = new ArrayList<>();
         this.tasks = new ArrayList<>();
         this.vehicles = new ArrayList<>();
+    }
+
+    public List<Material> getMaterials() {
+        return materials;
     }
 
     public int getUnitID() {
@@ -128,5 +140,17 @@ public class Unit implements Serializable {
     @Override
     public String toString() {
         return this.name + " " + this.shift;
+    }
+
+    public int getSize() {
+        return members.size();
+    }
+
+    public Object getTask() {
+        if (tasks.get(0) != null) {
+            return tasks.get(0);
+        } else {
+            return null;
+        }
     }
 }

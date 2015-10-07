@@ -16,6 +16,10 @@ public class Vehicle extends Material {
     private String license;
     private String type;
 
+    public String getCarType() {
+        return type;
+    }
+
     public Vehicle(int vehicleID, String name, String license, String type, String state, User availability) {
         super(vehicleID, name, state, availability);
         this.license = license;

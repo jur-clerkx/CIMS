@@ -53,7 +53,7 @@ public class ConnectionController {
 
     public boolean DisbandUnit(int ID) throws IOException {
         try {
-            output.writeObject("FOOP4");
+            output.writeObject("FOOP3");
             Object[] myObject = new Object[1];
             myObject[0] = ID;
             output.writeObject(myObject);
@@ -130,7 +130,7 @@ public class ConnectionController {
         myUnit[19] = size;
 
         try {
-            String outputMessage = "FOOP1";
+            String outputMessage = "FOOP2";
 
             output.writeObject(outputMessage);
             output.writeObject(myUnit);
@@ -146,8 +146,10 @@ public class ConnectionController {
 
     ArrayList<Unit> getInactiveUnits() throws IOException {
         try {
-            String outputMessage = "FOOP30";
+            String outputMessage = "FOOP4";
+            int type = 0;
             output.writeObject(outputMessage);
+            output.writeObject(false);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -157,11 +159,13 @@ public class ConnectionController {
         return null;
     }
 
-    ArrayList<Unit> getActiveUnits90() throws IOException
+    ArrayList<Unit> getActiveUnits() throws IOException
     {
         try {
-            String outputMessage = "FOOP31";
-            output.writeObject(outputMessage);
+            String outputMessage = "FOOP4";
+            int type = 1;
+            output.writeObject(outputMessage);            
+            output.writeObject(true);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -212,9 +216,10 @@ public class ConnectionController {
         myUnit[19] = size;
 
         try {
-            String outputMessage = "FOOP2";
+            String outputMessage = "FOOP1";
 
             output.writeObject(outputMessage);
+            output.writeObject(selectedUnitID);
             output.writeObject(myUnit);
             return true;
 

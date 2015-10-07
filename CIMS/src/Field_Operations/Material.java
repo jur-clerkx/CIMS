@@ -15,6 +15,10 @@ public class Material {
 
     private int materialID;
     private String name;
+
+    public String getName() {
+        return name;
+    }
     private String state;
     private User availability;
 
