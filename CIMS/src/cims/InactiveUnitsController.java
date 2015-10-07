@@ -48,21 +48,31 @@ public class InactiveUnitsController implements Initializable {
     @FXML
     private AnchorPane MainField;
     @FXML
-    private TableColumn<Unit, Number> tableId;
-    @FXML
     private TableColumn<Unit, String> tableUnitName;
     @FXML
     private TableColumn<Unit, String> tableStatus;
+    @FXML
+    private TableColumn<Unit, Number> tableID;
     
     ObservableList<Unit> InactiveUnits;
+    
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
-        tableId.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
+        try
+        {
+        InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+        }
+        catch(Exception ex)
+        {
+        InactiveUnits = FXCollections.observableArrayList();
+        }
+        InactiveUnits = FXCollections.observableArrayList();
+        InactiveUnits.add(new Unit(1,"test","test","test"));
+        tableID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
         tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
         tableStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
         IUnitTable.setItems(InactiveUnits);
@@ -79,11 +89,11 @@ public class InactiveUnitsController implements Initializable {
                         Stage stage = new Stage();
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initStyle(StageStyle.DECORATED);
-                        stage.setTitle("Unit" + myUnit.getUnitID());
+                        stage.setTitle("Unit");
                         stage.setScene(new Scene(root1));
                         stage.show();
                     } catch (Exception x) {
-                        System.out.println(x.getMessage());
+                        System.out.println("Error" + x.getMessage());
                     }
                 }
                 });

@@ -97,8 +97,14 @@ public class CreateUnitController implements Initializable {
         }
         convertToInt();
 
+        try
+        {
         succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
-
+        }
+        catch(Exception ex)
+        {
+            
+        }
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (succes) {

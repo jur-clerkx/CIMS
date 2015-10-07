@@ -89,18 +89,12 @@ public class UnitInfoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
        int ID = OperatorMainController.myController.selectedUnitID;
        Unit mySelectedUnit = null;
-        try {
-           mySelectedUnit =  OperatorMainController.myController.getUnitInfo(ID);
-        } catch (IOException ex) {
-            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       /* if(mySelectedUnit != null)
-        {
-            textfieldName.setText(mySelectedUnit.getName());
-           // textfieldLocation.setText(mySelectedUnit.getLocation());
-            radiobuttonLarge.disableProperty();
-            radiobuttonMedium.disableProperty();
-        }*/
+////        try {
+////           mySelectedUnit =  OperatorMainController.myController.getUnitInfo(ID);
+////        } catch (IOException ex) {
+////            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+////        }
+     
     }
 
     @FXML
@@ -115,8 +109,11 @@ public class UnitInfoController implements Initializable {
             size = 3;
         }
         convertToInt();
+        try
+        {
         succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
-
+        }
+        catch(Exception ex){}
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (succes) {

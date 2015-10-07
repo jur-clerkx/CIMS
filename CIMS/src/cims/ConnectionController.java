@@ -53,7 +53,7 @@ public class ConnectionController {
 
     public boolean DisbandUnit(int ID) throws IOException {
         try {
-            output.writeObject("FO;Disband");
+            output.writeObject("FOOP4");
             Object[] myObject = new Object[1];
             myObject[0] = ID;
             output.writeObject(myObject);
@@ -105,12 +105,71 @@ public class ConnectionController {
         output.close();
     }
 
-    boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) {
-        return true;
+    boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
+
+        Object[] myUnit = new Object[20];
+        myUnit[0] = "Name";
+        myUnit[1] = Name;
+        myUnit[2] = "Location";
+        myUnit[3] = Location;
+        myUnit[4] = "Specials";
+        myUnit[5] = selectedSpecials;
+        myUnit[6] = "PoliceCars";
+        myUnit[7] = PoliceCars;
+        myUnit[8] = "Firetrucks";
+        myUnit[9] = FireTruck;
+        myUnit[10] = "Ambulance";
+        myUnit[11] = Ambulances;
+        myUnit[12] = "Policemen";
+        myUnit[13] = Policemen;
+        myUnit[14] = "Firefighters";
+        myUnit[15] = FireFighters;
+        myUnit[16] = "AmbulancePeople";
+        myUnit[17] = AmbulancePeople;
+        myUnit[18] = "Size";
+        myUnit[19] = size;
+
+        try {
+            String outputMessage = "FOOP1";
+
+            output.writeObject(outputMessage);
+            output.writeObject(myUnit);
+            return true;
+
+        } catch (IOException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+            return false;
+        }
+
     }
 
-    ArrayList<Unit> getInactiveUnits() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ArrayList<Unit> getInactiveUnits() throws IOException {
+        try {
+            String outputMessage = "FOOP30";
+            output.writeObject(outputMessage);
+            return (ArrayList<Unit>) input.readObject();
+
+        } catch (IOException | ClassNotFoundException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+        }
+        return null;
+    }
+
+    ArrayList<Unit> getActiveUnits90() throws IOException
+    {
+        try {
+            String outputMessage = "FOOP31";
+            output.writeObject(outputMessage);
+            return (ArrayList<Unit>) input.readObject();
+
+        } catch (IOException | ClassNotFoundException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+        }
+        return null;
+
     }
 
     ArrayList<Task> getActiveTasks() {
@@ -129,8 +188,41 @@ public class ConnectionController {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    boolean editUnitInfo(String text, String text0, int size, String selectedSpecials, TextField textfieldPPCPolice, int NrOfFireTrucks, int NrOfAmbulances, int NrOFPolicemen, int NRofFireFIghters, int NRofAmbulancePeople) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, TextField PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
+        Object[] myUnit = new Object[18];
+        myUnit[0] = "Name";
+        myUnit[1] = Name;
+        myUnit[2] = "Location";
+        myUnit[3] = Location;
+        myUnit[4] = "Specials";
+        myUnit[5] = selectedSpecials;
+        myUnit[6] = "PoliceCars";
+        myUnit[7] = PoliceCars;
+        myUnit[8] = "Firetrucks";
+        myUnit[9] = FireTruck;
+        myUnit[10] = "Ambulance";
+        myUnit[11] = Ambulances;
+        myUnit[12] = "Policemen";
+        myUnit[13] = Policemen;
+        myUnit[14] = "Firefighters";
+        myUnit[15] = FireFighters;
+        myUnit[16] = "AmbulancePeople";
+        myUnit[17] = AmbulancePeople;
+        myUnit[18] = "Size";
+        myUnit[19] = size;
+
+        try {
+            String outputMessage = "FOOP2";
+
+            output.writeObject(outputMessage);
+            output.writeObject(myUnit);
+            return true;
+
+        } catch (IOException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+            return false;
+        }
     }
 
     public static Unit getUnitInfo(int unitID) throws IOException {
