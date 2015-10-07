@@ -22,6 +22,10 @@ public class User {
     private String password;
     private String rank;
     private String sector;
+
+    public String getSector() {
+        return sector;
+    }
     private List<Unit> units;
 
     public User(String firstname, String lastname, Date dob, String gender) {

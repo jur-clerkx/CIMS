@@ -243,14 +243,14 @@ public class UnitInfoController implements Initializable {
 
         for (User u : mySelectedUnit.getMembers()) {
 
-            if (u.getRank().contains("Police")) {
+            if (u.getSector().contains("Police")) {
                 policeUsers++;
             }
-            else if(u.getRank().contains("Ambulance"))
+            else if(u.getSector().contains("Ambulance"))
             {
                 ambulanceUsers++;
             }
-            else if(u.getRank().contains("Fire"))
+            else if(u.getSector().contains("Fire"))
             {
                 firefighters++;
             }
