@@ -22,12 +22,12 @@
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonMedium" mnemonicParsing="false" text="medium">
+                <RadioButton fx:id = "radioButtonMedium"   mnemonicParsing="false" text="medium">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonLarge" mnemonicParsing="false" text="large">
+                <RadioButton fx:id = "radioButtonLarge"   mnemonicParsing="false" text="large">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
@@ -41,17 +41,17 @@
                         <Insets left="10.0" />
                     </HBox.margin>
                 </Label>
-                <RadioButton fx:id = "radioButtonPolice" mnemonicParsing="false" text="Police">
+                <RadioButton fx:id = "radioButtonPolice" onMouseClicked="#radioPolice"  mnemonicParsing="false" text="Police">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonFire" mnemonicParsing="false" text="Firefighter">
+                <RadioButton fx:id = "radioButtonFire" onMouseClicked="#radioFire"  mnemonicParsing="false" text="Firefighter">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonAmbulance" mnemonicParsing="false" text="Ambulance">
+                <RadioButton fx:id = "radioButtonAmbulance"  onMouseClicked="#radioAmbu" mnemonicParsing="false" text="Ambulance">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>

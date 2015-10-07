@@ -156,35 +156,84 @@ public class CreateUnitController implements Initializable {
 
     private void convertToInt() {
         if (textFieldNRPolice.getText().equals("")) {
-            NrOfPoliceCars = -1;
+            NrOfPoliceCars = 0;
         } else {
             NrOfPoliceCars = Integer.parseInt(textFieldNRPolice.getText());
         }
         if (textFieldNRAmbulance.getText().equals("")) {
-            NrOfAmbulances = -1;
+            NrOfAmbulances = 0;
         } else {
             NrOfAmbulances = Integer.parseInt(textFieldNRAmbulance.getText());
         }
         if (textFieldNRFire.getText().equals("")) {
-            NrOfFireTrucks = -1;
+            NrOfFireTrucks = 0;
         } else {
             NrOfFireTrucks = Integer.parseInt(textFieldNRFire.getText());
         }
         if (textFieldPPCPolice.getText().equals("")) {
-            NrOFPolicemen = -1;
+            NrOFPolicemen = 0;
         } else {
             NrOFPolicemen = Integer.parseInt(textFieldPPCPolice.getText());
         }
         if (textFieldPPCFire.getText().equals("")) {
-            NRofFireFIghters = -1;
+            NRofFireFIghters = 0;
         } else {
             NRofFireFIghters = Integer.parseInt(textFieldPPCFire.getText());
         }
         if (textFieldPPCAmbu.getText().equals("")) {
-            NRofAmbulancePeople = -1;
+            NRofAmbulancePeople = 0;
         } else {
             NRofAmbulancePeople = Integer.parseInt(textFieldPPCAmbu.getText());
         }
 
+    }
+
+    @FXML
+    private void radioPolice(MouseEvent event) {
+        
+        if(radioButtonSmall.isArmed())
+        {
+            textFieldNRPolice.setText(Integer.toString(1));
+        }
+        if(radioButtonMedium.isArmed())
+        {
+            textFieldNRPolice.setText(Integer.toString(5));
+        }
+        if(radioButtonLarge.isArmed())
+        {
+            textFieldNRPolice.setText(Integer.toString(10));
+        }
+    }
+
+    @FXML
+    private void radioFire(MouseEvent event) {
+          if(radioButtonSmall.isArmed())
+        {
+            textFieldNRFire.setText(Integer.toString(1));
+        }
+        if(radioButtonMedium.isArmed())
+        {
+            textFieldNRFire.setText(Integer.toString(5));
+        }
+        if(radioButtonLarge.isArmed())
+        {
+            textFieldNRFire.setText(Integer.toString(10));
+        }
+    }
+
+    @FXML
+    private void radioAmbu(MouseEvent event) {
+          if(radioButtonSmall.isArmed())
+        {
+            textFieldNRAmbulance.setText(Integer.toString(1));
+        }
+        if(radioButtonMedium.isArmed())
+        {
+            textFieldNRAmbulance.setText(Integer.toString(5));
+        }
+        if(radioButtonLarge.isArmed())
+        {
+            textFieldNRAmbulance.setText(Integer.toString(10));
+        }
     }
 }

@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -123,9 +124,19 @@ public class InactiveUnitsController implements Initializable {
        Unit selectedUnit = (Unit)IUnitTable.getSelectionModel().getSelectedItem();
     
         try {
-            OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
+            if (selectedUnit != null) {
+                OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("Please select a Unit");
+                alert.showAndWait();
+            }
         } catch (IOException ex) {
-            Logger.getLogger(InactiveUnitsController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("An error has occured.");
+            alert.showAndWait();
         }
     }
     

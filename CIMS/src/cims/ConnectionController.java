@@ -193,7 +193,7 @@ public class ConnectionController {
     }
 
     boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, TextField PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-        Object[] myUnit = new Object[18];
+        Object[] myUnit = new Object[20];
         myUnit[0] = "Name";
         myUnit[1] = Name;
         myUnit[2] = "Location";
