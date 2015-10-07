@@ -38,19 +38,23 @@ public class ConnectionController {
     private static Unit unitinfo;
 
     public ConnectionController() throws IOException {
-
-    }
-
-    public static void main(String[] args) throws IOException {
         user = new User();
-        serverAddress = "145.93.60.189";
+        serverAddress = "145.93.61.45";
+        //serverAddress = "127.0.0.1";
         Login("NickMullen", "0000");
-        while (!user.authorized()) // unitinfo = getUnitInfo(1);
-        {
-        }
-        unitinfo = getUnitInfo(1);
-        System.out.println(unitinfo.toString());
     }
+
+//    public static void main(String[] args) throws IOException {
+//        user = new User();
+//        //serverAddress = "145.93.61.45";
+//        serverAddress = "127.0.0.1";
+//        Login("NickMullen", "0000");
+////        while (!user.authorized()) // unitinfo = getUnitInfo(1);
+////        {
+////        }
+////        unitinfo = getUnitInfo(1);
+////        System.out.println(unitinfo.toString());
+//    }
 
     public boolean DisbandUnit(int ID) throws IOException, ClassNotFoundException {
         try {
@@ -58,12 +62,12 @@ public class ConnectionController {
             Object[] myObject = new Object[1];
             myObject[0] = ID;
             output.writeObject(myObject);
-            String message = (String)input.readObject();
-            if(message != null)
-            {
+            String message = (String) input.readObject();
+            if (message != null) {
                 return true;
+            } else {
+                return false;
             }
-            else return false;
         } catch (IOException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -165,12 +169,11 @@ public class ConnectionController {
         return null;
     }
 
-    ArrayList<Unit> getActiveUnits() throws IOException
-    {
+    ArrayList<Unit> getActiveUnits() throws IOException {
         try {
             String outputMessage = "FOOP4";
             int type = 1;
-            output.writeObject(outputMessage);            
+            output.writeObject(outputMessage);
             output.writeObject(true);
             return (ArrayList<Unit>) input.readObject();
 
@@ -193,10 +196,11 @@ public class ConnectionController {
     void removeActiveTask(int taskID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     void removeInactiveTask(int taskID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     boolean createTask() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
