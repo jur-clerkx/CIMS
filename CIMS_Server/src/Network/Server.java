@@ -16,7 +16,6 @@ public class Server {
 
     private static final Logger LOG = Logger.getLogger(Server.class.getName());
     public static ArrayList<Connection> connections;
-    public static LinkedBlockingQueue<Object> objects;
     private ServerSocket serverSocket;
     public boolean searching;
 
@@ -26,10 +25,8 @@ public class Server {
      * @param port port the server is listening to.
      */
     public Server(int port) {
-        objects = new LinkedBlockingQueue<>();
         connections = new ArrayList<>();
 
-        // Try co connect to the serversocket.
         try {
             this.serverSocket = new ServerSocket(port);
             LOG.log(Level.INFO, "Server is running. Listening on port: {0}", serverSocket.getLocalPort());
@@ -74,11 +71,11 @@ public class Server {
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         for (Connection conn : connections) {
             conn.kill();
         }
-        
+
         connections.clear();
         LOG.log(Level.INFO, "Server Stopped");
     }
@@ -102,16 +99,6 @@ public class Server {
     public static void sendToAll(Object object) {
         for (Connection client : connections) {
             client.write(object);
-        }
-    }
-
-    /**
-     * Sends the object-list to all users added in the client list.
-     *
-     */
-    public static void sendBackupToAll() {
-        for (Connection client : connections) {
-            client.write(objects);
         }
     }
 }

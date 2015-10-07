@@ -13,6 +13,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Database connection class
@@ -90,7 +93,7 @@ public class DatabaseMediator {
     public static User checkLogin(String username, String password) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM User WHERE username='" + username + "' AND password='" + password + "';";
+                String query = "SELECT * FROM CIMS.User WHERE username='" + username + "' AND password='" + password + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
@@ -112,10 +115,10 @@ public class DatabaseMediator {
         return new User();
     }
 
-    private static User getUser(int userID) {
+    public static User getUser(int userID) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM User WHERE id='" + userID + "';";
+                String query = "SELECT * FROM CIMS.User WHERE id='" + userID + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
@@ -177,13 +180,13 @@ public class DatabaseMediator {
     public static Task getTaskLists(Task t) {
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Task_Unit where taskid='" + t.getTaskID() + "';";
+                String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + t.getTaskID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     t.addUnit(getUnit(rs.getInt("id")));
                 }
 
-                query = "SELECT id FROM CIMS.Progress where taskid='" + t.getTaskID() + "';";
+                query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getTaskID() + "';";
                 rs = executeQuery(query);
                 while (rs.next()) {
                     t.updateProgress(getProgress(rs.getInt("id")));
@@ -194,6 +197,43 @@ public class DatabaseMediator {
             closeConnection();
         }
         return t;
+    }
+
+    public static ArrayList<Task> getTaskListByUser(int userID) {
+        ArrayList<Task> tlist = new ArrayList<>();
+        if (openConnection()) {
+            try {
+                String query = "SELECT tu.taskid FROM CIMS.Task_Unit tu, CIMS.Unit_Containment uc "
+                        + "WHERE tu.unitid = uc.unitid AND uc.`type`= 'U' AND uc.containmentid ='" + userID + "';";
+                ResultSet rs = executeQuery(query);
+                Task t;
+                while (rs.next()) {
+                    t = getTask(rs.getInt("id"));
+                    tlist.add(getTaskLists(t));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            closeConnection();
+        }
+        return tlist;
+    }
+
+    public static boolean updateTaskStatus(Object o) {
+        if (o instanceof Object[]) {
+            Object[] objects = (Object[]) o;
+            if (openConnection()) {
+                try {
+                    String query = "UPDATE CIMS.Task SET status='" + objects[1] + "' WHERE id='" + objects[0] + "';";
+                    executeNonQuery(query);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Unit getUnit(Object o) {
@@ -224,7 +264,7 @@ public class DatabaseMediator {
     public static Unit getUnitLists(Unit u) {
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Task_Unit where taskid='" + u.getUnitID() + "';";
+                String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + u.getUnitID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     switch (rs.getString("type")) {
@@ -250,12 +290,59 @@ public class DatabaseMediator {
         return u;
     }
 
+    public static ArrayList<Unit> getActiveInactiveUnits(Object b) {
+        ArrayList<Unit> uList = new ArrayList<>();
+        if (b instanceof Boolean) {
+            boolean active = (Boolean) b;
+            Set<Integer> hs = new HashSet<>();
+            for (Network.Connection c : Server.connections) {
+                if (active == c.isOpen()) {
+                    if (openConnection()) {
+                        try {
+                            String query = "SELECT unitid FROM CIMS.Task_Unit WHERE unitid='" + c.getuser_ID() + "';";
+                            ResultSet rs = executeQuery(query);
+                            while (rs.next()) {
+                                hs.add(rs.getInt("unitid"));
+                            }
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        closeConnection();
+                    }
+                }
+            }
+            for (int i : hs) {
+                uList.add(getUnit(i));
+            }
+        }
+        return uList;
+    }
+
+    public static boolean disbandUnit(Object o) {
+        if (o instanceof Integer) {
+            int unitID = (int) o;
+            if (openConnection()) {
+                try {
+                    String query = "DELETE FROM CIMS.Unit_Containment WHERE unitid='" + unitID + "';";
+                    executeNonQuery(query);
+                    query = "DELETE FROM CIMS.Unit WHERE id='" + unitID + "';";
+                    executeNonQuery(query);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Material getMaterial(Object o) {
         if (o instanceof Integer) {
             int materialID = (Integer) o;
             if (openConnection()) {
                 try {
-                    String query = "SELECT * FROM material WHERE id='" + materialID + "';";
+                    String query = "SELECT * FROM CIMS.Material WHERE id='" + materialID + "';";
                     ResultSet rs = executeQuery(query);
                     rs.next();
 
@@ -301,7 +388,7 @@ public class DatabaseMediator {
     public static Progress getProgress(int progresID) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM progress WHERE id='" + progresID + "';";
+                String query = "SELECT * FROM CIMS.Progress WHERE id='" + progresID + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 

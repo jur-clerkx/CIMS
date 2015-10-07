@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +52,8 @@ public class Connection {
                             if (obj instanceof String) {
                                 String s = obj.toString();
                                 RequestData(s);
+                            } else {
+                                write("Not the correct format");
                             }
                         } else {
                             if (obj instanceof String[]) {
@@ -86,21 +89,47 @@ public class Connection {
 
     private void RequestData(String s) throws IOException, ClassNotFoundException {
         Object o;
-
+        Task t;
+        Unit u;
         switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                Task t = DatabaseMediator.getTask(o);
+                t = DatabaseMediator.getTask(o);
                 t = DatabaseMediator.getTaskLists(t);
                 write(t);
                 break;
             case "FOUS2":
                 o = in.readObject();
-                Unit u = DatabaseMediator.getUnit(o);
+                u = DatabaseMediator.getUnit(o);
                 u = DatabaseMediator.getUnitLists(u);
                 write(u);
                 break;
             case "FOUS3":
+                o = in.readObject();
+                if (DatabaseMediator.updateTaskStatus(o)) {
+                    write("FOUS3: carried out successfully");
+                } else {
+                    write("Could not execute FOUS3");
+                }
+                break;
+            case "FOUS4":
+                write(DatabaseMediator.getTaskListByUser(this.user.getUser_ID()));
+                break;
+            case "FOOP1":
+                break;
+            case "FOOP2":
+                break;
+            case "FOOP3":
+                o = in.readObject();
+                if (DatabaseMediator.disbandUnit(o)) {
+                    write("Unit disbanded succesfully");
+                } else {
+                    write("Could not disband unit");
+                }
+                break;
+            case "FOOP4":
+                o = in.readObject();
+                write(DatabaseMediator.getActiveInactiveUnits(o));
                 break;
             default:
                 break;
@@ -137,6 +166,14 @@ public class Connection {
         } catch (IOException ex) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public Boolean isOpen() {
+        return this.reading;
+    }
+
+    public int getuser_ID() {
+        return this.user.getUser_ID();
     }
 
     /**
