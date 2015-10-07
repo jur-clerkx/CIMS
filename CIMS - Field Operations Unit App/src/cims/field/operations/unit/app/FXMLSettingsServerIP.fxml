@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.field.operations.unit.app.FXMLSettingsServerIPController">
+   <children>
+      <Label layoutX="89.0" layoutY="59.0" text="Server IP:" />
+      <TextField fx:id="textFieldServerIP" layoutX="138.0" layoutY="55.0" />
+      <Button layoutX="88.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleButtonSave" text="Save" />
+      <Button layoutX="160.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleButtonCancel" text="Cancel" />
+   </children>
+</AnchorPane>
