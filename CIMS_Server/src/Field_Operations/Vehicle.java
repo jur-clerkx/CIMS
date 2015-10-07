@@ -15,8 +15,8 @@ public class Vehicle extends Material {
 
     private String license;
 
-    public Vehicle(int vehicleID, String name, String license, String state, User availability) {
-        super(vehicleID, name, state, availability);
+    public Vehicle(int vehicleID, String name, String license, String state, User availability, int type) {
+        super(vehicleID, name, state, availability, type);
         this.license = license;
     }
 

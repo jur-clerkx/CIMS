@@ -17,12 +17,14 @@ public class Material {
     private String name;
     private String state;
     private User availability;
+    private int type;
 
-    public Material(int materialID, String name, String state, User availability) {
+    public Material(int materialID, String name, String state, User availability, int type) {
         this.materialID = materialID;
         this.name = name;
         this.state = state;
         this.availability = availability;
+        this.type = type;
     }
 
     /**

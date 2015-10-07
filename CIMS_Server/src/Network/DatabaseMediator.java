@@ -236,6 +236,7 @@ public class DatabaseMediator {
         return false;
     }
 
+//<editor-fold defaultstate="collapsed" desc="Units">
     public static Unit getUnit(Object o) {
         if (o instanceof Integer) {
             int unitID = (Integer) o;
@@ -320,7 +321,7 @@ public class DatabaseMediator {
 
     public static boolean disbandUnit(Object o) {
         if (o instanceof Integer) {
-            int unitID = (int) o;
+            int unitID = (Integer) o;
             if (openConnection()) {
                 try {
                     String query = "DELETE FROM CIMS.Unit_Containment WHERE unitid='" + unitID + "';";
@@ -337,6 +338,135 @@ public class DatabaseMediator {
         return false;
     }
 
+    public static boolean createUnit(Object o) {
+        //objects[name, location, specials, PoliceCars, FireTrucks, Healthcars, PolicePersons, FirePersons, HealthPersons] 
+        if (o instanceof Object[]) {
+            Object[] ob = (Object[]) o;
+
+            if (ob.length != 8) {
+                return false;
+            }
+
+            if (openConnection()) {
+                try {
+                    String query = "INSERT INTO CIMS.Unit (name, location) "
+                            + "VALUES ('" + ob[0] + "', '" + ob[1] + "');";
+                    executeNonQuery(query);
+                    query = "SELECT id FROM CIMS.Unit order by id desc;";
+                    ResultSet rs = executeQuery(query);
+                    rs.next();
+                    int unitID = rs.getInt("id");
+                    boolean s, cp, cf, ch, pp, pf, ph;
+                    s = setSpecials(ob[2], unitID);
+                    cp = setCars(ob[3], "P", unitID);
+                    cf = setCars(ob[4], "F", unitID);
+                    ch = setCars(ob[5], "H", unitID);
+                    pp = setPersons(ob[6], "P", unitID);
+                    pf = setPersons(ob[7], "F", unitID);
+                    ph = setPersons(ob[8], "H", unitID);
+
+                    if (s && cp && cf && ch && pp && pf && ph) {
+                        return true;
+                    }
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+                //specials
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean setSpecials(Object o, int unitID) {
+        if (o instanceof String) {
+            for (char ch : o.toString().toCharArray()) {
+                int typeid = (int) ch;
+                if (openConnection()) {
+                    try {
+                        String query = "SELECT id FROM CIMS.Material WHERE `type`='" + typeid + "';";
+                        ResultSet rs = executeQuery(query);
+                        while (rs.next()) {
+                            query = "INSERT INTO CIMS.Unit_Containment (unitid, containmentid, type) "
+                                    + "VALUES ('" + unitID + "', '" + rs.getInt("id") + "', 'M');";
+                            executeNonQuery(query);
+                        }
+                        return true;
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    closeConnection();
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean setCars(Object o, String type, int unitID) {
+        if (o instanceof Integer) {
+            int amount = (Integer) o;
+            if (openConnection()) {
+                try {
+                    String query = "SELECT id FROM CIMS.Vehicle "
+                            + "WHERE department = '" + type + "' and state='Ready' LIMIT " + amount + ";";
+                    ResultSet rs = executeQuery(query);
+                    int i = 0;
+                    while (rs.next()) {
+                        if (i >= amount) {
+                            break;
+                        }
+                        int id = rs.getInt("id");
+                        query = "INSERT INTO CIMS.Unit_Containment (unitid, containmentid, type) "
+                                + "VALUES ('" + unitID + "', '" + id + "', 'V');";
+                        executeNonQuery(query);
+
+                        query = "UPDATE CIMS.Vehicle SET state='Assigned' WHERE id='" + id + "';";
+                        executeNonQuery(query);
+                        i++;
+                    }
+                    return true;
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+            }
+        }
+        return false;
+    }
+
+    private static boolean setPersons(Object o, String type, int unitID) {
+        if (o instanceof Integer) {
+            int amount = (Integer) o;
+            if (openConnection()) {
+                try {
+                    String query = "SELECT u.id FROM CIMS.User u "
+                            + "WHERE u.department = '" + type + "' AND u.id NOT IN ("
+                            + "SELECT uc.id  FROM CIMS.Unit_Containment uc) limit " + amount + ";";
+                    ResultSet rs = executeQuery(query);
+                    int i = 0;
+                    while (rs.next()) {
+                        if (i >= amount) {
+                            break;
+                        }
+                        int id = rs.getInt("id");
+                        query = "INSERT INTO CIMS.Unit_Containment (unitid, containmentid, type) "
+                                + "VALUES ('" + unitID + "', '" + id + "', 'U');";
+                        executeNonQuery(query);
+                        i++;
+                    }
+                    return true;
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                closeConnection();
+            }
+        }
+        return false;
+    }
+    //</editor-fold>
+
     public static Material getMaterial(Object o) {
         if (o instanceof Integer) {
             int materialID = (Integer) o;
@@ -349,8 +479,9 @@ public class DatabaseMediator {
                     String name = rs.getString("name");
                     String state = rs.getString("state");
                     int availibility = rs.getInt("availibility");
+                    int type = rs.getInt("type");
 
-                    return new Material(materialID, name, state, getUser(availibility));
+                    return new Material(materialID, name, state, getUser(availibility), type);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -375,7 +506,7 @@ public class DatabaseMediator {
                     String state = rs.getString("state");
                     int availibility = rs.getInt("v.availibility");
 
-                    return new Vehicle(vehicleID, name, licence, state, getUser(availibility));
+                    return new Vehicle(vehicleID, name, licence, state, getUser(availibility), 0);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }

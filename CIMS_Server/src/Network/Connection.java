@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,8 +115,15 @@ public class Connection {
                 write(DatabaseMediator.getTaskListByUser(this.user.getUser_ID()));
                 break;
             case "FOOP1":
+                o = in.readObject();
                 break;
             case "FOOP2":
+                o = in.readObject();
+                if (DatabaseMediator.createUnit(o)) {
+                    write("");
+                } else {
+                    write("");
+                }
                 break;
             case "FOOP3":
                 o = in.readObject();
