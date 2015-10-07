@@ -35,7 +35,9 @@ public class Task implements Serializable {
         this.progress = new ArrayList<>();
         this.units = new ArrayList<>();
     }
-
+    public boolean isAccepted() {
+        return this.accepted;
+    }
     public int getTaskID() {
         return this.taskID;
     }

@@ -34,6 +34,7 @@ public class ConnectionController {
     static ObjectOutputStream output;
     static ObjectInputStream input;
     public static int selectedUnitID = 0;
+    public static int selectedTaskID = 0;
     private static Unit unitinfo;
 
     public ConnectionController() throws IOException {
@@ -185,14 +186,17 @@ public class ConnectionController {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    ArrayList<Task> getUnassignedTasks() {
+    ArrayList<Task> getInactiveTasks() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    void removeActiveTask(Task task) {
+    void removeActiveTask(int taskID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    void removeInactiveTask(int taskID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     boolean createTask() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

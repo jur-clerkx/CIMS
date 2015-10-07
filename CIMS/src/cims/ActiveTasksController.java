@@ -123,7 +123,7 @@ public class ActiveTasksController implements Initializable {
         if (result.get() == ButtonType.OK) {
             tasks.remove(task);
             task.operateStatus("Cancelled");
-            OperatorMainController.myController.removeActiveTask(task);
+            OperatorMainController.myController.removeActiveTask(task.getTaskID());
 
         } else {
             alert.close();
