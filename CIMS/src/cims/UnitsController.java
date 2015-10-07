@@ -70,65 +70,72 @@ public class UnitsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
-        //ActieUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
-        AUnitTable.setRowFactory(tv -> {
-            TableRow<Unit> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-
-                    Unit myUnit = row.getItem();
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
-                        stage.setTitle("Unit");
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println("Error" + x.getMessage());
+        try {
+            if(OperatorMainController.myController.user != null)
+            {
+            InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+            ActiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+            }
+            AUnitTable.setRowFactory(tv -> {
+                TableRow<Unit> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                        
+                        Unit myUnit = row.getItem();
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
+                            stage.setTitle("Unit");
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println("Error" + x.getMessage());
+                        }
                     }
-                }
+                });
+                return row;
             });
-            return row;
-        });
-
-        IUnitTable.setRowFactory(tv -> {
-            TableRow<Unit> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    Unit myUnit = row.getItem();
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        stage.setTitle("Unit" + myUnit.getUnitID());
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println(x.getMessage());
+            
+            IUnitTable.setRowFactory(tv -> {
+                TableRow<Unit> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                        Unit myUnit = row.getItem();
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            stage.setTitle("Unit" + myUnit.getUnitID());
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println(x.getMessage());
+                        }
                     }
-                }
+                });
+                return row;
             });
-            return row;
-        });
-        InactiveUnits = FXCollections.observableArrayList();
-        InactiveUnits.add(new Unit(1, "test", "test", "test"));
-        ActiveUnits = FXCollections.observableArrayList();
-        ActiveUnits.add(new Unit(1, "test", "test", "test"));
-        AUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
-        AUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
-        AUnitStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
-        IUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
-        IUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
-        IUnitStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
-        IUnitTable.setItems(InactiveUnits);
-        AUnitTable.setItems(ActiveUnits);
+            InactiveUnits = FXCollections.observableArrayList();
+            InactiveUnits.add(new Unit(1, "test", "test", "test"));
+            ActiveUnits = FXCollections.observableArrayList();
+            ActiveUnits.add(new Unit(1, "test", "test", "test"));
+            AUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
+            AUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
+            AUnitStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
+            IUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
+            IUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
+            IUnitStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
+            IUnitTable.setItems(InactiveUnits);
+            AUnitTable.setItems(ActiveUnits);
+        } catch (IOException ex) {
+            Logger.getLogger(UnitsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -151,7 +158,7 @@ public class UnitsController implements Initializable {
     }
 
     @FXML
-    private void disbandClick(MouseEvent event) {
+    private void disbandClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) IUnitTable.getSelectionModel().getSelectedItem();
 
         try {

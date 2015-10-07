@@ -58,8 +58,12 @@ public class ActiveUnitsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
+        try 
+        {
+            if(OperatorMainController.myController.user != null)
+            {
             activeUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+            }
         } catch (Exception ex) {
             activeUnits = FXCollections.observableArrayList();
         }
@@ -111,7 +115,7 @@ public class ActiveUnitsController implements Initializable {
     }
 
     @FXML
-    private void disbandButtonClick(MouseEvent event) {
+    private void disbandButtonClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) tableviewActiveUnits.getSelectionModel().getSelectedItem();
 
         

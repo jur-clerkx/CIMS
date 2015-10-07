@@ -29,7 +29,7 @@ import javafx.scene.control.TextField;
 public class ConnectionController {
 
     private static String serverAddress;
-    private static User user;
+    public static User user;
     private static Socket s;
     static ObjectOutputStream output;
     static ObjectInputStream input;
@@ -51,13 +51,18 @@ public class ConnectionController {
         System.out.println(unitinfo.toString());
     }
 
-    public boolean DisbandUnit(int ID) throws IOException {
+    public boolean DisbandUnit(int ID) throws IOException, ClassNotFoundException {
         try {
             output.writeObject("FOOP3");
             Object[] myObject = new Object[1];
             myObject[0] = ID;
             output.writeObject(myObject);
-            return true;
+            String message = (String)input.readObject();
+            if(message != null)
+            {
+                return true;
+            }
+            else return false;
         } catch (IOException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();

@@ -65,7 +65,10 @@ public class InactiveUnitsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try
         {
+        if(OperatorMainController.myController.user != null)
+        {
         InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+        }
         }
         catch(Exception ex)
         {
@@ -120,7 +123,7 @@ public class InactiveUnitsController implements Initializable {
     }
 
     @FXML
-    private void disbandClick  (MouseEvent event) {
+    private void disbandClick  (MouseEvent event) throws ClassNotFoundException {
        Unit selectedUnit = (Unit)IUnitTable.getSelectionModel().getSelectedItem();
     
         try {
