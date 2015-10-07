@@ -5,6 +5,7 @@
  */
 package cims;
 
+import Field_Operations.Task;
 import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -33,6 +35,7 @@ import javafx.stage.Stage;
  * @author rick
  */
 public class CreateTaskController implements Initializable {
+
     @FXML
     private GridPane TaskInfo;
     @FXML
@@ -41,13 +44,13 @@ public class CreateTaskController implements Initializable {
     private TextField textfieldTaskName;
     @FXML
     private TextField textfieldTaskLocation;
-    @FXML 
+    @FXML
     private ListView listviewAvailableUnits;
-    @FXML 
+    @FXML
     private ListView listviewAssignedUnits;
-    @FXML 
+    @FXML
     private Button buttonAssignUnit;
-    @FXML 
+    @FXML
     private Button buttonRevokeUnit;
     @FXML
     private ComboBox comboboxUrgency;
@@ -55,16 +58,16 @@ public class CreateTaskController implements Initializable {
     private ComboBox comboboxStatus;
     @FXML
     private TextArea textareaDescription;
-    @FXML 
+    @FXML
     private Button buttonCreateUnit;
-    @FXML 
+    @FXML
     private Button buttonCancel;
-    
-    
-    
-    ObservableList<String> AvailableList = FXCollections.observableArrayList("Unit 1", "Unit 2", "Unit 3");        
-    ObservableList<String> AssignedList = FXCollections.observableArrayList();    
-    
+
+    private Task task;
+
+    ObservableList<Unit> AvailableList = FXCollections.observableArrayList();
+    ObservableList<Unit> AssignedList = FXCollections.observableArrayList();
+
     /**
      * Initializes the controller class.
      */
@@ -72,48 +75,74 @@ public class CreateTaskController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
-        //TODO: populate available units from connection to observablelist
+        try {
+            //TODO: populate available units from connection to observablelist
+            AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+        } catch (IOException ex) {
+            Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         listviewAvailableUnits.setItems(AvailableList);
-    }    
+        task = null;
+    }
+
     @FXML
     private void assignButtonClick(MouseEvent event) {
-        int selectedItem = listviewAvailableUnits.getSelectionModel().getSelectedIndex();
-        String Content = AvailableList.get(selectedItem);
-        AvailableList.remove(selectedItem);
-        AssignedList.add(Content);
-        listviewAvailableUnits.setItems(AvailableList);
-        listviewAssignedUnits.setItems(AssignedList);
-        
+        //int selectedItem = listviewAvailableUnits.getSelectionModel().getSelectedIndex();
+        //String Content = AvailableList.get(selectedItem);
+        Unit selectedUnit = (Unit) listviewAvailableUnits.getSelectionModel().getSelectedItem();
+        if (selectedUnit != null) {
+            AvailableList.remove(selectedUnit);
+            AssignedList.add(selectedUnit);
+            listviewAvailableUnits.setItems(AvailableList);
+            listviewAssignedUnits.setItems(AssignedList);
+
+        }
+
     }
-     @FXML
+
+    @FXML
     private void revokeButtonClick(MouseEvent event) {
-        int selectedItem = listviewAssignedUnits.getSelectionModel().getSelectedIndex();
-        String Content = AssignedList.get(selectedItem);
-        AssignedList.remove(selectedItem);
-        AvailableList.add(Content);
-        listviewAssignedUnits.setItems(AssignedList);
-        listviewAvailableUnits.setItems(AvailableList);
+        //int selectedItem = listviewAssignedUnits.getSelectionModel().getSelectedIndex();
+        //String Content = AssignedList.get(selectedItem);
+        Unit selectedUnit = (Unit) listviewAssignedUnits.getSelectionModel().getSelectedItem();
+        if (selectedUnit != null) {
+
+            AssignedList.remove(selectedUnit);
+            AvailableList.add(selectedUnit);
+            listviewAssignedUnits.setItems(AssignedList);
+            listviewAvailableUnits.setItems(AvailableList);
+        }
     }
-     @FXML
-    private void createButtonClick(MouseEvent event) {
+
+    @FXML
+    private void createButtonClick(MouseEvent event) throws IOException {
         int taskID = Integer.parseInt(textfieldTaskID.getText());
         String taskName = textfieldTaskName.getText();
         String taskLocation = textfieldTaskLocation.getText();
         String urgency = comboboxUrgency.getSelectionModel().getSelectedItem().toString();
         String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
-        
-        
-        
-        OperatorMainController.myController.createTask();
-    }
-     @FXML
-    private void cancelButtonClick(MouseEvent event) {
-        
-    Stage stage = (Stage) buttonCancel.getScene().getWindow();
+        String description = textareaDescription.getText();
 
-    stage.close();
-    
+        if (taskID <= 0 || taskName == null || taskLocation == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("You forgot to fill in the tasks ID, name or location.");
+            alert.showAndWait();
+        } else {
+            task = new Task(taskID, taskName, urgency, status, taskLocation, description);
+            OperatorMainController.myController.createTask(taskID, taskName, urgency, status, taskLocation, description);
+            ArrayList<Unit> assignedUnits = (ArrayList<Unit>) AssignedList;
+            OperatorMainController.myController.assignTask(task.getTaskID(), assignedUnits.toArray());
+        }
     }
-    
-    
+
+    @FXML
+    private void cancelButtonClick(MouseEvent event) {
+
+        Stage stage = (Stage) buttonCancel.getScene().getWindow();
+
+        stage.close();
+
+    }
+
 }

@@ -119,7 +119,7 @@ public class TaskInfoController implements Initializable {
      * @param event 
      */
     @FXML
-    private void buttonOK(MouseEvent event) {
+    private void buttonOK(MouseEvent event) throws IOException {
         Task editedTask = selectedTask;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -141,10 +141,10 @@ public class TaskInfoController implements Initializable {
                 editedTask.operateStatus(selectedStatus);
             }
             // Edit currently selected task with new task.
-            //OperatorMainController.myController.editTask(selectedTask.getTaskID(), editedTask);
+            OperatorMainController.myController.editTask(selectedTask.getTaskID(), editedTask);
             
             // TODO assignTask database.
-            //OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits());
+            OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
             
             
         } else {
@@ -156,7 +156,7 @@ public class TaskInfoController implements Initializable {
      * @param event 
      */
     @FXML
-    private void buttonDelete(MouseEvent event) {
+    private void buttonDelete(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Save changes to " + selectedTask.getName() +"?");

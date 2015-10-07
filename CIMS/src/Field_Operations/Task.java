@@ -25,6 +25,7 @@ public class Task implements Serializable {
     private ArrayList<Progress> progress;
 
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
+        
         this.taskID = taskID;
         this.name = name;
         this.urgency = urgency;
