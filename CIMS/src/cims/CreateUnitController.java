@@ -5,7 +5,7 @@
  */
 package cims;
 
-import cims.Field_Operations.Unit;
+import Field_Operations.Unit;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;

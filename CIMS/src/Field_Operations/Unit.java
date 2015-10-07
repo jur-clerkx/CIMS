@@ -125,10 +125,6 @@ public class Unit implements Serializable {
         }
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
     @Override
     public String toString() {
         return this.name + " " + this.shift;
