@@ -120,9 +120,9 @@ public class Connection {
             case "FOOP2":
                 o = in.readObject();
                 if (DatabaseMediator.createUnit(o)) {
-                    write("");
+                    write("Unit succesfully created");
                 } else {
-                    write("");
+                    write("Could not create unit");
                 }
                 break;
             case "FOOP3":
@@ -137,9 +137,36 @@ public class Connection {
                 o = in.readObject();
                 write(DatabaseMediator.getActiveInactiveUnits(o));
                 break;
-            default:
+            case "FOOP5":
+                o = in.readObject();
+                write(DatabaseMediator.getActiveInactiveTasks(o));
+                break;
+            case "FOOP6":
+                o = in.readObject();
+                if (DatabaseMediator.createTask(o)) {
+                    write("Task succesfully created");
+                } else {
+                    write("Could not create task");
+                }
+                break;
+            case "FOOP7":
+                o = in.readObject();
+                if (DatabaseMediator.removeTask(o)) {
+                    write("Task succesfully removed");
+                } else {
+                    write("Could not remove task");
+                }
+                break;
+            case "FOOP8":
+                o = in.readObject();
+                if (DatabaseMediator.assignTask(o)) {
+                    write("Task succesfully created");
+                } else {
+                    write("Could not create task");
+                }
                 break;
         }
+
     }
 
     private boolean login(String username, String password) {
