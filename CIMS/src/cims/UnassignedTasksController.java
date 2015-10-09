@@ -124,7 +124,7 @@ public class UnassignedTasksController implements Initializable {
     }
 
     @FXML
-    private void cancelClick(MouseEvent event) {
+    private void cancelClick(MouseEvent event) throws IOException {
         Task task = (Task) tableviewUnassignedTasks.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -133,7 +133,7 @@ public class UnassignedTasksController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             task.operateStatus("Cancelled");
-            OperatorMainController.myController.cancelTask(task);
+            OperatorMainController.myController.cancelTask(task.getTaskID());
 
         } else {
             alert.close();
