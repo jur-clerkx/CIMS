@@ -322,13 +322,47 @@ public class DatabaseMediator {
                 try {
                     String query = "INSERT INTO CIMS.Task_Unit (unitid, taskid) "
                             + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
-                    executeNonQuery(query);
+                    ResultSet rs = executeQuery(query);
+                    if (rs == null) {
+                        query = "INSERT INTO CIMS.Task_Unit (unitid, taskid) "
+                                + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
+                        executeNonQuery(query);
+                    } else {
+                        query = "DELETE FROM CIMS.Task_Unit "
+                                + "WHERE unitid='" + objects[0] + "' AND taskid = '" + objects[i] + "';";
+                        executeNonQuery(query);
+                    }
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
             }
             closeConnection();
         }
+
+        return true;
+    }
+
+    public static boolean alterLocationTask(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] objects = (Object[]) o;
+
+        if (objects.length == 2) {
+            return false;
+        }
+
+        if (openConnection()) {
+            try {
+                String query = "UPDATE CIMS.Task SET location='" + objects[1] + "' "
+                        + "WHERE `id`='" + objects[0] + "';";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        closeConnection();
 
         return true;
     }

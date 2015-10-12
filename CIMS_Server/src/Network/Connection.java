@@ -52,7 +52,7 @@ public class Connection {
                                 String s = obj.toString();
                                 RequestData(s);
                             } else {
-                                write("Not the correct format");
+                                write("Data rejected, not the correct format");
                             }
                         } else {
                             if (obj instanceof String[]) {
@@ -116,6 +116,7 @@ public class Connection {
                 break;
             case "FOOP1":
                 o = in.readObject();
+                write("not implemented yet");
                 break;
             case "FOOP2":
                 o = in.readObject();
@@ -163,6 +164,14 @@ public class Connection {
                     write("Task succesfully created");
                 } else {
                     write("Could not create task");
+                }
+                break;
+            case "FOOP9":
+                o = in.readObject();
+                if (DatabaseMediator.alterLocationTask(o)) {
+                    write("Task succesfully altered");
+                } else {
+                    write("Could not alter task");
                 }
                 break;
         }
