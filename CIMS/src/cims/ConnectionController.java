@@ -131,7 +131,7 @@ public class ConnectionController {
      * @throws IOException
      */
     boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-
+        
         Object[] myUnit = new Object[10];
         myUnit[0] = "Name";
         myUnit[1] = "Location";
@@ -149,11 +149,14 @@ public class ConnectionController {
 
             output.writeObject(outputMessage);
             output.writeObject(myUnit);
-            return true;
-
+            String feedback = (String)input.readObject();
+            return feedback.equals("Unit succesfully created");
         } catch (IOException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
+            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
 
@@ -349,15 +352,19 @@ public class ConnectionController {
 
         try {
             String outputMessage = "FOOP1";
-
+            String feedback;
             output.writeObject(outputMessage);
             output.writeObject(selectedUnitID);
             output.writeObject(myUnit);
-            return true;
+            feedback = (String)input.readObject();
+            return feedback.equals("Unit succesfully created");
 
         } catch (IOException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
+            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

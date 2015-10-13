@@ -114,6 +114,7 @@ public class CreateUnitController implements Initializable {
             stage.close();
         } else {
             alert.setContentText("An error has occured");
+            alert.showAndWait();
         }
 
     }

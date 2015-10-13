@@ -62,7 +62,7 @@ public class ActiveUnitsController implements Initializable {
         {
             if(OperatorMainController.myController.user != null)
             {
-            activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+            activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
             }
         } catch (Exception ex) {
             activeUnits = FXCollections.observableArrayList();

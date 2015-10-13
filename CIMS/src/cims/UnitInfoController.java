@@ -95,7 +95,7 @@ public class UnitInfoController implements Initializable {
         int ID = OperatorMainController.myController.selectedUnitID;
         mySelectedUnit = null;
         try {
-            mySelectedUnit = ConnectionController.getUnitInfo(ID);
+            mySelectedUnit = (Unit)ConnectionController.getUnitInfo(ID);
         } catch (IOException ex) {
             Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -131,6 +131,7 @@ public class UnitInfoController implements Initializable {
             stage.close();
         } else {
             alert.setContentText("An error has occured");
+            alert.showAndWait();
         }
 
     }
@@ -211,13 +212,13 @@ public class UnitInfoController implements Initializable {
             textfieldName.setText(mySelectedUnit.getName());
         }
         if (mySelectedUnit.getSize() <= 5) {
-            radiobuttonSmall.arm();
+            radiobuttonSmall.setSelected(true);
         } else if (mySelectedUnit.getSize() > 6 && mySelectedUnit.getSize() < 10) {
-            radiobuttonMedium.arm();
+            radiobuttonMedium.setSelected(true);
         } else {
-            radiobuttonLarge.arm();
+            radiobuttonLarge.setSelected(true);
         }
-        if (mySelectedUnit.getTasks() != null) {
+        if (mySelectedUnit.getTasks().size() > 0) {
             Task task = (Task) mySelectedUnit.getTasks();
             textfieldTaskID.setText(Integer.toString(task.getTaskID()));
             textfieldTaskname.setText(task.getName());
@@ -225,34 +226,38 @@ public class UnitInfoController implements Initializable {
 
         for (Material m : mySelectedUnit.getMaterials()) {
             if (m.getType() == 1) {
-                radiobuttonGas.arm();
+                radiobuttonGas.setSelected(true);
             }
             if (m.getType() == 2) {
-                radiobuttonFuel.arm();
+                radiobuttonFuel.setSelected(true);
             }
             if (m.getType() == 3) {
-                radiobuttonExplosion.arm();
+                radiobuttonExplosion.setSelected(true);
             }
             if (m.getType() == 4) {
-                radiobuttonEarthquake.arm();
+                radiobuttonEarthquake.setSelected(true);
             }
             if (m.getType() == 5) {
-                radiobuttonTerrorist.arm();
+                radiobuttonTerrorist.setSelected(true);
             }
         }
-
+       
+        
         for (User u : mySelectedUnit.getMembers()) {
 
             if (u.getSector().contains("Police")) {
                 policeUsers++;
+                radiobuttonPolice.setSelected(true);
             }
-            else if(u.getSector().contains("Ambulance"))
+            else if(u.getSector().contains("Medical"))
             {
                 ambulanceUsers++;
+                radiobuttonAmbulance.setSelected(true);
             }
             else if(u.getSector().contains("Fire"))
             {
                 firefighters++;
+                radiobuttonFireFighter.setSelected(true);
             }
         }
         
