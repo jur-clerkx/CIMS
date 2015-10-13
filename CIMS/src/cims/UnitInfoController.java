@@ -217,26 +217,26 @@ public class UnitInfoController implements Initializable {
         } else {
             radiobuttonLarge.arm();
         }
-        if (mySelectedUnit.getTask() != null) {
-            Task task = (Task) mySelectedUnit.getTask();
+        if (mySelectedUnit.getTasks() != null) {
+            Task task = (Task) mySelectedUnit.getTasks();
             textfieldTaskID.setText(Integer.toString(task.getTaskID()));
             textfieldTaskname.setText(task.getName());
         }
 
         for (Material m : mySelectedUnit.getMaterials()) {
-            if (m.getName().contains("Gas")) {
+            if (m.getType() == 1) {
                 radiobuttonGas.arm();
             }
-            if (m.getName().contains("Fuel")) {
+            if (m.getType() == 2) {
                 radiobuttonFuel.arm();
             }
-            if (m.getName().contains("Explosion")) {
+            if (m.getType() == 3) {
                 radiobuttonExplosion.arm();
             }
-            if (m.getName().contains("Earth")) {
+            if (m.getType() == 4) {
                 radiobuttonEarthquake.arm();
             }
-            if (m.getName().contains("Terror")) {
+            if (m.getType() == 5) {
                 radiobuttonTerrorist.arm();
             }
         }
@@ -258,15 +258,15 @@ public class UnitInfoController implements Initializable {
         
         for(Vehicle v : mySelectedUnit.getVehicles())
         {
-            if(v.getCarType().contains("Fire"))
+            if(v.getCarType() == 1)
             {
                 firetrucks++;
             }
-            else if(v.getCarType().contains("Police"))
+            else if(v.getCarType() == 2)
             {
                 policeCars++;
             }
-            else if(v.getCarType().contains("Ambulance"))
+            else if(v.getCarType() == 3)
             {
                 ambulance++;
             }

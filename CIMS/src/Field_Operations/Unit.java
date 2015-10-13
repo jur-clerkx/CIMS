@@ -21,17 +21,9 @@ public class Unit implements Serializable {
     private String description;
     private String shift;
     private List<User> members;
-
-    public List<User> getMembers() {
-        return members;
-    }
     private List<Material> materials;
     private List<Task> tasks;
     private List<Vehicle> vehicles;
-
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
 
     public Unit(int unitID, String name, String description, String shift) {
         this.unitID = unitID;
@@ -42,10 +34,6 @@ public class Unit implements Serializable {
         this.materials = new ArrayList<>();
         this.tasks = new ArrayList<>();
         this.vehicles = new ArrayList<>();
-    }
-
-    public List<Material> getMaterials() {
-        return materials;
     }
 
     public int getUnitID() {
@@ -137,20 +125,28 @@ public class Unit implements Serializable {
         }
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     @Override
     public String toString() {
         return this.name + " " + this.shift;
     }
 
-    public int getSize() {
-        return members.size();
+    public ArrayList<Vehicle> getVehicles() {
+       return (ArrayList)this.vehicles;
     }
 
-    public Object getTask() {
-        if (tasks.get(0) != null) {
-            return tasks.get(0);
-        } else {
-            return null;
-        }
+    public ArrayList<User> getMembers() {
+       return (ArrayList)this.members;
+    }
+
+    public ArrayList<Material> getMaterials() {
+        return (ArrayList) this.materials;
+    }
+
+    public int getSize() {
+       return this.members.size();
     }
 }

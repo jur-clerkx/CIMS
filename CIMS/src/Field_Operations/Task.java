@@ -22,10 +22,13 @@ public class Task implements Serializable {
     private String location;
     private ArrayList<Unit> units;
     private boolean accepted;
+
+    public boolean isAccepted() {
+        return accepted;
+    }
     private ArrayList<Progress> progress;
 
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        
         this.taskID = taskID;
         this.name = name;
         this.urgency = urgency;
@@ -36,9 +39,7 @@ public class Task implements Serializable {
         this.progress = new ArrayList<>();
         this.units = new ArrayList<>();
     }
-    public boolean isAccepted() {
-        return this.accepted;
-    }
+
     public int getTaskID() {
         return this.taskID;
     }

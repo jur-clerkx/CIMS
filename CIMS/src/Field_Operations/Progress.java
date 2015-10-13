@@ -13,11 +13,16 @@ import java.util.Date;
  * @author sebas
  */
 public class Progress {
+
+    private int progressID;
+    private Network.User user;
+    private Task task;
     private String message;
-    private Date date;
-    
-    public Progress (String message) {
+
+    public Progress(int progressID, Network.User user, Task task, String message) {
+        this.progressID = progressID;
+        this.user = user;
+        this.task = task;
         this.message = message;
-        this.date = new Date(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth());
     }
 }
