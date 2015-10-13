@@ -64,16 +64,16 @@ public class UnassignedTasksController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Database Data:
-        /*try {
-         tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getUnassignedTasks());
+        try {
+         tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
          } catch (IOException ex) {
-        tasks = FXColletions.observableArayList();
-         Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
-        // Dummy Data:
         tasks = FXCollections.observableArrayList();
-        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+         Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        // Dummy Data:
+////        tasks = FXCollections.observableArrayList();
+////        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+////        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
 
         tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
         tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));

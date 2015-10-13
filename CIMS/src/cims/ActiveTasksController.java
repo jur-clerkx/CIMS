@@ -71,16 +71,16 @@ public class ActiveTasksController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         // Database Data:
-        /*try {
+        try {
          tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
          } catch (IOException ex) {
         tasks = FXCollections.observableArrayList();
          Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
+         }
         // Dummy Data:
-        tasks = FXCollections.observableArrayList();
-        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+//        tasks = FXCollections.observableArrayList();
+//        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+//        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
 
         tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
         tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));

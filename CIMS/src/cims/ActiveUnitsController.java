@@ -9,6 +9,8 @@ import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -58,11 +60,10 @@ public class ActiveUnitsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try 
-        {
-            if(OperatorMainController.myController.user != null)
-            {
-            activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
+        try {
+
+            if (OperatorMainController.myController.user != null) {
+                activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
             }
         } catch (Exception ex) {
             activeUnits = FXCollections.observableArrayList();
@@ -80,7 +81,7 @@ public class ActiveUnitsController implements Initializable {
 
                     Unit myUnit = row.getItem();
                     try {
-                         ConnectionController.selectedUnitID = myUnit.getUnitID();
+                        ConnectionController.selectedUnitID = myUnit.getUnitID();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         Stage stage = new Stage();
@@ -119,7 +120,6 @@ public class ActiveUnitsController implements Initializable {
     private void disbandButtonClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) tableviewActiveUnits.getSelectionModel().getSelectedItem();
 
-        
         try {
             if (selectedUnit != null) {
                 OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
