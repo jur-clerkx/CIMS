@@ -121,17 +121,17 @@ public class DatabaseMediator {
             try {
                 String query = "SELECT * FROM CIMS.User WHERE id='" + userID + "';";
                 ResultSet rs = executeQuery(query);
-                rs.next();
+                if (rs.next()) {
+                    String firstname = rs.getString("firstname");
+                    String lastname = rs.getString("lastname");
+                    String gender = rs.getString("gender");
+                    String rank = rs.getString("rank");
+                    String sector = rs.getString("sector");
+                    String dateofbirth = rs.getString("dateOfBirth");
+                    int securityLevel = rs.getInt("level");
 
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String gender = rs.getString("gender");
-                String rank = rs.getString("rank");
-                String sector = rs.getString("sector");
-                String dateofbirth = rs.getString("dateOfBirth");
-                int securityLevel = rs.getInt("level");
-
-                return new User(userID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+                    return new User(userID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+                }
             } catch (SQLException e) {
                 System.out.println("getUser: " + e.getMessage());
             } finally {
