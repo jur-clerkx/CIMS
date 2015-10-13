@@ -123,7 +123,7 @@ public class CreateTaskController implements Initializable {
         String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
         String description = textareaDescription.getText();
 
-        if (taskID <= 0 || taskName == null || taskLocation == null) {
+        if ((taskID <= 0 || taskID != (int)taskID) || taskName == null || taskLocation == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("You forgot to fill in the tasks ID, name or location.");

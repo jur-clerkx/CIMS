@@ -17,12 +17,12 @@
                         <Insets left="10.0" />
                     </HBox.margin>
                 </Label>
-                <RadioButton  fx:id = "radioButtonSmall" mnemonicParsing="false" text="small">
+                <RadioButton  fx:id = "radioButtonSmall"   mnemonicParsing="false" text="small">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonMedium"   mnemonicParsing="false" text="medium">
+                <RadioButton fx:id = "radioButtonMedium"  mnemonicParsing="false" text="medium">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
@@ -41,17 +41,17 @@
                         <Insets left="10.0" />
                     </HBox.margin>
                 </Label>
-                <RadioButton fx:id = "radioButtonPolice" onMouseClicked="#radioPolice"  mnemonicParsing="false" text="Police">
+                <RadioButton fx:id = "radioButtonPolice" onAction ="#radioPolice"  mnemonicParsing="false" text="Police">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonFire" onMouseClicked="#radioFire"  mnemonicParsing="false" text="Firefighter">
+                <RadioButton fx:id = "radioButtonFire" onAction= "#radioFire"  mnemonicParsing="false" text="Firefighter">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id = "radioButtonAmbulance"  onMouseClicked="#radioAmbu" mnemonicParsing="false" text="Ambulance">
+                <RadioButton fx:id = "radioButtonAmbulance"  onAction= "#radioAmbu" mnemonicParsing="false" text="Ambulance">
                     <HBox.margin>
                         <Insets left="10.0" />
                     </HBox.margin>

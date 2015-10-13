@@ -131,25 +131,24 @@ public class ConnectionController {
      * @throws IOException
      */
     boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-        
-        Object[] myUnit = new Object[10];
-        myUnit[0] = "Name";
-        myUnit[1] = "Location";
-        myUnit[2] = "Specials";
-        myUnit[3] = "PoliceCars";
-        myUnit[4] = "Firetrucks";
-        myUnit[5] = "Ambulance";
-        myUnit[6] = "Policemen";
-        myUnit[7] = "Firefighters";
-        myUnit[8] = "AmbulancePeople";
-        myUnit[9] = "Size";
+
+        Object[] myUnit = new Object[9];
+        myUnit[0] = Name;
+        myUnit[1] = Location;
+        myUnit[2] = selectedSpecials;
+        myUnit[3] = PoliceCars;
+        myUnit[4] = FireTruck;
+        myUnit[5] = Ambulances;
+        myUnit[6] = Policemen;
+        myUnit[7] = FireFighters;
+        myUnit[8] = AmbulancePeople;
 
         try {
             String outputMessage = "FOOP2";
 
             output.writeObject(outputMessage);
             output.writeObject(myUnit);
-            String feedback = (String)input.readObject();
+            String feedback = (String) input.readObject();
             return feedback.equals("Unit succesfully created");
         } catch (IOException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -173,7 +172,7 @@ public class ConnectionController {
             String outputMessage = "FOOP4";
             int type = 0;
             output.writeObject(outputMessage);
-            output.writeObject(false);
+            output.writeObject(0);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -194,7 +193,7 @@ public class ConnectionController {
             String outputMessage = "FOOP4";
             int type = 1;
             output.writeObject(outputMessage);
-            output.writeObject(true);
+            output.writeObject(1);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -237,7 +236,8 @@ public class ConnectionController {
             int type = 1;
             output.writeObject(outputMessage);
             output.writeObject(1);
-            return (ArrayList<Task>) input.readObject();
+            ArrayList<Task> tasks =(ArrayList<Task>) input.readObject();
+            return tasks;
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
@@ -337,18 +337,17 @@ public class ConnectionController {
      * @throws IOException
      */
     boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, TextField PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-       
-       Object[] myUnit = new Object[10];
-        myUnit[0] = "Name";
-        myUnit[1] = "Location";
-        myUnit[2] = "Specials";
-        myUnit[3] = "PoliceCars";
-        myUnit[4] = "Firetrucks";
-        myUnit[5] = "Ambulance";
-        myUnit[6] = "Policemen";
-        myUnit[7] = "Firefighters";
-        myUnit[8] = "AmbulancePeople";
-        myUnit[9] = "Size";
+
+        Object[] myUnit = new Object[9];
+        myUnit[0] = Name;
+        myUnit[1] = Location;
+        myUnit[2] = selectedSpecials;
+        myUnit[3] = PoliceCars;
+        myUnit[4] = FireTruck;
+        myUnit[5] = Ambulances;
+        myUnit[6] = Policemen;
+        myUnit[7] = FireFighters;
+        myUnit[8] = AmbulancePeople;
 
         try {
             String outputMessage = "FOOP1";
@@ -356,7 +355,7 @@ public class ConnectionController {
             output.writeObject(outputMessage);
             output.writeObject(selectedUnitID);
             output.writeObject(myUnit);
-            feedback = (String)input.readObject();
+            feedback = (String) input.readObject();
             return feedback.equals("Unit succesfully created");
 
         } catch (IOException ex2) {
@@ -390,16 +389,18 @@ public class ConnectionController {
         }
         return null;
     }
+
     /**
      * Fetches a tasks information from the database
+     *
      * @param taskID
      * @return Task object that was requested
-     * @throws IOException 
+     * @throws IOException
      */
     public static Task getTaskInfo(int taskID) throws IOException {
         try {
             String outputMessage = "FOUS1";
-            
+
             output.writeObject(outputMessage);
             output.writeObject(taskID);
             return (Task) input.readObject();
@@ -409,6 +410,7 @@ public class ConnectionController {
         }
         return null;
     }
+
     /**
      * Cancels a task so it can't be assigned anymore
      *
@@ -458,14 +460,14 @@ public class ConnectionController {
     boolean editTask(int taskID, String location) throws IOException {
         Object[] myTask = new Object[2];
         myTask[0] = taskID;
-        myTask[1] = location;        
+        myTask[1] = location;
 
         try {
             String outputMessage = "FOOP9";
 
             output.writeObject(outputMessage);
             output.writeObject(myTask);
-            
+
             return true;
 
         } catch (IOException ex) {

@@ -20,6 +20,13 @@ public class Progress implements Serializable{
     private Task task;
     private String message;
 
+    /**
+     * Constructs a Progress object
+     * @param progressID Greater than 0
+     * @param user Not null
+     * @param task Not null
+     * @param message Not longer than 255 characters or null
+     */
     public Progress(int progressID, Network.User user, Task task, String message) {
         this.progressID = progressID;
         this.user = user;

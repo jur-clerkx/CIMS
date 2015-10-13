@@ -22,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -92,6 +93,11 @@ public class UnitInfoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ToggleGroup group = new ToggleGroup();
+        radiobuttonSmall.setToggleGroup(group);
+        radiobuttonMedium.setToggleGroup(group);
+        radiobuttonLarge.setToggleGroup(group);
+        
         int ID = OperatorMainController.myController.selectedUnitID;
         mySelectedUnit = null;
         try {
