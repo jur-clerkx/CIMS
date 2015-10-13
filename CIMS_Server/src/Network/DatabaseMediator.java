@@ -222,7 +222,7 @@ public class DatabaseMediator {
                         + "FROM CIMS.Task t, CIMS.Task_Unit tu, CIMS.Unit_Containment uc "
                         + "WHERE tu.unitid = uc.unitid AND tu.taskid = t.id AND "
                         + "uc.`type`= 'U' AND t.`status` != 'Completed' AND t.`status` != 'Cancelled' "
-                        + "AND uc.containmentid ='" + userID + "';";
+                        + "AND tu.accepted IS NULL AND uc.containmentid ='" + userID + "';";
                 ResultSet rs = executeQuery(query);
                 Task t;
                 while (rs.next()) {
@@ -244,10 +244,15 @@ public class DatabaseMediator {
         }
 
         Object[] objects = (Object[]) o;
+        int active = 1;
+
+        if (objects[1].equals("Completed") || objects[1].equals("Cancelled")) {
+            active = 0;
+        }
 
         if (openConnection()) {
             try {
-                String query = "UPDATE CIMS.Task SET status='" + objects[1] + "' WHERE id='" + objects[0] + "';";
+                String query = "UPDATE CIMS.Task SET status='" + objects[1] + "', active='" + active + "' WHERE id='" + objects[0] + "';";
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("updateTaskStatus: " + e.getMessage());
@@ -463,8 +468,9 @@ public class DatabaseMediator {
                 }
             } catch (SQLException e) {
                 System.out.println("getUnitLists: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return u;
     }
@@ -489,8 +495,9 @@ public class DatabaseMediator {
                         }
                     } catch (SQLException e) {
                         System.out.println("getActiveInactiveUnits: " + e.getMessage());
+                    } finally {
+                        closeConnection();
                     }
-                    closeConnection();
                 }
             }
         }
@@ -516,8 +523,9 @@ public class DatabaseMediator {
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("disbandUnit: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return true;
     }
@@ -559,8 +567,9 @@ public class DatabaseMediator {
                 }
             } catch (SQLException e) {
                 System.out.println("createUnit: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return false;
     }
@@ -574,7 +583,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
 
                 rs.next();
-                u = getUnit(rs.getInt("unit"));
+                u = getUnit(rs.getInt("unitid"));
                 u = getUnitLists(u);
 
             } catch (SQLException e) {
@@ -607,8 +616,9 @@ public class DatabaseMediator {
                 } catch (SQLException e) {
                     System.out.println("setSpecials: " + e.getMessage());
                     return false;
+                } finally {
+                    closeConnection();
                 }
-                closeConnection();
             }
         }
         return true;
@@ -643,11 +653,10 @@ public class DatabaseMediator {
                 }
             } catch (SQLException e) {
                 System.out.println("setCars: " + e.getMessage());
-                return false;
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
-
         return true;
     }
 
@@ -678,8 +687,9 @@ public class DatabaseMediator {
             } catch (SQLException e) {
                 System.out.println("setPersons: " + e.getMessage());
                 return false;
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return true;
     }
@@ -707,8 +717,9 @@ public class DatabaseMediator {
                 m = new Material(materialID, name, state, getUser(availibility), type);
             } catch (SQLException e) {
                 System.out.println("getMaterial: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return m;
     }
@@ -736,8 +747,9 @@ public class DatabaseMediator {
                 v = new Vehicle(vehicleID, name, licence, state, getUser(availibility), 0);
             } catch (SQLException e) {
                 System.out.println("getVehicle: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return v;
     }
@@ -763,8 +775,9 @@ public class DatabaseMediator {
                 p = new Progress(progressID, getUser(userID), getTask(taskID), message);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return p;
     }
