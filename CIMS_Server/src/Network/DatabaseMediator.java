@@ -565,25 +565,25 @@ public class DatabaseMediator {
         return false;
     }
 
-    public ArrayList<Unit> getUnitListByUser(int userID) {
-        ArrayList<Unit> uList = new ArrayList<>();
+    public Unit getUnitListByUser(int userID) {
+        Unit u = null;
         if (openConnection()) {
             try {
                 String query = "SELECT unitid FROM CIMS.Unit_Containment "
                         + "WHERE `type`= 'U' AND containmentid='" + userID + "';";
                 ResultSet rs = executeQuery(query);
-                Unit u;
-                while (rs.next()) {
-                    u = getUnit(rs.getInt("unit"));
-                    uList.add(getUnitLists(u));
-                }
+
+                rs.next();
+                u = getUnit(rs.getInt("unit"));
+                u = getUnitLists(u);
+
             } catch (SQLException e) {
                 System.out.println("getTaskListByUser: " + e.getMessage());
             } finally {
                 closeConnection();
             }
         }
-        return uList;
+        return u;
     }
 
     private boolean setSpecials(Object o, int unitID) {
