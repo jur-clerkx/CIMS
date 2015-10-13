@@ -6,12 +6,13 @@
 package Field_Operations;
 
 import Network.User;
+import java.io.Serializable;
 
 /**
  *
  * @author sebas
  */
-public class Vehicle extends Material {
+public class Vehicle extends Material implements Serializable{
 
     private String license;
     private int Type;

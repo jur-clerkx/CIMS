@@ -135,11 +135,11 @@ public class Unit implements Serializable {
     }
 
     public ArrayList<Vehicle> getVehicles() {
-       return (ArrayList)this.vehicles;
+        return (ArrayList) this.vehicles;
     }
 
     public ArrayList<User> getMembers() {
-       return (ArrayList)this.members;
+        return (ArrayList) this.members;
     }
 
     public ArrayList<Material> getMaterials() {
@@ -147,6 +147,6 @@ public class Unit implements Serializable {
     }
 
     public int getSize() {
-       return this.members.size();
+        return this.members.size();
     }
 }

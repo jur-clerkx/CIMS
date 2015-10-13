@@ -5,6 +5,7 @@
  */
 package Field_Operations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author sebas
  */
-public class User {
+public class User implements Serializable{
 
     private String firstname;
     private String lastname;

@@ -5,6 +5,7 @@
  */
 package Field_Operations;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author sebas
  */
-public class Progress {
+public class Progress implements Serializable{
 
     private int progressID;
     private Network.User user;

@@ -6,12 +6,13 @@
 package Field_Operations;
 
 import Network.User;
+import java.io.Serializable;
 
 /**
  *
  * @author sebas
  */
-public class Material {
+public class Material implements Serializable{
 
     private int materialID;
     private String name;
