@@ -22,6 +22,10 @@ public class Task implements Serializable {
     private String location;
     private ArrayList<Unit> units;
     private boolean accepted;
+
+    public boolean isAccepted() {
+        return accepted;
+    }
     private ArrayList<Progress> progress;
 
     public Task(int taskID, String name, String urgency, String status, String location, String description) {

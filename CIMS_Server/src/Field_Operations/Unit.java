@@ -133,4 +133,20 @@ public class Unit implements Serializable {
     public String toString() {
         return this.name + " " + this.shift;
     }
+
+    public ArrayList<Vehicle> getVehicles() {
+       return (ArrayList)this.vehicles;
+    }
+
+    public ArrayList<User> getMembers() {
+       return (ArrayList)this.members;
+    }
+
+    public ArrayList<Material> getMaterials() {
+        return (ArrayList) this.materials;
+    }
+
+    public int getSize() {
+       return this.members.size();
+    }
 }

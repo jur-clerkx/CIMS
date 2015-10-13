@@ -42,4 +42,8 @@ public class Material {
     public String toString() {
         return this.name;
     }
+
+    public int getType() {
+        return this.type;
+    }
 }
