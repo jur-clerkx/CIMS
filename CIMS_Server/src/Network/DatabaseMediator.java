@@ -368,7 +368,7 @@ public class DatabaseMediator {
 
         Object[] objects = (Object[]) o;
 
-        if (objects.length == 2) {
+        if (objects.length != 2) {
             return false;
         }
 
@@ -383,6 +383,30 @@ public class DatabaseMediator {
         }
         closeConnection();
 
+        return true;
+    }
+
+    public boolean acceptOrDeniedTask(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] objects = (Object[]) o;
+
+        if (objects.length != 4) {
+            return false;
+        }
+        if (openConnection()) {
+            try {
+                String query = "UPDATE CIMS.Task_Unit SET accepted='" + objects[2] + "', reason='" + objects[3] + "' "
+                        + "WHERE unitid='" + objects[0] + "' AND taskid='" + objects[1] + "';";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("acceptOrDeniedTask: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
         return true;
     }
 
@@ -457,10 +481,11 @@ public class DatabaseMediator {
             if (active == c.isOpen()) {
                 if (openConnection()) {
                     try {
-                        String query = "SELECT unitid FROM CIMS.Task_Unit WHERE unitid='" + c.getuser_ID() + "';";
+                        String query = "SELECT containmentid FROM CIMS.Unit_Containment "
+                                + "WHERE `type`= 'U' AND containmentid='" + c.getuser_ID() + "';";
                         ResultSet rs = executeQuery(query);
                         while (rs.next()) {
-                            hs.add(rs.getInt("unitid"));
+                            hs.add(rs.getInt("containmentid"));
                         }
                     } catch (SQLException e) {
                         System.out.println("getActiveInactiveUnits: " + e.getMessage());
@@ -538,6 +563,27 @@ public class DatabaseMediator {
             closeConnection();
         }
         return false;
+    }
+
+    public ArrayList<Unit> getUnitListByUser(int userID) {
+        ArrayList<Unit> uList = new ArrayList<>();
+        if (openConnection()) {
+            try {
+                String query = "SELECT unitid FROM CIMS.Unit_Containment "
+                        + "WHERE `type`= 'U' AND containmentid='" + userID + "';";
+                ResultSet rs = executeQuery(query);
+                Unit u;
+                while (rs.next()) {
+                    u = getUnit(rs.getInt("unit"));
+                    uList.add(getUnitLists(u));
+                }
+            } catch (SQLException e) {
+                System.out.println("getTaskListByUser: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return uList;
     }
 
     private boolean setSpecials(Object o, int unitID) {
