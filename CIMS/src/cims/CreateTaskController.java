@@ -68,6 +68,7 @@ public class CreateTaskController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -76,9 +77,13 @@ public class CreateTaskController implements Initializable {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
         try {
-            //TODO: populate available units from connection to observablelist
-            AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+            if (OperatorMainController.myController.user != null) {
+                //TODO: populate available units from connection to observablelist
+                AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+            }
+
         } catch (IOException ex) {
+
             Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
         }
         listviewAvailableUnits.setItems(AvailableList);
@@ -123,7 +128,7 @@ public class CreateTaskController implements Initializable {
         String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
         String description = textareaDescription.getText();
 
-        if ((taskID <= 0 || taskID != (int)taskID) || taskName == null || taskLocation == null) {
+        if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("You forgot to fill in the tasks ID, name or location.");
