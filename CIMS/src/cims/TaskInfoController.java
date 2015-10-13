@@ -128,20 +128,10 @@ public class TaskInfoController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             // TODO edit task
-            String selectedUrgency = comboboxUrgency.getSelectionModel().getSelectedItem().toString();
-            if(selectedTask.getUrgency() != selectedUrgency) {
-                editedTask.setUrgency(selectedUrgency);
-            }
-            String selectedDescription = textAreaDescription.getText();
-            if(selectedTask.getDescription() != selectedDescription) {
-                editedTask.setDescription(selectedDescription);
-            }
-            String selectedStatus = comboboxStatus.getSelectionModel().getSelectedItem().toString();
-            if(selectedTask.getStatus() != selectedStatus){
-                editedTask.operateStatus(selectedStatus);
-            }
+            
+            String newLocation = textFieldLocation.getText();
             // Edit currently selected task with new task.
-            OperatorMainController.myController.editTask(selectedTask.getTaskID(), editedTask);
+            OperatorMainController.myController.editTask(selectedTask.getTaskID(), newLocation);
             
             // TODO assignTask database.
             OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());

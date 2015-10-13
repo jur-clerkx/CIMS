@@ -430,27 +430,17 @@ public class ConnectionController {
      * @return True if information was changed
      * @throws IOException
      */
-    boolean editTask(int taskID, Task task) throws IOException {
-        Object[] myTask = new Object[12];
-        myTask[0] = "ID";
-        myTask[1] = taskID;
-        myTask[2] = "Name";
-        myTask[3] = task.getName();
-        myTask[4] = "Urgency";
-        myTask[5] = task.getUrgency();
-        myTask[6] = "Status";
-        myTask[7] = task.getStatus();
-        myTask[8] = "Location";
-        myTask[9] = task.getLocation();
-        myTask[10] = "Description";
-        myTask[11] = task.getDescription();
+    boolean editTask(int taskID, String location) throws IOException {
+        Object[] myTask = new Object[2];
+        myTask[0] = taskID;
+        myTask[1] = location;        
 
         try {
-            String outputMessage = "FOOP10";
+            String outputMessage = "FOOP9";
 
             output.writeObject(outputMessage);
-            output.writeObject(taskID);
             output.writeObject(myTask);
+            
             return true;
 
         } catch (IOException ex) {
