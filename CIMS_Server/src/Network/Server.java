@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  *
@@ -41,8 +41,8 @@ public class Server {
 
     public void start() {
         searching = true;
-        // Connect to clients.
-        Thread connectClients = new Thread() {
+        Thread connectClients;
+        connectClients = new Thread() {
             @Override
             public void run() {
                 LOG.log(Level.INFO, "searching for clients..");
@@ -50,7 +50,9 @@ public class Server {
                     try {
                         Socket s = serverSocket.accept();
                         if (searching) {
-                            connections.add(new Connection(s));
+                            Connection c = new Connection(s);
+                            cleanUpList(c.getuser_ID());
+                            connections.add(c);
                             LOG.log(Level.INFO, "New Client Connected: {0}", s.getInetAddress());
                         }
                     } catch (IOException e) {
@@ -62,6 +64,16 @@ public class Server {
         };
         connectClients.setDaemon(false);
         connectClients.start();
+    }
+
+    private void cleanUpList(int userid) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                connections.removeIf(c -> c.getuser_ID() == userid);
+            }
+        });
+
     }
 
     public void stop() {
