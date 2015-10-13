@@ -24,19 +24,19 @@ import java.util.Set;
  */
 public class DatabaseMediator {
 
-    private static Connection con = null;
+    private Connection con = null;
 
     /**
      * IP: 94.211.145.73:3306 username: CIMS password: dreamteam
      */
-    private static String url = "jdbc:mysql://94.211.145.73:3306/CIMS";
-    private static String user = "CIMS";
-    private static String password = "dreamteam";
+    private final String url = "jdbc:mysql://94.211.145.73:3306/CIMS";
+    private final String user = "CIMS";
+    private final String password = "dreamteam";
 
     /**
      * Opens the connection to the database.
      */
-    private static boolean openConnection() {
+    private boolean openConnection() {
         try {
             con = DriverManager.getConnection(url, user, password);
             return true;
@@ -49,7 +49,7 @@ public class DatabaseMediator {
     /**
      * Closes the connection to the database if open.
      */
-    private static void closeConnection() {
+    private void closeConnection() {
         try {
             if (!con.isClosed()) {
                 con.close();
@@ -66,7 +66,7 @@ public class DatabaseMediator {
      * @return A resultSet with the requested data
      * @throws SQLException when request fails
      */
-    private static ResultSet executeQuery(String query) throws SQLException {
+    private ResultSet executeQuery(String query) throws SQLException {
         Statement statement = con.createStatement();
         return statement.executeQuery(query);
     }
@@ -77,7 +77,7 @@ public class DatabaseMediator {
      * @param query Query to be executed
      * @throws SQLException when request fails
      */
-    private static void executeNonQuery(String query) throws SQLException {
+    private void executeNonQuery(String query) throws SQLException {
         Statement statement = con.createStatement();
         statement.executeUpdate(query);
     }
@@ -90,7 +90,7 @@ public class DatabaseMediator {
      * @param password The encrypted password of the user, not null or empty.
      * @return True if information is correct
      */
-    public static User checkLogin(String username, String password) {
+    public User checkLogin(String username, String password) {
         if (openConnection()) {
             try {
                 String query = "SELECT * FROM CIMS.User WHERE username='" + username + "' AND password='" + password + "';";
@@ -108,14 +108,15 @@ public class DatabaseMediator {
 
                 return new User(user_ID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("checkLogin: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return new User();
     }
 
-    public static User getUser(int userID) {
+    public User getUser(int userID) {
         if (openConnection()) {
             try {
                 String query = "SELECT * FROM CIMS.User WHERE id='" + userID + "';";
@@ -132,16 +133,17 @@ public class DatabaseMediator {
 
                 return new User(userID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getUser: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return null;
     }
 //</editor-fold>
 
-    public static Task getTask(Object o) {
-        if (o instanceof Integer) {
+    public Task getTask(Object o) {
+        if (!(o instanceof Integer)) {
             return null;
         }
 
@@ -161,7 +163,7 @@ public class DatabaseMediator {
                 String location = rs.getString("location");
                 String urgency;
 
-                switch (rs.getInt("rank")) {
+                switch (rs.getInt("urgency")) {
                     case 1:
                         urgency = "high";
                         break;
@@ -174,56 +176,69 @@ public class DatabaseMediator {
                 }
                 t = new Task(taskID, name, urgency, status, location, description);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getTask: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return t;
     }
 
-    public static Task getTaskLists(Task t) {
+    public Task getTaskLists(Task t) {
         if (openConnection()) {
             try {
                 String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + t.getTaskID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    t.addUnit(getUnit(rs.getInt("id")));
+                    t.addUnit(getUnit(rs.getInt("unitid")));
                 }
-
-                query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getTaskID() + "';";
-                rs = executeQuery(query);
+            } catch (SQLException e) {
+                System.out.println("getTaskLists: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        if (openConnection()) {
+            try {
+                String query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getTaskID() + "';";
+                ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     t.updateProgress(getProgress(rs.getInt("id")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getTaskLists: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return t;
     }
 
-    public static ArrayList<Task> getTaskListByUser(int userID) {
+    public ArrayList<Task> getTaskListByUser(int userID) {
         ArrayList<Task> tlist = new ArrayList<>();
         if (openConnection()) {
             try {
-                String query = "SELECT tu.taskid FROM CIMS.Task_Unit tu, CIMS.Unit_Containment uc "
-                        + "WHERE tu.unitid = uc.unitid AND uc.`type`= 'U' AND uc.containmentid ='" + userID + "';";
+                String query = "SELECT tu.taskid "
+                        + "FROM CIMS.Task t, CIMS.Task_Unit tu, CIMS.Unit_Containment uc "
+                        + "WHERE tu.unitid = uc.unitid AND tu.taskid = t.id AND "
+                        + "uc.`type`= 'U' AND t.`status` != 'Completed' AND t.`status` != 'Cancelled' "
+                        + "AND uc.containmentid ='" + userID + "';";
                 ResultSet rs = executeQuery(query);
                 Task t;
                 while (rs.next()) {
-                    t = getTask(rs.getInt("id"));
+                    t = getTask(rs.getInt("taskid"));
                     tlist.add(getTaskLists(t));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getTaskListByUser: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return tlist;
     }
 
-    public static boolean updateTaskStatus(Object o) {
+    public boolean updateTaskStatus(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -235,14 +250,15 @@ public class DatabaseMediator {
                 String query = "UPDATE CIMS.Task SET status='" + objects[1] + "' WHERE id='" + objects[0] + "';";
                 executeNonQuery(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("updateTaskStatus: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return true;
     }
 
-    public static ArrayList<Task> getActiveInactiveTasks(Object o) {
+    public ArrayList<Task> getActiveInactiveTasks(Object o) {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!(o instanceof Integer)) {
             return tasks;
@@ -258,14 +274,15 @@ public class DatabaseMediator {
                     tasks.add(getTask(rs.getInt("id")));
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getActiveInactiveTasks: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return tasks;
     }
 
-    public static boolean createTask(Object o) {
+    public boolean createTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -282,14 +299,15 @@ public class DatabaseMediator {
                         + "VALUES ('" + objects[0] + "', 'Unassigned', '" + objects[1] + "', '" + objects[2] + "', '" + objects[3] + "', '1');';";
                 executeNonQuery(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("createTask: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return true;
     }
 
-    public static boolean removeTask(Object o) {
+    public boolean removeTask(Object o) {
         if (!(o instanceof Integer)) {
             return false;
         }
@@ -303,14 +321,15 @@ public class DatabaseMediator {
                 query = "DELETE FROM CIMS.Task WHERE id='" + taskID + "';";
                 executeNonQuery(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("removeTask: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return true;
     }
 
-    public static boolean assignTask(Object o) {
+    public boolean assignTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -320,8 +339,8 @@ public class DatabaseMediator {
         if (openConnection()) {
             for (int i = 1; i < objects.length; i++) {
                 try {
-                    String query = "INSERT INTO CIMS.Task_Unit (unitid, taskid) "
-                            + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
+                    String query = "SELECT * FROM CIMS.Task_Unit "
+                            + "WHERE unitid='" + objects[i] + "' AND taskid= '" + objects[0] + "';";
                     ResultSet rs = executeQuery(query);
                     if (rs == null) {
                         query = "INSERT INTO CIMS.Task_Unit (unitid, taskid) "
@@ -333,7 +352,7 @@ public class DatabaseMediator {
                         executeNonQuery(query);
                     }
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("assignTask: " + e.getMessage());
                 }
             }
             closeConnection();
@@ -342,7 +361,7 @@ public class DatabaseMediator {
         return true;
     }
 
-    public static boolean alterLocationTask(Object o) {
+    public boolean alterLocationTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -359,7 +378,7 @@ public class DatabaseMediator {
                         + "WHERE `id`='" + objects[0] + "';";
                 executeNonQuery(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("alterLocationTask: " + e.getMessage());
             }
         }
         closeConnection();
@@ -368,7 +387,7 @@ public class DatabaseMediator {
     }
 
 //<editor-fold defaultstate="collapsed" desc="Units">
-    public static Unit getUnit(Object o) {
+    public Unit getUnit(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -389,23 +408,21 @@ public class DatabaseMediator {
 
                 u = new Unit(unitID, name, description, shiftday + ", " + shift);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getUnit: " + e.getMessage());
+            } finally {
+                closeConnection();
             }
-            closeConnection();
         }
         return u;
     }
 
-    public static Unit getUnitLists(Unit u) {
+    public Unit getUnitLists(Unit u) {
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + u.getUnitID() + "';";
+                String query = "SELECT * FROM CIMS.Unit_Containment WHERE unitid='" + u.getUnitID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     switch (rs.getString("type")) {
-                        case "T":
-                            u.acceptTask(getTask(rs.getInt("containmentid")));
-                            break;
                         case "M":
                             u.addMaterial(getMaterial(rs.getInt("containmentid")));
                             break;
@@ -415,17 +432,20 @@ public class DatabaseMediator {
                         case "V":
                             u.addVehicle(getVehicle(rs.getInt("containmentid")));
                             break;
+                        default:
+                            u.acceptTask(getTask(rs.getInt("containmentid")));
+                            break;
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getUnitLists: " + e.getMessage());
             }
             closeConnection();
         }
         return u;
     }
 
-    public static ArrayList<Unit> getActiveInactiveUnits(Object b) {
+    public ArrayList<Unit> getActiveInactiveUnits(Object b) {
         if (!(b instanceof Boolean)) {
             return null;
         }
@@ -443,7 +463,7 @@ public class DatabaseMediator {
                             hs.add(rs.getInt("unitid"));
                         }
                     } catch (SQLException e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("getActiveInactiveUnits: " + e.getMessage());
                     }
                     closeConnection();
                 }
@@ -456,7 +476,7 @@ public class DatabaseMediator {
         return uList;
     }
 
-    public static boolean disbandUnit(Object o) {
+    public boolean disbandUnit(Object o) {
         if (!(o instanceof Integer)) {
             return false;
         }
@@ -470,14 +490,14 @@ public class DatabaseMediator {
                 query = "DELETE FROM CIMS.Unit WHERE id='" + unitID + "';";
                 executeNonQuery(query);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("disbandUnit: " + e.getMessage());
             }
             closeConnection();
         }
         return true;
     }
 
-    public static boolean createUnit(Object o) {
+    public boolean createUnit(Object o) {
         //objects[name, location, specials, PoliceCars, FireTrucks, Healthcars, PolicePersons, FirePersons, HealthPersons] 
         if (!(o instanceof Object[])) {
             return false;
@@ -513,14 +533,14 @@ public class DatabaseMediator {
                     return true;
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("createUnit: " + e.getMessage());
             }
             closeConnection();
         }
         return false;
     }
 
-    private static boolean setSpecials(Object o, int unitID) {
+    private boolean setSpecials(Object o, int unitID) {
         if (!(o instanceof String)) {
             return false;
         }
@@ -539,7 +559,7 @@ public class DatabaseMediator {
                     }
 
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("setSpecials: " + e.getMessage());
                     return false;
                 }
                 closeConnection();
@@ -548,7 +568,7 @@ public class DatabaseMediator {
         return true;
     }
 
-    private static boolean setCars(Object o, String type, int unitID) {
+    private boolean setCars(Object o, String type, int unitID) {
         if (!(o instanceof Integer)) {
             return false;
         }
@@ -576,7 +596,7 @@ public class DatabaseMediator {
                     i++;
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("setCars: " + e.getMessage());
                 return false;
             }
             closeConnection();
@@ -585,7 +605,7 @@ public class DatabaseMediator {
         return true;
     }
 
-    private static boolean setPersons(Object o, String type, int unitID) {
+    private boolean setPersons(Object o, String type, int unitID) {
         if (!(o instanceof Integer)) {
             return false;
         }
@@ -610,7 +630,7 @@ public class DatabaseMediator {
                     i++;
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("setPersons: " + e.getMessage());
                 return false;
             }
             closeConnection();
@@ -619,7 +639,7 @@ public class DatabaseMediator {
     }
     //</editor-fold>
 
-    public static Material getMaterial(Object o) {
+    public Material getMaterial(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -640,14 +660,14 @@ public class DatabaseMediator {
 
                 m = new Material(materialID, name, state, getUser(availibility), type);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getMaterial: " + e.getMessage());
             }
             closeConnection();
         }
         return m;
     }
 
-    public static Vehicle getVehicle(Object o) {
+    public Vehicle getVehicle(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -669,14 +689,14 @@ public class DatabaseMediator {
 
                 v = new Vehicle(vehicleID, name, licence, state, getUser(availibility), 0);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getVehicle: " + e.getMessage());
             }
             closeConnection();
         }
         return v;
     }
 
-    public static Progress getProgress(Object o) {
+    public Progress getProgress(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -696,7 +716,7 @@ public class DatabaseMediator {
 
                 p = new Progress(progressID, getUser(userID), getTask(taskID), message);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("getProgress: " + e.getMessage());
             }
             closeConnection();
         }

@@ -25,6 +25,7 @@ public class Connection {
     private Socket socket;
     private User user;
     private boolean reading;
+    private DatabaseMediator dbMediator;
 
     /**
      * creates an instance of this class, creates the thread for getting
@@ -34,6 +35,7 @@ public class Connection {
      * @throws IOException
      */
     Connection(Socket socket) throws IOException {
+        this.dbMediator = new DatabaseMediator();
         this.socket = socket;
         this.user = new User();
         out = new ObjectOutputStream(socket.getOutputStream());
@@ -93,26 +95,30 @@ public class Connection {
         switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                t = DatabaseMediator.getTask(o);
-                t = DatabaseMediator.getTaskLists(t);
+                t = dbMediator.getTask(o);
+                if (t != null) {
+                    t = dbMediator.getTaskLists(t);
+                }
                 write(t);
                 break;
             case "FOUS2":
                 o = in.readObject();
-                u = DatabaseMediator.getUnit(o);
-                u = DatabaseMediator.getUnitLists(u);
+                u = dbMediator.getUnit(o);
+                if (u != null) {
+                    u = dbMediator.getUnitLists(u);
+                }
                 write(u);
                 break;
             case "FOUS3":
                 o = in.readObject();
-                if (DatabaseMediator.updateTaskStatus(o)) {
+                if (dbMediator.updateTaskStatus(o)) {
                     write("FOUS3: carried out successfully");
                 } else {
                     write("Could not execute FOUS3");
                 }
                 break;
             case "FOUS4":
-                write(DatabaseMediator.getTaskListByUser(this.user.getUser_ID()));
+                write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
                 break;
             case "FOOP1":
                 o = in.readObject();
@@ -120,7 +126,7 @@ public class Connection {
                 break;
             case "FOOP2":
                 o = in.readObject();
-                if (DatabaseMediator.createUnit(o)) {
+                if (dbMediator.createUnit(o)) {
                     write("Unit succesfully created");
                 } else {
                     write("Could not create unit");
@@ -128,7 +134,7 @@ public class Connection {
                 break;
             case "FOOP3":
                 o = in.readObject();
-                if (DatabaseMediator.disbandUnit(o)) {
+                if (dbMediator.disbandUnit(o)) {
                     write("Unit disbanded succesfully");
                 } else {
                     write("Could not disband unit");
@@ -136,15 +142,15 @@ public class Connection {
                 break;
             case "FOOP4":
                 o = in.readObject();
-                write(DatabaseMediator.getActiveInactiveUnits(o));
+                write(dbMediator.getActiveInactiveUnits(o));
                 break;
             case "FOOP5":
                 o = in.readObject();
-                write(DatabaseMediator.getActiveInactiveTasks(o));
+                write(dbMediator.getActiveInactiveTasks(o));
                 break;
             case "FOOP6":
                 o = in.readObject();
-                if (DatabaseMediator.createTask(o)) {
+                if (dbMediator.createTask(o)) {
                     write("Task succesfully created");
                 } else {
                     write("Could not create task");
@@ -152,7 +158,7 @@ public class Connection {
                 break;
             case "FOOP7":
                 o = in.readObject();
-                if (DatabaseMediator.removeTask(o)) {
+                if (dbMediator.removeTask(o)) {
                     write("Task succesfully removed");
                 } else {
                     write("Could not remove task");
@@ -160,7 +166,7 @@ public class Connection {
                 break;
             case "FOOP8":
                 o = in.readObject();
-                if (DatabaseMediator.assignTask(o)) {
+                if (dbMediator.assignTask(o)) {
                     write("Task succesfully created");
                 } else {
                     write("Could not create task");
@@ -168,7 +174,7 @@ public class Connection {
                 break;
             case "FOOP9":
                 o = in.readObject();
-                if (DatabaseMediator.alterLocationTask(o)) {
+                if (dbMediator.alterLocationTask(o)) {
                     write("Task succesfully altered");
                 } else {
                     write("Could not alter task");
@@ -185,7 +191,7 @@ public class Connection {
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return false;
         }
-        User us = DatabaseMediator.checkLogin(username, password);
+        User us = dbMediator.checkLogin(username, password);
         if (us.authorized()) {
             this.user = us;
             return true;
