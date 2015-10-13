@@ -38,9 +38,9 @@ public class ConnectionController {
     private static Unit unitinfo;
 
     public ConnectionController() throws IOException {
-        user = new User();
-        serverAddress = "145.93.61.45";
-        //serverAddress = "127.0.0.1";
+        user = null;
+        serverAddress = "145.93.61.43";
+        //serverAddress = "145.93.101.166";
         Login("NickMullen", "0000");
     }
 
@@ -132,27 +132,17 @@ public class ConnectionController {
      */
     boolean CreateUnit(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
 
-        Object[] myUnit = new Object[20];
+        Object[] myUnit = new Object[10];
         myUnit[0] = "Name";
-        myUnit[1] = Name;
-        myUnit[2] = "Location";
-        myUnit[3] = Location;
-        myUnit[4] = "Specials";
-        myUnit[5] = selectedSpecials;
-        myUnit[6] = "PoliceCars";
-        myUnit[7] = PoliceCars;
-        myUnit[8] = "Firetrucks";
-        myUnit[9] = FireTruck;
-        myUnit[10] = "Ambulance";
-        myUnit[11] = Ambulances;
-        myUnit[12] = "Policemen";
-        myUnit[13] = Policemen;
-        myUnit[14] = "Firefighters";
-        myUnit[15] = FireFighters;
-        myUnit[16] = "AmbulancePeople";
-        myUnit[17] = AmbulancePeople;
-        myUnit[18] = "Size";
-        myUnit[19] = size;
+        myUnit[1] = "Location";
+        myUnit[2] = "Specials";
+        myUnit[3] = "PoliceCars";
+        myUnit[4] = "Firetrucks";
+        myUnit[5] = "Ambulance";
+        myUnit[6] = "Policemen";
+        myUnit[7] = "Firefighters";
+        myUnit[8] = "AmbulancePeople";
+        myUnit[9] = "Size";
 
         try {
             String outputMessage = "FOOP2";
@@ -344,27 +334,18 @@ public class ConnectionController {
      * @throws IOException
      */
     boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, TextField PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-        Object[] myUnit = new Object[20];
+       
+       Object[] myUnit = new Object[10];
         myUnit[0] = "Name";
-        myUnit[1] = Name;
-        myUnit[2] = "Location";
-        myUnit[3] = Location;
-        myUnit[4] = "Specials";
-        myUnit[5] = selectedSpecials;
-        myUnit[6] = "PoliceCars";
-        myUnit[7] = PoliceCars;
-        myUnit[8] = "Firetrucks";
-        myUnit[9] = FireTruck;
-        myUnit[10] = "Ambulance";
-        myUnit[11] = Ambulances;
-        myUnit[12] = "Policemen";
-        myUnit[13] = Policemen;
-        myUnit[14] = "Firefighters";
-        myUnit[15] = FireFighters;
-        myUnit[16] = "AmbulancePeople";
-        myUnit[17] = AmbulancePeople;
-        myUnit[18] = "Size";
-        myUnit[19] = size;
+        myUnit[1] = "Location";
+        myUnit[2] = "Specials";
+        myUnit[3] = "PoliceCars";
+        myUnit[4] = "Firetrucks";
+        myUnit[5] = "Ambulance";
+        myUnit[6] = "Policemen";
+        myUnit[7] = "Firefighters";
+        myUnit[8] = "AmbulancePeople";
+        myUnit[9] = "Size";
 
         try {
             String outputMessage = "FOOP1";
@@ -449,27 +430,17 @@ public class ConnectionController {
      * @return True if information was changed
      * @throws IOException
      */
-    boolean editTask(int taskID, Task task) throws IOException {
-        Object[] myTask = new Object[12];
-        myTask[0] = "ID";
-        myTask[1] = taskID;
-        myTask[2] = "Name";
-        myTask[3] = task.getName();
-        myTask[4] = "Urgency";
-        myTask[5] = task.getUrgency();
-        myTask[6] = "Status";
-        myTask[7] = task.getStatus();
-        myTask[8] = "Location";
-        myTask[9] = task.getLocation();
-        myTask[10] = "Description";
-        myTask[11] = task.getDescription();
+    boolean editTask(int taskID, String location) throws IOException {
+        Object[] myTask = new Object[2];
+        myTask[0] = taskID;
+        myTask[1] = location;        
 
         try {
-            String outputMessage = "FOOP10";
+            String outputMessage = "FOOP9";
 
             output.writeObject(outputMessage);
-            output.writeObject(taskID);
             output.writeObject(myTask);
+            
             return true;
 
         } catch (IOException ex) {

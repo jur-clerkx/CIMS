@@ -71,41 +71,45 @@ public class UnitsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            if(OperatorMainController.myController.user != null)
-            {
-            InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
-            ActiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+            InactiveUnits = FXCollections.observableArrayList();
+            InactiveUnits.add(new Unit(1, "test", "test", "test"));
+            ActiveUnits = FXCollections.observableArrayList();
+            ActiveUnits.add(new Unit(1, "test", "test", "test"));
+            if (OperatorMainController.myController.user != null) {
+                InactiveUnits =  FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+                ActiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
             }
             AUnitTable.setRowFactory(tv -> {
                 TableRow<Unit> row = new TableRow<>();
                 row.setOnMouseClicked(event -> {
                     if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                        
+
                         Unit myUnit = row.getItem();
                         try {
+                            ConnectionController.selectedUnitID = myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
                             stage.setTitle("Unit");
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
-                            System.out.println("Error" + x.getMessage());
+                            System.out.println("Error" + x.toString() + x.getMessage());
                         }
                     }
                 });
                 return row;
             });
-            
+
             IUnitTable.setRowFactory(tv -> {
                 TableRow<Unit> row = new TableRow<>();
                 row.setOnMouseClicked(event -> {
                     if (event.getClickCount() == 2 && (!row.isEmpty())) {
                         Unit myUnit = row.getItem();
                         try {
+                            ConnectionController.selectedUnitID = myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -121,10 +125,7 @@ public class UnitsController implements Initializable {
                 });
                 return row;
             });
-            InactiveUnits = FXCollections.observableArrayList();
-            InactiveUnits.add(new Unit(1, "test", "test", "test"));
-            ActiveUnits = FXCollections.observableArrayList();
-            ActiveUnits.add(new Unit(1, "test", "test", "test"));
+
             AUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
             AUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
             AUnitStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));

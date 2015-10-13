@@ -15,18 +15,16 @@ public class Material {
 
     private int materialID;
     private String name;
-
-    public String getName() {
-        return name;
-    }
     private String state;
     private User availability;
+    private int type;
 
-    public Material(int materialID, String name, String state, User availability) {
+    public Material(int materialID, String name, String state, User availability, int type) {
         this.materialID = materialID;
         this.name = name;
         this.state = state;
         this.availability = availability;
+        this.type = type;
     }
 
     /**
@@ -38,5 +36,14 @@ public class Material {
         if (state != null) {
             this.state = state;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public int getType() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

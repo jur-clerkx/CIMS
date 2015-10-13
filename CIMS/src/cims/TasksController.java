@@ -157,7 +157,7 @@ public class TasksController implements Initializable {
     private void deleteClick(MouseEvent event) {
         Task selectedTask = (Task) ATaskTable.getSelectionModel().getSelectedItem();
         try {
-            if (selectedTask.isAccepted() == true) {
+            if (selectedTask.isAccepted()) {
                 OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
                 ActiveTasks.remove(selectedTask);
             }
