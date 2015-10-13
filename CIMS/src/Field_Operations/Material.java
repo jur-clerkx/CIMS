@@ -20,6 +20,14 @@ public class Material implements Serializable{
     private User availability;
     private int type;
 
+    /**
+     * Constructs a Material object
+     * @param materialID Greater than 0
+     * @param name Not longer than 255 characters or null
+     * @param state Not longer than 255 characters or null
+     * @param availability Not null
+     * @param type 1 to 5
+     */
     public Material(int materialID, String name, String state, User availability, int type) {
         this.materialID = materialID;
         this.name = name;
@@ -31,7 +39,7 @@ public class Material implements Serializable{
     /**
      * Changes the state of material
      *
-     * @param state
+     * @param state Not longer than 255 characters or null
      */
     public void changeState(String state) {
         if (state != null) {

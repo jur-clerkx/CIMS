@@ -62,13 +62,13 @@ public class ActiveUnitsController implements Initializable {
         {
             if(OperatorMainController.myController.user != null)
             {
-            activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+            activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
             }
         } catch (Exception ex) {
             activeUnits = FXCollections.observableArrayList();
         }
-        activeUnits = FXCollections.observableArrayList();
-        activeUnits.add(new Unit(1, "test", "test", "test"));
+        //activeUnits = FXCollections.observableArrayList();
+        //activeUnits.add(new Unit(1, "test", "test", "test"));
         tableUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
         tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
         tableviewActiveUnits.setItems(activeUnits);

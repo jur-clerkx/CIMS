@@ -25,6 +25,13 @@ public class Unit implements Serializable {
     private List<Task> tasks;
     private List<Vehicle> vehicles;
 
+    /**
+     * Constructs a unit object
+     * @param unitID Greater than 0
+     * @param name Not longer than 255 characters or null
+     * @param description Not longer than 255 characters
+     * @param shift Not longer than 255 characters or null
+     */
     public Unit(int unitID, String name, String description, String shift) {
         this.unitID = unitID;
         this.name = name;
@@ -55,8 +62,7 @@ public class Unit implements Serializable {
     /**
      * Unit accepts a task. Task gets added to the units task list.
      *
-     * @param task
-     * @param acceptanceReason
+     * @param task not null
      */
     public void acceptTask(Task task) {
         task.operateAcceptance();
@@ -66,7 +72,7 @@ public class Unit implements Serializable {
     /**
      * Adds a user to the unit
      *
-     * @param user
+     * @param user not null
      */
     public void addUser(User user) {
         this.members.add(user);
@@ -75,7 +81,7 @@ public class Unit implements Serializable {
     /**
      * Removes a user from the unit
      *
-     * @param user
+     * @param user not null
      */
     public void delUser(User user) {
         if (members.contains(user)) {
@@ -86,7 +92,7 @@ public class Unit implements Serializable {
     /**
      * Reserves a material to the unit
      *
-     * @param vehicle
+     * @param vehicle not null
      */
     public void addVehicle(Vehicle vehicle) {
         this.vehicles.add(vehicle);
@@ -95,7 +101,7 @@ public class Unit implements Serializable {
     /**
      * Removes a reserved vehicle from the unit
      *
-     * @param vehicle
+     * @param vehicle no null
      */
     public void delVehicle(Vehicle vehicle) {
         if (vehicles.contains(vehicle)) {
@@ -106,7 +112,7 @@ public class Unit implements Serializable {
     /**
      * Reserves a material to the unit
      *
-     * @param material
+     * @param material not null
      */
     public void addMaterial(Material material) {
         if (material != null) {
@@ -117,7 +123,7 @@ public class Unit implements Serializable {
     /**
      * Removes a reserved material from the unit
      *
-     * @param material
+     * @param material not null
      */
     public void delMaterial(Material material) {
         if (materials.contains(material)) {
