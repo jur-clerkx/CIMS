@@ -69,71 +69,78 @@ public class TasksController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {       
-        //ActiveTasks = (ObservableList<Task>) OperatorMainController.myController.getActiveTasks();
-        //InactiveTasks = (ObservableList<Task>) OperatorMainController.myController.getUnassignedTasks();
-        ActiveTasks = FXCollections.observableArrayList();
-        ActiveTasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-        ActiveTasks.add(new Task(3, "Task 3: Dummy", "Low", "Active", "Eindhoven", "TU"));
-        
-        InactiveTasks = FXCollections.observableArrayList();
-        InactiveTasks.add(new Task(2, "Task 2: Dummy", "High", "Inactive", "Eindhoven", "Fontys"));
-        InactiveTasks.add(new Task(4, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
-        
-        ATaskTable.setRowFactory(tv -> {
-            TableRow<Task> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    
-                    Task myTask = row.getItem();
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
-                        stage.setTitle("Task" + myTask.getTaskID());
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println(x.getMessage());
-                    }
-                }
-                });
-            return row;
-        });
-        
-         UTaskTable.setRowFactory(tv -> {
-            TableRow<Task> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    Task myTask = row.getItem();
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        stage.setTitle("Unit" + myTask.getTaskID());
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println(x.getMessage());
-                    }
-                }
-                });
-            return row;
-        });
-        ATaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
-        ATaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        ATaskStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
-        ATaskUnit.setCellValueFactory(new PropertyValueFactory<Task, String>("units"));
-
-        UTaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
-        UTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        UTaskUrgency.setCellValueFactory(new PropertyValueFactory<Task, String>("urgency"));
-        UTaskTable.setItems(InactiveTasks);
-        ATaskTable.setItems(ActiveTasks);
+         if (OperatorMainController.myController.user != null) {
+             try {
+                 InactiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
+                 ActiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
+                 
+//        ActiveTasks = FXCollections.observableArrayList();
+//        ActiveTasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+//        ActiveTasks.add(new Task(3, "Task 3: Dummy", "Low", "Active", "Eindhoven", "TU"));
+//        
+//        InactiveTasks = FXCollections.observableArrayList();
+//        InactiveTasks.add(new Task(2, "Task 2: Dummy", "High", "Inactive", "Eindhoven", "Fontys"));
+//        InactiveTasks.add(new Task(4, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+//
+                 ATaskTable.setRowFactory(tv -> {
+                     TableRow<Task> row = new TableRow<>();
+                     row.setOnMouseClicked(event -> {
+                         if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                             
+                             Task myTask = row.getItem();
+                             try {
+                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                                 Parent root1 = (Parent) fxmlLoader.load();
+                                 Stage stage = new Stage();
+                                 stage.initModality(Modality.APPLICATION_MODAL);
+                                 stage.initStyle(StageStyle.DECORATED);
+                                 OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                                 stage.setTitle("Task" + myTask.getTaskID());
+                                 stage.setScene(new Scene(root1));
+                                 stage.show();
+                             } catch (Exception x) {
+                                 System.out.println(x.getMessage());
+                             }
+                         }
+                     });
+                     return row;
+                 });
+                 
+                 UTaskTable.setRowFactory(tv -> {
+                     TableRow<Task> row = new TableRow<>();
+                     row.setOnMouseClicked(event -> {
+                         if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                             Task myTask = row.getItem();
+                             try {
+                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                                 Parent root1 = (Parent) fxmlLoader.load();
+                                 Stage stage = new Stage();
+                                 stage.initModality(Modality.APPLICATION_MODAL);
+                                 stage.initStyle(StageStyle.DECORATED);
+                                 stage.setTitle("Unit" + myTask.getTaskID());
+                                 stage.setScene(new Scene(root1));
+                                 stage.show();
+                             } catch (Exception x) {
+                                 System.out.println(x.getMessage());
+                             }
+                         }
+                     });
+                     return row;
+                 });
+                 ATaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
+                 ATaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
+                 ATaskStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
+                 ATaskUnit.setCellValueFactory(new PropertyValueFactory<Task, String>("units"));
+                 
+                 UTaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
+                 UTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
+                 UTaskUrgency.setCellValueFactory(new PropertyValueFactory<Task, String>("urgency"));
+                 UTaskTable.setItems(InactiveTasks);
+                 ATaskTable.setItems(ActiveTasks);
+             } catch (IOException ex) {
+                 Logger.getLogger(TasksController.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
     }    
 
     @FXML

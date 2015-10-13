@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleListProperty;
@@ -40,6 +42,7 @@ import javafx.stage.StageStyle;
  * @author rick
  */
 public class InactiveUnitsController implements Initializable {
+
     @FXML
     private TableView<Unit> IUnitTable;
     @FXML
@@ -54,38 +57,27 @@ public class InactiveUnitsController implements Initializable {
     private TableColumn<Unit, String> tableStatus;
     @FXML
     private TableColumn<Unit, Number> tableID;
-    
+
     ObservableList<Unit> InactiveUnits;
-    
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try
-        {
-        if(OperatorMainController.myController.user != null)
-        {
-        InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+        try {
+            if (OperatorMainController.myController.user != null) {
+                InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+            }
+        } catch (Exception ex) {
+            InactiveUnits = FXCollections.observableArrayList();
         }
-        }
-        catch(Exception ex)
-        {
-        InactiveUnits = FXCollections.observableArrayList();
-        }
-        InactiveUnits = FXCollections.observableArrayList();
-        InactiveUnits.add(new Unit(1,"test","test","test"));
-        tableID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
-        tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
-        IUnitTable.setItems(InactiveUnits);
-        
+
         IUnitTable.setRowFactory(tv -> {
             TableRow<Unit> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    
+
                     Unit myUnit = row.getItem();
                     try {
                         ConnectionController.selectedUnitID = myUnit.getUnitID();
@@ -101,32 +93,36 @@ public class InactiveUnitsController implements Initializable {
                         System.out.println("Error" + x.toString() + x.getMessage());
                     }
                 }
-                });
+            });
             return row;
         });
-    }    
+        tableID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
+        tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
+        IUnitTable.setItems(InactiveUnits);
+    }
 
     @FXML
-    private void newClick(MouseEvent event) {   Node node = null;
-      try {
+    private void newClick(MouseEvent event) {
+        Node node = null;
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateUnit.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
             stage.setTitle("Create Unit");
-            stage.setScene(new Scene(root1));  
+            stage.setScene(new Scene(root1));
             stage.show();
-          }
-          catch(Exception x) {
-              System.out.println(x.getMessage());
-          }
+        } catch (Exception x) {
+            System.out.println(x.getMessage());
+        }
     }
 
     @FXML
-    private void disbandClick  (MouseEvent event) throws ClassNotFoundException {
-       Unit selectedUnit = (Unit)IUnitTable.getSelectionModel().getSelectedItem();
-    
+    private void disbandClick(MouseEvent event) throws ClassNotFoundException {
+        Unit selectedUnit = (Unit) IUnitTable.getSelectionModel().getSelectedItem();
+
         try {
             if (selectedUnit != null) {
                 OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
@@ -143,5 +139,5 @@ public class InactiveUnitsController implements Initializable {
             alert.showAndWait();
         }
     }
-    
+
 }

@@ -120,9 +120,16 @@ public class Connection {
             case "FOUS4":
                 write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
                 break;
-            case "FOOP1":
+            case "FOUS5":
                 o = in.readObject();
-                write("not implemented yet");
+                if (dbMediator.acceptOrDeniedTask(o)) {
+                    write("FOUS5: carried out successfully");
+                } else {
+                    write("Could not execute FOUS5");
+                }
+                break;
+            case "FOUS6":
+                write(dbMediator.getUnitListByUser(this.user.getUser_ID()));
                 break;
             case "FOOP2":
                 o = in.readObject();

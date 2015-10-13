@@ -8,6 +8,7 @@ package cims;
 import Field_Operations.Unit;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -97,13 +98,10 @@ public class CreateUnitController implements Initializable {
         }
         convertToInt();
 
-        try
-        {
-        succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
-        }
-        catch(Exception ex)
-        {
-            
+        try {
+            succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+        } catch (Exception ex) {
+
         }
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -114,6 +112,7 @@ public class CreateUnitController implements Initializable {
             stage.close();
         } else {
             alert.setContentText("An error has occured");
+            alert.showAndWait();
         }
 
     }
@@ -189,51 +188,50 @@ public class CreateUnitController implements Initializable {
     }
 
     @FXML
-    private void radioPolice(MouseEvent event) {
-        
-        if(radioButtonSmall.isArmed())
-        {
-            textFieldNRPolice.setText(Integer.toString(1));
+    private void radioPolice(ActionEvent event) {
+        if (radioButtonSmall.isSelected()) {
+            textFieldPPCPolice.setText(Integer.toString(1));
+            textFieldNRPolice.setText((Integer.toString(1)));
         }
-        if(radioButtonMedium.isArmed())
-        {
-            textFieldNRPolice.setText(Integer.toString(5));
+        if (radioButtonMedium.isSelected()) {
+            textFieldPPCPolice.setText(Integer.toString(5));
+            textFieldNRPolice.setText((Integer.toString(3)));
         }
-        if(radioButtonLarge.isArmed())
-        {
-            textFieldNRPolice.setText(Integer.toString(10));
-        }
-    }
-
-    @FXML
-    private void radioFire(MouseEvent event) {
-          if(radioButtonSmall.isArmed())
-        {
-            textFieldNRFire.setText(Integer.toString(1));
-        }
-        if(radioButtonMedium.isArmed())
-        {
-            textFieldNRFire.setText(Integer.toString(5));
-        }
-        if(radioButtonLarge.isArmed())
-        {
-            textFieldNRFire.setText(Integer.toString(10));
+        if (radioButtonLarge.isSelected()) {
+            textFieldPPCPolice.setText(Integer.toString(10));
+            textFieldNRPolice.setText((Integer.toString(5)));
         }
     }
 
     @FXML
-    private void radioAmbu(MouseEvent event) {
-          if(radioButtonSmall.isArmed())
-        {
-            textFieldNRAmbulance.setText(Integer.toString(1));
+    private void radioFire(ActionEvent event) {
+        if (radioButtonSmall.isSelected()) {
+            textFieldPPCFire.setText(Integer.toString(1));
+            textFieldNRFire.setText((Integer.toString(1)));
         }
-        if(radioButtonMedium.isArmed())
-        {
-            textFieldNRAmbulance.setText(Integer.toString(5));
+        if (radioButtonMedium.isSelected()) {
+            textFieldPPCFire.setText(Integer.toString(5));
+            textFieldNRFire.setText((Integer.toString(3)));
         }
-        if(radioButtonLarge.isArmed())
-        {
-            textFieldNRAmbulance.setText(Integer.toString(10));
+        if (radioButtonLarge.isSelected()) {
+            textFieldPPCFire.setText(Integer.toString(10));
+            textFieldNRFire.setText((Integer.toString(5)));
+        }
+    }
+
+    @FXML
+    private void radioAmbu(ActionEvent event) {
+        if (radioButtonSmall.isSelected()) {
+            textFieldPPCAmbu.setText(Integer.toString(1));
+            textFieldNRAmbulance.setText((Integer.toString(1)));
+        }
+        if (radioButtonMedium.isSelected()) {
+            textFieldPPCAmbu.setText(Integer.toString(5));
+            textFieldNRAmbulance.setText((Integer.toString(3)));
+        }
+        if (radioButtonLarge.isSelected()) {
+            textFieldPPCAmbu.setText(Integer.toString(10));
+            textFieldNRAmbulance.setText((Integer.toString(5)));
         }
     }
 }
