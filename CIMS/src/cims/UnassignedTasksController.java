@@ -67,6 +67,7 @@ public class UnassignedTasksController implements Initializable {
         /*try {
          tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getUnassignedTasks());
          } catch (IOException ex) {
+        tasks = FXColletions.observableArayList();
          Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
          }*/
         // Dummy Data:
@@ -88,6 +89,7 @@ public class UnassignedTasksController implements Initializable {
                     
                     Task myTask = row.getItem();
                     try {
+                        ConnectionController.selectedTaskID = myTask.getTaskID();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         Stage stage = new Stage();

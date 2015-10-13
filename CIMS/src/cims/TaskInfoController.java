@@ -71,7 +71,7 @@ public class TaskInfoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        int ID = ConnectionController.selectedTaskID;
+        int ID = OperatorMainController.myController.selectedTaskID;
         selectedTask = null;
         // Dummy Data
         selectedTask = new Task(1, "Task 1", "High", "Open", "Eindhoven", "shiiiet");
@@ -120,21 +120,29 @@ public class TaskInfoController implements Initializable {
      */
     @FXML
     private void buttonOK(MouseEvent event) throws IOException {
-        Task editedTask = selectedTask;
+        Task editedTask = null;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Save changes to " + selectedTask.getName() +"?");
         
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            // TODO edit task
-            
+        if (result.get() == ButtonType.OK) {            
             String newLocation = textFieldLocation.getText();
             // Edit currently selected task with new task.
-            OperatorMainController.myController.editTask(selectedTask.getTaskID(), newLocation);
-            
+            if (newLocation != null) {
+                OperatorMainController.myController.editTask(selectedTask.getTaskID(), newLocation);
+                editedTask = selectedTask;
+                editedTask.setLocation(newLocation);
+            }           
             // TODO assignTask database.
-            OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
+            if(editedTask != null) {
+                for (Unit u : ActiveUnits) {
+                    editedTask.addUnit(u);
+                }
+                
+                OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
+            }
+            
             
             
         } else {

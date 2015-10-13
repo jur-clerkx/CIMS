@@ -383,7 +383,25 @@ public class ConnectionController {
         }
         return null;
     }
-
+    /**
+     * Fetches a tasks information from the database
+     * @param taskID
+     * @return Task object that was requested
+     * @throws IOException 
+     */
+    public static Task getTaskInfo(int taskID) throws IOException {
+        try {
+            String outputMessage = "FOUS1";
+            
+            output.writeObject(outputMessage);
+            output.writeObject(taskID);
+            return (Task) input.readObject();
+        } catch (IOException | ClassNotFoundException ex2) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
+            KillConnection();
+        }
+        return null;
+    }
     /**
      * Cancels a task so it can't be assigned anymore
      *
