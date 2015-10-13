@@ -9,9 +9,9 @@
    <children>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="291.0" prefWidth="517.0">
          <children>
-            <Label layoutX="227.0" layoutY="25.0" text="Active Units" />
+            <Label layoutX="227.0" layoutY="25.0" text="Inactive Units" />
             <Separator layoutX="-2.0" layoutY="42.0" prefHeight="13.0" prefWidth="535.0" />
-            <Label layoutX="213.0" layoutY="151.0" text="Inactive Units" />
+            <Label layoutX="213.0" layoutY="151.0" text="Active Units" />
             <Button fx:id= "buttonNew" onMouseClicked="#newClick"  layoutX="382.0" layoutY="265.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="40.0" text="New" />
             <Button fx:id= "buttonDisband" onMouseClicked="#disbandClick" layoutX="442.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="Disband" />
             <TableView fx:id = "AUnitTable"   layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
