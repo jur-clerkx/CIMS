@@ -67,7 +67,7 @@ public class InactiveUnitsController implements Initializable {
         {
         if(OperatorMainController.myController.user != null)
         {
-        InactiveUnits = (ObservableList<Unit>) OperatorMainController.myController.getInactiveUnits();
+        InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
         }
         }
         catch(Exception ex)
@@ -88,6 +88,7 @@ public class InactiveUnitsController implements Initializable {
                     
                     Unit myUnit = row.getItem();
                     try {
+                        ConnectionController.selectedUnitID = myUnit.getUnitID();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         Stage stage = new Stage();
@@ -97,7 +98,7 @@ public class InactiveUnitsController implements Initializable {
                         stage.setScene(new Scene(root1));
                         stage.show();
                     } catch (Exception x) {
-                        System.out.println("Error" + x.getMessage());
+                        System.out.println("Error" + x.toString() + x.getMessage());
                     }
                 }
                 });

@@ -92,7 +92,7 @@ public class UnitInfoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        int ID = ConnectionController.selectedUnitID;
+        int ID = OperatorMainController.myController.selectedUnitID;
         mySelectedUnit = null;
         try {
             mySelectedUnit = ConnectionController.getUnitInfo(ID);
