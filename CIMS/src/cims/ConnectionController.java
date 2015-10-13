@@ -172,7 +172,7 @@ public class ConnectionController {
             String outputMessage = "FOOP4";
             int type = 0;
             output.writeObject(outputMessage);
-            output.writeObject(false);
+            output.writeObject(0);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -193,7 +193,7 @@ public class ConnectionController {
             String outputMessage = "FOOP4";
             int type = 1;
             output.writeObject(outputMessage);
-            output.writeObject(true);
+            output.writeObject(1);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -236,7 +236,8 @@ public class ConnectionController {
             int type = 1;
             output.writeObject(outputMessage);
             output.writeObject(1);
-            return (ArrayList<Task>) input.readObject();
+            ArrayList<Task> tasks =(ArrayList<Task>) input.readObject();
+            return tasks;
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
