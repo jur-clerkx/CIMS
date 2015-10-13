@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -72,28 +73,30 @@ public class ActiveTasksController implements Initializable {
 
         // Database Data:
         try {
-         tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
-         } catch (IOException ex) {
-        tasks = FXCollections.observableArrayList();
-         Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            if (OperatorMainController.myController.user != null) {
+                tasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
+            }
+        } catch (IOException ex) {
+            tasks = FXCollections.observableArrayList();
+            Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // Dummy Data:
         /*tasks = FXCollections.observableArrayList();
-        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));*/
+         tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+         tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));*/
 
         tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
         tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status")); 
+        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
         //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, Number>("units")); - TODO Fill units Column
 
-        tableviewActiveTask.setItems(tasks);        
-        
+        tableviewActiveTask.setItems(tasks);
+
         tableviewActiveTask.setRowFactory(tv -> {
             TableRow<Task> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    
+
                     Task myTask = row.getItem();
                     try {
                         ConnectionController.selectedTaskID = myTask.getTaskID();
@@ -106,10 +109,10 @@ public class ActiveTasksController implements Initializable {
                         stage.setScene(new Scene(root1));
                         stage.show();
                     } catch (Exception x) {
-                        System.out.println(x.getMessage());
+                        System.out.println("Error: " + x.getMessage());
                     }
                 }
-                });
+            });
             return row;
         });
     }
@@ -133,8 +136,7 @@ public class ActiveTasksController implements Initializable {
     }
 
     @FXML
-    private void newButtonClick(MouseEvent event) {
-        Node node = null;
+    private void newButtonClick(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
@@ -145,7 +147,7 @@ public class ActiveTasksController implements Initializable {
             stage.setScene(new Scene(root1));
             stage.show();
         } catch (Exception x) {
-            System.out.println(x.getMessage());
+            System.out.println("Error: " + x.getMessage());
         }
     }
 }

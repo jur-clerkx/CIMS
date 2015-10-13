@@ -74,14 +74,14 @@ public class TaskInfoController implements Initializable {
         int ID = OperatorMainController.myController.selectedTaskID;
         selectedTask = null;
         // Dummy Data
-        selectedTask = new Task(1, "Task 1", "High", "Open", "Eindhoven", "shiiiet");
+        //selectedTask = new Task(1, "Task 1", "High", "Open", "Eindhoven", "shiiiet");
         
         // TODO: getTaskInfo.
-        /*try {
+        try {
             selectedTask = ConnectionController.getTaskInfo(ID);
         } catch (IOException ex) {
             Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         if(selectedTask != null)
         {
             fillPage();

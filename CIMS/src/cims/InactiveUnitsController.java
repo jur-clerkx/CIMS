@@ -96,9 +96,9 @@ public class InactiveUnitsController implements Initializable {
             });
             return row;
         });
-        tableID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
-        tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<Unit, String>("description"));
+        tableID.setCellValueFactory(new PropertyValueFactory<>("unitID"));
+        tableUnitName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
         IUnitTable.setItems(InactiveUnits);
     }
 

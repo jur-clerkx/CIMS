@@ -16,7 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -127,14 +126,14 @@ public class TasksController implements Initializable {
                      });
                      return row;
                  });
-                 ATaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
-                 ATaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-                 ATaskStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
-                 ATaskUnit.setCellValueFactory(new PropertyValueFactory<Task, String>("units"));
+                 ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+                 ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                 ATaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+                 ATaskUnit.setCellValueFactory(new PropertyValueFactory<>("units"));
                  
-                 UTaskID.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
-                 UTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-                 UTaskUrgency.setCellValueFactory(new PropertyValueFactory<Task, String>("urgency"));
+                 UTaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+                 UTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                 UTaskUrgency.setCellValueFactory(new PropertyValueFactory<>("urgency"));
                  UTaskTable.setItems(InactiveTasks);
                  ATaskTable.setItems(ActiveTasks);
              } catch (IOException ex) {
