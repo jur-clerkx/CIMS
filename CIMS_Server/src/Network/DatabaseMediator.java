@@ -537,7 +537,7 @@ public class DatabaseMediator {
         }
         Object[] ob = (Object[]) o;
 
-        if (ob.length != 8) {
+        if (ob.length != 9) {
             return false;
         }
 
