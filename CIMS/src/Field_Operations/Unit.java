@@ -81,7 +81,7 @@ public class Unit implements Serializable {
     /**
      * Removes a user from the unit
      *
-     * @param user not null
+     * @param user not null and in the list
      */
     public void delUser(User user) {
         if (members.contains(user)) {
