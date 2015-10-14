@@ -101,7 +101,7 @@ public class TestUser {
 
         Iterator<Unit> itrUnit = newUser.getUnits().iterator();
         while (itrUnit.hasNext()) {
-            if (itrUnit.equals(newUser)) {
+            if (itrUnit.next().equals(validUnit)) {
                 added = true;
             }
         }

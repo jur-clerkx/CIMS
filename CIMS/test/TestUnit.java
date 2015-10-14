@@ -32,6 +32,7 @@ public class TestUnit {
     @Before
     public void setUp() {
         validUnit = new Unit(1, "Naam", "The Beach Boys", "Avond");
+        unit = validUnit;
         serviceUser = new User(1, "user1", "lastname", "Male",
                 "Slave", "Police", "12-9-1980", 2);
         validVehicle = new Vehicle(1, "Ambulance", "xxxx", "Good", serviceUser, 1);
@@ -87,7 +88,7 @@ public class TestUnit {
         boolean added = false;
         Iterator<Task> itrTask = unit.getTasks().iterator();
         while (itrTask.hasNext()) {
-            if (itrTask.equals(newTask)) {
+            if (itrTask.next().equals(newTask)) {
                 added = true;
             }
         }
@@ -107,7 +108,7 @@ public class TestUnit {
         boolean added = false;
         Iterator<User> itrUser = unit.getMembers().iterator();
         while (itrUser.hasNext()) {
-            if (itrUser.equals(user)) {
+            if (itrUser.next().equals(user)) {
                 added = true;
             }
         }
@@ -127,7 +128,7 @@ public class TestUnit {
         boolean added = false;
         Iterator<Vehicle> itrVehicle = unit.getVehicles().iterator();
         while (itrVehicle.hasNext()) {
-            if (itrVehicle.equals(vehicle)) {
+            if (itrVehicle.next() == (vehicle)) {
                 added = true;
             }
         }
@@ -143,7 +144,6 @@ public class TestUnit {
     @Test
     public void TestAddValidMaterial() {
         Material material = validMaterial;
-        int materialsInList = unit.getMaterials().size();
         unit.addMaterial(material);
 
         boolean added = false;
@@ -158,7 +158,7 @@ public class TestUnit {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void TestAddnullMaterial() {
+    public void TestAddNullMaterial() {
         unit.addMaterial(null);
     }
 
@@ -214,14 +214,14 @@ public class TestUnit {
         Unit newUnit = validUnit;
         Vehicle vehicle = validVehicle;
 
-        newUnit.delVehicle(validVehicle);
+        newUnit.delVehicle(vehicle);
     }
 
     @Test
     public void delValidMaterial() {
         Unit newUnit = validUnit;
         Material material1 = validMaterial;
-        Material material2 = new Vehicle(1, "Ambulance", "yyyy", "Good", serviceUser, 1);
+        Material material2 = new Material(2, "Material2", "Slecht", serviceUser, 3);
         newUnit.addMaterial(material1);
         newUnit.addMaterial(material2);
 
@@ -241,7 +241,7 @@ public class TestUnit {
         Unit newUnit = validUnit;
         Material material = validMaterial;
 
-        newUnit.delMaterial(validMaterial);
+        newUnit.delMaterial(material);
     }
 
 }

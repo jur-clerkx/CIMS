@@ -96,11 +96,13 @@ public class TestTask {
     @Test
     public void TestOperateAcceptance() {
         Task newTask = validTask;
+        if (newTask.isAccepted() == false) {
+            newTask.operateAcceptance();
+            assertTrue(newTask.isAccepted());
+        } 
         if (newTask.isAccepted() == true) {
             newTask.operateAcceptance();
             assertFalse(newTask.isAccepted());
-        } else {
-            assertTrue(newTask.isAccepted());
         }
     }
 
