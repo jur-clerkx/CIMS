@@ -39,7 +39,7 @@ public class ConnectionController {
 
     public ConnectionController() throws IOException {
         user = null;
-        serverAddress = "145.93.61.43";
+        serverAddress = "145.93.61.124";
         //serverAddress = "145.93.101.166";
         Login("NickMullen", "0000");
     }
@@ -433,16 +433,15 @@ public class ConnectionController {
      * Assigns a task to units
      *
      * @param taskID
-     * @param units
+     * @param objects
      * @throws IOException
      */
-    void assignTask(int taskID, Object[] units) throws IOException {
+    void assignTask(Object[] objects) throws IOException {
         try {
             String outputMessage = "FOOP8";
 
             output.writeObject(outputMessage);
-            output.writeObject(taskID);
-            output.writeObject(units);
+            output.writeObject(objects);
         } catch (IOException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();

@@ -140,7 +140,7 @@ public class TaskInfoController implements Initializable {
                     editedTask.addUnit(u);
                 }
                 
-                OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
+                //OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
             }
             
             

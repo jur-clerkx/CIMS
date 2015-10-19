@@ -76,7 +76,7 @@ public class CreateTaskController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
-        try {
+        /*try {
             if (OperatorMainController.myController.user != null) {
                 //TODO: populate available units from connection to observablelist
                 AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
@@ -85,8 +85,8 @@ public class CreateTaskController implements Initializable {
         } catch (IOException ex) {
 
             Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        listviewAvailableUnits.setItems(AvailableList);
+        }*/
+        //listviewAvailableUnits.setItems(AvailableList);
         task = null;
     }
 
@@ -136,8 +136,13 @@ public class CreateTaskController implements Initializable {
         } else {
             task = new Task(taskID, taskName, urgency, status, taskLocation, description);
             OperatorMainController.myController.createTask(taskID, taskName, urgency, status, taskLocation, description);
-            ArrayList<Unit> assignedUnits = (ArrayList<Unit>) AssignedList;
-            OperatorMainController.myController.assignTask(task.getTaskID(), assignedUnits.toArray());
+            ArrayList<Integer> assignedUnits = new ArrayList<>();
+            assignedUnits.add(task.getTaskID());
+            for (Unit u: AssignedList) {
+                assignedUnits.add(u.getUnitID());
+            }
+            
+            OperatorMainController.myController.assignTask(assignedUnits.toArray());
         }
     }
 
