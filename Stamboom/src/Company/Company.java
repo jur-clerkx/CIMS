@@ -9,6 +9,7 @@ package Company;
  *
  * @author Jense
  */
+import java.io.File;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
@@ -20,6 +21,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -28,9 +30,13 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -72,12 +78,12 @@ public class Company extends Application {
 
         table.setEditable(true);
 
-        TableColumn firstNameCol = new TableColumn("Name");
-        firstNameCol.setMinWidth(100);
-        firstNameCol.setCellValueFactory(
+        TableColumn tcName = new TableColumn("Name");
+        tcName.setMinWidth(100);
+        tcName.setCellValueFactory(
                 new PropertyValueFactory<>("name"));
-        firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        firstNameCol.setOnEditCommit(
+        tcName.setCellFactory(TextFieldTableCell.forTableColumn());
+        tcName.setOnEditCommit(
                 new EventHandler<CellEditEvent<Employee, String>>() {
                     @Override
                     public void handle(CellEditEvent<Employee, String> t) {
@@ -103,14 +109,62 @@ public class Company extends Application {
                 }
         );
 
+        TableColumn imageCol = new TableColumn("Image");
+        imageCol.setMinWidth(100);
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
+        imageCol.setCellFactory(param -> {
+            ImageView imageView = new ImageView();
+            TableCell<Employee, Image> cell = new TableCell<Employee, Image>() {
+                @Override
+                protected void updateItem(Image item, boolean empty) {
+                    if (item == null) {
+                        return;
+                    }
+                    HBox box = new HBox();
+                    box.setSpacing(10);
+
+                    VBox vBox = new VBox();
+
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    imageView.setImage(item);
+
+                    box.getChildren().addAll(imageView, vBox);
+                    setGraphic(box);
+                }
+            };
+
+            cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getClickCount() < 2) {
+                        return;
+                    }
+
+                    FileChooser file = new FileChooser();
+                    file.setTitle("Selecteer een afbeelding.");
+
+                    File f = file.showOpenDialog(stage);
+                    if (f != null) {
+                        Image image = new Image(f.toURI().toString());
+                        imageView.setImage(image);
+                        ((Employee) cell.getTableRow().getItem()).setImage(image);
+                    }
+                }
+            });
+
+            return cell;
+        });
+
         table.setItems(employees);
-        table.getColumns().addAll(firstNameCol, departmentcol);
+        table.getColumns().addAll(tcName, departmentcol, imageCol);
 
         final TextField addName = new TextField();
         addName.setPromptText("Name");
-        addName.setMaxWidth(firstNameCol.getPrefWidth());
+        addName.setMaxWidth(tcName.getPrefWidth());
         final TextField addDepartment = new TextField();
-        addDepartment.setMaxWidth(departmentcol.getPrefWidth());
+        addDepartment.setMaxWidth(imageCol.getPrefWidth());
         addDepartment.setPromptText("Department");
 
         final Button addButton = new Button("Add");
