@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author sebas
  */
-public class User implements Serializable{
+public class User implements Serializable {
 
     private String firstname;
     private String lastname;
@@ -28,19 +28,25 @@ public class User implements Serializable{
         return sector;
     }
     private List<Unit> units;
+
     /**
-     * 
+     *
      * @param firstname Not longer than 30 characters or null
      * @param lastname Not longer than 50 characters or null
-     * @param dob 
+     * @param dob
      * @param gender M or F
      */
     public User(String firstname, String lastname, Date dob, String gender) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.dateOfBirth = dob;
-        this.gender = gender;
-        units = new ArrayList<Unit>();
+        if (firstname != null && firstname.length() < 30 && lastname != null && lastname.length() < 50 && (gender == "M" || gender == "F")) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.dateOfBirth = dob;
+            this.gender = gender;
+            units = new ArrayList<Unit>();
+        } else {
+            throw new IllegalArgumentException("Make sure that the firstname isn't longer than 30 characters and the lastname isn't longer than 50 characters.");
+        }
+
     }
 
     /**
@@ -51,6 +57,8 @@ public class User implements Serializable{
     public void changeSector(String newSector) {
         if (newSector != null) {
             this.sector = newSector;
+        } else {
+            throw new IllegalArgumentException("Fill in the field.");
         }
     }
 
@@ -62,6 +70,8 @@ public class User implements Serializable{
     public void changeRank(String newRank) {
         if (newRank != null) {
             this.rank = rank;
+        } else {
+            throw new IllegalArgumentException("Fill in the field.");
         }
     }
 
@@ -71,7 +81,12 @@ public class User implements Serializable{
      * @param unit not null
      */
     public void addUnit(Unit unit) {
-        this.units.add(unit);
+        if (unit != null) {
+            this.units.add(unit);
+        } else {
+            throw new IllegalArgumentException("No unit selected.");
+        }
+
     }
 
     /**
@@ -80,13 +95,19 @@ public class User implements Serializable{
      * @param unit in units list
      */
     public void delUnit(Unit unit) {
-        if (this.units.contains(unit)) {
-            this.units.remove(unit);
+        if (unit != null) {
+            if (this.units.contains(unit)) {
+                this.units.remove(unit);
+            }
+        } else {
+            throw new IllegalArgumentException("No unit selected.");
         }
     }
+
     /**
      * Fetches the list of units
-     * @return 
+     *
+     * @return
      */
     public List<Unit> getUnits() {
         return units;

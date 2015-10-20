@@ -59,7 +59,8 @@ public class TestProgress {
 
     @Test(expected = IllegalArgumentException.class)
     public void TestInvalidMessageNullConstructor() {
-        progress = new Progress(2, serviceUser, validTask, null);
+        String message = null;
+        progress = new Progress(2, serviceUser, validTask, message);
     }
 
     @Test(expected = IllegalArgumentException.class)

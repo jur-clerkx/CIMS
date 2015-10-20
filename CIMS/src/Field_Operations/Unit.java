@@ -27,20 +27,26 @@ public class Unit implements Serializable {
 
     /**
      * Constructs a unit object
+     *
      * @param unitID Greater than 0
      * @param name Not longer than 255 characters or null
      * @param description Not longer than 255 characters
      * @param shift Not longer than 255 characters or null
      */
     public Unit(int unitID, String name, String description, String shift) {
-        this.unitID = unitID;
-        this.name = name;
-        this.description = description;
-        this.shift = shift;
-        this.members = new ArrayList<>();
-        this.materials = new ArrayList<>();
-        this.tasks = new ArrayList<>();
-        this.vehicles = new ArrayList<>();
+        if (unitID > 0 && name != null && name.length() < 255 && description != null && description.length() < 255 && shift != null && shift.length() < 255) {
+            this.unitID = unitID;
+            this.name = name;
+            this.description = description;
+            this.shift = shift;
+            this.members = new ArrayList<>();
+            this.materials = new ArrayList<>();
+            this.tasks = new ArrayList<>();
+            this.vehicles = new ArrayList<>();
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
+
     }
 
     public int getUnitID() {
@@ -65,8 +71,13 @@ public class Unit implements Serializable {
      * @param task not null
      */
     public void acceptTask(Task task) {
-        task.operateAcceptance();
-        tasks.add(task);
+        if (task != null) {
+            task.operateAcceptance();
+            tasks.add(task);
+        } else {
+            throw new IllegalArgumentException("No task selected.");
+        }
+
     }
 
     /**
@@ -75,7 +86,12 @@ public class Unit implements Serializable {
      * @param user not null
      */
     public void addUser(User user) {
-        this.members.add(user);
+        if (user != null) {
+            this.members.add(user);
+        } else {
+            throw new IllegalArgumentException("No user selected.");
+        }
+
     }
 
     /**
@@ -84,9 +100,16 @@ public class Unit implements Serializable {
      * @param user not null and in the list
      */
     public void delUser(User user) {
-        if (members.contains(user)) {
-            this.members.remove(user);
+        if (user != null) {
+            if (members.contains(user)) {
+                this.members.remove(user);
+            } else {
+                throw new IllegalArgumentException("User isn't listed.");
+            }
+        } else {
+            throw new IllegalArgumentException("No user selected.");
         }
+
     }
 
     /**
@@ -95,7 +118,12 @@ public class Unit implements Serializable {
      * @param vehicle not null
      */
     public void addVehicle(Vehicle vehicle) {
-        this.vehicles.add(vehicle);
+        if (vehicle != null) {
+            this.vehicles.add(vehicle);
+        } else {
+            throw new IllegalArgumentException("No material selected.");
+        }
+
     }
 
     /**
@@ -104,9 +132,16 @@ public class Unit implements Serializable {
      * @param vehicle no null
      */
     public void delVehicle(Vehicle vehicle) {
-        if (vehicles.contains(vehicle)) {
-            this.vehicles.remove(vehicle);
+        if (vehicle != null) {
+            if (vehicles.contains(vehicle)) {
+                this.vehicles.remove(vehicle);
+            } else {
+                throw new IllegalArgumentException("Material isn't listed.");
+            }
+        } else {
+            throw new IllegalArgumentException("No material selected.");
         }
+
     }
 
     /**
@@ -117,6 +152,8 @@ public class Unit implements Serializable {
     public void addMaterial(Material material) {
         if (material != null) {
             this.materials.add(material);
+        } else {
+            throw new IllegalArgumentException("No material selected.");
         }
     }
 
@@ -126,9 +163,16 @@ public class Unit implements Serializable {
      * @param material not null
      */
     public void delMaterial(Material material) {
-        if (materials.contains(material)) {
-            this.materials.add(material);
+        if (material != null) {
+            if (materials.contains(material)) {
+                this.materials.remove(material);
+            } else {
+                throw new IllegalArgumentException("Material isn't listed.");
+            }
+        } else {
+            throw new IllegalArgumentException("No material selected.");
         }
+
     }
 
     public List<Task> getTasks() {
@@ -141,11 +185,11 @@ public class Unit implements Serializable {
     }
 
     public ArrayList<Vehicle> getVehicles() {
-       return (ArrayList)this.vehicles;
+        return (ArrayList) this.vehicles;
     }
 
     public ArrayList<User> getMembers() {
-       return (ArrayList)this.members;
+        return (ArrayList) this.members;
     }
 
     public ArrayList<Material> getMaterials() {
@@ -153,6 +197,6 @@ public class Unit implements Serializable {
     }
 
     public int getSize() {
-       return this.members.size();
+        return this.members.size();
     }
 }
