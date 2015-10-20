@@ -133,7 +133,7 @@ public class Task implements Serializable {
     /**
      * Removes a unit from the list of units working on the task
      *
-     * @param unit has to be in the list
+     * @param unit has to be in the list 
      */
     public void delUnit(Unit unit) {
         if (this.units.contains(unit)) {

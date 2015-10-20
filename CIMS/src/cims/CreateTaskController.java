@@ -16,9 +16,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -70,18 +68,25 @@ public class CreateTaskController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
-        try {
-            //TODO: populate available units from connection to observablelist
-            AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+        /*try {
+            if (OperatorMainController.myController.user != null) {
+                //TODO: populate available units from connection to observablelist
+                AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+            }
+
         } catch (IOException ex) {
+
             Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        listviewAvailableUnits.setItems(AvailableList);
+        }*/
+        //listviewAvailableUnits.setItems(AvailableList);
         task = null;
     }
 
@@ -123,7 +128,7 @@ public class CreateTaskController implements Initializable {
         String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
         String description = textareaDescription.getText();
 
-        if ((taskID <= 0 || taskID != (int)taskID) || taskName == null || taskLocation == null) {
+        if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("You forgot to fill in the tasks ID, name or location.");
@@ -131,8 +136,13 @@ public class CreateTaskController implements Initializable {
         } else {
             task = new Task(taskID, taskName, urgency, status, taskLocation, description);
             OperatorMainController.myController.createTask(taskID, taskName, urgency, status, taskLocation, description);
-            ArrayList<Unit> assignedUnits = (ArrayList<Unit>) AssignedList;
-            OperatorMainController.myController.assignTask(task.getTaskID(), assignedUnits.toArray());
+            ArrayList<Integer> assignedUnits = new ArrayList<>();
+            assignedUnits.add(task.getTaskID());
+            for (Unit u: AssignedList) {
+                assignedUnits.add(u.getUnitID());
+            }
+            
+            OperatorMainController.myController.assignTask(assignedUnits.toArray());
         }
     }
 

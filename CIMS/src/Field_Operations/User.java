@@ -28,7 +28,13 @@ public class User implements Serializable{
         return sector;
     }
     private List<Unit> units;
-
+    /**
+     * 
+     * @param firstname Not longer than 30 characters or null
+     * @param lastname Not longer than 50 characters or null
+     * @param dob 
+     * @param gender M or F
+     */
     public User(String firstname, String lastname, Date dob, String gender) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -40,7 +46,7 @@ public class User implements Serializable{
     /**
      * Changes the sector where a user works
      *
-     * @param newSector
+     * @param newSector not null
      */
     public void changeSector(String newSector) {
         if (newSector != null) {
@@ -51,7 +57,7 @@ public class User implements Serializable{
     /**
      * Changes the rank of a user
      *
-     * @param newRank
+     * @param newRank not null
      */
     public void changeRank(String newRank) {
         if (newRank != null) {
@@ -62,7 +68,7 @@ public class User implements Serializable{
     /**
      * Adds the user to a unit
      *
-     * @param unit
+     * @param unit not null
      */
     public void addUnit(Unit unit) {
         this.units.add(unit);
@@ -71,11 +77,18 @@ public class User implements Serializable{
     /**
      * Removes the user from a unit
      *
-     * @param unit
+     * @param unit in units list
      */
     public void delUnit(Unit unit) {
         if (this.units.contains(unit)) {
             this.units.remove(unit);
         }
+    }
+    /**
+     * Fetches the list of units
+     * @return 
+     */
+    public List<Unit> getUnits() {
+        return units;
     }
 }

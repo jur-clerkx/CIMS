@@ -65,7 +65,9 @@ public class UnassignedTasksController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Database Data:
         try {
-         tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
+            if(OperatorMainController.myController.user != null){
+            tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
+            }
          } catch (IOException ex) {
         tasks = FXCollections.observableArrayList();
          Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,7 +101,7 @@ public class UnassignedTasksController implements Initializable {
                         stage.setScene(new Scene(root1));
                         stage.show();
                     } catch (Exception x) {
-                        System.out.println(x.getMessage());
+                        System.out.println("Error: " + x.getMessage());
                     }
                 }
                 });
