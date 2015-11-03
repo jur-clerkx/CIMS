@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. --><xs:schema xmlns:tns="http://webService/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webService/">
+
+<xs:element name="addMoon" type="tns:addMoon"></xs:element>
+
+<xs:element name="addMoonResponse" type="tns:addMoonResponse"></xs:element>
+
+<xs:element name="addPlanet" type="tns:addPlanet"></xs:element>
+
+<xs:element name="addPlanetResponse" type="tns:addPlanetResponse"></xs:element>
+
+<xs:element name="addSolarsystem" type="tns:addSolarsystem"></xs:element>
+
+<xs:element name="addSolarsystemResponse" type="tns:addSolarsystemResponse"></xs:element>
+
+<xs:element name="getNames" type="tns:getNames"></xs:element>
+
+<xs:element name="getNamesResponse" type="tns:getNamesResponse"></xs:element>
+
+<xs:element name="getPlanetDiameter" type="tns:getPlanetDiameter"></xs:element>
+
+<xs:element name="getPlanetDiameterResponse" type="tns:getPlanetDiameterResponse"></xs:element>
+
+<xs:element name="solarsystemExists" type="tns:solarsystemExists"></xs:element>
+
+<xs:element name="solarsystemExistsResponse" type="tns:solarsystemExistsResponse"></xs:element>
+
+<xs:complexType name="getNames">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getNamesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addPlanet">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg2" type="xs:double"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addPlanetResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getPlanetDiameter">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getPlanetDiameterResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:double"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addSolarsystem">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addSolarsystemResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="solarsystemExists">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="solarsystemExistsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addMoon">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg2" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg3" type="xs:double"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addMoonResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

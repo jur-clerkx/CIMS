@@ -51,7 +51,7 @@ public class Server {
                         Socket s = serverSocket.accept();
                         if (searching) {
                             Connection c = new Connection(s);
-                            cleanUpList(c.getuser_ID());
+                            cleanUpList(c.getUserId());
                             connections.add(c);
                             LOG.log(Level.INFO, "New Client Connected: {0}", s.getInetAddress());
                         }
@@ -70,7 +70,7 @@ public class Server {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                connections.removeIf(c -> c.getuser_ID() == userid);
+                connections.removeIf(c -> c.getUserId() == userid);
             }
         });
 

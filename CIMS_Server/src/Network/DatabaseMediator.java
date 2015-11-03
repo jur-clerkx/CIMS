@@ -27,7 +27,7 @@ public class DatabaseMediator {
     private Connection con = null;
 
     /**
-     * IP: 94.211.145.73:3306 username: CIMS password: dreamteam
+     * IP: 94.211.145.73:3306 username: CIMS, password: dreamteam
      */
     private final String url = "jdbc:mysql://94.211.145.73:3306/CIMS";
     private final String user = "CIMS";
@@ -116,6 +116,35 @@ public class DatabaseMediator {
         return new User();
     }
 
+    /**
+     * Check if the user information that is entered is correct.
+     *
+     * @param username The username, not null or empty.
+     * @param password The encrypted password of the user, not null or empty.
+     * @return True if information is correct
+     */
+    public PublicUser checkPublicLogin(String username, String password) {
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Public_User WHERE username='" + username + "' AND password='" + password + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                int user_ID = rs.getInt("id");
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
+                String bsn = rs.getString("BSN_Nr");
+
+                return new PublicUser(user_ID, firstname, lastname, bsn);
+            } catch (SQLException e) {
+                System.out.println("checkLogin: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return new User();
+    }
+
     public User getUser(int userID) {
         if (openConnection()) {
             try {
@@ -140,8 +169,77 @@ public class DatabaseMediator {
         }
         return null;
     }
-//</editor-fold>
 
+    public PublicUser getPublicUser(int userID) {
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Public_User WHERE id='" + userID + "';";
+                ResultSet rs = executeQuery(query);
+                if (rs.next()) {
+                    int user_ID = rs.getInt("id");
+                    String firstname = rs.getString("firstname");
+                    String lastname = rs.getString("lastname");
+                    String bsn = rs.getString("BSN_Nr");
+
+                    return new PublicUser(user_ID, firstname, lastname, bsn);
+                }
+            } catch (SQLException e) {
+                System.out.println("getPublicUser: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return null;
+    }
+
+    public boolean createPublicUser(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+        //String, String, Bsnnr, ww
+
+        Object[] progress = (Object[]) o;
+
+        if (!(progress[0] instanceof String) || !(progress[1] instanceof String)
+                || !(progress[2] instanceof String) || !(progress[3] instanceof String)) {
+            return false;
+        }
+        String fn = ((String) progress[0]).substring(0, 1).toUpperCase() + ((String) progress[0]).substring(1);
+        String ln = ((String) progress[1]).substring(0, 1).toUpperCase() + ((String) progress[1]).substring(1);
+        if (openConnection()) {
+            try {
+                String query = "INSERT INTO `CIMS`.`Public_User` (`BSN_Nr`, `firstname`, `lastname`, `password`, `username`) "
+                        + "VALUES ('" + progress[3] + "', '" + fn + "', '" + ln + "','" + progress[4] + "', '" + fn + ln + "');";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("CreateProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<PublicUser> GetAllPublicUsers() {
+        ArrayList< PublicUser> publicUsers = new ArrayList<>();
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT id FROM CIMS.Public_User;";
+                ResultSet rs = executeQuery(query);
+                while (rs.next()) {
+                    publicUsers.add(getPublicUser(rs.getInt("id")));
+                }
+            } catch (SQLException e) {
+                System.out.println("getTaskLists: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return publicUsers;
+    }
+
+//</editor-fold>
     public Task getTask(Object o) {
         if (!(o instanceof Integer)) {
             return null;
@@ -203,7 +301,7 @@ public class DatabaseMediator {
                 String query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getTaskID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    t.updateProgress(getProgress(rs.getInt("id")));
+                    t.updateProgress(getProgressById(rs.getInt("id")));
                 }
             } catch (SQLException e) {
                 System.out.println("getTaskLists: " + e.getMessage());
@@ -488,7 +586,7 @@ public class DatabaseMediator {
                 if (openConnection()) {
                     try {
                         String query = "SELECT containmentid FROM CIMS.Unit_Containment "
-                                + "WHERE `type`= 'U' AND containmentid='" + c.getuser_ID() + "';";
+                                + "WHERE `type`= 'U' AND containmentid='" + c.getUserId() + "';";
                         ResultSet rs = executeQuery(query);
                         while (rs.next()) {
                             hs.add(rs.getInt("containmentid"));
@@ -754,7 +852,7 @@ public class DatabaseMediator {
         return v;
     }
 
-    public Progress getProgress(Object o) {
+    public Progress getProgressById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -780,5 +878,60 @@ public class DatabaseMediator {
             }
         }
         return p;
+    }
+
+    public Progress getProgressByTask(Object o) {
+        if (!(o instanceof Integer)) {
+            return null;
+        }
+
+        Progress p = null;
+        int taskID = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Progress WHERE taskid='" + taskID + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                int progressID = rs.getInt("id");
+                int userID = rs.getInt("userid");
+                String message = rs.getString("message");
+
+                p = new Progress(progressID, getUser(userID), getTask(taskID), message);
+            } catch (SQLException e) {
+                System.out.println("getProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return p;
+    }
+
+    public boolean createProgress(int userId, Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+        //id,id message
+
+        Object[] progress = (Object[]) o;
+
+        if (!(progress[0] instanceof Integer)
+                || !(progress[1] instanceof String)) {
+            return false;
+        }
+
+        if (openConnection()) {
+            try {
+                String query = "INSERT INTO `CIMS`.`Progress` (`userid`, `taskid`, `message`) "
+                        + "VALUES ('" + userId + "', '" + progress[0] + "', '" + progress[1] + "');";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("CreateProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
     }
 }

@@ -23,7 +23,7 @@ public class Connection {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Socket socket;
-    private User user;
+    private PublicUser user;
     private boolean reading;
     private DatabaseMediator dbMediator;
 
@@ -74,6 +74,7 @@ public class Connection {
                             } else {
                                 System.out.println("No credentials format entered, Acces denied");
                                 reading = false;
+
                             }
                         }
                     } catch (IOException | ClassNotFoundException | NumberFormatException ex) {
@@ -131,6 +132,13 @@ public class Connection {
             case "FOUS6":
                 write(dbMediator.getUnitListByUser(this.user.getUser_ID()));
                 break;
+            case "FOUS7":
+                o = in.readObject();
+                if (dbMediator.createProgress(this.getUserId(), o)) {
+                    write("Progress succesfully created");
+                } else {
+                    write("Could not create progress");
+                }
             case "FOOP2":
                 o = in.readObject();
                 if (dbMediator.createUnit(o)) {
@@ -187,6 +195,17 @@ public class Connection {
                     write("Could not alter task");
                 }
                 break;
+            case "SAPU1":
+                o = in.readObject();
+                if (dbMediator.createPublicUser(o)) {
+                    write("User succesfully created");
+                } else {
+                    write("Could not create user");
+                }
+                break;
+            case "SAPU2":
+                write(dbMediator.GetAllPublicUsers());
+                break;
         }
 
     }
@@ -203,6 +222,12 @@ public class Connection {
             this.user = us;
             return true;
         }
+        PublicUser pu = dbMediator.checkPublicLogin(username, password);
+        if (pu.authorized()) {
+            this.user = pu;
+            return true;
+        }
+
         return false;
     }
 
@@ -227,7 +252,7 @@ public class Connection {
         return this.reading;
     }
 
-    public int getuser_ID() {
+    public int getUserId() {
         return this.user.getUser_ID();
     }
 

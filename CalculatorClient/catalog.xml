@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/WebCalculator?WSDL" uri="xml-resources/web-service-references/WebCalculator/wsdl/localhost_8080/WebCalculator.wsdl"/>
     <system systemId="http://localhost:8080/WebCalculator?xsd=1" uri="xml-resources/web-service-references/WebCalculator/wsdl/localhost_8080/WebCalculator.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/WebSolarsystem?WSDL" uri="xml-resources/web-service-references/WebSolarsystem/wsdl/localhost_8080/WebSolarsystem.wsdl"/>
+    <system systemId="http://localhost:8080/WebSolarsystem?xsd=1" uri="xml-resources/web-service-references/WebSolarsystem/wsdl/localhost_8080/WebSolarsystem.xsd_1.xsd"/>
 </catalog>

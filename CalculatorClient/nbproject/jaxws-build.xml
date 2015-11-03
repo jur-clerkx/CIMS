@@ -33,5 +33,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/WebCalculator"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/webservice"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-WebCalculator"/>
+    <target name="wsimport-client-WebSolarsystem" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WebSolarsystem"/>
+        <property name="wsdl-WebSolarsystem" location="xml-resources/web-service-references/WebSolarsystem/wsdl/localhost_8080/WebSolarsystem.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WebSolarsystem" destdir="${build.generated.dir}/jax-wsCache/WebSolarsystem" wsdl="${wsdl-WebSolarsystem}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/WebSolarsystem?WSDL" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-WebSolarsystem}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WebSolarsystem"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WebSolarsystem">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WebSolarsystem" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/WebSolarsystem"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/webservice"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-WebCalculator, wsimport-client-WebSolarsystem"/>
 </project>
