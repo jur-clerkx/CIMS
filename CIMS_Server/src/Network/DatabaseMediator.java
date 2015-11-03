@@ -676,16 +676,16 @@ public class DatabaseMediator {
         Unit u = null;
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Unit_Containment "
+                String query = "SELECT UnitID FROM CIMS.Unit_Containment "
                         + "WHERE `type`= 'U' AND containmentid='" + userID + "';";
                 ResultSet rs = executeQuery(query);
 
                 rs.next();
-                u = getUnit(rs.getInt("unitid"));
+                u = getUnit(rs.getInt("UnitID"));
                 u = getUnitLists(u);
 
             } catch (SQLException e) {
-                System.out.println("getTaskListByUser: " + e.getMessage());
+                System.out.println("getUnitListByUser: " + e.getMessage());
             } finally {
                 closeConnection();
             }
