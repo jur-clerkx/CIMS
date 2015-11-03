@@ -5,6 +5,7 @@
  */
 package Connection;
 
+import Situational_Awareness.Information;
 import Situational_Awareness.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Situational_Awareness.PublicUser;
+import java.util.ArrayList;
 
 /**
  *
@@ -84,5 +86,74 @@ public class ConnectionController {
 
         return result;
     }
-
+    /**
+     * Get specified information from the database
+     * @param infID
+     * @return Specified information
+     * @throws IOException 
+     */
+    public Information getInformation(int infID) throws IOException {
+        try {
+            String outputMessage = "SAPU";
+            output.writeObject(outputMessage);
+            output.writeObject(infID);
+            return (Information)input.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+        }
+        return null;
+    }
+    /**
+     * Get all information from the database
+     * @return Get all information
+     * @throws IOException 
+     */
+    public ArrayList<Information> getAllInformation() throws IOException {
+        try {
+            String outputMessage = "SAPU";
+            output.writeObject(outputMessage);
+            return (ArrayList<Information> )input.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+        }
+        return null;
+    }
+    /**
+     * Get all users from the database
+     * @return Get all users
+     * @throws IOException 
+     */
+    public ArrayList<PublicUser> getUsers() throws IOException {
+        try {
+            String outputMessage = "SAPU2";
+            output.writeObject(outputMessage);
+            return (ArrayList<PublicUser>)input.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+        }
+        return null;
+    }
+    /**
+     * Send specified information to specified user
+     * @param user
+     * @param info
+     * @return True if send
+     * @throws IOException 
+     */
+    public boolean sendInfo(PublicUser user, Information info) throws IOException {
+        try {
+            String outputMessage = "SAPU";
+            output.writeObject(outputMessage);
+            output.writeObject(user.getID());
+            output.writeObject(info.getID());
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+        }
+        return false;
+    }
 }

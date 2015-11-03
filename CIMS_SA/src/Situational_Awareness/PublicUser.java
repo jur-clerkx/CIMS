@@ -30,6 +30,22 @@ public class PublicUser {
 
     }
 
+    public int getID() {
+        return ID;
+    }
+
+    public String getBsnNummer() {
+        return bsnNummer;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+    
     public boolean changePassword(String password) {
         if (password != null && password.length() < 30) {
             this.password = password;
