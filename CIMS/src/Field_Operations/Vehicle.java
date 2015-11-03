@@ -27,8 +27,13 @@ public class Vehicle extends Material implements Serializable{
      */
     public Vehicle(int vehicleID, String name, String license, String state, User availability, int type) {
         super(vehicleID, name, state, availability, type);
-        this.license = license;
-        this.Type = type;
+        if (license != null && license.length() < 9 && type > 0 && type < 6) {
+            this.license = license;
+            this.Type = type;
+        } else {
+            throw new IllegalArgumentException("License can't be longer than 8 characters.");
+        }
+        
     }
 
     public int getCarType() {

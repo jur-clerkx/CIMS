@@ -49,7 +49,7 @@ public class TestUser {
 
     @Test(expected = IllegalArgumentException.class)
     public void TestLongLastnameConstructor() {
-        user = new User("TestVNF", "Lorem ipsum dolor sit amet, consectetur cras amet. ewf", new Date(15, 5, 1995), "F");
+        user = new User("TestVNF", "Lorem ipsum dolor sit amet, consectetur cras amet. ewfdolor sit amet, consectetur cras amet. ewf", new Date(15, 5, 1995), "F");
     }
 
     @Test(expected = IllegalArgumentException.class)

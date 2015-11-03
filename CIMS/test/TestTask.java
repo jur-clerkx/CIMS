@@ -59,7 +59,9 @@ public class TestTask {
 
     @Test(expected = IllegalArgumentException.class)
     public void TestInvalidLongNameConstructor() {
-        task = new Task(2, "Lorem ipsum dolor sit amet orci aliquam. haha", "Low", "Gesloten", "Eindhoven", "Help de kat");
+        String name = "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque maximus at enim nec sagittis. Maecenas at mi mattis, scelerisque ligula vel, bibendum mi. In id nulla eu magna pharetra convallis. Ut ac viverra tortor. Nullam consequat erat cras amet. ";
+
+        task = new Task(2, name, "Low", "Gesloten", "Eindhoven", "Help de kat");
     }
 
     @Test(expected = IllegalArgumentException.class)

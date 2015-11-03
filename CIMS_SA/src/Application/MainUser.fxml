@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="856.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.MainUserController">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="856.0">
+        <items>
+          <Button fx:id="btnHome" mnemonicParsing="false" onMouseClicked="#btnHome" text="Home" />
+            <Button fx:id="btnAddInformation" mnemonicParsing="false" onMouseClicked="#addInformation" text="Add information" />
+            <Button fx:id="btnEditInformation" mnemonicParsing="false" onMouseClicked="#btnEditInformation" text="Edit information" />
+            <TextField fx:id="txtSearch" />
+            <Button fx:id="btnSearch" mnemonicParsing="false" onMouseClicked="#btnSearch" text="Search" />
+        </items>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </ToolBar>
+      <AnchorPane fx:id="AnchorMain" layoutX="6.0" layoutY="46.0" prefHeight="609.0" prefWidth="845.0" />
+   </children>
+</AnchorPane>

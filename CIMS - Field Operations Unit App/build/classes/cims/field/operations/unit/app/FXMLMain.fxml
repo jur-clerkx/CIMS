@@ -7,11 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="431.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.field.operations.unit.app.FXMLMainController">
+<AnchorPane id="AnchorPane" prefHeight="451.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.field.operations.unit.app.FXMLMainController">
    <children>
-      <TabPane prefHeight="431.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPaneMain" prefHeight="431.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Active Task">
+          <Tab fx:id="tabActive" text="Active Task">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="401.0" prefWidth="599.0">
                      <children>
@@ -39,12 +39,12 @@
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                  <children>
-                                    <TextField editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="task01">
+                                    <TextField fx:id="textFieldTaskID" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="No task!">
                                        <VBox.margin>
                                           <Insets top="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <TextField editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="task">
+                                    <TextField fx:id="textFieldTaskName" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="No task!">
                                        <VBox.margin>
                                           <Insets top="15.0" />
                                        </VBox.margin>
@@ -53,12 +53,12 @@
                               </VBox>
                               <VBox prefHeight="237.0" prefWidth="421.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ListView prefHeight="208.0" prefWidth="68.0">
+                                    <ListView fx:id="listViewTaskUnits" prefHeight="208.0" prefWidth="68.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </ListView>
-                                    <TextField editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="tast">
+                                    <TextField fx:id="textFieldTaskLocation" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="123.0" text="tast">
                                        <VBox.margin>
                                           <Insets top="25.0" />
                                        </VBox.margin>
@@ -81,17 +81,17 @@
                               </VBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Cancelled">
+                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="124.0" text="Cancelled">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Completed">
+                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="128.0" text="In Progress">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="134.0" text="Send feedback">
+                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="117.0" text="Completed">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
@@ -114,16 +114,16 @@
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
                                  <children>
-                                    <ComboBox prefWidth="150.0" promptText="Low">
+                                    <TextField fx:id="textFieldTaskUrgency" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" text="No task!">
                                        <VBox.margin>
-                                          <Insets left="10.0" top="15.0" />
+                                          <Insets top="15.0" />
                                        </VBox.margin>
-                                    </ComboBox>
-                                    <ComboBox prefWidth="150.0" promptText="In progress">
+                                    </TextField>
+                                    <TextField fx:id="textFieldTaskStatus" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="90.0" text="No task!">
                                        <VBox.margin>
-                                          <Insets left="10.0" top="10.0" />
+                                          <Insets top="15.0" />
                                        </VBox.margin>
-                                    </ComboBox>
+                                    </TextField>
                                  </children>
                               </VBox>
                               <Label prefHeight="17.0" prefWidth="130.0" text="Description:" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -133,7 +133,7 @@
                               </Label>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                  <children>
-                                    <TextArea editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="185.0" text="This is example text">
+                                    <TextArea fx:id="textAreaTaskDescription" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="185.0" text="No task!">
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
@@ -157,19 +157,21 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabQueue" text="Task Queue (0)">
+          <Tab fx:id="tabQueue" onSelectionChanged="#updatePanes" text="Task Queue (0)">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="403.0" prefWidth="509.0">
+                        <TableView fx:id="tableViewTasks" prefHeight="403.0" prefWidth="509.0">
                           <columns>
-                            <TableColumn editable="false" prefWidth="75.0" resizable="false" text="ID" />
-                            <TableColumn editable="false" prefWidth="269.0" resizable="false" text="Name" />
-                              <TableColumn editable="false" minWidth="0.0" prefWidth="164.0" resizable="false" text="Urgency" />
+                            <TableColumn fx:id="tableColumnTaskID" editable="false" prefWidth="75.0" resizable="false" text="ID" />
+                            <TableColumn fx:id="tableColumnTaskName" editable="false" prefWidth="269.0" resizable="false" text="Name" />
+                              <TableColumn fx:id="tableColumnUrgency" editable="false" minWidth="0.0" prefWidth="164.0" resizable="false" text="Urgency" />
                           </columns>
                         </TableView>
-                        <Button layoutX="526.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleAddButtonAction" text="Add" />
-                        <Button layoutX="519.0" layoutY="237.0" mnemonicParsing="false" text="Show info" />
+                        <Button layoutX="523.0" layoutY="363.0" mnemonicParsing="false" text="Show info" />
+                        <Button fx:id="buttonAcceptTask" layoutX="518.0" layoutY="43.0" mnemonicParsing="false" onAction="#handleAcceptTask" text="Accept Task" />
+                        <Button fx:id="buttonDenyTask" layoutX="524.0" layoutY="104.0" mnemonicParsing="false" onAction="#handleDenyTask" text="Deny task" />
+                        <TextArea fx:id="textAreaReasonDeny" layoutX="515.0" layoutY="135.0" prefHeight="200.0" prefWidth="85.0" promptText="Reason denied task" />
                      </children>
                   </AnchorPane>
             </content>
@@ -178,7 +180,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <HBox prefHeight="407.0" prefWidth="602.0">
+                        <HBox prefHeight="247.0" prefWidth="602.0">
                            <children>
                               <VBox alignment="TOP_RIGHT" prefHeight="407.0" prefWidth="204.0">
                                  <children>
@@ -266,10 +268,17 @@
                               </VBox>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER" layoutY="247.0" prefHeight="153.0" prefWidth="608.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Show Unit Info" />
+                           </children>
+                        </HBox>
                      </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
+      <Label layoutX="14.0" layoutY="429.0" text="Last update:  " />
+      <Label fx:id="labelLastUpdate" layoutX="85.0" layoutY="429.0" text="Label" />
    </children>
 </AnchorPane>

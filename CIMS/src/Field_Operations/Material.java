@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author sebas
  */
-public class Material implements Serializable{
+public class Material implements Serializable {
 
     private int materialID;
     private String name;
@@ -22,18 +22,23 @@ public class Material implements Serializable{
 
     /**
      * Constructs a Material object
+     *
      * @param materialID Greater than 0
-     * @param name Not longer than 255 characters or null
+     * @param name Not longer than 40 characters or null
      * @param state Not longer than 255 characters or null
      * @param availability Not null
      * @param type 1 to 5
      */
     public Material(int materialID, String name, String state, User availability, int type) {
-        this.materialID = materialID;
-        this.name = name;
-        this.state = state;
-        this.availability = availability;
-        this.type = type;
+        if (materialID > 0 && (name != null && name.length() <= 40) && (state != null && state.length() <= 255) && availability != null && (type > 0 && type < 6)) {
+            this.materialID = materialID;
+            this.name = name;
+            this.state = state;
+            this.availability = availability;
+            this.type = type;
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
     }
 
     /**
@@ -42,8 +47,10 @@ public class Material implements Serializable{
      * @param state Not longer than 255 characters or null
      */
     public void changeState(String state) {
-        if (state != null) {
+        if (state != null && state.length() <= 255) {
             this.state = state;
+        } else {
+            throw new IllegalArgumentException("The state of a material can't be longer than 255 characters or null.");
         }
     }
 

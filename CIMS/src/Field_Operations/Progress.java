@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author sebas
  */
-public class Progress implements Serializable{
+public class Progress implements Serializable {
 
     private int progressID;
     private Network.User user;
@@ -22,15 +22,25 @@ public class Progress implements Serializable{
 
     /**
      * Constructs a Progress object
+     *
      * @param progressID Greater than 0
      * @param user Not null
      * @param task Not null
      * @param message Not longer than 255 characters or null
      */
     public Progress(int progressID, Network.User user, Task task, String message) {
-        this.progressID = progressID;
-        this.user = user;
-        this.task = task;
-        this.message = message;
+        if (progressID > 0 && user != null && task != null && message != null) {
+            this.progressID = progressID;
+            this.user = user;
+            this.task = task;
+            if (message.length() > 0 && message.length() <= 255) {
+                this.message = message;
+            } else {
+                throw new IllegalArgumentException("Make sure you fill in every field.");
+            }
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
+
     }
 }

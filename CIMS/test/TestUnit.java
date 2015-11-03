@@ -57,7 +57,9 @@ public class TestUnit {
 
     @Test(expected = IllegalArgumentException.class)
     public void TestInvalidLongNameConstructor() {
-        unit = new Unit(1, "Lorem ipsum dolor sit amet orci aliquam. haha234", "DreamTeam", "Middag");
+        String unitName = "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque maximus at enim nec sagittis. Maecenas at mi mattis, scelerisque ligula vel, bibendum mi. In id nulla eu magna pharetra convallis. Ut ac viverra tortor. Nullam consequat erat cras amet. ";
+
+        unit = new Unit(1, unitName, "DreamTeam", "Middag");
     }
 
     @Test(expected = IllegalArgumentException.class)

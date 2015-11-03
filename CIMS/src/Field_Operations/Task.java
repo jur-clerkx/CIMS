@@ -27,8 +27,10 @@ public class Task implements Serializable {
         return accepted;
     }
     private ArrayList<Progress> progressList;
+
     /**
      * Constructs a task object
+     *
      * @param taskID Greater than 0
      * @param name Not longer than 255 characters or null
      * @param urgency Low, Medium or High
@@ -37,15 +39,21 @@ public class Task implements Serializable {
      * @param description Not longer than 255 characters or null
      */
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        this.taskID = taskID;
-        this.name = name;
-        this.urgency = urgency;
-        this.status = status;
-        this.location = location;
-        this.description = description;
-        this.accepted = false;
-        this.progressList = new ArrayList<>();
-        this.units = new ArrayList<>();
+        if (taskID > 0 && (name != null && name.length() < 255) && (urgency != null && (urgency == "High" || urgency == "Medium" || urgency == "Low"))
+                && (status != null && status.length() < 255) && (location != null && location.length() < 255) && (description != null && description.length() < 255)) {
+            this.taskID = taskID;
+            this.name = name;
+            this.urgency = urgency;
+            this.status = status;
+            this.location = location;
+            this.description = description;
+            this.accepted = false;
+            this.progressList = new ArrayList<>();
+            this.units = new ArrayList<>();
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
+        
     }
 
     public int getTaskID() {
@@ -114,11 +122,11 @@ public class Task implements Serializable {
         }
         return null;
     }
-    
+
     public ArrayList<Progress> getProgressList() {
         return this.progressList;
     }
-    
+
     /**
      * Adds a unit to the list of units working on the task
      *
@@ -127,17 +135,22 @@ public class Task implements Serializable {
     public void addUnit(Unit unit) {
         if (!this.units.contains(unit)) {
             this.units.add(unit);
+        } else {
+            throw new IllegalArgumentException("Unit is already listed.");
         }
     }
 
     /**
      * Removes a unit from the list of units working on the task
      *
-     * @param unit has to be in the list 
+     * @param unit has to be in the list
      */
     public void delUnit(Unit unit) {
         if (this.units.contains(unit)) {
             this.units.remove(unit);
+        }
+        else {
+            throw new IllegalArgumentException("Unit isn't listed.");
         }
     }
 
@@ -154,7 +167,12 @@ public class Task implements Serializable {
      * @param status Not longer than 255 characters or null
      */
     public void operateStatus(String status) {
-        this.setStatus(status);
+        if (status != null && status.length() < 255) {
+            this.setStatus(status);
+        } else {
+            throw new IllegalArgumentException("Status can't be longer than 255 characters.");
+        }
+        
     }
 
     /**
@@ -165,6 +183,8 @@ public class Task implements Serializable {
     public void updateProgress(Progress progress) {
         if (progress != null) {
             this.progressList.add(progress);
+        } else {
+            throw new IllegalArgumentException("No progress selected.");
         }
     }
 

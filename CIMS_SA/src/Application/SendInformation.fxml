@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.SendInformationController">
+   <children>
+      <Separator layoutX="582.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="18.0" />
+      <ImageView fx:id="imageView" fitHeight="185.0" fitWidth="235.0" layoutX="626.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Desktop/untitled.png" />
+         </image>
+      </ImageView>
+      <Separator layoutX="591.0" layoutY="241.0" prefHeight="25.0" prefWidth="254.0" />
+      <Button fx:id="btnSendInfo" layoutX="655.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#RegisterInformation" prefHeight="25.0" prefWidth="125.0" text="Send Information" />
+      <Button fx:id="btnCancel" layoutX="656.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#Cancel" prefHeight="25.0" prefWidth="125.0" text="Cancel" />
+      <VBox alignment="TOP_RIGHT" layoutX="22.0" layoutY="60.0" prefHeight="509.0" prefWidth="146.0">
+         <children>
+            <Label text="ID:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Full Name:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Plaats:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Omschrijving:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Number of victims:">
+               <VBox.margin>
+                  <Insets left="20.0" top="192.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Is it poisonous:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Area of impact:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Estimated danger:">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="194.0" layoutY="64.0" prefHeight="530.0" prefWidth="378.0">
+         <children>
+            <TextField fx:id="txtName">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="txtLastname">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="txtLocation">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="txtDescription" prefHeight="184.0" prefWidth="338.0">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="txtNRofVictims" prefHeight="25.0" prefWidth="230.0">
+               <VBox.margin>
+                  <Insets left="20.0" right="302.0" top="24.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox prefHeight="17.0" prefWidth="338.0">
+               <children>
+                  <RadioButton fx:id="radioYes" mnemonicParsing="false" text="Yes">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="radioNo" mnemonicParsing="false" text="No">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="27.0" prefWidth="378.0">
+               <children>
+                  <TextField fx:id="txtArea" prefHeight="25.0" prefWidth="54.0">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="M">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="24.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="15.0" prefWidth="338.0">
+               <children>
+                  <RadioButton fx:id="radioSmall" mnemonicParsing="false" text="Small">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="radioMedium" mnemonicParsing="false" text="Medium">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="radioLarge" mnemonicParsing="false" text="Large">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="24.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <ComboBox fx:id="comboUser" layoutX="119.0" layoutY="22.0" prefWidth="150.0" />
+      <ComboBox fx:id="ComboInformation" layoutX="403.0" layoutY="22.0" prefWidth="150.0" />
+      <Label layoutX="82.0" layoutY="26.0" text="User:" />
+      <Label layoutX="318.0" layoutY="26.0" text="Information:" />
+   </children>
+</AnchorPane>

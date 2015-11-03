@@ -76,7 +76,7 @@ public class Task implements Serializable {
         return this.status;
     }
 
-    private void setStatus(String status) {
+    public void setStatus(String status) {
         if (!this.status.equals(status)) {
             this.status = status;
         }
