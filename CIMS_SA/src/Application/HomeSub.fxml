@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.HomeSubController">
+   <children>
+      <ListView fx:id="listAvailableInformation" layoutX="15.0" layoutY="46.0" prefHeight="517.0" prefWidth="817.0" />
+      <Label layoutX="366.0" layoutY="14.0" text="Available Information" />
+      <Button fx:id="btnRefresh" layoutX="809.0" layoutY="570.0" mnemonicParsing="false" onMouseClicked="#btnRefresh" prefHeight="25.0" prefWidth="22.0" text="R" />
+      <Button fx:id="btnOpenInfo" layoutX="747.0" layoutY="570.0" mnemonicParsing="false" onMouseClicked="#btnOpenInfo" text="Open" />
+   </children>
+</AnchorPane>

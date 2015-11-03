@@ -5,6 +5,9 @@
  */
 package Application;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,14 +20,16 @@ import javafx.stage.Stage;
  */
 public class CIMS_SA extends Application {
     
+    
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+       
+            Parent root = FXMLLoader.load(getClass().getResource("LoginGui.fxml"));
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("Operator");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            primaryStage.resizableProperty().set(false);      
     }
 
     /**

@@ -6,110 +6,93 @@
 package Situational_Awareness;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  *
- * @author sebas
+ * @author Jense Schouten
  */
 public class User implements Serializable {
 
+    private int user_ID;
     private String firstname;
     private String lastname;
-    private Date dateOfBirth;
     private String gender;
-    private String password;
     private String rank;
     private String sector;
+    private String dateofbirth;
+    private boolean authorized;
+    private int securityLevel;
+
+    /**
+     * Constructor of this class
+     */
+    public User() {
+        this.authorized = false;
+    }
+
+    /**
+     * secondary constructor of this class
+     *
+     * @param authorized boolean if user is authorized
+     * @param userid id of this user
+     * @param firstname firstname of this user
+     * @param lastname lastname of this user
+     * @param gender gender of this user
+     * @param rank rank of this user
+     * @param sector sector of working
+     * @param dateofbirth date of birth of this user
+     */
+    public User(int userid, String firstname, String lastname, String gender,
+            String rank, String sector, String dateofbirth, int securityLevel) {
+        this.authorized = true;
+        this.user_ID = userid;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.rank = rank;
+        this.sector = sector;
+        this.dateofbirth = dateofbirth;
+        this.securityLevel = securityLevel;
+    }
+
+    public int getUser_ID() {
+        return this.user_ID;
+    }
+
+    public String getFirstname() {
+        return this.firstname;
+    }
+
+    public String getLastname() {
+        return this.lastname;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public String getRank() {
+        return this.rank;
+    }
 
     public String getSector() {
-        return sector;
-    }
-    private List<Unit> units;
-
-    /**
-     *
-     * @param firstname Not longer than 30 characters or null
-     * @param lastname Not longer than 50 characters or null
-     * @param dob
-     * @param gender M or F
-     */
-    public User(String firstname, String lastname, Date dob, String gender) {
-        if (firstname != null && firstname.length() < 30 && lastname != null && lastname.length() < 50 && (gender == "M" || gender == "F")) {
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.dateOfBirth = dob;
-            this.gender = gender;
-            units = new ArrayList<Unit>();
-        } else {
-            throw new IllegalArgumentException("Make sure that the firstname isn't longer than 30 characters and the lastname isn't longer than 50 characters.");
-        }
-
+        return this.sector;
     }
 
-    /**
-     * Changes the sector where a user works
-     *
-     * @param newSector not null
-     */
-    public void changeSector(String newSector) {
-        if (newSector != null) {
-            this.sector = newSector;
-        } else {
-            throw new IllegalArgumentException("Fill in the field.");
-        }
+    public String getDateOfBirth() {
+        return this.dateofbirth;
     }
 
-    /**
-     * Changes the rank of a user
-     *
-     * @param newRank not null
-     */
-    public void changeRank(String newRank) {
-        if (newRank != null) {
-            this.rank = rank;
-        } else {
-            throw new IllegalArgumentException("Fill in the field.");
-        }
+    public boolean authorized() {
+        return this.authorized;
     }
 
-    /**
-     * Adds the user to a unit
-     *
-     * @param unit not null
-     */
-    public void addUnit(Unit unit) {
-        if (unit != null) {
-            this.units.add(unit);
-        } else {
-            throw new IllegalArgumentException("No unit selected.");
-        }
-
+    public int getSecurityLevel() {
+        return this.securityLevel;
     }
 
-    /**
-     * Removes the user from a unit
-     *
-     * @param unit in units list
-     */
-    public void delUnit(Unit unit) {
-        if (unit != null) {
-            if (this.units.contains(unit)) {
-                this.units.remove(unit);
-            }
-        } else {
-            throw new IllegalArgumentException("No unit selected.");
-        }
-    }
-
-    /**
-     * Fetches the list of units
-     *
-     * @return
-     */
-    public List<Unit> getUnits() {
-        return units;
+    @Override
+    public String toString() {
+        return firstname + " " + lastname;
     }
 }
