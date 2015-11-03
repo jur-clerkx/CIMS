@@ -21,14 +21,30 @@ public class User implements Serializable {
     private String sector;
     private String dateofbirth;
     private boolean authorized;
+    private int securityLevel;
 
+    /**
+     * Constructor of this class
+     */
     public User() {
         this.authorized = false;
     }
 
-    public User(boolean authorized, int userid, String firstname, String lastname,
-            String gender, String rank, String sector, String dateofbirth) {
-        this.authorized = authorized;
+    /**
+     * secondary constructor of this class
+     *
+     * @param authorized boolean if user is authorized
+     * @param userid id of this user
+     * @param firstname firstname of this user
+     * @param lastname lastname of this user
+     * @param gender gender of this user
+     * @param rank rank of this user
+     * @param sector sector of working
+     * @param dateofbirth date of birth of this user
+     */
+    public User(int userid, String firstname, String lastname, String gender,
+            String rank, String sector, String dateofbirth, int securityLevel) {
+        this.authorized = true;
         this.user_ID = userid;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -36,6 +52,7 @@ public class User implements Serializable {
         this.rank = rank;
         this.sector = sector;
         this.dateofbirth = dateofbirth;
+        this.securityLevel = securityLevel;
     }
 
     public int getUser_ID() {
@@ -68,6 +85,10 @@ public class User implements Serializable {
 
     public boolean authorized() {
         return this.authorized;
+    }
+
+    public int getSecurityLevel() {
+        return this.securityLevel;
     }
 
     @Override

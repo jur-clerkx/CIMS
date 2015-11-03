@@ -79,7 +79,6 @@ public class FXMLLoginController implements Initializable, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        System.out.println("UPDATEEE");
         //Check if login is succesfull
         ConnectionRunnable con = (ConnectionRunnable) o;
         //Remove as listener from connection
