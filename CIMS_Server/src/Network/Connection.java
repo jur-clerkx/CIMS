@@ -206,6 +206,33 @@ public class Connection {
             case "SAPU2":
                 write(dbMediator.GetAllPublicUsers());
                 break;
+            case "SAPU3":
+                o = in.readObject();
+                if (dbMediator.createInformation(this.getUserId(), o)) {
+                    write("Information succesfully created");
+                } else {
+                    write("Could not create information");
+                }
+                break;
+            case "SAPU4":
+                o = in.readObject();
+                if (dbMediator.removeInformation(o)) {
+                    write("Information succesfully removed");
+                } else {
+                    write("Could not remove information");
+                }
+                break;
+            case "SAPU5":
+                o = in.readObject();
+                write(dbMediator.getInformationById(o));
+                break;
+            case "SAPU6":
+                o = in.readObject();
+                write(dbMediator.getInformationByTaskId(o));
+                break;
+            case "SAPU7":
+                write(dbMediator.GetAllInformation());
+                break;
         }
 
     }
