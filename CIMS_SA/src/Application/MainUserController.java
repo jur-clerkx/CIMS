@@ -5,10 +5,15 @@
  */
 package Application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -38,23 +43,53 @@ public class MainUserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+            AnchorMain.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
 
     @FXML
     private void btnHome(MouseEvent event) {
+         try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+            AnchorMain.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void addInformation(MouseEvent event) {
+         try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("CreateInformation.fxml"));
+            AnchorMain.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void btnEditInformation(MouseEvent event) {
+         try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
+            AnchorMain.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void btnSearch(MouseEvent event) {
+        
+         try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+            AnchorMain.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

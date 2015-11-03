@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.EditInformationController">
    <children>
       <Separator layoutX="582.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="18.0" />
@@ -22,6 +21,7 @@
       <Button fx:id="btnCancel" layoutX="656.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#Cancel" prefHeight="25.0" prefWidth="125.0" text="Cancel" />
       <VBox alignment="TOP_RIGHT" layoutX="22.0" layoutY="22.0" prefHeight="569.0" prefWidth="146.0">
          <children>
+            <Label text="Information:" />
             <Label text="Voornaam:">
                <VBox.margin>
                   <Insets left="20.0" top="30.0" />
@@ -66,6 +66,11 @@
       </VBox>
       <VBox layoutX="194.0" layoutY="22.0" prefHeight="569.0" prefWidth="378.0">
          <children>
+            <ComboBox fx:id="comboInformation" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </ComboBox>
             <TextField fx:id="txtName">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="24.0" />

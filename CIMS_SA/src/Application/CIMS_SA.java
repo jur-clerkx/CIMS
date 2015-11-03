@@ -19,17 +19,19 @@ import javafx.stage.Stage;
  * @author Nick van der Mullen
  */
 public class CIMS_SA extends Application {
-    
-    
+
+    public static Stage primaryStage;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-       
-            Parent root = FXMLLoader.load(getClass().getResource("LoginGui.fxml"));
-            Scene scene = new Scene(root);
-            primaryStage.setTitle("Operator");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            primaryStage.resizableProperty().set(false);      
+    public void start(Stage stage) throws Exception {
+
+        primaryStage = stage;
+        Parent root = FXMLLoader.load(getClass().getResource("LoginGui.fxml"));
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Operator");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.resizableProperty().set(false);
     }
 
     /**
@@ -38,5 +40,5 @@ public class CIMS_SA extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
