@@ -11,23 +11,18 @@ import java.io.Serializable;
  *
  * @author Jense Schouten
  */
-public class User implements Serializable {
+public class User extends PublicUser implements Serializable {
 
-    private int user_ID;
-    private String firstname;
-    private String lastname;
     private String gender;
     private String rank;
     private String sector;
     private String dateofbirth;
-    private boolean authorized;
     private int securityLevel;
 
     /**
      * Constructor of this class
      */
     public User() {
-        this.authorized = false;
     }
 
     /**
@@ -44,27 +39,12 @@ public class User implements Serializable {
      */
     public User(int userid, String firstname, String lastname, String gender,
             String rank, String sector, String dateofbirth, int securityLevel) {
-        this.authorized = true;
-        this.user_ID = userid;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        super(userid, firstname, lastname, "");
         this.gender = gender;
         this.rank = rank;
         this.sector = sector;
         this.dateofbirth = dateofbirth;
         this.securityLevel = securityLevel;
-    }
-
-    public int getUser_ID() {
-        return this.user_ID;
-    }
-
-    public String getFirstname() {
-        return this.firstname;
-    }
-
-    public String getLastname() {
-        return this.lastname;
     }
 
     public String getGender() {
@@ -83,16 +63,7 @@ public class User implements Serializable {
         return this.dateofbirth;
     }
 
-    public boolean authorized() {
-        return this.authorized;
-    }
-
     public int getSecurityLevel() {
         return this.securityLevel;
-    }
-
-    @Override
-    public String toString() {
-        return firstname + " " + lastname;
     }
 }

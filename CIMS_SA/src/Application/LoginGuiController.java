@@ -72,43 +72,45 @@ public class LoginGuiController implements Initializable {
                     primaryStage.setScene(scene);
                     primaryStage.show();
                     primaryStage.resizableProperty().set(false);
+                    CIMS_SA.primaryStage.close();
                 } catch (IOException ex) {
                     System.out.println("Error when opening UserGui");
                 }
-            }
-            else
-            {
-            result = myController.Login(txtUserIDLogin.getText(), txtPasswordLogin.getText());
+            } else {
+                result = myController.Login(txtUserIDLogin.getText(), txtPasswordLogin.getText());
+
+                if (result[0] == true && result[1] == false) {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage primaryStage = new Stage();
+                        primaryStage.setTitle("User Information");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();
+                        primaryStage.resizableProperty().set(false);
+                        CIMS_SA.primaryStage.close();
+                    } catch (IOException ex) {
+                        System.out.println("Error when opening UserGui");
+                    }
+                } else if (result[0] == true && result[1] == true) {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage primaryStage = new Stage();
+                        primaryStage.setTitle("User Information");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();
+                        primaryStage.resizableProperty().set(false);
+                        CIMS_SA.primaryStage.close();
+                    } catch (IOException ex) {
+                        System.out.println("Error when opening UserGui");
+                    }
+                }
             }
         } catch (IOException ex) {
             System.out.println("Error occured with login");
         }
 
-        if (result[0] == true && result[1] == false) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
-                Scene scene = new Scene(root);
-                Stage primaryStage = new Stage();
-                primaryStage.setTitle("User Information");
-                primaryStage.setScene(scene);
-                primaryStage.show();
-                primaryStage.resizableProperty().set(false);
-            } catch (IOException ex) {
-                System.out.println("Error when opening UserGui");
-            }
-        } else if (result[0] == true && result[1] == true) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
-                Scene scene = new Scene(root);
-                Stage primaryStage = new Stage();
-                primaryStage.setTitle("User Information");
-                primaryStage.setScene(scene);
-                primaryStage.show();
-                primaryStage.resizableProperty().set(false);
-            } catch (IOException ex) {
-                System.out.println("Error when opening UserGui");
-            }
-        }
     }
 
     @FXML

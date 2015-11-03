@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -31,6 +32,8 @@ public class EditInformationController implements Initializable {
     private Button btnSaveEdit;
     @FXML
     private Button btnCancel;
+    @FXML
+    private ComboBox<?> comboInformation;
     @FXML
     private TextField txtName;
     @FXML
