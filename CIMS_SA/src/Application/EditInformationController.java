@@ -5,16 +5,22 @@
  */
 package Application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -54,6 +60,8 @@ public class EditInformationController implements Initializable {
     private RadioButton radioLarge;
     @FXML
     private TextField txtURL;
+    @FXML
+    private AnchorPane thisAnchor;
 
     /**
      * Initializes the controller class.
@@ -69,6 +77,13 @@ public class EditInformationController implements Initializable {
 
     @FXML
     private void Cancel(MouseEvent event) {
+        
+          try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+            thisAnchor.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

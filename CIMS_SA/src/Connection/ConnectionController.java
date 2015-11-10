@@ -42,6 +42,7 @@ public class ConnectionController {
 
     public static boolean[] Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
+        s.setSoTimeout(2000);
         output = new ObjectOutputStream(s.getOutputStream());
         input = new ObjectInputStream(s.getInputStream());
 
@@ -147,7 +148,7 @@ public class ConnectionController {
         try {
             String outputMessage = "SAPU";
             output.writeObject(outputMessage);
-            output.writeObject(user.getID());
+            output.writeObject(user.getUser_ID());
             output.writeObject(info.getID());
             return true;
         } catch (IOException ex) {

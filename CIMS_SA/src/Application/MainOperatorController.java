@@ -5,6 +5,7 @@
  */
 package Application;
 
+import Connection.ConnectionController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,6 +40,8 @@ public class MainOperatorController implements Initializable {
     private Button btnSearch;
     @FXML
     private AnchorPane AnchorMain;
+    
+    public int SelectedInformationID = 0;
 
     /**
      * Initializes the controller class.
