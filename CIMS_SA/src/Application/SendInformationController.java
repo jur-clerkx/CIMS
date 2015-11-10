@@ -14,6 +14,7 @@ import java.sql.Blob;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +38,7 @@ import javafx.stage.Stage;
  * @author Nick van der Mullen
  */
 public class SendInformationController implements Initializable {
+
     @FXML
     private ImageView imageView;
     @FXML
@@ -70,19 +72,22 @@ public class SendInformationController implements Initializable {
 
     private ObservableList<Information> obsInformationList;
     private ObservableList<PublicUser> obsUserList;
-    
+
     private Information selectedInformation;
     private PublicUser selectedUser;
     private ConnectionController myController;
+
     @FXML
     private AnchorPane thisAnchor;
     @FXML
     private ComboBox<Information> ComboInformation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+<<<<<<< HEAD
 ////         //TODO
 ////        ToggleGroup groupOne = new ToggleGroup();
 ////        ToggleGroup groupTwo = new ToggleGroup();
@@ -128,21 +133,98 @@ public class SendInformationController implements Initializable {
 ////        }
         
     }    
+=======
+        //TODO
+        ToggleGroup groupOne = new ToggleGroup();
+        ToggleGroup groupTwo = new ToggleGroup();
+
+        obsInformationList = FXCollections.observableArrayList();
+        obsUserList = FXCollections.observableArrayList();
+        radioNo.setToggleGroup(groupOne);
+        radioYes.setToggleGroup(groupOne);
+        radioSmall.setToggleGroup(groupTwo);
+        radioMedium.setToggleGroup(groupTwo);
+        radioLarge.setToggleGroup(groupTwo);
+
+        //try {
+        //myController = new ConnectionController();
+        //obsInformationList.addAll(myController.getAllInformation());
+        //obsUserList.addAll(myController.getUsers());
+        // Dummy Data:
+        obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
+        obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
+        
+        comboUser.setItems(obsUserList);
+        ComboInformation.setItems(obsInformationList);
+
+        ComboInformation.setOnAction((event) -> {
+            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+            txtLocation.setText(selectedInformation.getLocation());
+            txtDescription.setText(selectedInformation.getDescription());
+            txtNRofVictims.setText("" + selectedInformation.getCasualities());
+            if (selectedInformation.getToxic() == false) {
+                radioNo.setSelected(true);
+                radioYes.setSelected(false);
+            } else {
+                radioNo.setSelected(false);
+                radioYes.setSelected(true);
+            }
+            txtArea.setText("" + selectedInformation.getImpact());
+
+            if (selectedInformation.getDanger() == 3) {
+                radioSmall.setSelected(false);
+                radioMedium.setSelected(false);
+                radioLarge.setSelected(true);
+            } else if (selectedInformation.getDanger() == 2) {
+                radioSmall.setSelected(false);
+                radioMedium.setSelected(true);
+                radioLarge.setSelected(false);
+            } else {
+                radioSmall.setSelected(true);
+                radioMedium.setSelected(false);
+                radioLarge.setSelected(false);
+            }
+        });
+        comboUser.setOnAction((event) -> {
+            selectedUser = comboUser.getSelectionModel().getSelectedItem();
+            txtName.setText(""+selectedUser.getUser_ID());
+            txtLastname.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
+
+        });
+
+        // TODO: Change image to dynamic
+        Image image = new Image("Application/untitled.png");
+        imageView.setImage(image);
+
+        //} 
+            /*catch (IOException ex) {
+         Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
+    }
+>>>>>>> c6bf5baa2d02cb2e79d05fdbe4f9a565a8db6676
 
     @FXML
     private void RegisterInformation(MouseEvent event) {
         try {
-            if(myController.sendInfo(selectedUser, selectedInformation) == true) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information sent");
-                alert.setContentText("Information was sent to user.");
-                alert.showAndWait();
+            if (selectedUser != null && selectedInformation != null) {
+                if (myController.sendInfo(selectedUser, selectedInformation) == true) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information sent");
+                    alert.setContentText("Information was sent to user.");
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Information couldn't be sent to user.");
+                    alert.showAndWait();
+                }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setContentText("Information couldn't be sent to user.");
+                alert.setContentText("Information is null.");
                 alert.showAndWait();
             }
+
         } catch (IOException ex) {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,5 +239,5 @@ public class SendInformationController implements Initializable {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

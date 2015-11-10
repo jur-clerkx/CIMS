@@ -35,6 +35,7 @@ public class PublicUser implements Serializable {
         return this.lastname;
     }
 
+<<<<<<< HEAD
 
 //    public int getID() {
 //        return ID;
@@ -55,6 +56,11 @@ public class PublicUser implements Serializable {
     
     public boolean authorized() {
         return this.authorized;
+=======
+    public boolean authorized() {
+        return this.authorized;
+
+>>>>>>> c6bf5baa2d02cb2e79d05fdbe4f9a565a8db6676
     }
 
     /**
