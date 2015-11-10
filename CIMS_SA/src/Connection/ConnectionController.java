@@ -116,7 +116,7 @@ public class ConnectionController {
      */
     public ArrayList<Information> getAllInformation() throws IOException {
         try {
-            String outputMessage = "SAPU";
+            String outputMessage = "SAPU7";
             output.writeObject(outputMessage);
             return (ArrayList<Information>) input.readObject();
         } catch (IOException | ClassNotFoundException ex) {
@@ -154,7 +154,7 @@ public class ConnectionController {
      */
     public boolean sendInfo(PublicUser user, Information info) throws IOException {
         try {
-            String outputMessage = "SAPU";
+            String outputMessage = "SAPU8";
             output.writeObject(outputMessage);
             output.writeObject(user.getUser_ID());
             output.writeObject(info.getID());
