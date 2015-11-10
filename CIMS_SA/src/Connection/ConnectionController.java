@@ -147,7 +147,7 @@ public class ConnectionController {
         try {
             String outputMessage = "SAPU";
             output.writeObject(outputMessage);
-            output.writeObject(user.getID());
+            output.writeObject(user.getUser_ID());
             output.writeObject(info.getID());
             return true;
         } catch (IOException ex) {

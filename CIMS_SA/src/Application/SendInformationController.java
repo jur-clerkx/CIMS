@@ -33,6 +33,7 @@ import javafx.stage.Stage;
  * @author Nick van der Mullen
  */
 public class SendInformationController implements Initializable {
+
     @FXML
     private ImageView imageView;
     @FXML
@@ -68,10 +69,11 @@ public class SendInformationController implements Initializable {
 
     private ObservableList<Information> obsInformationList;
     private ObservableList<PublicUser> obsUserList;
-    
+
     private Information selectedInformation;
     private PublicUser selectedUser;
     private ConnectionController myController;
+
     /**
      * Initializes the controller class.
      */
@@ -82,24 +84,22 @@ public class SendInformationController implements Initializable {
             myController = new ConnectionController();
             obsInformationList.addAll(myController.getAllInformation());
             obsUserList.addAll(myController.getUsers());
-            
+
             comboUser.setItems(obsUserList);
             comboInformation.setItems(obsInformationList);
-            
-            
-            
+
             comboInformation.setOnAction((event) -> {
                 selectedInformation = comboInformation.getSelectionModel().getSelectedItem();
             });
             comboUser.setOnAction((event) -> {
                 selectedUser = comboUser.getSelectionModel().getSelectedItem();
             });
-            
+
             txtName.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
             txtLocation.setText(selectedInformation.getLocation());
             txtDescription.setText(selectedInformation.getDescription());
             txtNRofVictims.setText("" + selectedInformation.getCasualities());
-            if(selectedInformation.getToxic() == false) {
+            if (selectedInformation.getToxic() == false) {
                 radioNo.setSelected(true);
                 radioYes.setSelected(false);
             } else {
@@ -107,7 +107,7 @@ public class SendInformationController implements Initializable {
                 radioYes.setSelected(true);
             }
             txtArea.setText("" + selectedInformation.getImpact());
-            if(selectedInformation.getDanger() == 3) {
+            if (selectedInformation.getDanger() == 3) {
                 radioSmall.setSelected(false);
                 radioMedium.setSelected(false);
                 radioLarge.setSelected(true);
@@ -121,27 +121,35 @@ public class SendInformationController implements Initializable {
                 radioLarge.setSelected(false);
             }
             // TODO: Add image
-            
+
         } catch (IOException ex) {
             Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }    
+
+    }
 
     @FXML
     private void RegisterInformation(MouseEvent event) {
         try {
-            if(myController.sendInfo(selectedUser, selectedInformation) == true) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information sent");
-                alert.setContentText("Information was sent to user.");
-                alert.showAndWait();
+            if (selectedUser != null && selectedInformation != null) {
+                if (myController.sendInfo(selectedUser, selectedInformation) == true) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information sent");
+                    alert.setContentText("Information was sent to user.");
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Information couldn't be sent to user.");
+                    alert.showAndWait();
+                }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Information couldn't be sent to user.");
-                alert.showAndWait();
+                    alert.setTitle("Error");
+                    alert.setContentText("Information is null.");
+                    alert.showAndWait();
             }
+
         } catch (IOException ex) {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,5 +161,5 @@ public class SendInformationController implements Initializable {
 
         stage.close();
     }
-    
+
 }
