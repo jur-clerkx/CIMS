@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.CreateInformationController">
    <children>
       <Separator layoutX="582.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="18.0" />
@@ -15,9 +14,7 @@
             <Image url="@../../../../Desktop/untitled.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnAddImage" layoutX="626.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#addImage" text="Add Image" />
       <Separator layoutX="591.0" layoutY="241.0" prefHeight="25.0" prefWidth="254.0" />
-      <Button fx:id="btnAddVideo" layoutX="736.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#addVideo" text="Add Video" />
       <Button fx:id="btnRegister" layoutX="655.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#RegisterInformation" text="Register Information" />
       <Button fx:id="btnCancel" layoutX="655.0" layoutY="464.0" mnemonicParsing="false" onMouseClicked="#Cancel" prefHeight="25.0" prefWidth="125.0" text="Cancel" />
       <Button fx:id="btnCLear" layoutX="656.0" layoutY="429.0" mnemonicParsing="false" onMouseClicked="#ClearInformation" prefHeight="25.0" prefWidth="125.0" text="Clear" />
@@ -150,5 +147,6 @@
             </HBox>
          </children>
       </VBox>
+      <TextField fx:id="txtURL" layoutX="626.0" layoutY="216.0"  onInputMethodTextChanged="#MouseExit"  prefHeight="25.0" prefWidth="185.0" promptText="URL" />
    </children>
 </AnchorPane>

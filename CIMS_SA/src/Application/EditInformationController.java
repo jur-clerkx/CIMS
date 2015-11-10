@@ -25,10 +25,6 @@ public class EditInformationController implements Initializable {
     @FXML
     private ImageView imageView;
     @FXML
-    private Button btnChangeImage;
-    @FXML
-    private Button btnChangeVideo;
-    @FXML
     private Button btnSaveEdit;
     @FXML
     private Button btnCancel;
@@ -56,6 +52,8 @@ public class EditInformationController implements Initializable {
     private RadioButton radioMedium;
     @FXML
     private RadioButton radioLarge;
+    @FXML
+    private TextField txtURL;
 
     /**
      * Initializes the controller class.
@@ -64,14 +62,6 @@ public class EditInformationController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
-    @FXML
-    private void addImage(MouseEvent event) {
-    }
-
-    @FXML
-    private void addVideo(MouseEvent event) {
-    }
 
     @FXML
     private void RegisterInformation(MouseEvent event) {
