@@ -83,49 +83,49 @@ public class SendInformationController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         //TODO
-        ToggleGroup groupOne = new ToggleGroup();
-        ToggleGroup groupTwo = new ToggleGroup();
-        
-        radioNo.setToggleGroup(groupOne);
-        radioYes.setToggleGroup(groupOne);
-        radioSmall.setToggleGroup(groupTwo);
-        radioMedium.setToggleGroup(groupTwo);
-        radioLarge.setToggleGroup(groupTwo);   
-        
-        try {
-            myController = new ConnectionController();
-            obsInformationList.addAll(myController.getAllInformation());
-            obsUserList.addAll(myController.getUsers());
-            
-            comboUser.setItems(obsUserList);
-            ComboInformation.setItems(obsInformationList);
-            
-            
-            
-            ComboInformation.setOnAction((event) -> {
-                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
-            });
-            comboUser.setOnAction((event) -> {
-                selectedUser = comboUser.getSelectionModel().getSelectedItem();
-            });
-            
-            txtName.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
-            txtLocation.setText(selectedInformation.getLocation());
-            txtDescription.setText(selectedInformation.getDescription());
-            txtNRofVictims.setText("" + selectedInformation.getCasualities());
-            if(selectedInformation.getToxic() == false) {
-                radioNo.setSelected(true);
-                radioYes.setSelected(false);
-            } else {
-                radioNo.setSelected(false);
-                radioYes.setSelected(true);
-            }
-            txtArea.setText("" + selectedInformation.getImpact());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+////         //TODO
+////        ToggleGroup groupOne = new ToggleGroup();
+////        ToggleGroup groupTwo = new ToggleGroup();
+////        
+////        radioNo.setToggleGroup(groupOne);
+////        radioYes.setToggleGroup(groupOne);
+////        radioSmall.setToggleGroup(groupTwo);
+////        radioMedium.setToggleGroup(groupTwo);
+////        radioLarge.setToggleGroup(groupTwo);   
+////        
+////        try {
+////            myController = new ConnectionController();
+////            obsInformationList.addAll(myController.getAllInformation());
+////            obsUserList.addAll(myController.getUsers());
+////            
+////            comboUser.setItems(obsUserList);
+////            ComboInformation.setItems(obsInformationList);
+////            
+////            
+////            
+////            ComboInformation.setOnAction((event) -> {
+////                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+////            });
+////            comboUser.setOnAction((event) -> {
+////                selectedUser = comboUser.getSelectionModel().getSelectedItem();
+////            });
+////            
+////            txtName.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
+////            txtLocation.setText(selectedInformation.getLocation());
+////            txtDescription.setText(selectedInformation.getDescription());
+////            txtNRofVictims.setText("" + selectedInformation.getCasualities());
+////            if(selectedInformation.getToxic() == false) {
+////                radioNo.setSelected(true);
+////                radioYes.setSelected(false);
+////            } else {
+////                radioNo.setSelected(false);
+////                radioYes.setSelected(true);
+////            }
+////            txtArea.setText("" + selectedInformation.getImpact());
+////            
+////        } catch (IOException ex) {
+////            Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+////        }
         
     }    
 

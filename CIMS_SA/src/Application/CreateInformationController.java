@@ -77,6 +77,30 @@ public class CreateInformationController implements Initializable {
 
     @FXML
     private void RegisterInformation(MouseEvent event) {
+        String name = txtName.getText() + " " + txtLastname.getText();
+
+        int danger = 0;
+        int toxic = 0;
+        if (radioSmall.isSelected()) {
+            danger = 0;
+        } else if (radioMedium.isSelected()) {
+            danger = 1;
+        } else if (radioLarge.isSelected()) {
+            danger = 2;
+        }
+
+        if (radioYes.isSelected()) {
+            toxic = 1;
+        } else if (radioNo.isSelected()) {
+            toxic = 0;
+        }
+        if (LoginGuiController.myController.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText())
+                == true) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Successfull");
+            alert.setContentText("Information succesfully created");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -102,8 +126,8 @@ public class CreateInformationController implements Initializable {
 
     }
 
+    @FXML
     private void MouseExit(MouseEvent event) {
-
         if (!txtURL.getText().isEmpty()) {
             Image img = new Image(txtURL.getText());
             while (img.getProgress() < 1) {

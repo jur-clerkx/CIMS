@@ -7,6 +7,7 @@ package Application;
 
 import Connection.ConnectionController;
 import Situational_Awareness.Information;
+import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,21 +46,51 @@ public class HomeSubController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            if (ConnectionController.user != null) {
-                ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
-                listAvailableInformation.setItems(myObservableList);
-            } else {
-                ObservableList<Information> failedTest = FXCollections.observableArrayList();
-                failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
+        if (ConnectionController.user instanceof PublicUser) {
+            ObservableList<Information> failedTest = FXCollections.observableArrayList();
+            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
+            listAvailableInformation.setItems(failedTest);
+            listAvailableInformation.refresh();
+
+//            try {
+//                if (ConnectionController.user != null) {
+//                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getUserInfo());
+//                    listAvailableInformation.setItems(myObservableList);
+//                }
+//            } catch (IOException ex) {
+//                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        } else {
+            ObservableList<Information> failedTest = FXCollections.observableArrayList();
+            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
+            listAvailableInformation.setItems(failedTest);
+            listAvailableInformation.refresh();
+
+            try {
+                if (ConnectionController.user != null) {
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
+                    listAvailableInformation.setItems(myObservableList);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
     private void btnRefresh(MouseEvent event) {
+        try {
+            if (ConnectionController.user instanceof PublicUser) {
+//            ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getUserInfo());
+//            listAvailableInformation.setItems(myObservableList);
+            } else {
+
+                ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
+                listAvailableInformation.setItems(myObservableList);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         listAvailableInformation.refresh();
     }
 

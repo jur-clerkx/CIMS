@@ -147,6 +147,6 @@
             </HBox>
          </children>
       </VBox>
-      <TextField fx:id="txtURL" layoutX="626.0" layoutY="216.0"  onInputMethodTextChanged="#MouseExit"  prefHeight="25.0" prefWidth="185.0" promptText="URL" />
+      <TextField fx:id="txtURL" layoutX="626.0" layoutY="216.0"  onMouseExited="#MouseExit"  prefHeight="25.0" prefWidth="185.0" promptText="URL" />
    </children>
 </AnchorPane>
