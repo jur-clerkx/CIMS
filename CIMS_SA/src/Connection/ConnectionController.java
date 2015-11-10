@@ -42,6 +42,7 @@ public class ConnectionController {
 
     public static boolean[] Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
+        s.setSoTimeout(2000);
         output = new ObjectOutputStream(s.getOutputStream());
         input = new ObjectInputStream(s.getInputStream());
 

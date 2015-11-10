@@ -16,15 +16,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -64,8 +68,6 @@ public class SendInformationController implements Initializable {
     private RadioButton radioLarge;
     @FXML
     private ComboBox<PublicUser> comboUser;
-    @FXML
-    private ComboBox<Information> comboInformation;
 
     private ObservableList<Information> obsInformationList;
     private ObservableList<PublicUser> obsUserList;
@@ -73,23 +75,48 @@ public class SendInformationController implements Initializable {
     private Information selectedInformation;
     private PublicUser selectedUser;
     private ConnectionController myController;
+<<<<<<< HEAD
 
+=======
+    @FXML
+    private AnchorPane thisAnchor;
+    @FXML
+    private ComboBox<Information> ComboInformation;
+>>>>>>> origin/master
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+         //TODO
+        ToggleGroup groupOne = new ToggleGroup();
+        ToggleGroup groupTwo = new ToggleGroup();
+        
+        radioNo.setToggleGroup(groupOne);
+        radioYes.setToggleGroup(groupOne);
+        radioSmall.setToggleGroup(groupTwo);
+        radioMedium.setToggleGroup(groupTwo);
+        radioLarge.setToggleGroup(groupTwo);   
+        
         try {
             myController = new ConnectionController();
             obsInformationList.addAll(myController.getAllInformation());
             obsUserList.addAll(myController.getUsers());
 
             comboUser.setItems(obsUserList);
+<<<<<<< HEAD
             comboInformation.setItems(obsInformationList);
 
             comboInformation.setOnAction((event) -> {
                 selectedInformation = comboInformation.getSelectionModel().getSelectedItem();
+=======
+            ComboInformation.setItems(obsInformationList);
+            
+            
+            
+            ComboInformation.setOnAction((event) -> {
+                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+>>>>>>> origin/master
             });
             comboUser.setOnAction((event) -> {
                 selectedUser = comboUser.getSelectionModel().getSelectedItem();
@@ -107,6 +134,7 @@ public class SendInformationController implements Initializable {
                 radioYes.setSelected(true);
             }
             txtArea.setText("" + selectedInformation.getImpact());
+<<<<<<< HEAD
             if (selectedInformation.getDanger() == 3) {
                 radioSmall.setSelected(false);
                 radioMedium.setSelected(false);
@@ -122,6 +150,9 @@ public class SendInformationController implements Initializable {
             }
             // TODO: Add image
 
+=======
+            
+>>>>>>> origin/master
         } catch (IOException ex) {
             Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,9 +188,12 @@ public class SendInformationController implements Initializable {
 
     @FXML
     private void Cancel(MouseEvent event) {
-        Stage stage = (Stage) btnCancel.getScene().getWindow();
-
-        stage.close();
+        try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+            thisAnchor.getChildren().setAll(node);
+        } catch (IOException ex) {
+            Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

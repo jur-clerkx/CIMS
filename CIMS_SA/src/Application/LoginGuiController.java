@@ -44,7 +44,8 @@ public class LoginGuiController implements Initializable {
     private TextField txtPasswordCreate;
     @FXML
     private Button btnCreate;
-    private ConnectionController myController;
+    public static ConnectionController myController;
+    public static int SelectedInfoID = 0;
     private boolean[] result;
 
     /**
