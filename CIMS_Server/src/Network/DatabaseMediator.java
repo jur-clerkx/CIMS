@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import Situational_Awareness.Information;
 
 /**
  * Database connection class
@@ -676,16 +677,16 @@ public class DatabaseMediator {
         Unit u = null;
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Unit_Containment "
+                String query = "SELECT UnitID FROM CIMS.Unit_Containment "
                         + "WHERE `type`= 'U' AND containmentid='" + userID + "';";
                 ResultSet rs = executeQuery(query);
 
                 rs.next();
-                u = getUnit(rs.getInt("unitid"));
+                u = getUnit(rs.getInt("UnitID"));
                 u = getUnitLists(u);
 
             } catch (SQLException e) {
-                System.out.println("getTaskListByUser: " + e.getMessage());
+                System.out.println("getUnitListByUser: " + e.getMessage());
             } finally {
                 closeConnection();
             }
@@ -933,5 +934,153 @@ public class DatabaseMediator {
             }
         }
         return true;
+    }
+
+    public boolean createInformation(int userId, Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+        //task,name,description,location,casualties, toxic, danger, impect, image
+
+        Object[] info = (Object[]) o;
+
+        if (!(info[0] instanceof Integer) || !(info[1] instanceof String)
+                || !(info[2] instanceof String) || !(info[3] instanceof String)
+                || !(info[4] instanceof Integer) || !(info[5] instanceof Integer)
+                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)
+                || !(info[8] instanceof String)) {
+            return false;
+        }
+
+        if (openConnection()) {
+            try {
+                String query = "`CIMS`.`Information` (`public_UserId`, `taskId`, "
+                        + "`name`, `description`, `location`, `casualties`, "
+                        + "`toxic`, `danger`, `impect`, `image`) VALUES ('"
+                        + userId + "', '" + info[0] + "', '" + info[1] + "', '"
+                        + info[2] + "', '" + info[3] + "', '" + info[4] + "', '"
+                        + info[5] + "', '" + info[6] + "', '" + info[7] + "', '"
+                        + info[8] + "');";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("createInformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+
+        return true;
+    }
+
+    public boolean removeInformation(Object o) {
+        if (!(o instanceof Integer)) {
+            return false;
+        }
+
+        int informationId = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "DELETE FROM CIMS.Information WHERE id='" + informationId + "';";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("removeInformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
+    }
+
+    public Information getInformationById(Object o) {
+        if (!(o instanceof Integer)) {
+            return null;
+        }
+
+        Information info = null;
+        int infoId = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Information WHERE id='" + infoId + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                Task task = getTask(rs.getInt("taskId"));
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                int casualties = rs.getInt("casualties");
+                int toxic = rs.getInt("toxic");
+                int danger = rs.getInt("danger");
+                int impact = rs.getInt("impect");
+                String image = rs.getString("image");
+                Network.PublicUser pu = getPublicUser(rs.getInt("public_UserId"));
+
+                info = new Information(infoId, task, name, description, location,
+                        casualties, toxic, danger, impact, image, pu);
+            } catch (SQLException e) {
+                System.out.println("getProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return info;
+    }
+
+    public Information getInformationByTaskId(Object o) {
+        if (!(o instanceof Integer)) {
+            return null;
+        }
+
+        Information info = null;
+        int taskId = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Information WHERE taskId='" + taskId + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                int infoId = rs.getInt("ïd");
+                Task task = getTask(taskId);
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                int casualties = rs.getInt("casualties");
+                int toxic = rs.getInt("toxic");
+                int danger = rs.getInt("danger");
+                int impact = rs.getInt("impect");
+                String image = rs.getString("image");
+                Network.PublicUser pu = getPublicUser(rs.getInt("public_UserId"));
+
+                info = new Information(infoId, task, name, description, location,
+                        casualties, toxic, danger, impact, image, pu);
+            } catch (SQLException e) {
+                System.out.println("getProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return info;
+    }
+
+    public ArrayList<Information> GetAllInformation() {
+        ArrayList<Information> info = new ArrayList<>();
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT id FROM CIMS.Information;";
+                ResultSet rs = executeQuery(query);
+                while (rs.next()) {
+                    info.add(getInformationById(rs.getInt("id")));
+                }
+            } catch (SQLException e) {
+                System.out.println("GetAllInformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return info;
     }
 }

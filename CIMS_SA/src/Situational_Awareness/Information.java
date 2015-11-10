@@ -19,15 +19,15 @@ public class Information {
     private String description;
     private String location;
     private int casualties;
-    private int toxic;
+    private boolean toxic;
     private int danger;
     private int impact;
     private Blob image;
     private ArrayList<PublicUser> users;
 
-    public Information(int ID, int taskID, String description, String location, int casualities, int toxic, int danger, int impact) {
-        if (ID > 0 && taskID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities > 0 && toxic > 0 && toxic < 10
-                && danger > 0 && danger < 10 && impact > 0 && impact < 10) {
+    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact) {
+        if (ID > 0 && taskID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities > 0 
+                && (danger == 0 || danger == 1 || danger == 2) && impact > 0 ) {
             this.ID = ID;
             this.taskID = taskID;
             this.description = description;
@@ -44,7 +44,7 @@ public class Information {
 
     }
 
-    public Information(int ID, int taskID, String description, String location, int casualities, int toxic, int danger, int impact, Blob image) {
+    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact, Blob image) {
         this(ID, taskID, description, location, casualities, toxic, danger, impact);
         this.image = image;
     }
@@ -69,7 +69,7 @@ public class Information {
         return casualties;
     }
 
-    public int getToxic() {
+    public boolean getToxic() {
         return toxic;
     }
 
@@ -109,27 +109,20 @@ public class Information {
     }
 
     /**
-     * Change the toxicity level
-     *
-     * @param number bigger than 0
-     * @return True if changed
+     * Change toxicity
      */
-    public boolean changeToxicity(int number) {
-        if (number > 0) {
-            this.toxic = number;
-            return true;
-        }
-        return false;
+    public void changeToxicity() {
+        this.toxic = !this.toxic;
     }
-
+    
     /**
      * Change the danger level
      *
-     * @param number bigger than 0
+     * @param number 1, 2 or 3
      * @return True if changed
      */
     public boolean changeDanger(int number) {
-        if (number > 0) {
+        if (number == 1 || number == 2 || number == 3) {
             this.danger = number;
             return true;
         }
