@@ -14,6 +14,7 @@ import java.sql.Blob;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,54 +76,42 @@ public class SendInformationController implements Initializable {
     private Information selectedInformation;
     private PublicUser selectedUser;
     private ConnectionController myController;
-<<<<<<< HEAD
 
-=======
     @FXML
     private AnchorPane thisAnchor;
     @FXML
     private ComboBox<Information> ComboInformation;
->>>>>>> origin/master
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         //TODO
+        //TODO
         ToggleGroup groupOne = new ToggleGroup();
         ToggleGroup groupTwo = new ToggleGroup();
-        
+
+        obsInformationList = FXCollections.observableArrayList();
+        obsUserList = FXCollections.observableArrayList();
         radioNo.setToggleGroup(groupOne);
         radioYes.setToggleGroup(groupOne);
         radioSmall.setToggleGroup(groupTwo);
         radioMedium.setToggleGroup(groupTwo);
-        radioLarge.setToggleGroup(groupTwo);   
+        radioLarge.setToggleGroup(groupTwo);
+
+        //try {
+        //myController = new ConnectionController();
+        //obsInformationList.addAll(myController.getAllInformation());
+        //obsUserList.addAll(myController.getUsers());
+        // Dummy Data:
+        obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
+        obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
         
-        try {
-            myController = new ConnectionController();
-            obsInformationList.addAll(myController.getAllInformation());
-            obsUserList.addAll(myController.getUsers());
+        comboUser.setItems(obsUserList);
+        ComboInformation.setItems(obsInformationList);
 
-            comboUser.setItems(obsUserList);
-<<<<<<< HEAD
-            comboInformation.setItems(obsInformationList);
-
-            comboInformation.setOnAction((event) -> {
-                selectedInformation = comboInformation.getSelectionModel().getSelectedItem();
-=======
-            ComboInformation.setItems(obsInformationList);
-            
-            
-            
-            ComboInformation.setOnAction((event) -> {
-                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
->>>>>>> origin/master
-            });
-            comboUser.setOnAction((event) -> {
-                selectedUser = comboUser.getSelectionModel().getSelectedItem();
-            });
-
-            txtName.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
+        ComboInformation.setOnAction((event) -> {
+            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
             txtLocation.setText(selectedInformation.getLocation());
             txtDescription.setText(selectedInformation.getDescription());
             txtNRofVictims.setText("" + selectedInformation.getCasualities());
@@ -134,7 +123,7 @@ public class SendInformationController implements Initializable {
                 radioYes.setSelected(true);
             }
             txtArea.setText("" + selectedInformation.getImpact());
-<<<<<<< HEAD
+
             if (selectedInformation.getDanger() == 3) {
                 radioSmall.setSelected(false);
                 radioMedium.setSelected(false);
@@ -148,15 +137,22 @@ public class SendInformationController implements Initializable {
                 radioMedium.setSelected(false);
                 radioLarge.setSelected(false);
             }
-            // TODO: Add image
+        });
+        comboUser.setOnAction((event) -> {
+            selectedUser = comboUser.getSelectionModel().getSelectedItem();
+            txtName.setText(""+selectedUser.getUser_ID());
+            txtLastname.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
 
-=======
-            
->>>>>>> origin/master
-        } catch (IOException ex) {
-            Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        });
 
+        // TODO: Change image to dynamic
+        Image image = new Image("Application/untitled.png");
+        imageView.setImage(image);
+
+        //} 
+            /*catch (IOException ex) {
+         Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
     }
 
     @FXML
@@ -176,9 +172,9 @@ public class SendInformationController implements Initializable {
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Information is null.");
-                    alert.showAndWait();
+                alert.setTitle("Error");
+                alert.setContentText("Information is null.");
+                alert.showAndWait();
             }
 
         } catch (IOException ex) {
