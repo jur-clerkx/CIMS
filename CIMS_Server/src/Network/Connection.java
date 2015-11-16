@@ -90,6 +90,22 @@ public class Connection {
     }
 
     private void RequestData(String s) throws IOException, ClassNotFoundException {
+        String command = s.substring(0, 4);
+        switch (command.toUpperCase()) {
+            case "FOUS":
+                fieldOperations(s);
+                break;
+            case "FOUP":
+                fieldOperations(s);
+                break;
+            case "SAPU":
+                situationalAwareness(s);
+                break;
+        }
+
+    }
+
+    private void fieldOperations(String s) throws IOException, ClassNotFoundException {
         Object o;
         Task t;
         Unit u;
@@ -195,6 +211,35 @@ public class Connection {
                     write("Could not alter task");
                 }
                 break;
+            case "FOUS8":
+                o = in.readObject();
+                write(dbMediator.getRoadmapByTaskId(o));
+                break;
+            case "FOUS9":
+                write(dbMediator.getAllRoadmaps());
+                break;
+            case "FOUS10":
+                o = in.readObject();
+                if (dbMediator.createRoadmap(o)) {
+                    write("Roadmap succesfully created");
+                } else {
+                    write("Could not create roadmap");
+                }
+                break;
+            case "FOUP10":
+                o = in.readObject();
+                if (dbMediator.assignRoadmap(o)) {
+                    write("Roadmap succesfully assigned");
+                } else {
+                    write("Could not assign roadmap");
+                }
+                break;
+        }
+    }
+
+    private void situationalAwareness(String s) throws IOException, ClassNotFoundException {
+        Object o;
+        switch (s.toUpperCase()) {
             case "SAPU1":
                 o = in.readObject();
                 if (dbMediator.createPublicUser(o)) {
@@ -233,8 +278,18 @@ public class Connection {
             case "SAPU7":
                 write(dbMediator.GetAllInformation());
                 break;
+            case "SAPU8":
+                o = in.readObject();
+                if (dbMediator.sendinformation(o)) {
+                    write("Information succesfully send");
+                } else {
+                    write("Could not send information");
+                }
+                break;
+            case "SAPU10":
+                write(dbMediator.GetAllPublicInformation(getUserId()));
+                break;
         }
-
     }
 
     private boolean login(String username, String password) {

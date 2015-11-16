@@ -5,6 +5,7 @@ package Network;
 
 import Field_Operations.Material;
 import Field_Operations.Progress;
+import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import Field_Operations.Vehicle;
@@ -452,7 +453,7 @@ public class DatabaseMediator {
                         executeNonQuery(query);
                     } else {
                         query = "DELETE FROM CIMS.Task_Unit "
-                                + "WHERE unitid='" + objects[0] + "' AND taskid = '" + objects[i] + "';";
+                                + "WHERE unitid='" + objects[i] + "' AND taskid = '" + objects[0] + "';";
                         executeNonQuery(query);
                     }
                 } catch (SQLException e) {
@@ -940,27 +941,25 @@ public class DatabaseMediator {
         if (!(o instanceof Object[])) {
             return false;
         }
-        //task,name,description,location,casualties, toxic, danger, impect, image
+        //name,description,location,casualties, toxic, danger, impect, image
 
         Object[] info = (Object[]) o;
 
         if (!(info[0] instanceof Integer) || !(info[1] instanceof String)
                 || !(info[2] instanceof String) || !(info[3] instanceof String)
                 || !(info[4] instanceof Integer) || !(info[5] instanceof Integer)
-                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)
-                || !(info[8] instanceof String)) {
+                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
             return false;
         }
 
         if (openConnection()) {
             try {
-                String query = "`CIMS`.`Information` (`public_UserId`, `taskId`, "
+                String query = "`CIMS`.`Information` (`public_UserId`, "
                         + "`name`, `description`, `location`, `casualties`, "
                         + "`toxic`, `danger`, `impect`, `image`) VALUES ('"
                         + userId + "', '" + info[0] + "', '" + info[1] + "', '"
                         + info[2] + "', '" + info[3] + "', '" + info[4] + "', '"
-                        + info[5] + "', '" + info[6] + "', '" + info[7] + "', '"
-                        + info[8] + "');";
+                        + info[5] + "', '" + info[6] + "', '" + info[7] + "');";
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("createInformation: " + e.getMessage());
@@ -992,6 +991,11 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     *
+     * @param o object as int request id
+     * @return information
+     */
     public Information getInformationById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
@@ -1028,6 +1032,12 @@ public class DatabaseMediator {
         return info;
     }
 
+    /**
+     * Gets information by taskId
+     *
+     * @param o
+     * @return information
+     */
     public Information getInformationByTaskId(Object o) {
         if (!(o instanceof Integer)) {
             return null;
@@ -1065,6 +1075,11 @@ public class DatabaseMediator {
         return info;
     }
 
+    /**
+     * gets all information
+     *
+     * @return a arraylist of information
+     */
     public ArrayList<Information> GetAllInformation() {
         ArrayList<Information> info = new ArrayList<>();
 
@@ -1083,4 +1098,217 @@ public class DatabaseMediator {
         }
         return info;
     }
+
+    public boolean sendinformation(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] info = (Object[]) o;
+        if (info.length != 3) {
+            return false;
+        }
+        //infoId, p_uId, PublicForAll
+        if (!(info[0] instanceof Integer) || !(info[1] instanceof Integer)
+                || !(info[3] instanceof Integer)) {
+            return false;
+        }
+
+        if (openConnection()) {
+            try {
+                String query = "`CIMS`.`Public_Info` (`informationid`, `public_userid`, `PublicForAll`) "
+                        + "VALUES ('" + info[0] + "', '" + info[1] + "', '" + info[2] + "');";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("sendinformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<Information> GetAllPublicInformation(int userId) {
+        ArrayList<Information> info = new ArrayList<>();
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Public_Info WHERE PublicForAll = 1 "
+                        + "OR (public_UserId = '" + userId + "' AND PublicForAll = 0);";
+                ResultSet rs = executeQuery(query);
+                while (rs.next()) {
+                    int infoId = rs.getInt("informationid");
+                    info.add(getInformationById(infoId));
+                }
+            } catch (SQLException e) {
+                System.out.println("GetAllPublicInformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return info;
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="Roadmaps">
+    /**
+     *
+     * @param o a taskId
+     * @return a arraylist with roadmaps
+     */
+    public ArrayList<Roadmap> getRoadmapByTaskId(Object o) {
+        if (!(o instanceof Integer)) {
+            return null;
+        }
+
+        ArrayList<Roadmap> roadmaps = new ArrayList<>();
+        int taskId = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.AssignedRoadmap WHERE taskId='" + taskId + "';";
+                ResultSet rs = executeQuery(query);
+                while (rs.next()) {
+                    int roadmapId = rs.getInt("roadmapid");
+                    roadmaps.add(getRoadmapById(roadmapId));
+                }
+            } catch (SQLException e) {
+                System.out.println("getRoadmapByTaskId: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return roadmaps;
+    }
+
+    /**
+     * gets roadmap by id
+     *
+     * @param o a specific roadmapId
+     * @return a roadmap
+     */
+    public Roadmap getRoadmapById(Object o) {
+        if (!(o instanceof Integer)) {
+            return null;
+        }
+
+        Roadmap roadmap = null;
+        int roadmapId = (Integer) o;
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT * FROM CIMS.Roadmap WHERE id='" + roadmapId + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+
+                roadmap = new Roadmap(roadmapId, name, description);
+            } catch (SQLException e) {
+                System.out.println("getProgress: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return roadmap;
+    }
+
+    /**
+     * gives all roadmaps
+     *
+     * @return all roadmaps
+     */
+    public ArrayList<Information> getAllRoadmaps() {
+        ArrayList<Information> info = new ArrayList<>();
+
+        if (openConnection()) {
+            try {
+                String query = "SELECT id FROM CIMS.Roadmap;";
+                ResultSet rs = executeQuery(query);
+                while (rs.next()) {
+                    info.add(getInformationById(rs.getInt("id")));
+                }
+            } catch (SQLException e) {
+                System.out.println("GetAllRoadmaps: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return info;
+    }
+
+    /**
+     * Creates a roadmap
+     *
+     * @param o objectarray with strings "name", "description"
+     * @return returns if success
+     */
+    public boolean createRoadmap(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] roadmap = (Object[]) o;
+
+        //name,description
+        if (!(roadmap[0] instanceof String) || !(roadmap[1] instanceof String)) {
+            return false;
+        }
+
+        if (openConnection()) {
+            try {
+                String query = "`CIMS`.`Roadmap` (`name`, `description`) "
+                        + "VALUES ('" + roadmap[0] + "', '" + roadmap[1] + "');";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("createRoadmap: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
+    }
+
+    /**
+     * function to assign a Roadmap
+     *
+     * @param o object array value 0 taskId other values RoadmapIds
+     * @return boolean if success
+     */
+    public boolean assignRoadmap(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] objects = (Object[]) o;
+
+        if (objects[0] instanceof Integer) {
+            return false;
+        }
+
+        if (openConnection()) {
+            for (int i = 1; i < objects.length; i++) {
+                try {
+                    String query = "SELECT * FROM CIMS.AssignedRoadmap "
+                            + "WHERE roadmapid='" + objects[i] + "' AND taskid= '" + objects[0] + "';";
+                    ResultSet rs = executeQuery(query);
+                    if (rs == null) {
+                        query = "INSERT INTO CIMS.AssignedRoadmap (roadmapId, taskid) "
+                                + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
+                        executeNonQuery(query);
+                    } else {
+                        query = "DELETE FROM CIMS.AssignedRoadmap "
+                                + "WHERE roadmapid='" + objects[i] + "' AND taskid = '" + objects[0] + "';";
+                        executeNonQuery(query);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("assignTask: " + e.getMessage());
+                }
+            }
+            closeConnection();
+        }
+
+        return true;
+    }
+//</editor-fold>
 }
