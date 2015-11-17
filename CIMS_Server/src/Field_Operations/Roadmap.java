@@ -5,11 +5,13 @@
  */
 package Field_Operations;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jense
  */
-public class Roadmap {
+public class Roadmap implements Serializable{
     private int roadmapId;
     private String name;
     private String description;
