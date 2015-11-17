@@ -22,7 +22,7 @@ import Situational_Awareness.Information;
 /**
  * Database connection class
  *
- * @author Bas Koch
+ * @author Jense Schouten
  */
 public class DatabaseMediator {
 
@@ -84,7 +84,7 @@ public class DatabaseMediator {
         statement.executeUpdate(query);
     }
 
-    //<editor-fold defaultstate="collapsed" desc="users">
+    //<editor-fold defaultstate="collapsed" desc="user">
     /**
      * Check if the user information that is entered is correct.
      *
@@ -147,7 +147,13 @@ public class DatabaseMediator {
         return new User();
     }
 
-    public User getUser(int userID) {
+    /**
+     * gets a user by id
+     *
+     * @param userID id of the user to be load
+     * @return a user
+     */
+    public User getUserById(int userID) {
         if (openConnection()) {
             try {
                 String query = "SELECT * FROM CIMS.User WHERE id='" + userID + "';";
@@ -172,7 +178,13 @@ public class DatabaseMediator {
         return null;
     }
 
-    public PublicUser getPublicUser(int userID) {
+    /**
+     * gets a public user
+     *
+     * @param userID gets public user by UserId
+     * @return a public user
+     */
+    public PublicUser getPublicUserById(int userID) {
         if (openConnection()) {
             try {
                 String query = "SELECT * FROM CIMS.Public_User WHERE id='" + userID + "';";
@@ -194,6 +206,13 @@ public class DatabaseMediator {
         return null;
     }
 
+    /**
+     * Creates a public user
+     *
+     * @param o a object array, format: //firstname, lastname, Bsn-number and
+     * password
+     * @return boolean if success or not
+     */
     public boolean createPublicUser(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -222,6 +241,11 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Gets all public users
+     *
+     * @return a array list with all public users
+     */
     public ArrayList<PublicUser> GetAllPublicUsers() {
         ArrayList< PublicUser> publicUsers = new ArrayList<>();
 
@@ -230,7 +254,7 @@ public class DatabaseMediator {
                 String query = "SELECT id FROM CIMS.Public_User;";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    publicUsers.add(getPublicUser(rs.getInt("id")));
+                    publicUsers.add(getPublicUserById(rs.getInt("id")));
                 }
             } catch (SQLException e) {
                 System.out.println("getTaskLists: " + e.getMessage());
@@ -242,17 +266,25 @@ public class DatabaseMediator {
     }
 
 //</editor-fold>
-    public Task getTask(Object o) {
+    
+    //<editor-fold defaultstate="collapsed" desc="Task">
+    /**
+     * Gets Task by id
+     *
+     * @param o TaskId of a task
+     * @return a task
+     */
+    public Task getTaskById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
 
         Task t = null;
-        int i = (Integer) o;
+        int taskId = (Integer) o;
 
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Task where id ='" + i + "';";
+                String query = "SELECT * FROM CIMS.Task where id ='" + taskId + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
@@ -284,13 +316,19 @@ public class DatabaseMediator {
         return t;
     }
 
+    /**
+     * Loads the lists of a task
+     *
+     * @param t Specific task where we need the lists from
+     * @return a compleet task with lists
+     */
     public Task getTaskLists(Task t) {
         if (openConnection()) {
             try {
                 String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + t.getTaskID() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    t.addUnit(getUnit(rs.getInt("unitid")));
+                    t.addUnit(getUnitById(rs.getInt("unitid")));
                 }
             } catch (SQLException e) {
                 System.out.println("getTaskLists: " + e.getMessage());
@@ -314,7 +352,13 @@ public class DatabaseMediator {
         return t;
     }
 
-    public ArrayList<Task> getTaskListByUser(int userID) {
+    /**
+     * Gets all tasks of a user
+     *
+     * @param userId userId of a user
+     * @return array list with tasks
+     */
+    public ArrayList<Task> getTaskListByUser(int userId) {
         ArrayList<Task> tlist = new ArrayList<>();
         if (openConnection()) {
             try {
@@ -322,11 +366,11 @@ public class DatabaseMediator {
                         + "FROM CIMS.Task t, CIMS.Task_Unit tu, CIMS.Unit_Containment uc "
                         + "WHERE tu.unitid = uc.unitid AND tu.taskid = t.id AND "
                         + "uc.`type`= 'U' AND t.`status` != 'Completed' AND t.`status` != 'Cancelled' "
-                        + "AND tu.accepted IS NULL AND uc.containmentid ='" + userID + "';";
+                        + "AND tu.accepted IS NULL AND uc.containmentid ='" + userId + "';";
                 ResultSet rs = executeQuery(query);
                 Task t;
                 while (rs.next()) {
-                    t = getTask(rs.getInt("taskid"));
+                    t = getTaskById(rs.getInt("taskid"));
                     tlist.add(getTaskLists(t));
                 }
             } catch (SQLException e) {
@@ -338,6 +382,12 @@ public class DatabaseMediator {
         return tlist;
     }
 
+    /**
+     * Updates a status of a task
+     *
+     * @param o object[] with taskId and string status
+     * @return if success or not
+     */
     public boolean updateTaskStatus(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -363,6 +413,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * gets all active and inactive tasks
+     *
+     * @param o Integer active or inactive
+     * @return array list of tasks
+     */
     public ArrayList<Task> getActiveInactiveTasks(Object o) {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!(o instanceof Integer)) {
@@ -376,7 +432,7 @@ public class DatabaseMediator {
                 String query = "SELECT id FROM CIMS.Task WHERE active='" + active + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    tasks.add(getTask(rs.getInt("id")));
+                    tasks.add(getTaskById(rs.getInt("id")));
                 }
             } catch (SQLException e) {
                 System.out.println("getActiveInactiveTasks: " + e.getMessage());
@@ -387,6 +443,13 @@ public class DatabaseMediator {
         return tasks;
     }
 
+    /**
+     * Creates a task
+     *
+     * @param o object array format: `description`, `name`, `urgency` and
+     * `location`
+     * @return boolean if success or not
+     */
     public boolean createTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -412,6 +475,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Removes a task from db
+     *
+     * @param o TaskId of task to remove
+     * @return if success or not
+     */
     public boolean removeTask(Object o) {
         if (!(o instanceof Integer)) {
             return false;
@@ -434,6 +503,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Assign a task to multiple unit
+     *
+     * @param o object array with taskId first records units other records
+     * @return if success or not
+     */
     public boolean assignTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -466,6 +541,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * alter location of a task
+     *
+     * @param o object array with id of task and location
+     * @return boolean if success or not
+     */
     public boolean alterLocationTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -491,6 +572,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * accept or deny a task
+     *
+     * @param o object array with unitId, taskId, acceptOrDeny and a reason
+     * @return boolean if success
+     */
     public boolean acceptOrDeniedTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -514,9 +601,16 @@ public class DatabaseMediator {
         }
         return true;
     }
+//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Units">
-    public Unit getUnit(Object o) {
+    //<editor-fold defaultstate="collapsed" desc="Unit">
+    /**
+     * gets unit by UnitId
+     *
+     * @param o UnitId witch unit you want.
+     * @return returns a unit item
+     */
+    public Unit getUnitById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -545,6 +639,12 @@ public class DatabaseMediator {
         return u;
     }
 
+    /**
+     * Loads all lists of a unit
+     *
+     * @param u unit where the lists need to be load from
+     * @return a compleet unit.
+     */
     public Unit getUnitLists(Unit u) {
         if (openConnection()) {
             try {
@@ -556,13 +656,13 @@ public class DatabaseMediator {
                             u.addMaterial(getMaterialById(rs.getInt("containmentid")));
                             break;
                         case "U":
-                            u.addUser(getUser(rs.getInt("containmentid")));
+                            u.addUser(getUserById(rs.getInt("containmentid")));
                             break;
                         case "V":
                             u.addVehicle(getVehicleById(rs.getInt("containmentid")));
                             break;
                         default:
-                            u.acceptTask(getTask(rs.getInt("containmentid")));
+                            u.acceptTask(getTaskById(rs.getInt("containmentid")));
                             break;
                     }
                 }
@@ -575,6 +675,12 @@ public class DatabaseMediator {
         return u;
     }
 
+    /**
+     * Gets all active units
+     *
+     * @param b boolean for active or inactive
+     * @return a arraylist of units
+     */
     public ArrayList<Unit> getActiveInactiveUnits(Object b) {
         if (!(b instanceof Boolean)) {
             return null;
@@ -603,7 +709,7 @@ public class DatabaseMediator {
         }
         ArrayList<Unit> uList = new ArrayList<>();
         for (int i : hs) {
-            uList.add(getUnit(i));
+            uList.add(getUnitById(i));
         }
         return uList;
     }
@@ -701,7 +807,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
 
                 rs.next();
-                u = getUnit(rs.getInt("UnitID"));
+                u = getUnitById(rs.getInt("UnitID"));
                 u = getUnitLists(u);
 
             } catch (SQLException e) {
@@ -862,7 +968,7 @@ public class DatabaseMediator {
                 int availibility = rs.getInt("availibility");
                 int type = rs.getInt("type");
 
-                m = new Material(materialID, name, state, getUser(availibility), type);
+                m = new Material(materialID, name, state, getUserById(availibility), type);
             } catch (SQLException e) {
                 System.out.println("getMaterial: " + e.getMessage());
             } finally {
@@ -875,7 +981,7 @@ public class DatabaseMediator {
 
     //<editor-fold defaultstate="collapsed" desc="Vehicle">
     /**
-     * gets progress by VehicleId
+     * gets vehicle by VehicleId
      *
      * @param o VehicleId witch vehicle you want.
      * @return returns a vehicle item
@@ -900,7 +1006,7 @@ public class DatabaseMediator {
                 String state = rs.getString("state");
                 int availibility = rs.getInt("v.availibility");
 
-                v = new Vehicle(vehicleID, name, licence, state, getUser(availibility), 0);
+                v = new Vehicle(vehicleID, name, licence, state, getUserById(availibility), 0);
             } catch (SQLException e) {
                 System.out.println("getVehicle: " + e.getMessage());
             } finally {
@@ -936,7 +1042,7 @@ public class DatabaseMediator {
                 int taskID = rs.getInt("taskid");
                 String message = rs.getString("message");
 
-                p = new Progress(progressID, getUser(userID), getTask(taskID), message);
+                p = new Progress(progressID, getUserById(userID), getTaskById(taskID), message);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -971,7 +1077,7 @@ public class DatabaseMediator {
                 int userID = rs.getInt("userid");
                 String message = rs.getString("message");
 
-                progresses.add(new Progress(progressID, getUser(userID), getTask(taskID), message));
+                progresses.add(new Progress(progressID, getUserById(userID), getTaskById(taskID), message));
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1103,7 +1209,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
-                Task task = getTask(rs.getInt("taskId"));
+                Task task = getTaskById(rs.getInt("taskId"));
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String location = rs.getString("location");
@@ -1112,7 +1218,7 @@ public class DatabaseMediator {
                 int danger = rs.getInt("danger");
                 int impact = rs.getInt("impect");
                 String image = rs.getString("image");
-                Network.PublicUser pu = getPublicUser(rs.getInt("public_UserId"));
+                Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
                         casualties, toxic, danger, impact, image, pu);
@@ -1146,7 +1252,7 @@ public class DatabaseMediator {
                 rs.next();
 
                 int infoId = rs.getInt("ïd");
-                Task task = getTask(taskId);
+                Task task = getTaskById(taskId);
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String location = rs.getString("location");
@@ -1155,7 +1261,7 @@ public class DatabaseMediator {
                 int danger = rs.getInt("danger");
                 int impact = rs.getInt("impect");
                 String image = rs.getString("image");
-                Network.PublicUser pu = getPublicUser(rs.getInt("public_UserId"));
+                Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
                         casualties, toxic, danger, impact, image, pu);

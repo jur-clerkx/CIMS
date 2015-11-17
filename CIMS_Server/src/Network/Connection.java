@@ -112,7 +112,7 @@ public class Connection {
         switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                t = dbMediator.getTask(o);
+                t = dbMediator.getTaskById(o);
                 if (t != null) {
                     t = dbMediator.getTaskLists(t);
                 }
@@ -120,7 +120,7 @@ public class Connection {
                 break;
             case "FOUS2":
                 o = in.readObject();
-                u = dbMediator.getUnit(o);
+                u = dbMediator.getUnitById(o);
                 if (u != null) {
                     u = dbMediator.getUnitLists(u);
                 }
