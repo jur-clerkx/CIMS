@@ -76,18 +76,19 @@ public class CreateTaskController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
-        /*try {
-            if (OperatorMainController.myController.user != null) {
-                //TODO: populate available units from connection to observablelist
-                AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+        if(ConnectionController.user != null)
+        {
+            try {
+                AvailableList.addAll(OperatorMainController.myController.getActiveUnits());
+                if(!AvailableList.isEmpty())
+                {
+                    listviewAvailableUnits.setItems(AvailableList);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (IOException ex) {
-
-            Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        //listviewAvailableUnits.setItems(AvailableList);
-        task = null;
+        }
+//        task = null;
     }
 
     @FXML
@@ -124,8 +125,23 @@ public class CreateTaskController implements Initializable {
         int taskID = Integer.parseInt(textfieldTaskID.getText());
         String taskName = textfieldTaskName.getText();
         String taskLocation = textfieldTaskLocation.getText();
-        String urgency = comboboxUrgency.getSelectionModel().getSelectedItem().toString();
-        String status = comboboxStatus.getSelectionModel().getSelectedItem().toString();
+        int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
+        String urgencyCode = "";
+        String statusCode = "";
+        int status = comboboxStatus.getSelectionModel().getSelectedIndex();
+        if (urgency == 1) {
+            urgencyCode = "Low";
+        } else if (urgency == 2) {
+            urgencyCode = "Medium";
+        } else if (urgency == 3) {
+            urgencyCode = "High";
+        }
+
+        if (status == 1) {
+            statusCode = "open";
+        } else if (status == 2) {
+            statusCode = "closed";
+        }
         String description = textareaDescription.getText();
 
         if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
@@ -134,14 +150,14 @@ public class CreateTaskController implements Initializable {
             alert.setContentText("You forgot to fill in the tasks ID, name or location.");
             alert.showAndWait();
         } else {
-            task = new Task(taskID, taskName, urgency, status, taskLocation, description);
-            OperatorMainController.myController.createTask(taskID, taskName, urgency, status, taskLocation, description);
+            task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
+            OperatorMainController.myController.createTask( taskName, urgencyCode, description);
             ArrayList<Integer> assignedUnits = new ArrayList<>();
             assignedUnits.add(task.getTaskID());
-            for (Unit u: AssignedList) {
+            for (Unit u : AssignedList) {
                 assignedUnits.add(u.getUnitID());
             }
-            
+
             OperatorMainController.myController.assignTask(assignedUnits.toArray());
         }
     }

@@ -77,9 +77,9 @@ public class UnassignedTasksController implements Initializable {
         tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
         tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));*/
 
-        tableId.setCellValueFactory(new PropertyValueFactory<Task, Number>("taskID"));
-        tableTaskName.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<Task, String>("status")); 
+        tableId.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+        tableTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory<>("status")); 
         //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, Number>("units")); - TODO Fill units Column
 
         tableviewUnassignedTasks.setItems(tasks);        

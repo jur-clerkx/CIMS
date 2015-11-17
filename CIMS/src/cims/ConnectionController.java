@@ -194,7 +194,7 @@ public class ConnectionController {
             String outputMessage = "FOOP4";
             int type = 1;
             output.writeObject(outputMessage);
-            output.writeObject(1);
+            output.writeObject(true);
             return (ArrayList<Unit>) input.readObject();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -292,21 +292,16 @@ public class ConnectionController {
      * @return True if the task was created
      * @throws IOException
      */
-    boolean createTask(int taskID, String name, String urgency, String status, String location, String description) throws IOException {
-        Object[] myTask = new Object[12];
-        myTask[0] = "TaskID";
-        myTask[1] = taskID;
+    boolean createTask( String name, String urgency, String description) throws IOException {
+        Object[] myTask = new Object[6];
+      
+        myTask[0] = "Description";
+        myTask[1] = description;
         myTask[2] = "Name";
         myTask[3] = name;
         myTask[4] = "Urgency";
         myTask[5] = urgency;
-        myTask[6] = "Status";
-        myTask[7] = status;
-        myTask[8] = "Location";
-        myTask[9] = location;
-        myTask[10] = "Description";
-        myTask[11] = description;
-
+        
         try {
             String outputMessage = "FOOP6";
 
@@ -522,7 +517,7 @@ public class ConnectionController {
         return roadmaps;
     }
     
-    public static boolean assignRoadmaps(int unitid,int roadmapID) throws IOException{
+    public static boolean assignRoadmaps(int taskID,int roadmapID) throws IOException{
         Object[] message = new Object[2];
         
         try

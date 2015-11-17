@@ -39,8 +39,8 @@ public class Task implements Serializable {
      * @param description Not longer than 255 characters or null
      */
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        if (taskID > 0 && (name != null && name.length() < 255) && (urgency != null && (urgency == "High" || urgency == "Medium" || urgency == "Low"))
-                && (status != null && status.length() < 255) && (location != null && location.length() < 255) && (description != null && description.length() < 255)) {
+        if (taskID > 0 && (name != null && name.length() < 255) && (urgency != null && (urgency.equals("High") || urgency.equals("Medium") || urgency.equals("Low")))
+                && (status != null ) && (location != null && location.length() < 255) && (description != null && description.length() < 255)) {
             this.taskID = taskID;
             this.name = name;
             this.urgency = urgency;
