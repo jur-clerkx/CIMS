@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="270.0" prefWidth="343.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="cims.field.operations.unit.app.FXMLSendFeedbackController">
+    <stylesheets>
+        <URL value="@fxmlsendfeedback.css" />
+    </stylesheets>
+   <children>
+      <TextArea fx:id="textAreaMessage" layoutX="14.0" layoutY="14.0" prefHeight="195.0" prefWidth="316.0" />
+      <Button layoutX="134.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleSendFeedback" text="Send feedback" />
+   </children>
+</AnchorPane>

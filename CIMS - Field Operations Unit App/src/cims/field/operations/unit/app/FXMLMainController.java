@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -34,6 +35,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sun.rmi.runtime.Log;
 
 /**
  * FXML Controller class
@@ -95,6 +97,15 @@ public class FXMLMainController implements Initializable, Observer {
     @FXML
     private Label labelLastUpdate;
 
+    @FXML
+    private Button buttonSendFeedback;
+    @FXML
+    private Button buttonCancelled;
+    @FXML
+    private Button buttonInProgress;
+    @FXML
+    private Button buttonCompleted;
+
     int counter = 0;
     ArrayList<Task> tasks;
     Task currentTask;
@@ -150,7 +161,21 @@ public class FXMLMainController implements Initializable, Observer {
         if (currentTask != null) {
             if (currentTask.getStatus() == "Completed" || currentTask.getStatus() == "Cancelled") {
                 currentTask = null;
+                buttonSendFeedback.setDisable(true);
+                buttonCancelled.setDisable(true);
+                buttonInProgress.setDisable(true);
+                buttonCompleted.setDisable(true);
             }
+            
+            buttonSendFeedback.setDisable(false);
+            buttonCancelled.setDisable(false);
+            buttonInProgress.setDisable(false);
+            buttonCompleted.setDisable(false);
+        } else {
+            buttonSendFeedback.setDisable(true);
+            buttonCancelled.setDisable(true);
+            buttonInProgress.setDisable(true);
+            buttonCompleted.setDisable(true);
         }
 
         //Fill current task
@@ -230,8 +255,8 @@ public class FXMLMainController implements Initializable, Observer {
     public void handleUpdateStatus(ActionEvent ae) {
         if (currentTask != null) {
             CIMSFieldOperationsUnitApp.con.updateTaskStatus(currentTask.getTaskID(), ((Button) ae.getSource()).getText());
+            currentTask.setStatus(((Button) ae.getSource()).getText());
         }
-        currentTask.setStatus(((Button) ae.getSource()).getText());
         updatePanes(null);
     }
 
@@ -281,13 +306,83 @@ public class FXMLMainController implements Initializable, Observer {
     public void handleShowUnitInfo(ActionEvent ae) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLUnitOverview.fxml"));
-
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
         } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Opens a new window to show the selected task info
+     *
+     * @param ae
+     */
+    public void handleShowTaskInfo(ActionEvent ae) {
+        //Get the selected task
+        CIMSFieldOperationsUnitApp.taskInfo = (Task) tableViewTasks.getSelectionModel().getSelectedItem();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLShowTaskInfo.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Opens a new window to give the user the ability to send feedback to the
+     * operator
+     *
+     * @param ae
+     */
+    public void handleSendFeedback(ActionEvent ae) {
+        CIMSFieldOperationsUnitApp.currentTask = currentTask;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLShowTaskInfo.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            //Hide current window
+            Stage currentstage = (Stage) textAreaReasonDeny.getScene().getWindow();
+            currentstage.hide();
+            //Wait till popup window 
+            stage.showAndWait();
+            currentstage.show();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Opens a new window that shows the roadmap to the user
+     *
+     * @param ae
+     */
+    public void handleShowRoadmap(ActionEvent ae) {
+        CIMSFieldOperationsUnitApp.currentTask = currentTask;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLShowRoadmap.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            //Hide current window
+            Stage currentstage = (Stage) textAreaReasonDeny.getScene().getWindow();
+            currentstage.hide();
+            //Wait till popup window 
+            stage.showAndWait();
+            updatePanes(null);
+            currentstage.show();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

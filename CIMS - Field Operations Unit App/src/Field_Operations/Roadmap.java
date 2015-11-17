@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Jense
  */
-public class Roadmap implements Serializable {
+public class Roadmap implements Serializable{
     private int roadmapId;
     private String name;
     private String description;

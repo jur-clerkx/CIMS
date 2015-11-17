@@ -5,6 +5,7 @@
  */
 package cims.field.operations.unit.app;
 
+import Field_Operations.Task;
 import domain.ConnectionRunnable;
 import domain.PropertiesMediator;
 import javafx.application.Application;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 public class CIMSFieldOperationsUnitApp extends Application {
     public static PropertiesMediator props;
     public static ConnectionRunnable con;
+    public static Task currentTask;
+    public static Task taskInfo;
     
     @Override
     public void start(Stage stage) throws Exception {
