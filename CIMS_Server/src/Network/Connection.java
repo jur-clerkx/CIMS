@@ -28,8 +28,8 @@ public class Connection {
     private DatabaseMediator dbMediator;
 
     /**
-     * creates an instance of this class, creates the thread for getting
-     * messages from the clients. it also sets the room or lobby id.
+     * creates an instance of this class, creates the thread for executing
+     * functions and authorizing users.
      *
      * @param socket Connection socket
      * @throws IOException
@@ -80,15 +80,23 @@ public class Connection {
                     } catch (IOException | ClassNotFoundException | NumberFormatException ex) {
                     }
                 }
-                Logger.getLogger(Connection.class.getName()).log(Level.INFO, "Connection closed: {0}", socket.getLocalAddress());
+                Logger.getLogger(Connection.class.getName()).log(Level.INFO, "Connection closed: {0}", 
+                        socket.getLocalAddress());
                 closeconn();
             }
         };
 
-        read.setDaemon(false); // terminate when main ends
+        read.setDaemon(true); // terminate when main ends
         read.start();
     }
 
+    /**
+     * To delegate to functions
+     *
+     * @param s Function name
+     * @throws IOException throws a IOException
+     * @throws ClassNotFoundException if cannot cast to class
+     */
     private void RequestData(String s) throws IOException, ClassNotFoundException {
         String command = s.substring(0, 4);
         switch (command.toUpperCase()) {
@@ -105,6 +113,13 @@ public class Connection {
 
     }
 
+    /**
+     * field Operations functions
+     *
+     * @param s Function name
+     * @throws IOException throws a IOException
+     * @throws ClassNotFoundException if cannot cast to class
+     */
     private void fieldOperations(String s) throws IOException, ClassNotFoundException {
         Object o;
         Task t;
@@ -237,6 +252,13 @@ public class Connection {
         }
     }
 
+    /**
+     * situational Awareness functions
+     *
+     * @param s Function name
+     * @throws IOException throws a IOException
+     * @throws ClassNotFoundException if cannot cast to class
+     */
     private void situationalAwareness(String s) throws IOException, ClassNotFoundException {
         Object o;
         switch (s.toUpperCase()) {
@@ -292,6 +314,13 @@ public class Connection {
         }
     }
 
+    /**
+     * Logs a user in on db.
+     *
+     * @param username Username of a user
+     * @param password Password of a user
+     * @return if login is success or not
+     */
     private boolean login(String username, String password) {
         if (username == null || password == null) {
             return false;
@@ -313,6 +342,9 @@ public class Connection {
         return false;
     }
 
+    /**
+     * Closes the connection
+     */
     public void closeconn() {
         try {
             in.close();
@@ -321,6 +353,9 @@ public class Connection {
         }
     }
 
+    /**
+     * Kills the connection
+     */
     public void kill() {
         reading = false;
         try {
@@ -334,6 +369,11 @@ public class Connection {
         return this.reading;
     }
 
+    /**
+     * Gets the userId of a logged on user
+     *
+     * @return a userId
+     */
     public int getUserId() {
         return this.user.getUser_ID();
     }
