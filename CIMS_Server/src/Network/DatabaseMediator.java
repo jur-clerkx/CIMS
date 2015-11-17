@@ -553,13 +553,13 @@ public class DatabaseMediator {
                 while (rs.next()) {
                     switch (rs.getString("type")) {
                         case "M":
-                            u.addMaterial(getMaterial(rs.getInt("containmentid")));
+                            u.addMaterial(getMaterialById(rs.getInt("containmentid")));
                             break;
                         case "U":
                             u.addUser(getUser(rs.getInt("containmentid")));
                             break;
                         case "V":
-                            u.addVehicle(getVehicle(rs.getInt("containmentid")));
+                            u.addVehicle(getVehicleById(rs.getInt("containmentid")));
                             break;
                         default:
                             u.acceptTask(getTask(rs.getInt("containmentid")));
@@ -608,6 +608,12 @@ public class DatabaseMediator {
         return uList;
     }
 
+    /**
+     * disbands a unit
+     *
+     * @param o unitId of unit to disband
+     * @return if succes or not
+     */
     public boolean disbandUnit(Object o) {
         if (!(o instanceof Integer)) {
             return false;
@@ -630,8 +636,14 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Creates a unit
+     *
+     * @param o objectarray with, format: name, location, specials, PoliceCars,
+     * FireTrucks, Healthcars, PolicePersons, FirePersons, HealthPersons
+     * @return returns if success
+     */
     public boolean createUnit(Object o) {
-        //objects[name, location, specials, PoliceCars, FireTrucks, Healthcars, PolicePersons, FirePersons, HealthPersons] 
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -674,12 +686,18 @@ public class DatabaseMediator {
         return false;
     }
 
-    public Unit getUnitListByUser(int userID) {
+    /**
+     * gets a specific unit
+     *
+     * @param o a userId
+     * @return a unit
+     */
+    public Unit getUnitListByUserId(int userId) {
         Unit u = null;
         if (openConnection()) {
             try {
                 String query = "SELECT UnitID FROM CIMS.Unit_Containment "
-                        + "WHERE `type`= 'U' AND containmentid='" + userID + "';";
+                        + "WHERE `type`= 'U' AND containmentid='" + userId + "';";
                 ResultSet rs = executeQuery(query);
 
                 rs.next();
@@ -695,6 +713,13 @@ public class DatabaseMediator {
         return u;
     }
 
+    /**
+     * Sets specialslist of task
+     *
+     * @param o type of special
+     * @param unitID id of the unit the special should be in
+     * @return boolean if success.
+     */
     private boolean setSpecials(Object o, int unitID) {
         if (!(o instanceof String)) {
             return false;
@@ -724,6 +749,14 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Sets carslist of task
+     *
+     * @param o int limit off cars to load
+     * @param type department of car
+     * @param unitID id of the unit the car is in
+     * @return boolean if success.
+     */
     private boolean setCars(Object o, String type, int unitID) {
         if (!(o instanceof Integer)) {
             return false;
@@ -760,6 +793,14 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Sets personlist of task
+     *
+     * @param o int limit off persons to load
+     * @param type department of person
+     * @param unitID id of the unit the person works in
+     * @return boolean if success.
+     */
     private boolean setPersons(Object o, String type, int unitID) {
         if (!(o instanceof Integer)) {
             return false;
@@ -795,7 +836,14 @@ public class DatabaseMediator {
     }
     //</editor-fold>
 
-    public Material getMaterial(Object o) {
+    //<editor-fold defaultstate="collapsed" desc="Material">
+    /**
+     * gets progress by materialId
+     *
+     * @param o materialId witch material you want.
+     * @return returns a material item
+     */
+    public Material getMaterialById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -823,8 +871,16 @@ public class DatabaseMediator {
         }
         return m;
     }
+//</editor-fold>
 
-    public Vehicle getVehicle(Object o) {
+    //<editor-fold defaultstate="collapsed" desc="Vehicle">
+    /**
+     * gets progress by VehicleId
+     *
+     * @param o VehicleId witch vehicle you want.
+     * @return returns a vehicle item
+     */
+    public Vehicle getVehicleById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
@@ -853,7 +909,15 @@ public class DatabaseMediator {
         }
         return v;
     }
+//</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Progress">
+    /**
+     * gets progress by ProgressId
+     *
+     * @param o ProgressId witch progress you want.
+     * @return returns a progress item
+     */
     public Progress getProgressById(Object o) {
         if (!(o instanceof Integer)) {
             return null;
@@ -882,12 +946,19 @@ public class DatabaseMediator {
         return p;
     }
 
-    public Progress getProgressByTask(Object o) {
+    /**
+     * gets progress by taskId
+     *
+     * @param o taskId witch progress you want.
+     * @return returns a progress item
+     */
+    public ArrayList<Progress> getProgressByTask(Object o) {
         if (!(o instanceof Integer)) {
             return null;
         }
 
-        Progress p = null;
+        ArrayList<Progress> progresses = new ArrayList<>();
+
         int taskID = (Integer) o;
 
         if (openConnection()) {
@@ -900,21 +971,27 @@ public class DatabaseMediator {
                 int userID = rs.getInt("userid");
                 String message = rs.getString("message");
 
-                p = new Progress(progressID, getUser(userID), getTask(taskID), message);
+                progresses.add(new Progress(progressID, getUser(userID), getTask(taskID), message));
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
                 closeConnection();
             }
         }
-        return p;
+        return progresses;
     }
 
+    /**
+     * Function for creation of progress
+     *
+     * @param userId id of current user
+     * @param o object array with progress, format: taskId, message
+     * @return
+     */
     public boolean createProgress(int userId, Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
-        //id,id message
 
         Object[] progress = (Object[]) o;
 
@@ -936,12 +1013,21 @@ public class DatabaseMediator {
         }
         return true;
     }
+//</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Information">
+    /**
+     * Creates information.
+     *
+     * @param userId ID of user that is logged on
+     * @param o object array with all the information format:
+     * name,description,location,casualties, toxic, danger, impect, image
+     * @return a boolean true if success false if not.
+     */
     public boolean createInformation(int userId, Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
-        //name,description,location,casualties, toxic, danger, impect, image
 
         Object[] info = (Object[]) o;
 
@@ -971,6 +1057,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * Deletes information from db
+     *
+     * @param o param information id
+     * @return gives true if success false so not
+     */
     public boolean removeInformation(Object o) {
         if (!(o instanceof Integer)) {
             return false;
@@ -992,6 +1084,7 @@ public class DatabaseMediator {
     }
 
     /**
+     * gets information by id
      *
      * @param o object as int request id
      * @return information
@@ -1099,6 +1192,13 @@ public class DatabaseMediator {
         return info;
     }
 
+    /**
+     * Makes information for a specific user public
+     *
+     * @param o object array as an informationId, a public user id and an int if
+     * public for all (1) of only me (0).
+     * @return
+     */
     public boolean sendinformation(Object o) {
         if (!(o instanceof Object[])) {
             return false;
@@ -1110,7 +1210,12 @@ public class DatabaseMediator {
         }
         //infoId, p_uId, PublicForAll
         if (!(info[0] instanceof Integer) || !(info[1] instanceof Integer)
-                || !(info[3] instanceof Integer)) {
+                || !(info[2] instanceof Integer)) {
+            return false;
+        }
+
+        int i = (int) info[2];
+        if (i != 1 && i != 0) {
             return false;
         }
 
@@ -1128,6 +1233,12 @@ public class DatabaseMediator {
         return true;
     }
 
+    /**
+     * gets all public information.
+     *
+     * @param userId id of logged in user
+     * @return arraylist with information
+     */
     public ArrayList<Information> GetAllPublicInformation(int userId) {
         ArrayList<Information> info = new ArrayList<>();
 
@@ -1148,6 +1259,7 @@ public class DatabaseMediator {
         }
         return info;
     }
+//</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Roadmaps">
     /**
@@ -1218,15 +1330,15 @@ public class DatabaseMediator {
      *
      * @return all roadmaps
      */
-    public ArrayList<Information> getAllRoadmaps() {
-        ArrayList<Information> info = new ArrayList<>();
+    public ArrayList<Roadmap> getAllRoadmaps() {
+        ArrayList<Roadmap> roadmaps = new ArrayList<>();
 
         if (openConnection()) {
             try {
                 String query = "SELECT id FROM CIMS.Roadmap;";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    info.add(getInformationById(rs.getInt("id")));
+                    roadmaps.add(getRoadmapById(rs.getInt("id")));
                 }
             } catch (SQLException e) {
                 System.out.println("GetAllRoadmaps: " + e.getMessage());
@@ -1234,7 +1346,7 @@ public class DatabaseMediator {
                 closeConnection();
             }
         }
-        return info;
+        return roadmaps;
     }
 
     /**

@@ -95,7 +95,7 @@ public class Connection {
             case "FOUS":
                 fieldOperations(s);
                 break;
-            case "FOUP":
+            case "FOOP":
                 fieldOperations(s);
                 break;
             case "SAPU":
@@ -146,7 +146,7 @@ public class Connection {
                 }
                 break;
             case "FOUS6":
-                write(dbMediator.getUnitListByUser(this.user.getUser_ID()));
+                write(dbMediator.getUnitListByUserId(this.user.getUser_ID()));
                 break;
             case "FOUS7":
                 o = in.readObject();
@@ -226,7 +226,7 @@ public class Connection {
                     write("Could not create roadmap");
                 }
                 break;
-            case "FOUP10":
+            case "FOOP10":
                 o = in.readObject();
                 if (dbMediator.assignRoadmap(o)) {
                     write("Roadmap succesfully assigned");
