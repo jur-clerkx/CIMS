@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -28,15 +29,25 @@ public class OperatorMainController implements Initializable {
 
     static ConnectionController myController;
     @FXML
-    private AnchorPane MainField;
+    public AnchorPane MainField;
     @FXML
-    private Hyperlink HyperLinkInactiveTask;
+    private TitledPane TMenu;
     @FXML
-    private Hyperlink HyperLinkActiveTask;
+    private Hyperlink HyperLinkITask;
     @FXML
-    private Hyperlink HyperLinkInactiveUnit;
+    private Hyperlink HyperLinkATask;
     @FXML
-    private Hyperlink HyperLinkActiveUnit;
+    private TitledPane UMenu;
+    @FXML
+    private Hyperlink HyperLinkAUnit;
+    @FXML
+    private Hyperlink HyperLinkIUnit;
+    @FXML
+    private TitledPane UMenu1;
+    @FXML
+    private Hyperlink createRoadmap;
+    @FXML
+    private Hyperlink AssignRoadmap;
 
     /**
      * Initializes the controller class.
@@ -67,6 +78,10 @@ public class OperatorMainController implements Initializable {
                 node = (Node) FXMLLoader.load(getClass().getResource("InactiveUnits.fxml"));
             } else if (url.contains("UMenu")) {
                 node = (Node) FXMLLoader.load(getClass().getResource("Units.fxml"));
+            } else if (url.contains("create")) {
+                node = (Node) FXMLLoader.load(getClass().getResource("RoadmapCreate.fxml"));
+            } else if (url.contains("Assign")) {
+                node = (Node) FXMLLoader.load(getClass().getResource("AssignRoadmap.fxml"));
             }
 
             if (node != null) {

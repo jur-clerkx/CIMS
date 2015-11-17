@@ -5,6 +5,7 @@
  */
 package cims;
 
+import Field_Operations.Roadmap;
 import Network.User;
 import Field_Operations.Task;
 import Field_Operations.Unit;
@@ -39,7 +40,7 @@ public class ConnectionController {
 
     public ConnectionController() throws IOException {
         user = null;
-        serverAddress = "145.93.61.124";
+        serverAddress = "145.93.60.237";
         //serverAddress = "145.93.101.166";
         Login("NickMullen", "0000");
     }
@@ -236,7 +237,7 @@ public class ConnectionController {
             int type = 1;
             output.writeObject(outputMessage);
             output.writeObject(1);
-            ArrayList<Task> tasks =(ArrayList<Task>) input.readObject();
+            ArrayList<Task> tasks = (ArrayList<Task>) input.readObject();
             return tasks;
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -472,6 +473,68 @@ public class ConnectionController {
         } catch (IOException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param username
+     * @param Description
+     * @param password
+     * @return
+     * @throws java.io.IOException
+     */
+    public static boolean createRoadmap(String username, String Description) throws IOException, ClassNotFoundException {
+
+        Object[] roadmap = new Object[2];
+        roadmap[0] = username;
+        roadmap[1] = Description;
+        try {
+            String outputMessage = "FOUS10";
+
+            output.writeObject(outputMessage);
+            output.writeObject(roadmap);
+            input.readObject();
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+            return false;
+        }
+    }
+
+    public static ArrayList<Roadmap> getRoadmaps() throws IOException {
+        ArrayList<Roadmap> roadmaps = new ArrayList();
+        try {
+            String outputMessage = "FOUS9";
+            output.writeObject(outputMessage);
+            try {
+                ArrayList<Roadmap> myRoads = (ArrayList<Roadmap>)input.readObject();
+                roadmaps.addAll(myRoads);
+                
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return roadmaps;
+    }
+    
+    public static boolean assignRoadmaps(int unitid,int roadmapID) throws IOException{
+        Object[] message = new Object[2];
+        
+        try
+        {
+            String outputMessage = "FOOP10";
+            output.writeObject(outputMessage);
+            output.writeObject(message);
+            return true;
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE,null,ex);
             return false;
         }
     }

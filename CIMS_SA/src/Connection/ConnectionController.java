@@ -31,7 +31,7 @@ public class ConnectionController {
     public ConnectionController() throws IOException {
 
         user = null;
-        serverAddress = "145.93.61.124";
+        serverAddress = "145.93.60.237";
         Login("NickMullen", "0000");
     }
 
@@ -57,7 +57,6 @@ public class ConnectionController {
 
     public static boolean[] Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
-        s.setSoTimeout(2000);
         output = new ObjectOutputStream(s.getOutputStream());
         input = new ObjectInputStream(s.getInputStream());
 
