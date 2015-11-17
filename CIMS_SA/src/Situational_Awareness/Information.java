@@ -22,7 +22,7 @@ public class Information {
     private boolean toxic;
     private int danger;
     private int impact;
-    private Blob image;
+    private String image;
     private ArrayList<PublicUser> users;
 
     public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact) {
@@ -44,7 +44,7 @@ public class Information {
 
     }
 
-    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact, Blob image) {
+    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact, String image) {
         this(ID, taskID, description, location, casualities, toxic, danger, impact);
         this.image = image;
     }
@@ -81,7 +81,7 @@ public class Information {
         return impact;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 

@@ -40,6 +40,21 @@ public class ConnectionController {
         output.close();
     }
 
+    public static ArrayList<Information> getPublicInformation(int Userid) throws IOException {
+        ArrayList<Information> returnInfo = new ArrayList();
+        try {
+            String outputMessage = "SAPU10";
+            output.writeObject(outputMessage);
+            output.writeObject(Userid);
+            returnInfo = (ArrayList<Information>) input.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+            KillConnection();
+        }
+        return returnInfo;
+    }
+    
+
     public static boolean[] Login(String username, String password) throws IOException {
         s = new Socket(serverAddress, 1234);
         s.setSoTimeout(2000);
