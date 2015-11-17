@@ -88,7 +88,6 @@ public class SendInformationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //TODO
         ToggleGroup groupOne = new ToggleGroup();
         ToggleGroup groupTwo = new ToggleGroup();
 
@@ -138,6 +137,14 @@ public class SendInformationController implements Initializable {
                 radioMedium.setSelected(false);
                 radioLarge.setSelected(false);
             }
+            Image image;
+            if(selectedInformation.getImage() != null) {
+                image = new Image(selectedInformation.getImage());
+            } else {
+                image = new Image("Application/untitled.png");
+            }
+            
+        imageView.setImage(image);
         });
         comboUser.setOnAction((event) -> {
             selectedUser = comboUser.getSelectionModel().getSelectedItem();
@@ -146,9 +153,7 @@ public class SendInformationController implements Initializable {
 
         });
 
-        // TODO: Change image to dynamic
-        Image image = new Image("Application/untitled.png");
-        imageView.setImage(image);
+       
 
         //} 
             /*catch (IOException ex) {
