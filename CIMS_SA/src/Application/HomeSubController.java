@@ -52,14 +52,15 @@ public class HomeSubController implements Initializable {
             listAvailableInformation.setItems(failedTest);
             listAvailableInformation.refresh();
 
-//            try {
-//                if (ConnectionController.user != null) {
-//                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getUserInfo());
-//                    listAvailableInformation.setItems(myObservableList);
-//                }
-//            } catch (IOException ex) {
-//                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            if (ConnectionController.user != null) {
+                try {
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(ConnectionController.getPublicInformation(ConnectionController.user.getUser_ID()));
+                    listAvailableInformation.setItems(myObservableList);
+                } catch (IOException ex) {
+                    Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         } else {
             ObservableList<Information> failedTest = FXCollections.observableArrayList();
             failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
@@ -81,8 +82,8 @@ public class HomeSubController implements Initializable {
     private void btnRefresh(MouseEvent event) {
         try {
             if (ConnectionController.user instanceof PublicUser) {
-//            ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getUserInfo());
-//            listAvailableInformation.setItems(myObservableList);
+                ObservableList<Information> myObservableList = FXCollections.observableArrayList(ConnectionController.getPublicInformation(ConnectionController.user.getUser_ID()));
+                listAvailableInformation.setItems(myObservableList);
             } else {
 
                 ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
@@ -99,13 +100,29 @@ public class HomeSubController implements Initializable {
         try {
             Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
 
-            LoginGuiController.SelectedInfoID = info.getID();
-            Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
-            thisAnchor.getChildren().setAll(node);
+            if (info.getID() != -1) {
+                LoginGuiController.SelectedInfoID = info.getID();
+                Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
 
+                thisAnchor.getChildren().setAll(node);
+            }
         } catch (IOException ex) {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    @FXML
+    private void DoubleClick(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            try {
+                Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
+
+                LoginGuiController.SelectedInfoID = info.getID();
+                Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
+                thisAnchor.getChildren().setAll(node);
+            } catch (IOException ex) {
+                Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

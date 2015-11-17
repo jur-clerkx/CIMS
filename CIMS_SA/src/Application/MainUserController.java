@@ -5,6 +5,7 @@
  */
 package Application;
 
+import static Application.MainOperatorController.SelectedInformationID;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Nick van der Mullen
  */
 public class MainUserController implements Initializable {
+
     @FXML
     private Button btnHome;
     @FXML
@@ -49,11 +51,11 @@ public class MainUserController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
 
     @FXML
     private void btnHome(MouseEvent event) {
-         try {
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -63,7 +65,7 @@ public class MainUserController implements Initializable {
 
     @FXML
     private void addInformation(MouseEvent event) {
-         try {
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("CreateInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -73,8 +75,8 @@ public class MainUserController implements Initializable {
 
     @FXML
     private void btnEditInformation(MouseEvent event) {
-         try {
-            Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
+        try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("SendInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,13 +85,15 @@ public class MainUserController implements Initializable {
 
     @FXML
     private void btnSearch(MouseEvent event) {
-        
-         try {
-            Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
+
+        SelectedInformationID = Integer.parseInt(txtSearch.getText());
+
+        try {
+            Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

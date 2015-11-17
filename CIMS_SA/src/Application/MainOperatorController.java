@@ -41,7 +41,7 @@ public class MainOperatorController implements Initializable {
     @FXML
     private AnchorPane AnchorMain;
     
-    public int SelectedInformationID = 0;
+    public static  int SelectedInformationID = 0;
 
     /**
      * Initializes the controller class.
@@ -99,6 +99,8 @@ public class MainOperatorController implements Initializable {
 
     @FXML
     private void btnSearch(MouseEvent event) {
+        
+        SelectedInformationID = Integer.parseInt(txtSearch.getText());
         
              try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
