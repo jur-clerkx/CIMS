@@ -1475,7 +1475,7 @@ public class DatabaseMediator {
 
         if (openConnection()) {
             try {
-                String query = "`CIMS`.`Roadmap` (`name`, `description`) "
+                String query = "INSERT INTO `CIMS`.`Roadmap` (`name`, `description`) "
                         + "VALUES ('" + roadmap[0] + "', '" + roadmap[1] + "');";
                 executeNonQuery(query);
             } catch (SQLException e) {
@@ -1520,7 +1520,7 @@ public class DatabaseMediator {
                         executeNonQuery(query);
                     }
                 } catch (SQLException e) {
-                    System.out.println("assignTask: " + e.getMessage());
+                    System.out.println("assignRoadmap: " + e.getMessage());
                 }
             }
             closeConnection();
