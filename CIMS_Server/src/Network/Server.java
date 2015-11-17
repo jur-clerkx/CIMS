@@ -35,10 +35,18 @@ public class Server {
         }
     }
 
+    /**
+     * gets if server is searching for users.
+     *
+     * @return if still searching for users
+     */
     public boolean getSearching() {
         return this.searching;
     }
 
+    /**
+     * starts the server
+     */
     public void start() {
         searching = true;
         Thread connectClients;
@@ -66,6 +74,11 @@ public class Server {
         connectClients.start();
     }
 
+    /**
+     * Cleans the connection list, removing all inactive users
+     *
+     * @param userid id of a inactive user.
+     */
     private void cleanUpList(int userid) {
         Platform.runLater(new Runnable() {
             @Override
@@ -76,6 +89,9 @@ public class Server {
 
     }
 
+    /**
+     * Stops the server
+     */
     public void stop() {
         searching = false;
         try {
