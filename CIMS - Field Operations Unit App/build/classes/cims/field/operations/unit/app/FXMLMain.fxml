@@ -15,7 +15,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="401.0" prefWidth="599.0">
                      <children>
-                        <GridPane fx:id="TaskInfo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+                        <GridPane fx:id="TaskInfo" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
@@ -81,17 +81,17 @@
                               </VBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="124.0" text="Cancelled">
+                                    <Button fx:id="buttonCancelled" mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="124.0" text="Cancelled">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="128.0" text="In Progress">
+                                    <Button fx:id="buttonInProgress" mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="128.0" text="In Progress">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="117.0" text="Completed">
+                                    <Button fx:id="buttonCompleted" mnemonicParsing="false" onAction="#handleUpdateStatus" prefHeight="25.0" prefWidth="117.0" text="Completed">
                                        <HBox.margin>
                                           <Insets top="10.0" />
                                        </HBox.margin>
@@ -140,6 +140,8 @@
                                     </TextArea>
                                  </children>
                               </VBox>
+                              <Button fx:id="buttonSendFeedback" mnemonicParsing="false" onAction="#handleSendFeedback" text="Send feedback" GridPane.rowIndex="2" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleShowRoadmap" text="Show roadmaps" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="103.0" />
@@ -168,7 +170,7 @@
                               <TableColumn fx:id="tableColumnUrgency" editable="false" minWidth="0.0" prefWidth="164.0" resizable="false" text="Urgency" />
                           </columns>
                         </TableView>
-                        <Button layoutX="523.0" layoutY="363.0" mnemonicParsing="false" text="Show info" />
+                        <Button layoutX="523.0" layoutY="363.0" mnemonicParsing="false" onAction="#handleShowTaskInfo" text="Show info" />
                         <Button fx:id="buttonAcceptTask" layoutX="518.0" layoutY="43.0" mnemonicParsing="false" onAction="#handleAcceptTask" text="Accept Task" />
                         <Button fx:id="buttonDenyTask" layoutX="524.0" layoutY="104.0" mnemonicParsing="false" onAction="#handleDenyTask" text="Deny task" />
                         <TextArea fx:id="textAreaReasonDeny" layoutX="515.0" layoutY="135.0" prefHeight="200.0" prefWidth="85.0" promptText="Reason denied task" />
@@ -270,7 +272,7 @@
                         </HBox>
                         <HBox alignment="CENTER" layoutY="247.0" prefHeight="153.0" prefWidth="608.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Show Unit Info" />
+                              <Button mnemonicParsing="false" onAction="#handleShowUnitInfo" text="Show Unit Info" />
                            </children>
                         </HBox>
                      </children></AnchorPane>

@@ -8,6 +8,7 @@ package cims.field.operations.unit.app;
 import Field_Operations.Unit;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,9 +56,9 @@ public class FXMLUnitOverviewController implements Initializable {
             textFieldUnitName.setText(unitInfo.getName());
             textAreaUnitDescription.setText(unitInfo.getDescription());
             textFieldUnitShift.setText(unitInfo.getShift());
-            listViewUnitUsers.setItems((ObservableList) unitInfo.getMembers());
-            listViewUnitMaterials.setItems((ObservableList) unitInfo.getMaterials());
-            listViewUnitVehicles.setItems((ObservableList) unitInfo.getVehicles());
+            listViewUnitUsers.setItems(FXCollections.observableArrayList(unitInfo.getMembers()));
+            listViewUnitMaterials.setItems(FXCollections.observableArrayList(unitInfo.getMaterials()));
+            listViewUnitVehicles.setItems(FXCollections.observableArrayList(unitInfo.getVehicles()));
         }
     }    
     

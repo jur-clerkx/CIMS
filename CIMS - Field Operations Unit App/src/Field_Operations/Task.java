@@ -26,8 +26,16 @@ public class Task implements Serializable {
     public boolean isAccepted() {
         return accepted;
     }
-    private ArrayList<Progress> progress;
-
+    private ArrayList<Progress> progressList;
+    /**
+     * Constructs a task object
+     * @param taskID Greater than 0
+     * @param name Not longer than 255 characters or null
+     * @param urgency Low, Medium or High
+     * @param status Not longer than 255 characters or null
+     * @param location Not longer than 255 characters or null
+     * @param description Not longer than 255 characters or null
+     */
     public Task(int taskID, String name, String urgency, String status, String location, String description) {
         this.taskID = taskID;
         this.name = name;
@@ -36,7 +44,7 @@ public class Task implements Serializable {
         this.location = location;
         this.description = description;
         this.accepted = false;
-        this.progress = new ArrayList<>();
+        this.progressList = new ArrayList<>();
         this.units = new ArrayList<>();
     }
 
@@ -106,11 +114,15 @@ public class Task implements Serializable {
         }
         return null;
     }
-
+    
+    public ArrayList<Progress> getProgressList() {
+        return this.progressList;
+    }
+    
     /**
      * Adds a unit to the list of units working on the task
      *
-     * @param unit
+     * @param unit can't be in the list already
      */
     public void addUnit(Unit unit) {
         if (!this.units.contains(unit)) {
@@ -121,7 +133,7 @@ public class Task implements Serializable {
     /**
      * Removes a unit from the list of units working on the task
      *
-     * @param unit
+     * @param unit has to be in the list
      */
     public void delUnit(Unit unit) {
         if (this.units.contains(unit)) {
@@ -139,7 +151,7 @@ public class Task implements Serializable {
     /**
      * Sets the status of a task
      *
-     * @param status
+     * @param status Not longer than 255 characters or null
      */
     public void operateStatus(String status) {
         this.setStatus(status);
@@ -148,11 +160,11 @@ public class Task implements Serializable {
     /**
      * Updates the progress of a task
      *
-     * @param progress
+     * @param progress not null
      */
     public void updateProgress(Progress progress) {
         if (progress != null) {
-            this.progress.add(progress);
+            this.progressList.add(progress);
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package domain;
 
+import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import Network.User;
@@ -226,6 +227,31 @@ public class ConnectionRunnable extends Observable implements Runnable {
     }
     
     /**
+     * Sends feedback of the current task to the operator
+     *
+     * @param taskID The id of the task, must be positive
+     * @param feedback The feedback about the task
+     */
+    public synchronized void sendFeedback(int taskID, String feedback) {
+        if (!(taskID < 0 || feedback.isEmpty() || getStatus() != 1)) {
+            try {
+                sendData((Object) "FOUS7");
+                Object[] params = new Object[2];
+                params[0] = taskID;
+                params[1] = feedback;
+                sendData(params);
+                System.out.println((String)readData());
+            } catch (IOException ex) {
+                System.out.println("Send feedback failed!");
+                setStatus((byte)2);
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Send feedback failed!");
+                setStatus((byte)2);
+            }
+        }
+    }
+    
+    /**
      * Accepts or denies the task for the given user
      * @param taskID The task id of the task
      * @param accepted Boolean if accepted, false is denied
@@ -259,5 +285,52 @@ public class ConnectionRunnable extends Observable implements Runnable {
      */
     public synchronized void quitConnection() {
         this.keepRunning = false;
+    }
+    
+    /**
+     * Gets the roadmaps that are assigned to the current task
+     * @return A list of roadmaps, can be null if connection is lost
+     */
+    public synchronized ArrayList<Roadmap> getRoadmapsByTask() {
+        if (getStatus() == 1) {
+            try {
+                sendData("FOUS8");
+                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
+                return (ArrayList<Roadmap>) readData();
+            } catch (IOException ex) {
+                System.out.println("IO exception!");
+                setStatus((byte) 2);
+                return null;
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Class not found exception!");
+                setStatus((byte) 2);
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Gets all  the roadmaps in the system
+     * @return A list of roadmaps, can be null if connection is lost
+     */
+    public synchronized ArrayList<Roadmap> getAllRoadmaps() {
+        if (getStatus() == 1) {
+            try {
+                sendData("FOUS9");
+                return (ArrayList<Roadmap>) readData();
+            } catch (IOException ex) {
+                System.out.println("IO exception!");
+                setStatus((byte) 2);
+                return null;
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Class not found exception!");
+                setStatus((byte) 2);
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }
