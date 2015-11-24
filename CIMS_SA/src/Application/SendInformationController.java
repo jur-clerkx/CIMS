@@ -99,66 +99,63 @@ public class SendInformationController implements Initializable {
         radioMedium.setToggleGroup(groupTwo);
         radioLarge.setToggleGroup(groupTwo);
 
-        //try {
-        //myController = new ConnectionController();
-        //obsInformationList.addAll(myController.getAllInformation());
-        //obsUserList.addAll(myController.getUsers());
+        try {
+            myController = new ConnectionController();
+            obsInformationList.addAll(myController.getAllInformation());
+            obsUserList.addAll(myController.getUsers());
+
         // Dummy Data:
-        obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
-        obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
-        
-        comboUser.setItems(obsUserList);
-        ComboInformation.setItems(obsInformationList);
+            //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
+            //obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
+            comboUser.setItems(obsUserList);
+            ComboInformation.setItems(obsInformationList);
 
-        ComboInformation.setOnAction((event) -> {
-            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
-            txtLocation.setText(selectedInformation.getLocation());
-            txtDescription.setText(selectedInformation.getDescription());
-            txtNRofVictims.setText("" + selectedInformation.getCasualities());
-            if (selectedInformation.getToxic() == false) {
-                radioNo.setSelected(true);
-                radioYes.setSelected(false);
-            } else {
-                radioNo.setSelected(false);
-                radioYes.setSelected(true);
-            }
-            txtArea.setText("" + selectedInformation.getImpact());
+            ComboInformation.setOnAction((event) -> {
+                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+                txtLocation.setText(selectedInformation.getLocation());
+                txtDescription.setText(selectedInformation.getDescription());
+                txtNRofVictims.setText("" + selectedInformation.getCasualities());
+                if (selectedInformation.getToxic() == false) {
+                    radioNo.setSelected(true);
+                    radioYes.setSelected(false);
+                } else {
+                    radioNo.setSelected(false);
+                    radioYes.setSelected(true);
+                }
+                txtArea.setText("" + selectedInformation.getImpact());
 
-            if (selectedInformation.getDanger() == 3) {
-                radioSmall.setSelected(false);
-                radioMedium.setSelected(false);
-                radioLarge.setSelected(true);
-            } else if (selectedInformation.getDanger() == 2) {
-                radioSmall.setSelected(false);
-                radioMedium.setSelected(true);
-                radioLarge.setSelected(false);
-            } else {
-                radioSmall.setSelected(true);
-                radioMedium.setSelected(false);
-                radioLarge.setSelected(false);
-            }
-            Image image;
-            if(selectedInformation.getImage() != null) {
-                image = new Image(selectedInformation.getImage());
-            } else {
-                image = new Image("Application/untitled.png");
-            }
-            
-        imageView.setImage(image);
-        });
-        comboUser.setOnAction((event) -> {
-            selectedUser = comboUser.getSelectionModel().getSelectedItem();
-            txtName.setText(""+selectedUser.getUser_ID());
-            txtLastname.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
+                if (selectedInformation.getDanger() == 3) {
+                    radioSmall.setSelected(false);
+                    radioMedium.setSelected(false);
+                    radioLarge.setSelected(true);
+                } else if (selectedInformation.getDanger() == 2) {
+                    radioSmall.setSelected(false);
+                    radioMedium.setSelected(true);
+                    radioLarge.setSelected(false);
+                } else {
+                    radioSmall.setSelected(true);
+                    radioMedium.setSelected(false);
+                    radioLarge.setSelected(false);
+                }
+                Image image;
+                if (selectedInformation.getImage() != null) {
+                    image = new Image(selectedInformation.getImage());
+                } else {
+                    image = new Image("Application/untitled.png");
+                }
 
-        });
+                imageView.setImage(image);
+            });
+            comboUser.setOnAction((event) -> {
+                selectedUser = comboUser.getSelectionModel().getSelectedItem();
+                txtName.setText("" + selectedUser.getUser_ID());
+                txtLastname.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
 
-       
+            });
 
-        //} 
-            /*catch (IOException ex) {
-         Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
+        } catch (IOException ex) {
+            Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
