@@ -40,7 +40,7 @@ public class ConnectionController {
 
     public ConnectionController() throws IOException {
         user = null;
-        serverAddress = "145.93.60.237";
+        serverAddress = "localhost";
         //serverAddress = "145.93.101.166";
         Login("NickMullen", "0000");
     }

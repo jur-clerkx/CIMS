@@ -6,7 +6,7 @@
 package Connection;
 
 import Situational_Awareness.Information;
-import Situational_Awareness.User;
+import Network.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ConnectionController {
 
     private static String serverAddress;
-    public static User user;
+    public static PublicUser user;
     private static Socket s;
     static ObjectOutputStream output;
     static ObjectInputStream input;
@@ -31,8 +31,8 @@ public class ConnectionController {
     public ConnectionController() throws IOException {
 
         user = null;
-        serverAddress = "145.93.60.237";
-        Login("NickMullen", "0000");
+        serverAddress = "localhost";
+        // Login("NickMullen", "0000");
     }
 
     private static void KillConnection() throws IOException {
@@ -46,59 +46,46 @@ public class ConnectionController {
             String outputMessage = "SAPU10";
             output.writeObject(outputMessage);
             output.writeObject(Userid);
-            returnInfo = (ArrayList<Information>) input.readObject();
+            Object o = input.readObject();
+            if (o instanceof ArrayList) {
+                returnInfo = (ArrayList<Information>) o;
+            }
+            System.out.println(o);
+
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
         }
         return returnInfo;
     }
-    
 
     public static boolean[] Login(String username, String password) throws IOException {
-        s = new Socket(serverAddress, 1234);
-        output = new ObjectOutputStream(s.getOutputStream());
-        input = new ObjectInputStream(s.getInputStream());
-
-        boolean reading = true;
-        Thread read;
-        read = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    String[] myObject = new String[2];
-                    myObject[0] = username;
-                    myObject[1] = password;
-                    output.writeObject(myObject);
-
-                    user = (User) input.readObject();
-                    System.out.println(user.toString());
-                } catch (IOException ex) {
-                    Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
-                    try {
-                        KillConnection();
-                    } catch (IOException ex1) {
-                        Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex1);
-                    }
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-        };
-        read.start();
         boolean[] result = new boolean[2];
-//        if(user instaceof PublicUser)
-//        {
-//            result[0] = true;
-//            result[1] = false;
-//        }
-//        else if( user != null)
-//        {
-//            result[0] = true;
-//            result[1] = false;
-//        }
+        try {
+            s = new Socket(serverAddress, 1234);
+            output = new ObjectOutputStream(s.getOutputStream());
+            input = new ObjectInputStream(s.getInputStream());
 
+            boolean reading = true;
+
+            String[] myObject = new String[2];
+            myObject[0] = username;
+            myObject[1] = password;
+            output.writeObject(myObject);
+
+            user = (PublicUser) input.readObject();
+            System.out.println("test");
+            if (user instanceof PublicUser) {
+                result[0] = true;
+                result[1] = false;
+            } else if (user != null) {
+                result[0] = true;
+                result[1] = false;
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
 
@@ -195,10 +182,15 @@ public class ConnectionController {
             thisOutputMessage[7] = URL;
 
             output.writeObject(outputMessage);
-            output.writeObject(thisOutputMessage);
+            Object[] message = new Object[2];
+            message[0] = ConnectionController.user;
+            message[1] = thisOutputMessage;
+            output.writeObject(message);
             result = input.readObject();
 
         } catch (IOException | ClassNotFoundException ex1) {
+            Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex1);
+
             System.out.println("Error creating new Information");
         }
 

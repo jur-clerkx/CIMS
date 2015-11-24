@@ -96,7 +96,7 @@ public class CreateInformationController implements Initializable {
         }
         if (LoginGuiController.myController.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText())
                 == true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Information succesfully created");
             alert.showAndWait();

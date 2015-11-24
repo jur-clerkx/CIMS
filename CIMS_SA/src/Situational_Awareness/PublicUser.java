@@ -35,25 +35,6 @@ public class PublicUser implements Serializable {
         return this.lastname;
     }
 
-
-
-//    public int getID() {
-//        return ID;
-//    }
-//
-//    public String getBsnNummer() {
-//        return bsnNummer;
-//    }
-//
-//    
-//    public boolean changePassword(String password) {
-//        if (password != null && password.length() < 30) {
-//            this.password = password;
-//            return true;
-//        }
-//        return false;
-//    }
-    
     public boolean authorized() {
         return this.authorized;
     }
