@@ -76,7 +76,7 @@ public class MainUserController implements Initializable {
     @FXML
     private void btnEditInformation(MouseEvent event) {
         try {
-            Node node = (Node) FXMLLoader.load(getClass().getResource("SendInformation.fxml"));
+            Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);

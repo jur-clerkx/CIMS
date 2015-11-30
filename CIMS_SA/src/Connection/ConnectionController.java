@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ConnectionController {
 
     private static String serverAddress;
-    public static PublicUser user;
+    public static User user;
     private static Socket s;
     static ObjectOutputStream output;
     static ObjectInputStream input;
@@ -73,9 +73,9 @@ public class ConnectionController {
             myObject[1] = password;
             output.writeObject(myObject);
 
-            user = (PublicUser) input.readObject();
+            user = (User) input.readObject();
             System.out.println("test");
-            if (user instanceof PublicUser) {
+            if (user instanceof User) {
                 result[0] = true;
                 result[1] = false;
             } else if (user != null) {
@@ -117,9 +117,19 @@ public class ConnectionController {
      */
     public ArrayList<Information> getAllInformation() throws IOException {
         try {
+            ArrayList<Information> info = new ArrayList();
             String outputMessage = "SAPU7";
             output.writeObject(outputMessage);
-            return (ArrayList<Information>) input.readObject();
+            Object o = input.readObject();
+            if(o instanceof String)
+            {
+                info = null;
+            }
+            else
+            {
+                info = (ArrayList<Information>) o;
+            }
+            return info;
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ConnectionController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -181,11 +191,9 @@ public class ConnectionController {
             thisOutputMessage[6] = impact;
             thisOutputMessage[7] = URL;
 
+            
             output.writeObject(outputMessage);
-            Object[] message = new Object[2];
-            message[0] = ConnectionController.user;
-            message[1] = thisOutputMessage;
-            output.writeObject(message);
+            output.writeObject(thisOutputMessage);
             result = input.readObject();
 
         } catch (IOException | ClassNotFoundException ex1) {

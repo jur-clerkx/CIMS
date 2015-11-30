@@ -187,7 +187,7 @@ public class DatabaseMediator {
     public PublicUser getPublicUserById(int userID) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Public_User WHERE id='" + userID + "';";
+                String query = "SELECT * FROM CIMS.Public_user WHERE id='" + userID + "';";
                 ResultSet rs = executeQuery(query);
                 if (rs.next()) {
                     int user_ID = rs.getInt("id");
@@ -1137,12 +1137,12 @@ public class DatabaseMediator {
 
         Object[] info = (Object[]) o;
 
-        if (!(info[0] instanceof Integer) || !(info[1] instanceof String)
-                || !(info[2] instanceof String) || !(info[3] instanceof String)
-                || !(info[4] instanceof Integer) || !(info[5] instanceof Integer)
-                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
-            return false;
-        }
+//        if (!(info[0] instanceof Integer) || !(info[1] instanceof String)
+//                || !(info[2] instanceof String) || !(info[3] instanceof String)
+//                || !(info[4] instanceof Integer) || !(info[5] instanceof Integer)
+//                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
+//            return false;
+//        }
 
         if (openConnection()) {
             try {
@@ -1208,8 +1208,10 @@ public class DatabaseMediator {
                 String query = "SELECT * FROM CIMS.Information WHERE id='" + infoId + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
-
-                Task task = getTaskById(rs.getInt("taskId"));
+                Task task = null;
+                if(rs.getInt("taskId") != 0){
+                    task = getTaskById(rs.getInt("taskId"));
+                }
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String location = rs.getString("location");

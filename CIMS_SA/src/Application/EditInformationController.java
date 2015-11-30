@@ -43,7 +43,7 @@ public class EditInformationController implements Initializable {
     @FXML
     private Button btnCancel;
     @FXML
-    private ComboBox<?> comboInformation;
+    private ComboBox<Information> comboInformation;
     @FXML
     private TextField txtName;
     @FXML
@@ -90,6 +90,7 @@ public class EditInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
+        comboInformation.getItems().addAll(obsInformationList);
 
         if (LoginGuiController.SelectedInfoID != 0) {
             try {

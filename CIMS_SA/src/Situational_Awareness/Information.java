@@ -5,56 +5,62 @@
  */
 package Situational_Awareness;
 
-import java.sql.Blob;
-import java.util.ArrayList;
+import Field_Operations.Task;
+import Network.PublicUser;
+import java.io.Serializable;
 
 /**
  *
  * @author sebas
  */
-public class Information {
+public class Information implements Serializable{
 
     private int ID;
-    private int taskID;
+    private Task task;
+    private String name;
     private String description;
     private String location;
     private int casualties;
-    private boolean toxic;
+    private int toxic;
     private int danger;
     private int impact;
     private String image;
-    private ArrayList<PublicUser> users;
+    private Network.PublicUser user;
 
-    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact) {
-        if (ID > 0 && taskID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities > 0 
-                && (danger == 0 || danger == 1 || danger == 2) && impact > 0 ) {
+    public Information(int ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user) {
+        if (ID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities >= 0 && toxic >= 0
+                && danger >= 0  && impact > 0 && impact < 10000) {
             this.ID = ID;
-            this.taskID = taskID;
+            this.task = task;
             this.description = description;
             this.location = location;
             this.casualties = casualities;
             this.toxic = toxic;
             this.danger = danger;
             this.impact = impact;
-            this.image = null;
-            users = new ArrayList<PublicUser>();
+            this.image = image;
+            this.user = user;
+            this.name = name;
         } else {
             throw new IllegalArgumentException("Information Exception: A parameter wasn't accepted.");
         }
 
     }
 
-    public Information(int ID, int taskID, String description, String location, int casualities, boolean toxic, int danger, int impact, String image) {
-        this(ID, taskID, description, location, casualities, toxic, danger, impact);
-        this.image = image;
+    public String getName() {
+        return name;
+    }
+
+    public PublicUser getUser() {
+        return user;
     }
 
     public int getID() {
         return ID;
     }
 
-    public int getTaskID() {
-        return taskID;
+    public Task getTaskID() {
+        return task;
     }
 
     public String getDescription() {
@@ -69,7 +75,7 @@ public class Information {
         return casualties;
     }
 
-    public boolean getToxic() {
+    public int getToxic() {
         return toxic;
     }
 
@@ -85,13 +91,13 @@ public class Information {
         return image;
     }
 
-    public ArrayList<PublicUser> getUsers() {
-        return users;
-    }
-
+    @Override
     public String toString() {
-        return "Task " + taskID + " on location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
-
+        if(task != null)
+        {
+        return "Task " + task.getName() + " on location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
+        }
+        else return "On location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
     }
 
     /**
@@ -109,65 +115,42 @@ public class Information {
     }
 
     /**
-     * Change toxicity
+     * Change the toxicity level
+     *
+     * @param number bigger than 0
+     * @return True if changed
      */
-    public void changeToxicity() {
-        this.toxic = !this.toxic;
+    public boolean changeToxicity(int number) {
+        if (number > 0) {
+            this.toxic = number;
+            return true;
+        }
+        return false;
     }
-    
+
     /**
      * Change the danger level
      *
-     * @param number 1, 2 or 3
+     * @param number bigger than 0
      * @return True if changed
      */
     public boolean changeDanger(int number) {
-        if (number == 1 || number == 2 || number == 3) {
+        if (number > 0) {
             this.danger = number;
             return true;
         }
         return false;
     }
 
-    /**
-     * Add a user to the information
-     * @param user not null
-     * @return True if added
-     */
-    public boolean addUser(PublicUser user) {
-        if (user != null) {
-            users.add(user);
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Removes a user from the list
-     * @param user not null and in list
-     * @return True if deleted
-     */
-    public boolean delUser(PublicUser user) {
-        if (user != null) {
-            if (users.contains(user)) {
-                this.users.remove(user);
-                return true;
-            } else {
-                throw new IllegalArgumentException("User isn't listed.");
-            }
-        } else {
-            throw new IllegalArgumentException("No user selected.");
-        }
-    }
-
     public String getFirstName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return name.substring(0, name.indexOf(" "));
     }
 
     public String getLastName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return name.substring(name.indexOf(" ")+1) ;
     }
 
     public String getURL() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.image;
     }
 }

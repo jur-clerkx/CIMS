@@ -101,7 +101,10 @@ public class SendInformationController implements Initializable {
 
         try {
             myController = new ConnectionController();
+            if(myController.getAllInformation() != null)
+            {
             obsInformationList.addAll(myController.getAllInformation());
+            }
             obsUserList.addAll(myController.getUsers());
 
         // Dummy Data:
@@ -115,7 +118,7 @@ public class SendInformationController implements Initializable {
                 txtLocation.setText(selectedInformation.getLocation());
                 txtDescription.setText(selectedInformation.getDescription());
                 txtNRofVictims.setText("" + selectedInformation.getCasualities());
-                if (selectedInformation.getToxic() == false) {
+                if (selectedInformation.getToxic() == 0) {
                     radioNo.setSelected(true);
                     radioYes.setSelected(false);
                 } else {

@@ -48,7 +48,7 @@ public class HomeSubController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         if (ConnectionController.user instanceof PublicUser) {
             ObservableList<Information> failedTest = FXCollections.observableArrayList();
-            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
+            
             listAvailableInformation.setItems(failedTest);
             listAvailableInformation.refresh();
 
@@ -63,7 +63,7 @@ public class HomeSubController implements Initializable {
 
         } else {
             ObservableList<Information> failedTest = FXCollections.observableArrayList();
-            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
+          
             listAvailableInformation.setItems(failedTest);
             listAvailableInformation.refresh();
 
