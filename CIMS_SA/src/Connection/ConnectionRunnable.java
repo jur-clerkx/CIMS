@@ -65,7 +65,15 @@ public class ConnectionRunnable extends Observable implements Runnable {
             sendData(login.split("/"));
 
             //Check if login succeeded
-            user = (PublicUser) readData();
+            Object data =  readData();
+            if(data instanceof PublicUser)
+            {
+                user = (PublicUser)data;
+            }
+            else
+            {
+                user = (User)data;
+            }
 
             if (user == null) {
                 throw new Exception("fail");

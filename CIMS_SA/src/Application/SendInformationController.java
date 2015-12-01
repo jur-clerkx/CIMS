@@ -105,10 +105,6 @@ public class SendInformationController implements Initializable {
             obsInformationList.addAll(CIMS_SA.con.getAllInformation());
             }
             obsUserList.addAll(CIMS_SA.con.getUsers());
-
-        // Dummy Data:
-            //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
-            //obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
             comboUser.setItems(obsUserList);
             ComboInformation.setItems(obsInformationList);
 
