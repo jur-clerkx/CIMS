@@ -90,13 +90,21 @@ public class EditInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
+        try
+        {
+        obsInformationList.addAll(Connection.ConnectionController.getPublicInformation(Connection.ConnectionController.user.getUser_ID()));    
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Error filling combobox");
+        }
         comboInformation.getItems().addAll(obsInformationList);
 
         if (LoginGuiController.SelectedInfoID != 0) {
             try {
                 if (Connection.ConnectionController.user != null) {
                     
-                    obsInformationList.addAll(Connection.ConnectionController.getPublicInformation(Connection.ConnectionController.user.getUser_ID()));                    
+                                      
                     info = LoginGuiController.myController.getInformation(LoginGuiController.SelectedInfoID);
                     txtName.setText(info.getFirstName());
                     txtLastname.setText(info.getLastName());
