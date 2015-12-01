@@ -6,8 +6,8 @@
 package Application;
 
 import Connection.ConnectionRunnable;
+import Network.PublicUser;
 import Network.User;
-import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
@@ -73,7 +73,7 @@ public class LoginGuiController implements Initializable, Observer {
             CIMS_SA.con.addObserver(this);
         }
         if (CIMS_SA.con.getUser() != null) {
-            if (CIMS_SA.con.getUser() instanceof User) {
+            if (CIMS_SA.con.getUser() instanceof PublicUser) {
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
                     Scene scene = new Scene(root);
@@ -127,7 +127,7 @@ public class LoginGuiController implements Initializable, Observer {
                     CIMS_SA.con = con;
 
                     if (CIMS_SA.con.getUser() != null) {
-                        if (CIMS_SA.con.getUser() instanceof User) {
+                        if (CIMS_SA.con.getUser() instanceof PublicUser) {
                             try {
                                 Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
                                 Scene scene = new Scene(root);

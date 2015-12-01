@@ -5,7 +5,7 @@
  */
 package Application;
 
-
+import Situational_Awareness.Information;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
@@ -32,7 +32,8 @@ import javafx.stage.Stage;
  *
  * @author Nick van der Mullen
  */
-public class MainOperatorController implements Initializable,Observer{
+public class MainOperatorController implements Initializable, Observer {
+
     @FXML
     private Button btnHome;
     @FXML
@@ -42,13 +43,13 @@ public class MainOperatorController implements Initializable,Observer{
     @FXML
     private Button btnSendInfo;
     @FXML
-    private TextField txtSearch;
+    public static TextField txtSearch;
     @FXML
     private Button btnSearch;
     @FXML
     private AnchorPane AnchorMain;
-    
-    public static  int SelectedInformationID = 0;
+
+    public static Information info = null;
 
     /**
      * Initializes the controller class.
@@ -62,11 +63,11 @@ public class MainOperatorController implements Initializable,Observer{
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
 
     @FXML
     private void btnHome(MouseEvent event) {
-             try {
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -75,9 +76,8 @@ public class MainOperatorController implements Initializable,Observer{
     }
 
     @FXML
-    private void addInformation(MouseEvent event) 
-    {
-             try {
+    private void addInformation(MouseEvent event) {
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("CreateInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -87,7 +87,7 @@ public class MainOperatorController implements Initializable,Observer{
 
     @FXML
     private void btnEditInformation(MouseEvent event) {
-             try {
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -97,7 +97,8 @@ public class MainOperatorController implements Initializable,Observer{
 
     @FXML
     private void btnSendInfo(MouseEvent event) {
-             try {
+
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("SendInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -107,10 +108,8 @@ public class MainOperatorController implements Initializable,Observer{
 
     @FXML
     private void btnSearch(MouseEvent event) {
-        
-        SelectedInformationID = Integer.parseInt(txtSearch.getText());
-        
-             try {
+        CIMS_SA.number = Integer.parseInt(txtSearch.getText());
+        try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
         } catch (IOException ex) {
@@ -121,30 +120,30 @@ public class MainOperatorController implements Initializable,Observer{
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            @Override
+            public void run() {
+                try {
 
-                        Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
 
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
 
-                        //Close current window
-                        Stage currentstage = (Stage) txtSearch.getScene().getWindow();
-                        currentstage.close();
+                    //Close current window
+                    Stage currentstage = (Stage) txtSearch.getScene().getWindow();
+                    currentstage.close();
 
-                    } catch (IOException ex) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Login failed.");
-                        alert.showAndWait();
-                    }
+                } catch (IOException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Login failed.");
+                    alert.showAndWait();
                 }
-            });
+            }
+        });
     }
-    
+
 }

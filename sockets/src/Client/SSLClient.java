@@ -19,7 +19,7 @@ public class SSLClient {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        SSLSocket client = (SSLSocket) SSLSocketFactory.getDefault().createSocket("localhost", 443);
+        SSLSocket client = (SSLSocket) SSLSocketFactory.getDefault().createSocket("145.93.96.229", 4443);
         client.setEnabledCipherSuites(new String[]{"SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA"});
         InputStream in = client.getInputStream();
         byte[] data = new byte[1024];

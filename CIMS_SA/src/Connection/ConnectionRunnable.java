@@ -10,9 +10,9 @@ import Application.SendInformationController;
 import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
+import Network.PublicUser;
 import Network.User;
 import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,7 +31,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    public User user;
+    public PublicUser user;
     private Unit unit;
     private String serverAddress;
 
@@ -65,7 +65,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             sendData(login.split("/"));
 
             //Check if login succeeded
-            user = (User) readData();
+            user = (PublicUser) readData();
 
             if (user == null) {
                 throw new Exception("fail");
@@ -143,7 +143,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      *
      * @return Can be null if not logged in
      */
-    public synchronized User getUser() {
+    public synchronized PublicUser getUser() {
         return this.user;
     }
 
@@ -169,10 +169,11 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized Information getInformation(int infID) throws IOException {
         if (authorized == 1) {
             try {
-                String outputMessage = "SAPU";
+                String outputMessage = "SAPU6";
                 output.writeObject(outputMessage);
                 output.writeObject(infID);
-                return (Information) input.readObject();
+                Information info = (Information) input.readObject();
+                return info;
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
                 KillConnection();
@@ -192,7 +193,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 ArrayList<Information> info = new ArrayList();
                 sendData("SAPU7");;
-                Object o = read;
+                Object o = readData();
                 if (o instanceof String) {
                     info = null;
                 } else {
@@ -237,8 +238,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized boolean sendInfo(PublicUser user, Information info) throws IOException {
         if (authorized == 1) {
             try {
-                String outputMessage = "SAPU8";
-                output.writeObject(outputMessage);
+                sendData("SAPU8");
                 output.writeObject(user.getUser_ID());
                 output.writeObject(info.getID());
                 return true;
@@ -323,7 +323,6 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU10";
                 output.writeObject(outputMessage);
-                output.writeObject(Userid);
                 Object o = input.readObject();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
@@ -337,5 +336,27 @@ public class ConnectionRunnable extends Observable implements Runnable {
         }
         return returnInfo;
 
+    }
+    
+    public synchronized Information getInfoByID(int id) throws IOException
+    {
+        Information returnInfo = null;
+        if (authorized == 1) {
+            try {
+                String outputMessage = "SAPU5";
+                output.writeObject(outputMessage);
+                output.writeObject(id);
+                Object o = input.readObject();
+                if (o instanceof Information) {
+                    returnInfo = (Information) o;
+                }
+                System.out.println(o);
+
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        }
+        return returnInfo;
     }
 }

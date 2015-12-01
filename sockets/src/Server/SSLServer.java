@@ -24,7 +24,7 @@ public class SSLServer {
     public static void main(String[] args) throws IOException {
         //Set up serversocket
         ServerSocketFactory sf = SSLServerSocketFactory.getDefault();
-        final SSLServerSocket socket = (SSLServerSocket) sf.createServerSocket(443);
+        final SSLServerSocket socket = (SSLServerSocket) sf.createServerSocket(4443);
         System.out.println(Arrays.toString(socket.getSupportedCipherSuites()));
         System.out.println(Arrays.toString(socket.getEnabledCipherSuites()));
         System.out.println("Add new list of enabled");
