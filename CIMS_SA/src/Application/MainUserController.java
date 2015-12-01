@@ -8,24 +8,32 @@ package Application;
 import static Application.MainOperatorController.SelectedInformationID;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Nick van der Mullen
  */
-public class MainUserController implements Initializable {
+public class MainUserController implements Initializable,Observer {
 
     @FXML
     private Button btnHome;
@@ -45,6 +53,7 @@ public class MainUserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        CIMS_SA.con.addObserver(this);
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             AnchorMain.getChildren().setAll(node);
@@ -94,6 +103,35 @@ public class MainUserController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void update(java.util.Observable o, Object arg) {
+       Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
+
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+
+                        //Close current window
+                        Stage currentstage = (Stage) txtSearch.getScene().getWindow();
+                        currentstage.close();
+
+                    } catch (IOException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Login failed.");
+                        alert.showAndWait();
+                    }
+                }
+            });
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package Application;
 
+import Connection.ConnectionRunnable;
+import Connection.PropertiesMediator;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,8 @@ import javafx.stage.Stage;
 public class CIMS_SA extends Application {
 
     public static Stage primaryStage;
+    public static PropertiesMediator props;
+    public static ConnectionRunnable con;
 
     @Override
     public void start(Stage stage) throws Exception {

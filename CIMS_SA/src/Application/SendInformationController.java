@@ -5,12 +5,12 @@
  */
 package Application;
 
-import Connection.ConnectionController;
 import Situational_Awareness.Information;
 import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Blob;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,7 +75,6 @@ public class SendInformationController implements Initializable {
 
     private Information selectedInformation;
     private PublicUser selectedUser;
-    private ConnectionController myController;
 
     @FXML
     private AnchorPane thisAnchor;
@@ -100,12 +99,12 @@ public class SendInformationController implements Initializable {
         radioLarge.setToggleGroup(groupTwo);
 
         try {
-            myController = new ConnectionController();
-            if(myController.getAllInformation() != null)
+           
+            if(CIMS_SA.con.getAllInformation() != null)
             {
-            obsInformationList.addAll(myController.getAllInformation());
+            obsInformationList.addAll(CIMS_SA.con.getAllInformation());
             }
-            obsUserList.addAll(myController.getUsers());
+            obsUserList.addAll(CIMS_SA.con.getUsers());
 
         // Dummy Data:
             //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
@@ -165,7 +164,7 @@ public class SendInformationController implements Initializable {
     private void RegisterInformation(MouseEvent event) {
         try {
             if (selectedUser != null && selectedInformation != null) {
-                if (myController.sendInfo(selectedUser, selectedInformation) == true) {
+                if (CIMS_SA.con.sendInfo(selectedUser, selectedInformation) == true) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information sent");
                     alert.setContentText("Information was sent to user.");

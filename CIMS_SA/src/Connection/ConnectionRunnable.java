@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package Connection;
 
+import Application.CIMS_SA;
+import Application.SendInformationController;
 import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import Network.User;
+import Situational_Awareness.Information;
+import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,13 +31,14 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    private User user;
+    public User user;
     private Unit unit;
+    private String serverAddress;
 
     private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
-    
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
+
     private boolean keepRunning;
 
     //0 = in process, 1 = logged in, 2 = logged out/acces denied
@@ -44,28 +49,23 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
+        serverAddress = "localhost";
     }
 
     @Override
     public void run() {
         try {
             //Try to connect to server
-            socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1234);
-            in = new ObjectInputStream(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
+            socket = new Socket(serverAddress, 1234);
+            input = new ObjectInputStream(socket.getInputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
 
             //Try to log in
             String login = username + "/" + password;
             sendData(login.split("/"));
-            //Delete password
-            password = "apahvohiewaldjfpaoivwe";
 
             //Check if login succeeded
             user = (User) readData();
-            
-            //Get the unit of the user
-            sendData("FOUS6");
-            unit = (Unit) readData();
 
             if (user == null) {
                 throw new Exception("fail");
@@ -85,14 +85,15 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 }
             }
         } catch (Exception ex) {
+           Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
             setStatus((byte) 2);
             //Close connection
             try {
-                if (in != null) {
-                    in.close();
+                if (input != null) {
+                    input.close();
                 }
-                if (out != null) {
-                    out.close();
+                if (output != null) {
+                    output.close();
                 }
                 if (socket != null) {
                     socket.close();
@@ -108,69 +109,22 @@ public class ConnectionRunnable extends Observable implements Runnable {
     }
 
     private synchronized void sendData(Object data) throws IOException {
-        out.writeObject(data);
-        out.flush();
+        output.writeObject(data);
+        output.flush();
     }
-    
+
     private synchronized Object readData() throws IOException, ClassNotFoundException {
-        return in.readObject();
+        return input.readObject();
     }
 
     /**
-     * Gets the status of the connection (0 = connecting, 1 = connected, 2 =
+     * Gets the status of the connection (0 = connectinputg, 1 = connected, 2 =
      * failed/logged out)
      *
      * @return The status as byte
      */
     public synchronized byte getStatus() {
         return authorized;
-    }
-
-    /**
-     * Returns the task list if connected, else null
-     *
-     * @return Can be null
-     */
-    public synchronized ArrayList<Task> getTaskList() {
-        if (getStatus() == 1) {
-            try {
-                sendData("FOUS4");
-                return (ArrayList<Task>) readData();
-            } catch (IOException ex) {
-                System.out.println("IO exception!");
-                setStatus((byte) 2);
-                return null;
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Class not found exception!");
-                setStatus((byte) 2);
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-     * Gets the Unit that the user is part of
-     * @return Returns the unit that the user is part of, can be null.
-     */
-    public synchronized Unit getUsersUnit() {
-        if (getStatus() == 1) {
-            try {
-                sendData("FOUS6");
-                return (Unit) readData();
-            } catch (IOException ex) {
-                System.out.println("IO exception!");
-                setStatus((byte) 2);
-                return null;
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Class not found exception!");
-                setStatus((byte) 2);
-                return null;
-            }
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -192,145 +146,196 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized User getUser() {
         return this.user;
     }
-    
-    /**
-     * Gets the unit of the user that is currently logged in
-     * @return Can be null if not logged in
-     */
-    public synchronized Unit getUnit() {
-        return this.unit;
-    }
 
-    /**
-     * Updates the status of the given task
-     *
-     * @param taskID The id of the task, must be positive
-     * @param newStatus The new status of the task, not empty
-     */
-    public synchronized void updateTaskStatus(int taskID, String newStatus) {
-        if (!(taskID < 0 || newStatus.isEmpty() || getStatus() != 1)) {
-            try {
-                sendData((Object) "FOUS3");
-                Object[] params = new Object[2];
-                params[0] = taskID;
-                params[1] = newStatus;
-                sendData(params);
-                System.out.println((String)readData());
-            } catch (IOException ex) {
-                System.out.println("Update status failed!");
-                setStatus((byte)2);
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Update status failed!");
-                setStatus((byte)2);
-            }
-        }
-    }
-    
-    /**
-     * Sends feedback of the current task to the operator
-     *
-     * @param taskID The id of the task, must be positive
-     * @param feedback The feedback about the task
-     */
-    public synchronized void sendFeedback(int taskID, String feedback) {
-        if (!(taskID < 0 || feedback.isEmpty() || getStatus() != 1)) {
-            try {
-                sendData((Object) "FOUS7");
-                Object[] params = new Object[2];
-                params[0] = taskID;
-                params[1] = feedback;
-                sendData(params);
-                System.out.println((String)readData());
-            } catch (IOException ex) {
-                System.out.println("Send feedback failed!");
-                setStatus((byte)2);
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Send feedback failed!");
-                setStatus((byte)2);
-            }
-        }
-    }
-    
-    /**
-     * Accepts or denies the task for the given user
-     * @param taskID The task id of the task
-     * @param accepted Boolean if accepted, false is denied
-     * @param reason The reason why it is denied
-     */
-    public synchronized void acceptDenyTask(int taskID, boolean accepted, String reason) {
-        Object[] params = new Object[4];
-        params[0] = this.unit.getUnitID();
-        params[1] = taskID;
-        if(accepted) {
-            params[2] = 1;
-        } else {
-            params[2] = 0;
-        }
-        params[3] = reason;
-        try {
-            //Transmit data
-            sendData("FOUS5");
-            sendData(params);
-            System.out.println((String)readData());
-        } catch (IOException ex) {
-            System.out.println("Transmission failed!");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Unexpected result!");
-        }
-        
-    }
-    
     /**
      * Ends the connection to the server
      */
     public synchronized void quitConnection() {
         this.keepRunning = false;
     }
-    
+
+    private void KillConnection() throws IOException {
+        input.close();
+        output.close();
+    }
+
     /**
-     * Gets the roadmaps that are assigned to the current task
-     * @return A list of roadmaps, can be null if connection is lost
+     * Get specified information from the database
+     *
+     * @param infID
+     * @return Specified information
+     * @throws IOException
      */
-    public synchronized ArrayList<Roadmap> getRoadmapsByTask() {
-        if (getStatus() == 1) {
+    public synchronized Information getInformation(int infID) throws IOException {
+        if (authorized == 1) {
             try {
-                sendData("FOUS8");
-                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
-                return (ArrayList<Roadmap>) readData();
-            } catch (IOException ex) {
-                System.out.println("IO exception!");
-                setStatus((byte) 2);
-                return null;
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Class not found exception!");
-                setStatus((byte) 2);
-                return null;
+                String outputMessage = "SAPU";
+                output.writeObject(outputMessage);
+                output.writeObject(infID);
+                return (Information) input.readObject();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
             }
+        }
+        return null;
+    }
+
+    /**
+     * Get all information from the database
+     *
+     * @return Get all information
+     * @throws IOException
+     */
+    public synchronized ArrayList<Information> getAllInformation() throws IOException {
+        if (authorized == 1) {
+            try {
+                ArrayList<Information> info = new ArrayList();
+                sendData("SAPU7");;
+                Object o = read;
+                if (o instanceof String) {
+                    info = null;
+                } else {
+                    info = (ArrayList<Information>) o;
+                }
+                return info;
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get all users from the database
+     *
+     * @return Get all users
+     * @throws IOException
+     */
+    public synchronized ArrayList<PublicUser> getUsers() throws IOException {
+        if (authorized == 1) {
+            try {
+                sendData("SAPU2");
+                return (ArrayList<PublicUser>) readData();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Send specified information to specified user
+     *
+     * @param user
+     * @param info
+     * @return True if send
+     * @throws IOException
+     */
+    public synchronized boolean sendInfo(PublicUser user, Information info) throws IOException {
+        if (authorized == 1) {
+            try {
+                String outputMessage = "SAPU8";
+                output.writeObject(outputMessage);
+                output.writeObject(user.getUser_ID());
+                output.writeObject(info.getID());
+                return true;
+            } catch (IOException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        }
+        return false;
+    }
+
+    public synchronized boolean createInformation(String Name, String description, String location, int casualties, int toxic, int danger, int impact, String URL) {
+        Object result = null;
+        if (authorized == 1) {
+            try {
+                String outputMessage = "SAPU3";
+                Object[] thisOutputMessage = new Object[8];
+                thisOutputMessage[0] = Name;
+                thisOutputMessage[1] = description;
+                thisOutputMessage[2] = location;
+                thisOutputMessage[3] = casualties;
+                thisOutputMessage[4] = toxic;
+                thisOutputMessage[5] = danger;
+                thisOutputMessage[6] = impact;
+                thisOutputMessage[7] = URL;
+
+                output.writeObject(outputMessage);
+                output.writeObject(thisOutputMessage);
+                result = input.readObject();
+
+            } catch (IOException | ClassNotFoundException ex1) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex1);
+
+                System.out.println("Error creating new Information");
+            }
+        }
+        if (result != null) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
-    
-    /**
-     * Gets all  the roadmaps in the system
-     * @return A list of roadmaps, can be null if connection is lost
-     */
-    public synchronized ArrayList<Roadmap> getAllRoadmaps() {
-        if (getStatus() == 1) {
+
+    public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id) {
+        Object result = null;
+        if (authorized == 1) {
+
             try {
-                sendData("FOUS9");
-                return (ArrayList<Roadmap>) readData();
-            } catch (IOException ex) {
-                System.out.println("IO exception!");
-                setStatus((byte) 2);
-                return null;
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Class not found exception!");
-                setStatus((byte) 2);
-                return null;
+                output.writeObject(new String("SAPU4"));
+                output.writeObject(id);
+
+                String outputMessage = "SAPU3";
+                Object[] thisOutputMessage = new Object[8];
+                thisOutputMessage[0] = name;
+                thisOutputMessage[1] = description;
+                thisOutputMessage[2] = location;
+                thisOutputMessage[3] = casualties;
+                thisOutputMessage[4] = toxic;
+                thisOutputMessage[5] = danger;
+                thisOutputMessage[6] = impact;
+                thisOutputMessage[7] = URL;
+
+                output.writeObject(outputMessage);
+                output.writeObject(thisOutputMessage);
+                result = input.readObject();
+
+            } catch (IOException | ClassNotFoundException ex1) {
+                System.out.println("Error creating new Information");
             }
-        } else {
-            return null;
         }
+        if (result != null) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public synchronized ArrayList<Information> getPublicInformation(int Userid) throws IOException {
+        ArrayList<Information> returnInfo = new ArrayList();
+        if (authorized == 1) {
+            try {
+                String outputMessage = "SAPU10";
+                output.writeObject(outputMessage);
+                output.writeObject(Userid);
+                Object o = input.readObject();
+                if (o instanceof ArrayList) {
+                    returnInfo = (ArrayList<Information>) o;
+                }
+                System.out.println(o);
+
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        }
+        return returnInfo;
+
     }
 }

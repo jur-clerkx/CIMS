@@ -80,6 +80,26 @@ public class EditInformationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        comboInformation.setOnAction((event) ->{
+          try {
+                if (CIMS_SA.con.getUser() != null) {
+                    
+                                      
+                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
+                    txtName.setText(info.getFirstName());
+                    txtLastname.setText(info.getLastName());
+                    txtDescription.setText(info.getDescription());
+                    txtLocation.setText(info.getLocation());
+                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                    txtURL.setText(info.getURL());
+                    Image newImage = new Image(txtURL.getText());
+                    imageView.setImage(newImage);
+                    txtArea.setText(Integer.toString(info.getImpact()));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    });
         ToggleGroup group1 = new ToggleGroup();
         ToggleGroup group2 = new ToggleGroup();
         radioLarge.setToggleGroup(group1);
@@ -92,7 +112,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         try
         {
-        obsInformationList.addAll(Connection.ConnectionController.getPublicInformation(Connection.ConnectionController.user.getUser_ID()));    
+        obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));    
         }
         catch(Exception ex)
         {
@@ -102,10 +122,10 @@ public class EditInformationController implements Initializable {
 
         if (LoginGuiController.SelectedInfoID != 0) {
             try {
-                if (Connection.ConnectionController.user != null) {
+                if (CIMS_SA.con.getUser() != null) {
                     
                                       
-                    info = LoginGuiController.myController.getInformation(LoginGuiController.SelectedInfoID);
+                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
                     txtName.setText(info.getFirstName());
                     txtLastname.setText(info.getLastName());
                     txtDescription.setText(info.getDescription());
@@ -141,7 +161,7 @@ public class EditInformationController implements Initializable {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        if (LoginGuiController.myController.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), LoginGuiController.SelectedInfoID)
+        if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), LoginGuiController.SelectedInfoID)
                 == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Successfull");
