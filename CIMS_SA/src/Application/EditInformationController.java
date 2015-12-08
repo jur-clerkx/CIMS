@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,6 +75,8 @@ public class EditInformationController implements Initializable {
 
     private Information info;
     private ObservableList<Information> obsInformationList;
+    @FXML
+    private ToggleButton toggleButton;
 
     /**
      * Initializes the controller class.
@@ -175,6 +178,7 @@ public class EditInformationController implements Initializable {
     private void RegisterInformation(MouseEvent event) {
         String name = txtName.getText() + " " + txtLastname.getText();
 
+        boolean Private;
         int danger = 0;
         int toxic = 0;
         if (radioSmall.isSelected()) {
@@ -190,9 +194,16 @@ public class EditInformationController implements Initializable {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), LoginGuiController.SelectedInfoID)
+        
+        if(toggleButton.isSelected())
+        {
+            Private = true;
+        }
+        else Private = false;
+        
+        if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),this.comboInformation.getSelectionModel().getSelectedItem().getID(),Private)
                 == true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Information succesfully edited");
             alert.showAndWait();

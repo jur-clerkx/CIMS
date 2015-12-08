@@ -43,8 +43,6 @@ public class OperatorMainController implements Initializable {
     @FXML
     private Hyperlink HyperLinkIUnit;
     @FXML
-    private TitledPane UMenu1;
-    @FXML
     private Hyperlink createRoadmap;
     @FXML
     private Hyperlink AssignRoadmap;

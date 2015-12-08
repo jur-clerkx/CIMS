@@ -1127,7 +1127,7 @@ public class DatabaseMediator {
      *
      * @param userId ID of user that is logged on
      * @param o object array with all the information format:
-     * name,description,location,casualties, toxic, danger, impect, image
+     * name,description,location,casualties, toxic, danger, impect, image and if its private
      * @return a boolean true if success false if not.
      */
     public boolean createInformation(int userId, Object o) {
@@ -1148,10 +1148,10 @@ public class DatabaseMediator {
             try {
                 String query = "`CIMS`.`Information` (`public_UserId`, "
                         + "`name`, `description`, `location`, `casualties`, "
-                        + "`toxic`, `danger`, `impect`, `image`) VALUES ('"
+                        + "`toxic`, `danger`, `impect`, `image`,`toggle`) VALUES ('"
                         + userId + "', '" + info[0] + "', '" + info[1] + "', '"
                         + info[2] + "', '" + info[3] + "', '" + info[4] + "', '"
-                        + info[5] + "', '" + info[6] + "', '" + info[7] + "');";
+                        + info[5] + "', '" + info[6] + "', '" + info[7] + "', '" + info[8] + "');";
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("createInformation: " + e.getMessage());
@@ -1220,10 +1220,11 @@ public class DatabaseMediator {
                 int danger = rs.getInt("danger");
                 int impact = rs.getInt("impect");
                 String image = rs.getString("image");
+                boolean toggle = rs.getBoolean("private");
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu);
+                        casualties, toxic, danger, impact, image, pu,toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1263,10 +1264,11 @@ public class DatabaseMediator {
                 int danger = rs.getInt("danger");
                 int impact = rs.getInt("impect");
                 String image = rs.getString("image");
+                boolean toggle = rs.getBoolean("private");
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu);
+                        casualties, toxic, danger, impact, image, pu,toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {

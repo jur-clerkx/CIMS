@@ -258,12 +258,12 @@ public class ConnectionRunnable extends Observable implements Runnable {
         return false;
     }
 
-    public synchronized boolean createInformation(String Name, String description, String location, int casualties, int toxic, int danger, int impact, String URL) {
+    public synchronized boolean createInformation(String Name, String description, String location, int casualties, int toxic, int danger, int impact, String URL,boolean Private) {
         Object result = null;
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU3";
-                Object[] thisOutputMessage = new Object[8];
+                Object[] thisOutputMessage = new Object[9];
                 thisOutputMessage[0] = Name;
                 thisOutputMessage[1] = description;
                 thisOutputMessage[2] = location;
@@ -272,6 +272,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 thisOutputMessage[5] = danger;
                 thisOutputMessage[6] = impact;
                 thisOutputMessage[7] = URL;
+                thisOutputMessage[8] = Private;
 
                 output.writeObject(outputMessage);
                 output.writeObject(thisOutputMessage);
@@ -290,16 +291,16 @@ public class ConnectionRunnable extends Observable implements Runnable {
         }
     }
 
-    public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id) {
+    public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id,boolean Private) {
         Object result = null;
         if (authorized == 1) {
 
             try {
-                output.writeObject(new String("SAPU4"));
+                output.writeObject("SAPU4");
                 output.writeObject(id);
 
                 String outputMessage = "SAPU3";
-                Object[] thisOutputMessage = new Object[8];
+                Object[] thisOutputMessage = new Object[9];
                 thisOutputMessage[0] = name;
                 thisOutputMessage[1] = description;
                 thisOutputMessage[2] = location;
@@ -308,6 +309,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 thisOutputMessage[5] = danger;
                 thisOutputMessage[6] = impact;
                 thisOutputMessage[7] = URL;
+                thisOutputMessage[8] = Private;
 
                 output.writeObject(outputMessage);
                 output.writeObject(thisOutputMessage);

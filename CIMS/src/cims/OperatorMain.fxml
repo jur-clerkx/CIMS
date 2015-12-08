@@ -13,9 +13,7 @@
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400" prefWidth="300" VBox.vgrow="ALWAYS">
             <children>
-                <Label alignment="CENTER" layoutY="271.0" prefHeight="27.0" prefWidth="94.0" style="&#10;" text="Active Operators" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false" />
-                <Separator layoutX="91.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="12.0" />
-                <ListView layoutY="294.0" prefHeight="144.0" prefWidth="94.0" />
+                <Separator layoutX="91.0" orientation="VERTICAL" prefHeight="432.0" prefWidth="12.0" />
                 <Accordion layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="144.0" prefWidth="94.0">
                     <panes>
                         <TitledPane fx:id="TMenu" animated="false" onMouseClicked="#MenuClick" text="Tasks" textAlignment="CENTER">
