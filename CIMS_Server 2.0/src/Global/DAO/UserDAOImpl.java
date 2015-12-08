@@ -14,11 +14,16 @@ import javax.persistence.Query;
  * @author sebas
  */
 public class UserDAOImpl implements UserDAO {
-    EntityManager em;
+    private EntityManager em;
     
+    /**
+     * Constructor for User DAO Implementation
+     * @param em 
+     */
     public UserDAOImpl(EntityManager em) {
         this.em = em;
     }
+    
     @Override
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
