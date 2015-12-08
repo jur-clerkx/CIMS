@@ -3,12 +3,12 @@
  */
 package Network;
 
-import Field_Operations.Material;
-import Field_Operations.Progress;
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
-import Field_Operations.Unit;
-import Field_Operations.Vehicle;
+import Field_Operations.Domain.Material;
+import Field_Operations.Domain.Progress;
+import Field_Operations.Domain.Roadmap;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
+import Field_Operations.Domain.Vehicle;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -968,7 +968,7 @@ public class DatabaseMediator {
                 int availibility = rs.getInt("availibility");
                 int type = rs.getInt("type");
 
-                m = new Material(materialID, name, state, getUserById(availibility), type);
+                m = new Material(materialID, name, type);
             } catch (SQLException e) {
                 System.out.println("getMaterial: " + e.getMessage());
             } finally {
@@ -1006,7 +1006,7 @@ public class DatabaseMediator {
                 String state = rs.getString("state");
                 int availibility = rs.getInt("v.availibility");
 
-                v = new Vehicle(vehicleID, name, licence, state, getUserById(availibility), 0);
+                v = new Vehicle(vehicleID, name, licence, 0);
             } catch (SQLException e) {
                 System.out.println("getVehicle: " + e.getMessage());
             } finally {

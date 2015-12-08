@@ -5,7 +5,7 @@
  */
 package Situational_Awareness;
 
-import Field_Operations.Task;
+import Field_Operations.Domain.Task;
 import Network.PublicUser;
 import java.io.Serializable;
 

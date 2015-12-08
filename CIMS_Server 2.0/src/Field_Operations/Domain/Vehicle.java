@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Field_Operations;
+package Field_Operations.Domain;
 
 import Network.User;
 import java.io.Serializable;
@@ -17,8 +17,8 @@ public class Vehicle extends Material implements Serializable {
     private String license;
     private int Type;
 
-    public Vehicle(int vehicleID, String name, String license, String state, User availability, int type) {
-        super(vehicleID, name, state, availability, type);
+    public Vehicle(int vehicleID, String name, String license, int type) {
+        super(vehicleID, name, type);
         this.license = license;
         this.Type = type;
     }

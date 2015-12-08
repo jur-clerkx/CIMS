@@ -1,7 +1,7 @@
 package Network;
 
-import Field_Operations.Task;
-import Field_Operations.Unit;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
