@@ -5,10 +5,10 @@
  */
 package Global.DAO;
 
+import Global.Domain.PrivateUser;
 import Global.Domain.PublicUser;
 import Global.Domain.User;
 import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -16,58 +16,38 @@ import javax.persistence.Query;
  *
  * @author sebas
  */
-public class PublicUserDAOImpl implements PublicUserDAO,UserDAO {
-    private EntityManager em;
+public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
+
+    EntityManager em;
     
-    public PublicUserDAOImpl(EntityManager em) {
+    public PrivateUserDAOImpl(EntityManager em) {
         this.em = em;
     }
-
+    
     @Override
-    public void create(PublicUser pu) {
+    public void create(PrivateUser pu) {
         em.getTransaction().begin();
         em.persist(pu);
         em.getTransaction().commit();
     }
 
     @Override
-    public void edit(PublicUser pu) {
+    public void edit(PrivateUser pu) {
         em.getTransaction().begin();
         em.merge(pu);
         em.getTransaction().commit();
     }
 
     @Override
-    public void remove(PublicUser pu) {
+    public void remove(PrivateUser pu) {
         em.getTransaction().begin();
         em.remove(pu);
         em.getTransaction().commit();
     }
 
     @Override
-    public PublicUser find(int id) {
-        return (PublicUser) em.find(PublicUser.class, id);
-    }
-
-    @Override
-    public ArrayList<PublicUser> findall() {
-        Query q = em.createNamedQuery("PublicUser.getAll", PublicUser.class);
-        ArrayList<PublicUser> puList = (ArrayList<PublicUser>) q.getResultList();
-                
-        return puList;
-    }
-
-    @Override
-    public PublicUser login(String username, String password) {
-        Query q = em.createNamedQuery("User.login", User.class);
-        q.setParameter("username", username);
-        q.setParameter("password", password);
-        
-        if (q.getSingleResult() != null) {
-            PublicUser pu = (PublicUser) q.getSingleResult();
-            return pu;
-        }
-        return null;       
+    public PrivateUser find(int id) {
+        return (PrivateUser) em.find(PrivateUser.class, id);
     }
 
     @Override
@@ -75,6 +55,27 @@ public class PublicUserDAOImpl implements PublicUserDAO,UserDAO {
         Query q = em.createNamedQuery("User.count", User.class);
         Integer amount = (Integer) q.getSingleResult();
         return amount.intValue();
+    }
+
+    @Override
+    public ArrayList<PrivateUser> findAll() {
+        Query q = em.createNamedQuery("PrivateUser.getAll", PrivateUser.class);
+        ArrayList<PrivateUser> puList = (ArrayList<PrivateUser>) q.getResultList();
+                
+        return puList;
+    }
+
+    @Override
+    public PrivateUser login(String username, String password) {
+        Query q = em.createNamedQuery("User.login", User.class);
+        q.setParameter("username", username);
+        q.setParameter("password", password);
+        
+        if (q.getSingleResult() != null) {
+            PrivateUser pu = (PrivateUser) q.getSingleResult();
+            return pu;
+        }
+        return null; 
     }
     
 }

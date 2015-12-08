@@ -10,8 +10,6 @@ package Global.DAO;
  * @author Jense Schouten
  */
 public interface UserDAO {
-
-    public boolean login(String username, String password);
-
+    
     public int count();
 }

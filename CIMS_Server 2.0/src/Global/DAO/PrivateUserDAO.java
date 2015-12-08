@@ -20,7 +20,9 @@ public interface PrivateUserDAO {
 
     public void remove(PrivateUser pu);
 
-    public PrivateUser find(PrivateUser pu);
+    public PrivateUser find(int id);
 
-    public ArrayList<PrivateUser> findall();
+    public ArrayList<PrivateUser> findAll();
+        
+    public PrivateUser login(String username, String password);
 }
