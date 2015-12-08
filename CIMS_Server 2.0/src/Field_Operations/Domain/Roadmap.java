@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Roadmap")
 @NamedQueries({
-    @NamedQuery(name = "Roadmap.count", query = "SELECT r FROM Roadmap AS r"),
+    @NamedQuery(name = "Roadmap.count", query = "SELECT COUNT(r) FROM Roadmap AS r"),
     @NamedQuery(name = "Roadmap.getAll", query = "SELECT r FROM Roadmap AS r")
 })
 public class Roadmap implements Serializable {
@@ -31,6 +31,9 @@ public class Roadmap implements Serializable {
     private int id;
     private String name;
     private String description;
+
+    public Roadmap() {
+    }
 
     /**
      * Gets id of this Roadmap

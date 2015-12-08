@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Progress")
 @NamedQueries({
-    @NamedQuery(name = "Progress.count", query = "SELECT p FROM Progress AS p"),
+    @NamedQuery(name = "Progress.count", query = "SELECT COUNT(p) FROM Progress AS p"),
     @NamedQuery(name = "Progress.getAll", query = "SELECT p FROM Progress AS p"),
     @NamedQuery(name = "Progress.findByTask", query = "SELECT p FROM Progress AS p WHERE p.task = :task")
 })
@@ -37,6 +37,9 @@ public class Progress implements Serializable {
     @OneToOne
     private Task task;
     private String message;
+
+    public Progress() {
+    }
 
     /**
      * Gets id of this Progress

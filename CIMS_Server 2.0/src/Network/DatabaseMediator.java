@@ -17,7 +17,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 
 /**
  * Database connection class
@@ -1214,8 +1214,8 @@ public class DatabaseMediator {
                 String image = rs.getString("image");
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
-                info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu);
+                //info = new Information(infoId, task, name, description, location,
+                //        casualties, toxic, danger, impact, image, pu);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1257,8 +1257,8 @@ public class DatabaseMediator {
                 String image = rs.getString("image");
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
-                info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu);
+//                info = new Information(infoId, task, name, description, location,
+//                        casualties, toxic, danger, impact, image, pu);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1271,7 +1271,7 @@ public class DatabaseMediator {
     /**
      * gets all information
      *
-     * @return a arraylist of information
+     * @return a ArrayList of information
      */
     public ArrayList<Information> GetAllInformation() {
         ArrayList<Information> info = new ArrayList<>();

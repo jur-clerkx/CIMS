@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Task")
 @NamedQueries({
-    @NamedQuery(name = "Task.count", query = "SELECT t FROM Task AS t"),
+    @NamedQuery(name = "Task.count", query = "SELECT COUNT(t) FROM Task AS t"),
     @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t"),
     @NamedQuery(name = "Task.getAllActive", query = "SELECT t FROM Task AS t WHERE t.status != 'Completed' AND t.status != 'Cancelled'"),
     @NamedQuery(name = "Task.getAllInActive", query = "SELECT t FROM Task AS t WHERE t.status = 'Completed' AND t.status = 'Cancelled'")
@@ -43,6 +43,9 @@ public class Task implements Serializable {
     private ArrayList<Progress> progressList;
     @OneToMany
     private ArrayList<Unit> units;
+
+    public Task() {
+    }
 
     /**
      * Gets the id of this task

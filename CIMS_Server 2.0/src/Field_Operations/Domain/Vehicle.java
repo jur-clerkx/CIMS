@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Vehicle")
 @NamedQueries({
-    @NamedQuery(name = "Vehicle.count", query = "SELECT v FROM Vehicle AS v"),
+    @NamedQuery(name = "Vehicle.count", query = "SELECT COUNT(v) FROM Vehicle AS v"),
     @NamedQuery(name = "Vehicle.getAll", query = "SELECT v FROM Vehicle AS v")
 })
 public class Vehicle implements Serializable {
@@ -31,6 +31,9 @@ public class Vehicle implements Serializable {
     private int id;
     private String license;
     private int Type;
+
+    public Vehicle() {
+    }
 
     public int getId() {
         return id;
