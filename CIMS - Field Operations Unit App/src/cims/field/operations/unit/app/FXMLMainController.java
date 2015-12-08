@@ -35,7 +35,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import sun.rmi.runtime.Log;
 
 /**
  * FXML Controller class
