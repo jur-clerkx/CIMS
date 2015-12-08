@@ -26,7 +26,9 @@ import javax.persistence.Table;
 @Table(name = "Unit")
 @NamedQueries({
     @NamedQuery(name = "Unit.count", query = "SELECT u FROM Unit AS u"),
-    @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u")
+    @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u"),
+    @NamedQuery(name = "Unit.getAllByUser", query = "SELECT u FROM Unit AS u WHERE u.members.id = :id")
+
 })
 public class Unit implements Serializable {
 

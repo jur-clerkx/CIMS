@@ -62,12 +62,12 @@ public interface UnitDAO {
      *
      * @return all active units from the database.
      */
-    public ArrayList<Unit> findallActive();
+    public ArrayList<Unit> findAllActive();
 
     /**
      * Find all inactive units in the database.
      *
      * @return all inactive units from the database.
      */
-    public ArrayList<Unit> findallInactive();
+    public ArrayList<Unit> findAllInactive();
 }
