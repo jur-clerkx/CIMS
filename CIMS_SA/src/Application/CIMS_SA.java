@@ -25,7 +25,6 @@ public class CIMS_SA extends Application {
     public static Stage primaryStage;
     public static PropertiesMediator props;
     public static ConnectionRunnable con;
-    public static int number = -1;
 
     @Override
     public void start(Stage stage) throws Exception {

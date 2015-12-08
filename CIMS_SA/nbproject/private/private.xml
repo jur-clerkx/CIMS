@@ -11,6 +11,18 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/EditInformation.fxml</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/MainOperatorController.java</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/LoginGuiController.java</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/MainUserController.java</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Connection/ConnectionController.java</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/EditInformationController.java</file>
+            <file>file:/C:/Users/Nick%20van%20der%20Mullen/Documents/SourceTree/CIMS/CIMS_SA/src/Application/SendInformationController.java</file>
+        </group>
+>>>>>>> 2847fa89f1d5b6c2a23215e76c4dd247d68c256a
     </open-files>
 </project-private>

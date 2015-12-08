@@ -95,7 +95,7 @@ public class Information implements Serializable{
 
     @Override
     public String toString() {
-        if(task != null)
+    if(task != null)
         {
         return "Task " + task.getName() + " on location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
         }
@@ -145,10 +145,12 @@ public class Information implements Serializable{
     }
 
     public String getFirstName() {
-        return name;
+        return name.substring(0, name.indexOf(" "));
     }
 
-  
+    public String getLastName() {
+        return name.substring(name.indexOf(" ")+1) ;
+    }
 
     public String getURL() {
         return this.image;

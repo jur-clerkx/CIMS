@@ -99,7 +99,6 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
-               
                 int user_ID = rs.getInt("id");
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -108,6 +107,7 @@ public class DatabaseMediator {
                 String sector = rs.getString("sector");
                 String dateofbirth = rs.getString("dateOfBirth");
                 int securityLevel = rs.getInt("level");
+
                 return new User(user_ID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
             } catch (SQLException e) {
                 System.out.println("checkLogin: " + e.getMessage());
@@ -116,6 +116,32 @@ public class DatabaseMediator {
             }
         }
         return new User();
+    }
+
+    public byte[] getPasswordCypher(String username) {
+        byte[] key = new byte[8];
+        if (openConnection()) {
+            try {
+                String query = "SELECT password FROM CIMS.User WHERE username='" + username + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+                String password = rs.getString("password");
+                for (int i = 0; i < 8; i++) {
+                    if (password.length() > i) {
+                        key[i] = password.getBytes()[i];
+                    } else {
+                        key[i] = (byte) i;
+                    }
+                }
+
+                return key;
+            } catch (SQLException e) {
+                System.out.println("getPasswordCypher: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return key;
     }
 
     /**
@@ -128,7 +154,7 @@ public class DatabaseMediator {
     public PublicUser checkPublicLogin(String username, String password) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Public_user WHERE username='" + username + "' AND password='" + password + "';";
+                String query = "SELECT * FROM CIMS.Public_User WHERE username='" + username + "' AND password='" + password + "';";
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
@@ -229,7 +255,7 @@ public class DatabaseMediator {
         String ln = ((String) progress[1]).substring(0, 1).toUpperCase() + ((String) progress[1]).substring(1);
         if (openConnection()) {
             try {
-                String query = "INSERT INTO `CIMS`.`Public_user` (`BSN_Nr`, `firstname`, `lastname`, `password`, `username`) "
+                String query = "INSERT INTO `CIMS`.`Public_User` (`BSN_Nr`, `firstname`, `lastname`, `password`, `username`) "
                         + "VALUES ('" + progress[3] + "', '" + fn + "', '" + ln + "','" + progress[4] + "', '" + fn + ln + "');";
                 executeNonQuery(query);
             } catch (SQLException e) {
@@ -251,7 +277,7 @@ public class DatabaseMediator {
 
         if (openConnection()) {
             try {
-                String query = "SELECT id FROM CIMS.Public_user;";
+                String query = "SELECT id FROM CIMS.Public_User;";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     publicUsers.add(getPublicUserById(rs.getInt("id")));
@@ -266,7 +292,6 @@ public class DatabaseMediator {
     }
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Task">
     /**
      * Gets Task by id
@@ -1143,7 +1168,6 @@ public class DatabaseMediator {
 //                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
 //            return false;
 //        }
-
         if (openConnection()) {
             try {
                 String query = "`CIMS`.`Information` (`public_UserId`, "
@@ -1209,7 +1233,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
                 Task task = null;
-                if(rs.getInt("taskId") != 0){
+                if (rs.getInt("taskId") != 0) {
                     task = getTaskById(rs.getInt("taskId"));
                 }
                 String name = rs.getString("name");
@@ -1254,7 +1278,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
-                int infoId = rs.getInt("id");
+                int infoId = rs.getInt("ïd");
                 Task task = getTaskById(taskId);
                 String name = rs.getString("name");
                 String description = rs.getString("description");

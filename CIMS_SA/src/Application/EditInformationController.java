@@ -5,7 +5,6 @@
  */
 package Application;
 
-import Network.PublicUser;
 import Situational_Awareness.Information;
 import java.io.IOException;
 import java.net.URL;
@@ -84,39 +83,26 @@ public class EditInformationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        comboInformation.setOnAction((event) -> {
-
-            if (CIMS_SA.con.getUser() != null) {
-
-                info = comboInformation.getValue();
-                txtName.setText(info.getFirstName());
-                txtDescription.setText(info.getDescription());
-                txtLocation.setText(info.getLocation());
-                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getURL());
-                if (txtURL.getText() != null) {
+        comboInformation.setOnAction((event) ->{
+          try {
+                if (CIMS_SA.con.getUser() != null) {
+                    
+                                      
+                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
+                    txtName.setText(info.getFirstName());
+                    txtLastname.setText(info.getLastName());
+                    txtDescription.setText(info.getDescription());
+                    txtLocation.setText(info.getLocation());
+                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                    txtURL.setText(info.getURL());
                     Image newImage = new Image(txtURL.getText());
                     imageView.setImage(newImage);
+                    txtArea.setText(Integer.toString(info.getImpact()));
                 }
-                txtArea.setText(Integer.toString(info.getImpact()));
-                if (info.getDanger() == 0) {
-                    radioSmall.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioMedium.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioLarge.setSelected(true);
-                }
-                if (info.getToxic() == 0) {
-                    radioNo.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioYes.setSelected(true);
-                }
+            } catch (IOException ex) {
+                Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        });
+    });
         ToggleGroup group1 = new ToggleGroup();
         ToggleGroup group2 = new ToggleGroup();
         radioLarge.setToggleGroup(group1);
@@ -127,49 +113,34 @@ public class EditInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
-        try {
-            obsInformationList.addAll(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-        } catch (Exception ex) {
-
+        try
+        {
+        obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));    
+        }
+        catch(Exception ex)
+        {
             System.out.println("Error filling combobox");
         }
         comboInformation.getItems().addAll(obsInformationList);
 
-        if (CIMS_SA.number != -1) {
+        if (LoginGuiController.SelectedInfoID != 0) {
             try {
-                Information info = CIMS_SA.con.getInfoByID(CIMS_SA.number);
-                if (info != null) {
+                if (CIMS_SA.con.getUser() != null) {
+                    
+                                      
+                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
                     txtName.setText(info.getFirstName());
+                    txtLastname.setText(info.getLastName());
                     txtDescription.setText(info.getDescription());
                     txtLocation.setText(info.getLocation());
                     txtNRofVictims.setText(Integer.toString(info.getCasualities()));
                     txtURL.setText(info.getURL());
-                    if (txtURL.getText() != null) {
-                        Image newImage = new Image(txtURL.getText());
-                        imageView.setImage(newImage);
-                    }
+                    Image newImage = new Image(txtURL.getText());
+                    imageView.setImage(newImage);
                     txtArea.setText(Integer.toString(info.getImpact()));
-                    if (info.getDanger() == 0) {
-                        radioSmall.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioMedium.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioLarge.setSelected(true);
-                    }
-                    if (info.getToxic() == 0) {
-                        radioNo.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioYes.setSelected(true);
-                    }
-
                 }
             } catch (IOException ex) {
                 Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                CIMS_SA.number = -1;
             }
         }
     }
@@ -217,10 +188,8 @@ public class EditInformationController implements Initializable {
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             thisAnchor.getChildren().setAll(node);
-
         } catch (IOException ex) {
-            Logger.getLogger(SendInformationController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

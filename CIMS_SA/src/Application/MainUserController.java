@@ -5,7 +5,7 @@
  */
 package Application;
 
-import Situational_Awareness.Information;
+import static Application.MainOperatorController.SelectedInformationID;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observer;
@@ -33,7 +33,7 @@ import javafx.stage.Stage;
  *
  * @author Nick van der Mullen
  */
-public class MainUserController implements Initializable, Observer {
+public class MainUserController implements Initializable,Observer {
 
     @FXML
     private Button btnHome;
@@ -42,15 +42,12 @@ public class MainUserController implements Initializable, Observer {
     @FXML
     private Button btnEditInformation;
     @FXML
-    public  TextField txtSearch;
+    private TextField txtSearch;
     @FXML
     private Button btnSearch;
     @FXML
     private AnchorPane AnchorMain;
 
-    public static Information info = null;
-
-     
     /**
      * Initializes the controller class.
      */
@@ -98,7 +95,8 @@ public class MainUserController implements Initializable, Observer {
     @FXML
     private void btnSearch(MouseEvent event) {
 
-        CIMS_SA.number = Integer.parseInt(txtSearch.getText());
+        SelectedInformationID = Integer.parseInt(txtSearch.getText());
+
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
             AnchorMain.getChildren().setAll(node);
@@ -109,31 +107,31 @@ public class MainUserController implements Initializable, Observer {
 
     @Override
     public void update(java.util.Observable o, Object arg) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
+       Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
 
-                    Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
+                        Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
 
-                    Scene scene = new Scene(root);
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setResizable(false);
-                    stage.show();
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
 
-                    //Close current window
-                    Stage currentstage = (Stage) txtSearch.getScene().getWindow();
-                    currentstage.close();
+                        //Close current window
+                        Stage currentstage = (Stage) txtSearch.getScene().getWindow();
+                        currentstage.close();
 
-                } catch (IOException ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Login failed.");
-                    alert.showAndWait();
+                    } catch (IOException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Login failed.");
+                        alert.showAndWait();
+                    }
                 }
-            }
-        });
+            });
     }
 
 }

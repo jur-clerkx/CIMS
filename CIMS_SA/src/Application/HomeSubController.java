@@ -5,8 +5,8 @@
  */
 package Application;
 
-import Network.PublicUser;
 import Situational_Awareness.Information;
+import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ public class HomeSubController implements Initializable {
 
     @FXML
     public ListView<Information> listAvailableInformation;
+
     @FXML
     private Button btnRefresh;
     @FXML

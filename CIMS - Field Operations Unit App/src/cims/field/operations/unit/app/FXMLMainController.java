@@ -345,7 +345,7 @@ public class FXMLMainController implements Initializable, Observer {
     public void handleSendFeedback(ActionEvent ae) {
         CIMSFieldOperationsUnitApp.currentTask = currentTask;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLShowTaskInfo.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLSendFeedback.fxml"));
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);

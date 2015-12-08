@@ -145,10 +145,12 @@ public class Information implements Serializable{
     }
 
     public String getFirstName() {
-        return name;
+        return name.substring(0, name.indexOf(" "));
     }
 
-  
+    public String getLastName() {
+        return name.substring(name.indexOf(" ")+1) ;
+    }
 
     public String getURL() {
         return this.image;
