@@ -18,8 +18,12 @@ import javax.persistence.Query;
  */
 public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
 
-    EntityManager em;
+    private EntityManager em;
     
+    /**
+     * Constructor for Private User DAO Implementation
+     * @param em 
+     */
     public PrivateUserDAOImpl(EntityManager em) {
         this.em = em;
     }
