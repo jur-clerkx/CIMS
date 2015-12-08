@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Material;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -52,5 +52,5 @@ public interface MaterialDAO {
      * Find all Materials in the database.
      * @return all materials from the database.
      */
-    public ArrayList<Material> findAll();
+    public List<Material> findAll();
 }

@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Material;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -30,7 +30,7 @@ public class MaterialDAOImpl implements MaterialDAO {
         Query q = em.createNamedQuery("Material.count", Material.class);
         Integer amount = (Integer)q.getSingleResult();
         
-        return amount.intValue();
+        return amount;
     }
 
     @Override
@@ -60,9 +60,9 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public ArrayList<Material> findAll() {
+    public List<Material> findAll() {
         Query q = em.createNamedQuery("Material.getAll", Material.class);
-        ArrayList<Material> materials = (ArrayList<Material>)q.getResultList();
+        List<Material> materials = q.getResultList();
         
         return materials;
     }
