@@ -36,7 +36,7 @@ public interface MaterialDAO {
     public void edit(Material m);
 
     /**
-     * Remove an existing material from the database.
+     * Remove an existing Material from the database.
      * @param m Not null
      */
     public void remove(Material m);

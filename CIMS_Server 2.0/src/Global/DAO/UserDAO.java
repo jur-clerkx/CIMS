@@ -11,5 +11,9 @@ package Global.DAO;
  */
 public interface UserDAO {
     
+    /**
+     * Count the number of Users in the database.
+     * @return number of users
+     */
     public int count();
 }

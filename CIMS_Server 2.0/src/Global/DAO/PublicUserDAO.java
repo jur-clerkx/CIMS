@@ -36,7 +36,17 @@ public interface PublicUserDAO {
      */
     public PublicUser find(int id);
 
+    /**
+     * Find all Public Users in the database.
+     * @return all Public Users from the database.
+     */
     public ArrayList<PublicUser> findall();
     
+    /**
+     * Logs a Public User into the system and allow him access.
+     * @param username Not null
+     * @param password Not null
+     * @return the logged in Public User
+     */
     public PublicUser login(String username, String password);
 }
