@@ -71,9 +71,9 @@ public class ProgressDAOImpl implements ProgressDAO {
     @Override
     public ArrayList<Progress> findAll() {
         Query q = em.createNamedQuery("Progress.getAll", Progress.class);
-        ArrayList<Progress> progress = (ArrayList<Progress>) q.getResultList();
+        ArrayList<Progress> progresses = (ArrayList<Progress>) q.getResultList();
         
-        return progress;
+        return progresses;
     }
     
 }
