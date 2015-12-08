@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Material")
 @NamedQueries({
-    @NamedQuery(name = "Material.count", query = "SELECT m FROM Material AS m"),
+    @NamedQuery(name = "Material.count", query = "SELECT COUNT(m) FROM Material AS m"),
     @NamedQuery(name = "Material.getAll", query = "SELECT m FROM Material AS m")
 })
 public class Material implements Serializable {
@@ -31,6 +31,9 @@ public class Material implements Serializable {
     private int id;
     private String name;
     private int type;
+
+    public Material() {
+    }
 
     /**
      * gets id of this material
