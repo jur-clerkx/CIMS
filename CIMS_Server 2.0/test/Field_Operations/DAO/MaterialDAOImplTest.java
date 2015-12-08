@@ -89,8 +89,8 @@ public class MaterialDAOImplTest {
     @Test
     public void testFind() {
         System.out.println("find");
-        int id = 1;
-        Material expResult = null;
+        int id = 17;
+        Material expResult = new Material("henk", 2);
         Material result = instance.find(id);
         assertEquals(expResult, result);
     }

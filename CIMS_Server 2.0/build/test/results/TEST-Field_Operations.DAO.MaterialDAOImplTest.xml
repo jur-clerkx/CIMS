@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="2" hostname="Schouten" name="Field_Operations.DAO.MaterialDAOImplTest" skipped="0" tests="5" time="87.27" timestamp="2015-12-08T15:29:48">
+<testsuite errors="0" failures="3" hostname="Schouten" name="Field_Operations.DAO.MaterialDAOImplTest" skipped="0" tests="5" time="2.341" timestamp="2015-12-08T15:44:14">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
@@ -40,7 +40,6 @@
     <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
     <property name="libs.javac-api.javadoc" value="" />
     <property name="os.name" value="Windows 8.1" />
-    <property name="test.class" value="Field_Operations.DAO.MaterialDAOImplTest" />
     <property name="libs.beans-binding.classpath" value="C:\Program Files\NetBeans 8.0.2\java\modules\ext\beansbinding-1.2.1.jar" />
     <property name="libs.javaee-endorsed-api-7.0.maven-pom" value="" />
     <property name="ap.proc.none.internal" value="" />
@@ -61,7 +60,7 @@
     <property name="copylibs.rebase" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Field_Operations.DAO.MaterialDAOImplTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\results\TEST-Field_Operations.DAO.MaterialDAOImplTest.xml crashfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junitvmwatcher7059730894130171214.properties propsfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junit972417320873873915.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Field_Operations.DAO.MaterialDAOImplTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\results\TEST-Field_Operations.DAO.MaterialDAOImplTest.xml crashfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junitvmwatcher7323632060183505298.properties propsfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junit288293495870681953.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -86,6 +85,7 @@
     <property name="libs.jsp-compilation-syscp.classpath" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\ant\lib\ant.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\glassfish-jspparser-4.0.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\jstl-impl.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\jsf-2_2\javax.faces.jar" />
     <property name="javafx.deploy.includeDT" value="true" />
     <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_31\jre\lib\endorsed" />
+    <property name="test.includes" value="Field_Operations/DAO/MaterialDAOImplTest.java" />
     <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 8.0.2\platform\core\core.jar;C:\Program Files\NetBeans 8.0.2\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_zh_CN.jar" />
     <property name="jnlp.enabled" value="false" />
     <property name="java.vm.specification.version" value="1.8" />
@@ -104,7 +104,7 @@
     <property name="javadoc.splitindex" value="true" />
     <property name="file.separator" value="\" />
     <property name="ant.file.type.CIMS_Server-impl" value="file" />
-    <property name="javac.includesfile.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\null1187827906" />
+    <property name="javac.includesfile.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\null879332718" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="false" />
     <property name="javac.test.processorpath" value="C:\Program Files\Java\jdk1.8.0_31\jre/lib/javaws.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/deploy.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/plugin.jar:src\mysql-connector-java-5.1.36-bin.jar:C:\Users\Jense\Downloads\mysql-connector-java-5.1.37.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar:C:\Users\Jense\Downloads\derbyclient.jar:build/classes:C:\Program Files\NetBeans 8.0.2\platform\modules\ext\junit-4.10.jar" />
@@ -156,7 +156,7 @@
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
     <property name="run.test.classpath" value="C:\Program Files\Java\jdk1.8.0_31\jre/lib/javaws.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/deploy.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/plugin.jar:src\mysql-connector-java-5.1.36-bin.jar:C:\Users\Jense\Downloads\mysql-connector-java-5.1.37.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar:C:\Users\Jense\Downloads\derbyclient.jar:build/classes:C:\Program Files\NetBeans 8.0.2\platform\modules\ext\junit-4.10.jar:build/test/classes" />
-    <property name="ant.project.invoked-targets" value="debug-test" />
+    <property name="ant.project.invoked-targets" value="test-single" />
     <property name="file.reference.mysql-connector-java-5.1.37-bin.jar" value="C:\Users\Jense\Downloads\mysql-connector-java-5.1.37.jar" />
     <property name="test.binaryexcludes" value="" />
     <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 8.0.2\platform\docs\swing-layout-1.0.4-doc.zip" />
@@ -166,7 +166,6 @@
     <property name="libs.PostgreSQLDriver.maven-pom" value="" />
     <property name="java.class.version" value="52.0" />
     <property name="libs.JAVADB_DRIVER_LABEL.classpath" value="C:\Program Files\Java\jdk1.8.0_31\db\lib\derby.jar;C:\Program Files\Java\jdk1.8.0_31\db\lib\derbyclient.jar;C:\Program Files\Java\jdk1.8.0_31\db\lib\derbynet.jar" />
-    <property name="jpda.address" value="javadebug" />
     <property name="libs.hibernate4-persistencemodelgen.maven-pom" value="" />
     <property name="libs.javaee-endorsed-api-6.0.src" value="" />
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\NetBeans 8.0.2\java\modules\ext\docs\javax.persistence-2.1.0-doc.zip" />
@@ -346,6 +345,7 @@
     <property name="libs.jsf12.src" value="" />
     <property name="libs.JAVADB_DRIVER_LABEL.maven-pom" value="" />
     <property name="libs.struts.javadoc" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\docs\struts-1.3.10-javadoc.zip" />
+    <property name="ignore.failing.tests" value="true" />
     <property name="javafx.enable.concurrent.external.runs" value="false" />
     <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.primefaces.src" value="" />
@@ -395,7 +395,7 @@
     <property name="libs.hibernate4-support.maven-pom" value="" />
     <property name="libs.restlib.javadoc" value="" />
     <property name="javafx.deploy.allowoffline" value="true" />
-    <property name="nb.internal.action.name" value="debug.test.single" />
+    <property name="nb.internal.action.name" value="test.single" />
     <property name="libs.JAXB-ENDORSED.classpath" value="C:\Program Files\NetBeans 8.0.2\ide\modules\ext\jaxb\api\jaxb-api.jar" />
     <property name="libs.javaee-api-7.0.javadoc" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\docs\javaee-doc-api.jar" />
     <property name="libs.eclipselink.classpath" value="C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar" />
@@ -432,34 +432,30 @@
     <property name="javafx.deploy.installpermanently" value="false" />
     <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\docs\javaee-doc-api.jar" />
   </properties>
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testRemove" time="0.096" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFind" time="0.008">
-    <error message="You have provided an instance of an incorrect PK class for this find operation.  Class expected : class java.lang.Long, Class received : class java.lang.Integer." type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: You have provided an instance of an incorrect PK class for this find operation.  Class expected : class java.lang.Long, Class received : class java.lang.Integer.
-	at org.eclipse.persistence.internal.jpa.EntityManagerImpl.findInternal(EntityManagerImpl.java:795)
-	at org.eclipse.persistence.internal.jpa.EntityManagerImpl.find(EntityManagerImpl.java:719)
-	at org.eclipse.persistence.internal.jpa.EntityManagerImpl.find(EntityManagerImpl.java:588)
-	at Field_Operations.DAO.MaterialDAOImpl.find(MaterialDAOImpl.java:58)
-	at Field_Operations.DAO.MaterialDAOImplTest.testFind(MaterialDAOImplTest.java:94)
-</error>
-  </testcase>
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCreate" time="82.107" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCount" time="2.889">
-    <failure message="expected:&lt;1&gt; but was:&lt;9&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;1&gt; but was:&lt;9&gt;
+  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCount" time="0.249">
+    <failure message="expected:&lt;1&gt; but was:&lt;20&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;1&gt; but was:&lt;20&gt;
 	at Field_Operations.DAO.MaterialDAOImplTest.testCount(MaterialDAOImplTest.java:63)
 </failure>
   </testcase>
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFindAll" time="0.209">
-    <failure message="expected:&lt;2&gt; but was:&lt;10&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;2&gt; but was:&lt;10&gt;
+  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFindAll" time="0.158">
+    <failure message="expected:&lt;2&gt; but was:&lt;21&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;2&gt; but was:&lt;21&gt;
 	at Field_Operations.DAO.MaterialDAOImplTest.testFindAll(MaterialDAOImplTest.java:108)
 </failure>
   </testcase>
-  <system-out><![CDATA[[EL Info]: 2015-12-08 16:29:49.223--ServerSession(913902572)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
-[EL Info]: connection: 2015-12-08 16:29:49.945--ServerSession(913902572)--file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server 2.0/build/classes/_CIMS_ServerPU login successful
-remove
-find
-create
+  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFind" time="0.031">
+    <failure message="expected: Field_Operations.Domain.Material&lt;2: henk&gt; but was: Field_Operations.Domain.Material&lt;2: henk&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected: Field_Operations.Domain.Material&lt;2: henk&gt; but was: Field_Operations.Domain.Material&lt;2: henk&gt;
+	at Field_Operations.DAO.MaterialDAOImplTest.testFind(MaterialDAOImplTest.java:95)
+</failure>
+  </testcase>
+  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCreate" time="0.175" />
+  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testRemove" time="0.027" />
+  <system-out><![CDATA[[EL Info]: 2015-12-08 16:44:15.513--ServerSession(1967434886)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
+[EL Info]: connection: 2015-12-08 16:44:16.112--ServerSession(1967434886)--file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server 2.0/build/classes/_CIMS_ServerPU login successful
 count
 findAll
+find
+create
+remove
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
