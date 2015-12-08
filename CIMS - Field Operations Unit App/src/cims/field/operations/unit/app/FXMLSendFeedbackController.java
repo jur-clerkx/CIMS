@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -18,7 +19,7 @@ import javafx.scene.control.TextArea;
  * @author Jur
  */
 public class FXMLSendFeedbackController implements Initializable {
-    
+
     @FXML
     private TextArea textAreaMessage;
 
@@ -28,11 +29,13 @@ public class FXMLSendFeedbackController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void handleSendFeedback(ActionEvent event) {
         CIMSFieldOperationsUnitApp.con.sendFeedback(CIMSFieldOperationsUnitApp.currentTask.getTaskID(), textAreaMessage.getText());
+        Stage currentstage = (Stage) textAreaMessage.getScene().getWindow();
+        currentstage.close();
     }
-    
+
 }

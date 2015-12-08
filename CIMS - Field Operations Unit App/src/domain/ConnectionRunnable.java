@@ -13,10 +13,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -33,7 +41,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    
+
     private boolean keepRunning;
 
     //0 = in process, 1 = logged in, 2 = logged out/acces denied
@@ -56,13 +64,17 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
             //Try to log in
             String login = username + "/" + password;
+            //Send username so that server can change to cipher streams
+            //sendData(new String[]{username});
+            //Switch to cipherstreams and send normal data
+            //switchToChipherStreams(password);
             sendData(login.split("/"));
             //Delete password
             password = "apahvohiewaldjfpaoivwe";
 
             //Check if login succeeded
             user = (User) readData();
-            
+
             //Get the unit of the user
             sendData("FOUS6");
             unit = (Unit) readData();
@@ -111,7 +123,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         out.writeObject(data);
         out.flush();
     }
-    
+
     private synchronized Object readData() throws IOException, ClassNotFoundException {
         return in.readObject();
     }
@@ -149,9 +161,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
             return null;
         }
     }
-    
+
     /**
      * Gets the Unit that the user is part of
+     *
      * @return Returns the unit that the user is part of, can be null.
      */
     public synchronized Unit getUsersUnit() {
@@ -192,9 +205,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized User getUser() {
         return this.user;
     }
-    
+
     /**
      * Gets the unit of the user that is currently logged in
+     *
      * @return Can be null if not logged in
      */
     public synchronized Unit getUnit() {
@@ -215,17 +229,17 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 params[0] = taskID;
                 params[1] = newStatus;
                 sendData(params);
-                System.out.println((String)readData());
+                System.out.println((String) readData());
             } catch (IOException ex) {
                 System.out.println("Update status failed!");
-                setStatus((byte)2);
+                setStatus((byte) 2);
             } catch (ClassNotFoundException ex) {
                 System.out.println("Update status failed!");
-                setStatus((byte)2);
+                setStatus((byte) 2);
             }
         }
     }
-    
+
     /**
      * Sends feedback of the current task to the operator
      *
@@ -240,19 +254,20 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 params[0] = taskID;
                 params[1] = feedback;
                 sendData(params);
-                System.out.println((String)readData());
+                System.out.println((String) readData());
             } catch (IOException ex) {
                 System.out.println("Send feedback failed!");
-                setStatus((byte)2);
+                setStatus((byte) 2);
             } catch (ClassNotFoundException ex) {
                 System.out.println("Send feedback failed!");
-                setStatus((byte)2);
+                setStatus((byte) 2);
             }
         }
     }
-    
+
     /**
      * Accepts or denies the task for the given user
+     *
      * @param taskID The task id of the task
      * @param accepted Boolean if accepted, false is denied
      * @param reason The reason why it is denied
@@ -261,7 +276,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         Object[] params = new Object[4];
         params[0] = this.unit.getUnitID();
         params[1] = taskID;
-        if(accepted) {
+        if (accepted) {
             params[2] = 1;
         } else {
             params[2] = 0;
@@ -271,24 +286,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
             //Transmit data
             sendData("FOUS5");
             sendData(params);
-            System.out.println((String)readData());
+            System.out.println((String) readData());
         } catch (IOException ex) {
             System.out.println("Transmission failed!");
         } catch (ClassNotFoundException ex) {
             System.out.println("Unexpected result!");
         }
-        
+
     }
-    
+
     /**
      * Ends the connection to the server
      */
     public synchronized void quitConnection() {
         this.keepRunning = false;
     }
-    
+
     /**
      * Gets the roadmaps that are assigned to the current task
+     *
      * @return A list of roadmaps, can be null if connection is lost
      */
     public synchronized ArrayList<Roadmap> getRoadmapsByTask() {
@@ -310,9 +326,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
             return null;
         }
     }
-    
+
     /**
-     * Gets all  the roadmaps in the system
+     * Gets all the roadmaps in the system
+     *
      * @return A list of roadmaps, can be null if connection is lost
      */
     public synchronized ArrayList<Roadmap> getAllRoadmaps() {
@@ -332,5 +349,26 @@ public class ConnectionRunnable extends Observable implements Runnable {
         } else {
             return null;
         }
+    }
+
+    private void switchToChipherStreams(String password) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException {
+        //Generate key
+        byte[] key = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            if (password.length() > i) {
+                key[i] = password.getBytes()[i];
+            } else {
+                key[i] = (byte) i;
+            }
+        }
+        //Setup cipher streams
+        SecretKey key64 = new SecretKeySpec(key, "Blowfish");
+        Cipher cipher = Cipher.getInstance("Blowfish");
+        cipher.init(Cipher.ENCRYPT_MODE, key64);
+        in = new ObjectInputStream(new CipherInputStream(socket.getInputStream(), cipher));
+        out = new ObjectOutputStream(new CipherOutputStream(socket.getOutputStream(), cipher));
+        out.reset();
+        out.flush();
+        out.writeObject("switch");
     }
 }

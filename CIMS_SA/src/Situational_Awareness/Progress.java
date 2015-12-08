@@ -5,7 +5,6 @@
  */
 package Situational_Awareness;
 
-import Network.PublicUser;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;

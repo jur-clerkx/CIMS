@@ -58,14 +58,9 @@ public class Server {
                     try {
                         Socket s = serverSocket.accept();
                         if (searching) {
-                            Connection c = new Connection(s);                            
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    connections.add(c);
-                                }
-                            });
-
+                            Connection c = new Connection(s);
+                            cleanUpList(c.getUserId());
+                            connections.add(c);
                             LOG.log(Level.INFO, "New Client Connected: {0}", s.getInetAddress());
                         }
                     } catch (IOException e) {
@@ -84,13 +79,14 @@ public class Server {
      *
      * @param userid id of a inactive user.
      */
-    public static void cleanUpList(int userid) {
+    private void cleanUpList(int userid) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 connections.removeIf(c -> c.getUserId() == userid);
             }
         });
+
     }
 
     /**
