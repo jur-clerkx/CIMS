@@ -80,7 +80,7 @@ public class Connection {
                     } catch (IOException | ClassNotFoundException | NumberFormatException ex) {
                     }
                 }
-                Logger.getLogger(Connection.class.getName()).log(Level.INFO, "Connection closed: {0}", 
+                Logger.getLogger(Connection.class.getName()).log(Level.INFO, "Connection closed: {0}",
                         socket.getLocalAddress());
                 closeconn();
             }
@@ -330,11 +330,19 @@ public class Connection {
         }
         User us = dbMediator.checkLogin(username, password);
         if (us.authorized()) {
+            if (Network.Server.connections.stream().filter(
+                    c -> c.getUserId() == us.getUser_ID()).count() > 1) {
+                Network.Server.cleanUpList(us.getUser_ID());
+            }
             this.user = us;
             return true;
         }
         PublicUser pu = dbMediator.checkPublicLogin(username, password);
         if (pu.authorized()) {
+            if (Network.Server.connections.stream().filter(
+                    c -> c.getUserId() == pu.getUser_ID()).count() > 1) {
+                Network.Server.cleanUpList(pu.getUser_ID());
+            }
             this.user = pu;
             return true;
         }
