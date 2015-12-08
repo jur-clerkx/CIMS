@@ -72,8 +72,14 @@ public class UnitsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             if (OperatorMainController.myController.user != null) {
-                InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
-                ActiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
+                if(OperatorMainController.myController.getInactiveUnits() != null)
+                {
+                    InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+                }
+                if(OperatorMainController.myController.getActiveUnits() != null)
+                {
+                    ActiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
+                }
             }
             AUnitTable.setRowFactory(tv -> {
                 TableRow<Unit> row = new TableRow<>();

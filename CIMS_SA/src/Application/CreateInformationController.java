@@ -5,15 +5,21 @@
  */
 package Application;
 
+import Connection.ConnectionRunnable;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -30,7 +36,7 @@ import javafx.stage.Stage;
  *
  * @author Nick van der Mullen
  */
-public class CreateInformationController implements Initializable {
+public class CreateInformationController implements Initializable, Observer {
 
     @FXML
     private ImageView imageView;
@@ -94,9 +100,9 @@ public class CreateInformationController implements Initializable {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        if (LoginGuiController.myController.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText())
+        if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText())
                 == true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Information succesfully created");
             alert.showAndWait();
@@ -144,4 +150,50 @@ public class CreateInformationController implements Initializable {
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        //Check if login is succesfull
+        ConnectionRunnable con = (ConnectionRunnable) o;
+        //Remove as listener from connection
+        con.deleteObserver(this);
+        //Check if login succeeded
+        if (con.getStatus() == 1) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        CIMS_SA.con = con;
+
+                        Parent root = FXMLLoader.load(getClass().getResource("FXMLMain.fxml"));
+
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+
+                        //Close current window
+                        Stage currentstage = (Stage) txtArea.getScene().getWindow();
+                        currentstage.close();
+
+                    } catch (IOException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Login failed.");
+                        alert.showAndWait();
+                    }
+                }
+            });
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Username or password error.");
+                    alert.showAndWait();
+                }
+            });
+        }
+    }
 }

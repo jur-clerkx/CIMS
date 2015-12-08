@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Situational_Awareness;
+package Field_Operations;
 
-import Network.User;
 import java.util.ArrayList;
 import java.util.List;
+import Network.User;
 import java.io.Serializable;
 
 /**

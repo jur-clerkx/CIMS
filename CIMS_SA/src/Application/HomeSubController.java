@@ -5,12 +5,12 @@
  */
 package Application;
 
-import Connection.ConnectionController;
+import Network.PublicUser;
 import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +30,10 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Nick van der Mullen
  */
-public class HomeSubController implements Initializable {
+public class HomeSubController implements Initializable{
 
     @FXML
-    private ListView<Information> listAvailableInformation;
+    public  ListView<Information> listAvailableInformation;
     @FXML
     private Button btnRefresh;
     @FXML
@@ -46,15 +46,10 @@ public class HomeSubController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (ConnectionController.user instanceof PublicUser) {
-            ObservableList<Information> failedTest = FXCollections.observableArrayList();
-            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
-            listAvailableInformation.setItems(failedTest);
-            listAvailableInformation.refresh();
-
-            if (ConnectionController.user != null) {
+        if (CIMS_SA.con.getUser() instanceof PublicUser) {
+            if (CIMS_SA.con.getUser() != null) {
                 try {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(ConnectionController.getPublicInformation(ConnectionController.user.getUser_ID()));
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
                     listAvailableInformation.setItems(myObservableList);
                 } catch (IOException ex) {
                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,14 +57,9 @@ public class HomeSubController implements Initializable {
             }
 
         } else {
-            ObservableList<Information> failedTest = FXCollections.observableArrayList();
-            failedTest.add(new Information(1, 1, "Connection Failed", "Server", 1, false, 0, 1));
-            listAvailableInformation.setItems(failedTest);
-            listAvailableInformation.refresh();
-
             try {
-                if (ConnectionController.user != null) {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
+                if (CIMS_SA.con.getUser() != null) {
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
                     listAvailableInformation.setItems(myObservableList);
                 }
             } catch (IOException ex) {
@@ -81,12 +71,12 @@ public class HomeSubController implements Initializable {
     @FXML
     private void btnRefresh(MouseEvent event) {
         try {
-            if (ConnectionController.user instanceof PublicUser) {
-                ObservableList<Information> myObservableList = FXCollections.observableArrayList(ConnectionController.getPublicInformation(ConnectionController.user.getUser_ID()));
+            if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
                 listAvailableInformation.setItems(myObservableList);
             } else {
 
-                ObservableList<Information> myObservableList = FXCollections.observableArrayList(LoginGuiController.myController.getAllInformation());
+                ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
                 listAvailableInformation.setItems(myObservableList);
             }
         } catch (IOException ex) {

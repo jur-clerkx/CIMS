@@ -6,6 +6,7 @@
 package cims;
 
 import Field_Operations.Roadmap;
+import Field_Operations.Task;
 import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
@@ -31,7 +32,7 @@ import javafx.stage.Stage;
 public class AssignRoadmapController implements Initializable {
 
     @FXML
-    private ComboBox<Unit> cboxUnits;
+    private ComboBox<Task> cboxUnits;
     @FXML
     private ComboBox<Roadmap> cboxRoadmaps;
     @FXML
@@ -52,11 +53,14 @@ public class AssignRoadmapController implements Initializable {
         roadmapList = FXCollections.observableArrayList();
         try {
             if (OperatorMainController.myController.user != null) {
-                ArrayList<Unit> myUnits = OperatorMainController.myController.getActiveUnits();
+                ArrayList<Task> myTasks = OperatorMainController.myController.getActiveTasks();
+                myTasks.addAll(OperatorMainController.myController.getInactiveTasks());
                 ArrayList<Roadmap> myroadmaps = ConnectionController.getRoadmaps();
-                if (myUnits != null && myroadmaps != null) {
-                    unitList.addAll(myUnits);
-                roadmapList.addAll(myroadmaps);
+                if (myTasks != null) {
+                    unitList.addAll(myTasks);
+                }
+                if (myroadmaps != null) {
+                    roadmapList.addAll(myroadmaps);
                 }
                 cboxUnits.getItems().addAll(unitList);
                 cboxRoadmaps.getItems().addAll(roadmapList);
@@ -69,7 +73,7 @@ public class AssignRoadmapController implements Initializable {
     @FXML
     private void btnAssign(MouseEvent event) {
         try {
-            if (ConnectionController.assignRoadmaps(cboxUnits.getSelectionModel().getSelectedItem().getUnitID(), cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
+            if (ConnectionController.assignRoadmaps(cboxUnits.getSelectionModel().getSelectedItem().getTaskID(), cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Successfull");
                 alert.setContentText("Roadmap succesfully assigned");
@@ -80,7 +84,9 @@ public class AssignRoadmapController implements Initializable {
             alert.setTitle("Failed");
             alert.setContentText("Roadmap failed to be assigned");
             alert.showAndWait();
-            Logger.getLogger(AssignRoadmapController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+                    .getLogger(AssignRoadmapController.class
+                            .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

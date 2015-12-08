@@ -7,12 +7,13 @@ package Situational_Awareness;
 
 import Field_Operations.Task;
 import Network.PublicUser;
+import java.io.Serializable;
 
 /**
  *
  * @author sebas
  */
-public class Information {
+public class Information implements Serializable{
 
     private int ID;
     private Task task;
@@ -27,8 +28,8 @@ public class Information {
     private Network.PublicUser user;
 
     public Information(int ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user) {
-        if (ID > 0 && task != null && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities > 0 && toxic > 0 && toxic < 10
-                && danger > 0 && danger < 10 && impact > 0 && impact < 10) {
+        if (ID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities >= 0 && toxic >= 0
+                && danger >= 0  && impact > 0 && impact < 10000) {
             this.ID = ID;
             this.task = task;
             this.description = description;
@@ -92,8 +93,11 @@ public class Information {
 
     @Override
     public String toString() {
+        if(task != null)
+        {
         return "Task " + task.getName() + " on location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
-
+        }
+        else return "On location: " + location + " | casualties: " + casualties + " | toxicity: " + toxic + " | level of dangerous: " + danger;
     }
 
     /**
@@ -136,5 +140,15 @@ public class Information {
             return true;
         }
         return false;
+    }
+
+    public String getFirstName() {
+        return name;
+    }
+
+  
+
+    public String getURL() {
+        return this.image;
     }
 }
