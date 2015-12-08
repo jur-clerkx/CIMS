@@ -32,7 +32,7 @@ public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String urgency;
     private String status;
@@ -52,7 +52,7 @@ public class Task implements Serializable {
      *
      * @return int with id
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -171,7 +171,7 @@ public class Task implements Serializable {
      * @param ID id of this unit
      * @return unit with the specific unit
      */
-    public Unit getUnit(int ID) {
+    public Unit getUnit(long ID) {
         for (Unit unit : units) {
             if (unit.getId() == ID) {
                 return unit;
@@ -234,7 +234,7 @@ public class Task implements Serializable {
     //generate an string with task information
     public String generateInfo() {
         String info;
-        int infoInt = this.id;
+        long infoInt = this.id;
         info = infoInt + "||" + this.name + "||" + this.urgency + "||" + this.status + "||" + this.location + "||" + this.description;
         return info;
     }

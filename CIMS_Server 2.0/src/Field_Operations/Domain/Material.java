@@ -28,7 +28,7 @@ public class Material implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private int type;
 
@@ -40,7 +40,7 @@ public class Material implements Serializable {
      *
      * @return int with id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 

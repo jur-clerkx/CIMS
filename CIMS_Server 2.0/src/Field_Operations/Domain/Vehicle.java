@@ -28,14 +28,14 @@ public class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String license;
     private int Type;
 
     public Vehicle() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
