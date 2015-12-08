@@ -118,6 +118,32 @@ public class DatabaseMediator {
         return new User();
     }
 
+    public byte[] getPasswordCypher(String username) {
+        byte[] key = new byte[8];
+        if (openConnection()) {
+            try {
+                String query = "SELECT password FROM CIMS.User WHERE username='" + username + "';";
+                ResultSet rs = executeQuery(query);
+                rs.next();
+                String password = rs.getString("password");
+                for (int i = 0; i < 8; i++) {
+                    if (password.length() > i) {
+                        key[i] = password.getBytes()[i];
+                    } else {
+                        key[i] = (byte) i;
+                    }
+                }
+
+                return key;
+            } catch (SQLException e) {
+                System.out.println("getPasswordCypher: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return key;
+    }
+
     /**
      * Check if the user information that is entered is correct.
      *
@@ -266,7 +292,6 @@ public class DatabaseMediator {
     }
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Task">
     /**
      * Gets Task by id
@@ -1143,7 +1168,6 @@ public class DatabaseMediator {
 //                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
 //            return false;
 //        }
-
         if (openConnection()) {
             try {
                 String query = "`CIMS`.`Information` (`public_UserId`, "
@@ -1209,7 +1233,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
                 Task task = null;
-                if(rs.getInt("taskId") != 0){
+                if (rs.getInt("taskId") != 0) {
                     task = getTaskById(rs.getInt("taskId"));
                 }
                 String name = rs.getString("name");
