@@ -18,6 +18,10 @@ public class MaterialDAOImpl implements MaterialDAO {
 
     private EntityManager em;
     
+    /**
+     * Constructor for Material DAO Implementation
+     * @param em 
+     */
     public MaterialDAOImpl(EntityManager em) {
         this.em = em;
     }
