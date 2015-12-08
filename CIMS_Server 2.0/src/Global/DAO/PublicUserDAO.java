@@ -20,7 +20,7 @@ public interface PublicUserDAO {
 
     public void remove(PublicUser pu);
 
-    public void find(PublicUser pu);
+    public PublicUser find(PublicUser pu);
 
     public ArrayList<PublicUser> findall();
 }
