@@ -5,7 +5,7 @@
  */
 package Field_Operations.DAO;
 
-import Field_Operations.Domain.Vehicle;
+import Field_Operations.Domain.Roadmap;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -14,57 +14,57 @@ import javax.persistence.Query;
  *
  * @author sebas
  */
-public class VehicleDAOImpl implements VehicleDAO {
+public class RoadmapDAOImpl implements RoadmapDAO {
+
     private EntityManager em;
     
     /**
-     * Constructor for Vehicle DAO Implementation
+     * Constructor for Roadmap DAO Implementation
      * @param em 
      */
-    public VehicleDAOImpl(EntityManager em) {
+    public RoadmapDAOImpl(EntityManager em) {
         this.em = em;
     }
-
     @Override
     public int count() {
-        Query q = em.createNamedQuery("Vehicle.count",Vehicle.class);
+        Query q = em.createNamedQuery("Roadmap.count", Roadmap.class);
         Integer amount = (Integer)q.getSingleResult();
         
         return amount.intValue();
     }
 
     @Override
-    public void create(Vehicle v) {
+    public void create(Roadmap r) {
         em.getTransaction().begin();
-        em.persist(v);
+        em.persist(r);
         em.getTransaction().commit();
+    }
+
+    @Override
+    public void edit(Roadmap r) {
+        em.getTransaction().begin();
+        em.merge(r);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void remove(Roadmap r) {
+        em.getTransaction().begin();
+        em.remove(r);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public Roadmap find(int id) {
+        return (Roadmap)em.find(Roadmap.class, id);
+    }
+
+    @Override
+    public ArrayList<Roadmap> findAll() {
+        Query q = em.createNamedQuery("Roadmap.getAll", Roadmap.class);
+        ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) q.getResultList();
         
+        return roadmaps;
     }
-
-    @Override
-    public void edit(Vehicle v) {
-        em.getTransaction().begin();
-        em.merge(v);
-        em.getTransaction().commit();
-    }
-
-    @Override
-    public void remove(Vehicle v) {
-        em.getTransaction().begin();
-        em.remove(v);
-        em.getTransaction().commit();
-    }
-
-    @Override
-    public Vehicle find(int id) {
-        return (Vehicle) em.find(Vehicle.class, id);
-    }
-
-    @Override
-    public ArrayList<Vehicle> findAll() {
-        Query q = em.createNamedQuery("Vehicle.getAll", Vehicle.class);
-        ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) q.getResultList();
-        
-        return vehicles;
-    }
+    
 }
