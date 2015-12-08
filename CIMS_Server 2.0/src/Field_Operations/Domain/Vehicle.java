@@ -24,7 +24,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Vehicle.count", query = "SELECT v FROM Vehicle AS v"),
     @NamedQuery(name = "Vehicle.getAll", query = "SELECT v FROM Vehicle AS v")
 })
-public class Vehicle extends Material implements Serializable {
+public class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +32,22 @@ public class Vehicle extends Material implements Serializable {
     private String license;
     private int Type;
 
-    public Vehicle(int vehicleID, String name, String license, int type) {
-        super(vehicleID, name, type);
-        this.license = license;
-        this.Type = type;
+    public int getId() {
+        return id;
     }
 
-    public int getCarType() {
+    public String getLicense() {
+        return license;
+    }
+
+    public int getType() {
         return Type;
+    }
+
+    public Vehicle(int id, String name, String license, int type) {
+        this.id = id;
+        this.license = license;
+        this.Type = type;
     }
 
 }

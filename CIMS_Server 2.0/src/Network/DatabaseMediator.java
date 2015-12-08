@@ -99,7 +99,6 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
 
-               
                 int user_ID = rs.getInt("id");
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -266,7 +265,6 @@ public class DatabaseMediator {
     }
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Task">
     /**
      * Gets Task by id
@@ -625,11 +623,9 @@ public class DatabaseMediator {
                 rs.next();
 
                 String name = rs.getString("name");
-                String shift = rs.getString("shift");
-                String shiftday = rs.getString("shiftday");
                 String description = rs.getString("description");
 
-                u = new Unit(unitID, name, description, shiftday + ", " + shift);
+                u = new Unit(unitID, name, description);
             } catch (SQLException e) {
                 System.out.println("getUnit: " + e.getMessage());
             } finally {
@@ -648,7 +644,7 @@ public class DatabaseMediator {
     public Unit getUnitLists(Unit u) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Unit_Containment WHERE unitid='" + u.getUnitID() + "';";
+                String query = "SELECT * FROM CIMS.Unit_Containment WHERE unitid='" + u.getId() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     switch (rs.getString("type")) {
@@ -656,13 +652,10 @@ public class DatabaseMediator {
                             u.addMaterial(getMaterialById(rs.getInt("containmentid")));
                             break;
                         case "U":
-                            u.addUser(getUserById(rs.getInt("containmentid")));
+                            //u.addUser(getUserById(rs.getInt("containmentid")));
                             break;
                         case "V":
                             u.addVehicle(getVehicleById(rs.getInt("containmentid")));
-                            break;
-                        default:
-                            u.acceptTask(getTaskById(rs.getInt("containmentid")));
                             break;
                     }
                 }
@@ -1143,7 +1136,6 @@ public class DatabaseMediator {
 //                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)) {
 //            return false;
 //        }
-
         if (openConnection()) {
             try {
                 String query = "`CIMS`.`Information` (`public_UserId`, "
@@ -1209,7 +1201,7 @@ public class DatabaseMediator {
                 ResultSet rs = executeQuery(query);
                 rs.next();
                 Task task = null;
-                if(rs.getInt("taskId") != 0){
+                if (rs.getInt("taskId") != 0) {
                     task = getTaskById(rs.getInt("taskId"));
                 }
                 String name = rs.getString("name");

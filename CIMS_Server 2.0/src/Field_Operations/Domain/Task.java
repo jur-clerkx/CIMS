@@ -24,7 +24,9 @@ import javax.persistence.Table;
 @Table(name = "Task")
 @NamedQueries({
     @NamedQuery(name = "Task.count", query = "SELECT t FROM Task AS t"),
-    @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t")
+    @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t"),
+    @NamedQuery(name = "Task.getAllActive", query = "SELECT t FROM Task AS t WHERE t.status != 'Completed' AND t.status != 'Cancelled'"),
+    @NamedQuery(name = "Task.getAllInActive", query = "SELECT t FROM Task AS t WHERE t.status = 'Completed' AND t.status = 'Cancelled'")
 })
 public class Task implements Serializable {
 
@@ -36,7 +38,6 @@ public class Task implements Serializable {
     private String status;
     private String description;
     private String location;
-    private boolean accepted;
 
     @OneToMany
     private ArrayList<Progress> progressList;
@@ -169,7 +170,7 @@ public class Task implements Serializable {
      */
     public Unit getUnit(int ID) {
         for (Unit unit : units) {
-            if (unit.getUnitID() == ID) {
+            if (unit.getId() == ID) {
                 return unit;
             }
         }
@@ -183,10 +184,6 @@ public class Task implements Serializable {
      */
     public ArrayList<Progress> getProgressList() {
         return this.progressList;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     /**
@@ -209,13 +206,6 @@ public class Task implements Serializable {
         if (this.units.contains(unit)) {
             this.units.remove(unit);
         }
-    }
-
-    /**
-     * Task gets accepted by a unit.
-     */
-    public void operateAcceptance() {
-        this.accepted = !this.accepted;
     }
 
     /**
@@ -249,21 +239,20 @@ public class Task implements Serializable {
     /**
      * Constructs a task object
      *
-     * @param taskID Greater than 0
+     * @param id Greater than 0
      * @param name Not longer than 255 characters or null
      * @param urgency Low, Medium or High
      * @param status Not longer than 255 characters or null
      * @param location Not longer than 255 characters or null
      * @param description Not longer than 255 characters or null
      */
-    public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        this.id = taskID;
+    public Task(int id, String name, String urgency, String status, String location, String description) {
+        this.id = id;
         this.name = name;
         this.urgency = urgency;
         this.status = status;
         this.location = location;
         this.description = description;
-        this.accepted = false;
         this.progressList = new ArrayList<>();
         this.units = new ArrayList<>();
     }

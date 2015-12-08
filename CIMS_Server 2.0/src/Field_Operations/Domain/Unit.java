@@ -5,39 +5,110 @@
  */
 package Field_Operations.Domain;
 
+import Global.Domain.PrivateUser;
 import java.util.ArrayList;
-import java.util.List;
 import Network.User;
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
- * @author Jense
+ * @author Jense Schouten
  */
+@Entity
+@Table(name = "Unit")
+@NamedQueries({
+    @NamedQuery(name = "Unit.count", query = "SELECT u FROM Unit AS u"),
+    @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u")
+})
 public class Unit implements Serializable {
 
-    private int unitID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
     private String description;
-    private String shift;
-    private List<User> members;
-    private List<Material> materials;
-    private List<Vehicle> vehicles;
+    @OneToMany
+    private ArrayList<PrivateUser> members;
+    @OneToMany
+    private ArrayList<Material> materials;
+    @OneToMany
+    private ArrayList<Vehicle> vehicles;
+
+    /**
+     * Gets the id of this Unit
+     *
+     * @return int with id
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /**
+     * Gets the name of this Unit
+     *
+     * @return String with name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Gets the description of this Unit
+     *
+     * @return String with description
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Gets all Vehicles of this Unit
+     *
+     * @return ArrayList with Vehicles
+     */
+    public ArrayList<Vehicle> getVehicles() {
+        return (ArrayList) this.vehicles;
+    }
+
+    /**
+     * Gets all PrivateUsers of this Unit
+     *
+     * @return ArrayList with PrivateUsers
+     */
+    public ArrayList<PrivateUser> getMembers() {
+        return (ArrayList) this.members;
+    }
+
+    /**
+     * Gets all Materials of this Unit
+     *
+     * @return ArrayList with Materials
+     */
+    public ArrayList<Material> getMaterials() {
+        return (ArrayList) this.materials;
+    }
 
     /**
      * Constructs a unit object
      *
-     * @param unitID Greater than 0
+     * @param id Greater than 0
      * @param name Not longer than 255 characters or null
      * @param description Not longer than 255 characters
      * @param shift Not longer than 255 characters or null
      */
-    public Unit(int unitID, String name, String description, String shift) {
-        if (unitID > 0 && name != null && name.length() < 255 && description != null && description.length() < 255 && shift != null && shift.length() < 255) {
-            this.unitID = unitID;
+    public Unit(int id, String name, String description) {
+        if (id > 0 && name != null && name.length() < 255 && description != null && description.length() < 255) {
+            this.id = id;
             this.name = name;
             this.description = description;
-            this.shift = shift;
             this.members = new ArrayList<>();
             this.materials = new ArrayList<>();
             this.vehicles = new ArrayList<>();
@@ -47,43 +118,12 @@ public class Unit implements Serializable {
 
     }
 
-    public int getUnitID() {
-        return this.unitID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public String getShift() {
-        return this.shift;
-    }
-
-    /**
-     * Unit accepts a task. Task gets added to the units task list.
-     *
-     * @param task not null
-     */
-    public void acceptTask(Task task) {
-        if (task != null) {
-            task.operateAcceptance();
-            tasks.add(task);
-        } else {
-            throw new IllegalArgumentException("No task selected.");
-        }
-
-    }
-
     /**
      * Adds a user to the unit
      *
      * @param user not null
      */
-    public void addUser(User user) {
+    public void addUser(PrivateUser user) {
         if (user != null) {
             this.members.add(user);
         } else {
@@ -97,7 +137,7 @@ public class Unit implements Serializable {
      *
      * @param user not null and in the list
      */
-    public void delUser(User user) {
+    public void removeUser(User user) {
         if (user != null) {
             if (members.contains(user)) {
                 this.members.remove(user);
@@ -127,9 +167,9 @@ public class Unit implements Serializable {
     /**
      * Removes a reserved vehicle from the unit
      *
-     * @param vehicle no null
+     * @param vehicle not null
      */
-    public void delVehicle(Vehicle vehicle) {
+    public void removeVehicle(Vehicle vehicle) {
         if (vehicle != null) {
             if (vehicles.contains(vehicle)) {
                 this.vehicles.remove(vehicle);
@@ -160,7 +200,7 @@ public class Unit implements Serializable {
      *
      * @param material not null
      */
-    public void delMaterial(Material material) {
+    public void removeMaterial(Material material) {
         if (material != null) {
             if (materials.contains(material)) {
                 this.materials.remove(material);
@@ -173,24 +213,17 @@ public class Unit implements Serializable {
 
     }
 
+    /**
+     * Overrides the toString method
+     *
+     * @return name of unit, amount of members, amount of vehicles and amount of
+     * materials
+     */
     @Override
     public String toString() {
-        return this.name + " " + this.shift;
-    }
-
-    public ArrayList<Vehicle> getVehicles() {
-        return (ArrayList) this.vehicles;
-    }
-
-    public ArrayList<User> getMembers() {
-        return (ArrayList) this.members;
-    }
-
-    public ArrayList<Material> getMaterials() {
-        return (ArrayList) this.materials;
-    }
-
-    public int getSize() {
-        return this.members.size();
+        return this.name + " "
+                + this.members.size() + " Members, "
+                + this.vehicles.size() + "Vehicles "
+                + this.materials.size() + "materials";
     }
 }
