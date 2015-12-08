@@ -80,13 +80,11 @@ public class Progress implements Serializable {
     /**
      * Constructor of progress
      *
-     * @param id id of this progress
      * @param user user of this progress
      * @param task task of this progress
      * @param message message of this progress
      */
-    public Progress(int id, PrivateUser user, Task task, String message) {
-        this.id = id;
+    public Progress(PrivateUser user, Task task, String message) {
         this.user = user;
         this.task = task;
         this.message = message;

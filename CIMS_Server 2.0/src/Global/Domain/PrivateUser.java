@@ -35,19 +35,18 @@ public class PrivateUser extends User implements Serializable {
     /**
      * Constructor for a authorized user
      *
-     * @param authorized boolean if user is authorized
-     * @param userid id of this user
      * @param firstname firstname of this user
      * @param lastname lastname of this user
      * @param gender gender of this user
      * @param rank rank of this user
      * @param sector sector of working
      * @param dateofbirth date of birth of this user
+     * @param securityLevel security level of this user
      * @param password password of this user
      */
-    public PrivateUser(int userid, String firstname, String lastname, String gender,
+    public PrivateUser(String firstname, String lastname, String gender,
             String rank, String sector, String dateofbirth, int securityLevel, String password) {
-        super(userid, firstname, lastname, password);
+        super(firstname, lastname, password);
         this.gender = gender;
         this.rank = rank;
         this.sector = sector;

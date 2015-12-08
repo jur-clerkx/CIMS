@@ -46,9 +46,13 @@ public class Vehicle implements Serializable {
     public int getType() {
         return Type;
     }
-
-    public Vehicle(int id, String name, String license, int type) {
-        this.id = id;
+    /**
+     * Constructor of vehicle
+     * @param name
+     * @param license
+     * @param type 
+     */
+    public Vehicle(String name, String license, int type) {
         this.license = license;
         this.Type = type;
     }

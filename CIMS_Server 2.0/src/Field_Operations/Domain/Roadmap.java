@@ -65,12 +65,10 @@ public class Roadmap implements Serializable {
     /**
      * Constructor of this Roadmap
      *
-     * @param id id of this Roadmap
      * @param name name of this Roadmap
      * @param description description of this Roadmap
      */
-    public Roadmap(int id, String name, String description) {
-        this.id = id;
+    public Roadmap(String name, String description) {
         this.name = name;
         this.description = description;
     }

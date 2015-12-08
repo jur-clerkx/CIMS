@@ -128,7 +128,7 @@ public class Task implements Serializable {
     /**
      * Sets the location of this task
      *
-     * @param status new location of this task
+     * @param location new location of this task
      */
     public void setLocation(String location) {
         if (!this.location.equals(location)) {
@@ -242,15 +242,13 @@ public class Task implements Serializable {
     /**
      * Constructs a task object
      *
-     * @param id Greater than 0
      * @param name Not longer than 255 characters or null
      * @param urgency Low, Medium or High
      * @param status Not longer than 255 characters or null
      * @param location Not longer than 255 characters or null
      * @param description Not longer than 255 characters or null
      */
-    public Task(int id, String name, String urgency, String status, String location, String description) {
-        this.id = id;
+    public Task(String name, String urgency, String status, String location, String description) {
         this.name = name;
         this.urgency = urgency;
         this.status = status;

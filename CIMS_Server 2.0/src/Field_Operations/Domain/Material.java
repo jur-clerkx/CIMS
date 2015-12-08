@@ -63,13 +63,10 @@ public class Material implements Serializable {
     }
 
     /**
-     *
-     * @param id id of this material
      * @param name name of this material
      * @param type type of this material
      */
-    public Material(int id, String name, int type) {
-        this.id = id;
+    public Material(String name, int type) {
         this.name = name;
         this.type = type;
     }

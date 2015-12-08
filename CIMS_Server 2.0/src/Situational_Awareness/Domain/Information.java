@@ -150,7 +150,6 @@ public class Information implements Serializable {
     /**
      * Constructor of the class information
      *
-     * @param id id of of this information
      * @param task task of this information
      * @param name name of this information
      * @param description description of this information
@@ -162,10 +161,9 @@ public class Information implements Serializable {
      * @param image image URL of this information
      * @param user public user that has registered this information
      */
-    public Information(int id, Task task, String name, String description,
+    public Information(Task task, String name, String description,
             String location, int casualities, int toxic, int danger, int impact,
             String image, User user) {
-        this.id = id;
         this.task = task;
         this.description = description;
         this.location = location;

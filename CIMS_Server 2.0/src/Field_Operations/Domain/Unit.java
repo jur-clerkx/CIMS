@@ -103,14 +103,11 @@ public class Unit implements Serializable {
     /**
      * Constructs a unit object
      *
-     * @param id Greater than 0
      * @param name Not longer than 255 characters or null
      * @param description Not longer than 255 characters
-     * @param shift Not longer than 255 characters or null
      */
-    public Unit(int id, String name, String description) {
-        if (id > 0 && name != null && name.length() < 255 && description != null && description.length() < 255) {
-            this.id = id;
+    public Unit(String name, String description) {
+        if (name != null && name.length() < 255 && description != null && description.length() < 255) {
             this.name = name;
             this.description = description;
             this.members = new ArrayList<>();
