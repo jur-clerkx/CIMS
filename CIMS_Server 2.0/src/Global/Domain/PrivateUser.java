@@ -9,13 +9,12 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
  * @author Jense Schouten
  */
-@Entity @Table(name = "User")
+@Entity
 @NamedQueries({
     @NamedQuery(name = "PrivateUser.getAll", query = "SELECT a FROM User AS a")
 })

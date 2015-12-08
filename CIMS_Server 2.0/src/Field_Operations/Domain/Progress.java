@@ -5,23 +5,56 @@
  */
 package Field_Operations.Domain;
 
+import Global.Domain.PrivateUser;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
- * @author sebas
+ * @author Jense Schouten
  */
+@Entity
+@Table(name = "Progress")
+@NamedQueries({
+    @NamedQuery(name = "Progress.count", query = "SELECT m FROM Progress AS m"),
+    @NamedQuery(name = "Progress.getAll", query = "SELECT m FROM Progress AS m")
+})
 public class Progress implements Serializable {
 
-    private int progressID;
-    private Network.User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @OneToOne
+    private PrivateUser user;
+    
     private Task task;
     private String message;
 
-    public Progress(int progressID, Network.User user, Task task, String message) {
-        this.progressID = progressID;
+    public int getId() {
+        return id;
+    }
+
+    public PrivateUser getUser() {
+        return user;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Progress(int id, PrivateUser user, Task task, String message) {
+        this.id = id;
         this.user = user;
         this.task = task;
         this.message = message;

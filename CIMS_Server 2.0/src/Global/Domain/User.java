@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,6 +22,7 @@ import javax.persistence.Transient;
  * @author Jense Schouten
  */
 @Entity @Table(name = "User")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQueries({
     @NamedQuery(name = "User.count", query = "SELECT a FROM User AS a"),
     @NamedQuery(name = "User.login", query = "SELECT a FROM User AS a WHERE a.username = :username AND a.password = :password")

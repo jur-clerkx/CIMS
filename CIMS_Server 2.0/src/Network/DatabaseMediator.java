@@ -1042,7 +1042,7 @@ public class DatabaseMediator {
                 int taskID = rs.getInt("taskid");
                 String message = rs.getString("message");
 
-                p = new Progress(progressID, getUserById(userID), getTaskById(taskID), message);
+                //p = new Progress(progressID, getUserById(userID), getTaskById(taskID), message);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1077,7 +1077,7 @@ public class DatabaseMediator {
                 int userID = rs.getInt("userid");
                 String message = rs.getString("message");
 
-                progresses.add(new Progress(progressID, getUserById(userID), getTaskById(taskID), message));
+                //progresses.add(new Progress(progressID, getUserById(userID), getTaskById(taskID), message));
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
