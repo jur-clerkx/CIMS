@@ -22,7 +22,6 @@ public class Unit implements Serializable {
     private String shift;
     private List<User> members;
     private List<Material> materials;
-    private List<Task> tasks;
     private List<Vehicle> vehicles;
 
     /**
@@ -41,7 +40,6 @@ public class Unit implements Serializable {
             this.shift = shift;
             this.members = new ArrayList<>();
             this.materials = new ArrayList<>();
-            this.tasks = new ArrayList<>();
             this.vehicles = new ArrayList<>();
         } else {
             throw new IllegalArgumentException("Make sure you fill in every field.");
@@ -173,10 +171,6 @@ public class Unit implements Serializable {
             throw new IllegalArgumentException("No material selected.");
         }
 
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
     }
 
     @Override

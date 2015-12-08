@@ -7,105 +7,166 @@ package Field_Operations.Domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
- * @author Jense
+ * @author Jense Schouten
  */
+@Entity
+@Table(name = "Task")
+@NamedQueries({
+    @NamedQuery(name = "Task.count", query = "SELECT t FROM Task AS t"),
+    @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t")
+})
 public class Task implements Serializable {
 
-    private int taskID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
     private String urgency;
     private String status;
     private String description;
     private String location;
-    private ArrayList<Unit> units;
     private boolean accepted;
 
-    public boolean isAccepted() {
-        return accepted;
-    }
+    @OneToMany
     private ArrayList<Progress> progressList;
+    @OneToMany
+    private ArrayList<Unit> units;
+
     /**
-     * Constructs a task object
-     * @param taskID Greater than 0
-     * @param name Not longer than 255 characters or null
-     * @param urgency Low, Medium or High
-     * @param status Not longer than 255 characters or null
-     * @param location Not longer than 255 characters or null
-     * @param description Not longer than 255 characters or null
+     * Gets the id of this task
+     *
+     * @return int with id
      */
-    public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        this.taskID = taskID;
-        this.name = name;
-        this.urgency = urgency;
-        this.status = status;
-        this.location = location;
-        this.description = description;
-        this.accepted = false;
-        this.progressList = new ArrayList<>();
-        this.units = new ArrayList<>();
+    public int getId() {
+        return this.id;
     }
 
-    public int getTaskID() {
-        return this.taskID;
-    }
-
+    /**
+     * Gets the name of this task
+     *
+     * @return String with name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * sets the name of this task
+     *
+     * @param name new name of this task
+     */
     public void setName(String name) {
         if (!this.name.equals(name)) {
             this.name = name;
         }
     }
 
+    /**
+     * Gets the urgency of this task
+     *
+     * @return String with urgency
+     */
     public String getUrgency() {
         return this.urgency;
     }
 
+    /**
+     * Sets the urgency of this task
+     *
+     * @param urgency new urgency of this task
+     */
     public void setUrgency(String urgency) {
         if (!this.urgency.equals(urgency)) {
             this.urgency = urgency;
         }
     }
 
+    /**
+     * Gets the status of this task
+     *
+     * @return String with status
+     */
     public String getStatus() {
         return this.status;
     }
 
+    /**
+     * Sets the status of this task
+     *
+     * @param status new status of this task
+     */
     public void setStatus(String status) {
         if (!this.status.equals(status)) {
             this.status = status;
         }
     }
 
+    /**
+     * Gets the location of this task
+     *
+     * @return String with location
+     */
     public String getLocation() {
         return this.location;
     }
 
+    /**
+     * Sets the location of this task
+     *
+     * @param status new location of this task
+     */
     public void setLocation(String location) {
         if (!this.location.equals(location)) {
             this.location = location;
         }
     }
 
+    /**
+     * Gets the description of this task
+     *
+     * @return String with location
+     */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Sets the description of this task
+     *
+     * @param description new description of this task
+     */
     public void setDescription(String description) {
         if (!this.description.equals(description)) {
             this.description = description;
         }
     }
 
+    /**
+     * Gets all units of this task
+     *
+     * @return ArrayList with units
+     */
     public ArrayList<Unit> getUnits() {
         return this.units;
     }
 
+    /**
+     * Gets a specific unit
+     *
+     * @param ID id of this unit
+     * @return unit with the specific unit
+     */
     public Unit getUnit(int ID) {
         for (Unit unit : units) {
             if (unit.getUnitID() == ID) {
@@ -114,11 +175,20 @@ public class Task implements Serializable {
         }
         return null;
     }
-    
+
+    /**
+     * Gets all progress of this task
+     *
+     * @return ArrayList with progress
+     */
     public ArrayList<Progress> getProgressList() {
         return this.progressList;
     }
-    
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
     /**
      * Adds a unit to the list of units working on the task
      *
@@ -135,7 +205,7 @@ public class Task implements Serializable {
      *
      * @param unit has to be in the list
      */
-    public void delUnit(Unit unit) {
+    public void removeUnit(Unit unit) {
         if (this.units.contains(unit)) {
             this.units.remove(unit);
         }
@@ -171,8 +241,30 @@ public class Task implements Serializable {
     //generate an string with task information
     public String generateInfo() {
         String info;
-        int infoInt = this.taskID;
+        int infoInt = this.id;
         info = infoInt + "||" + this.name + "||" + this.urgency + "||" + this.status + "||" + this.location + "||" + this.description;
         return info;
+    }
+
+    /**
+     * Constructs a task object
+     *
+     * @param taskID Greater than 0
+     * @param name Not longer than 255 characters or null
+     * @param urgency Low, Medium or High
+     * @param status Not longer than 255 characters or null
+     * @param location Not longer than 255 characters or null
+     * @param description Not longer than 255 characters or null
+     */
+    public Task(int taskID, String name, String urgency, String status, String location, String description) {
+        this.id = taskID;
+        this.name = name;
+        this.urgency = urgency;
+        this.status = status;
+        this.location = location;
+        this.description = description;
+        this.accepted = false;
+        this.progressList = new ArrayList<>();
+        this.units = new ArrayList<>();
     }
 }

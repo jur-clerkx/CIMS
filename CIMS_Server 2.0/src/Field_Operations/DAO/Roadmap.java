@@ -5,24 +5,23 @@
  */
 package Field_Operations.DAO;
 
-import Field_Operations.Domain.Vehicle;
 import java.util.ArrayList;
 
 /**
  *
  * @author Jense Schouten
  */
-public interface VehicleDAO {
+public interface Roadmap {
 
     public int count();
 
-    public void create(Vehicle v);
+    public void create(Roadmap r);
 
-    public void edit(Vehicle v);
+    public void edit(Roadmap r);
 
-    public void remove(Vehicle v);
+    public void remove(Roadmap r);
 
-    public Vehicle find(int id);
+    public Roadmap find(int id);
 
-    public ArrayList<Vehicle> findall();
+    public ArrayList<Roadmap> findall();
 }

@@ -325,7 +325,7 @@ public class DatabaseMediator {
     public Task getTaskLists(Task t) {
         if (openConnection()) {
             try {
-                String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + t.getTaskID() + "';";
+                String query = "SELECT unitid FROM CIMS.Task_Unit WHERE taskid='" + t.getId() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     t.addUnit(getUnitById(rs.getInt("unitid")));
@@ -338,7 +338,7 @@ public class DatabaseMediator {
         }
         if (openConnection()) {
             try {
-                String query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getTaskID() + "';";
+                String query = "SELECT id FROM CIMS.Progress WHERE taskid='" + t.getId() + "';";
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
                     t.updateProgress(getProgressById(rs.getInt("id")));

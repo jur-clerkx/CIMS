@@ -5,24 +5,27 @@
  */
 package Field_Operations.DAO;
 
-import Field_Operations.Domain.Vehicle;
+import Field_Operations.Domain.Task;
 import java.util.ArrayList;
 
 /**
  *
  * @author Jense Schouten
  */
-public interface VehicleDAO {
+public interface ProgressDAO {
 
     public int count();
 
-    public void create(Vehicle v);
+    public void create(Process p);
 
-    public void edit(Vehicle v);
+    public void edit(Process p);
 
-    public void remove(Vehicle v);
+    public void remove(Process p);
 
-    public Vehicle find(int id);
+    public Process find(int id);
 
-    public ArrayList<Vehicle> findall();
+    public Process findByTask(Task t);
+
+    public ArrayList<Process> findall();
+
 }

@@ -23,8 +23,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Progress")
 @NamedQueries({
-    @NamedQuery(name = "Progress.count", query = "SELECT m FROM Progress AS m"),
-    @NamedQuery(name = "Progress.getAll", query = "SELECT m FROM Progress AS m")
+    @NamedQuery(name = "Progress.count", query = "SELECT p FROM Progress AS p"),
+    @NamedQuery(name = "Progress.getAll", query = "SELECT p FROM Progress AS p"),
+    @NamedQuery(name = "Progress.findByTask", query = "SELECT p FROM Progress AS p WHERE p.task = :task")
 })
 public class Progress implements Serializable {
 
@@ -33,26 +34,54 @@ public class Progress implements Serializable {
     private int id;
     @OneToOne
     private PrivateUser user;
-    
+    @OneToOne
     private Task task;
     private String message;
 
+    /**
+     * Gets id of this Progress
+     *
+     * @return int with id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets private user of this Progress
+     *
+     * @return PrivateUser with private user
+     */
     public PrivateUser getUser() {
         return user;
     }
 
+    /**
+     * Gets task of this Progress
+     *
+     * @return Task with task
+     */
     public Task getTask() {
         return task;
     }
 
+    /**
+     * Gets message of this Progress
+     *
+     * @return String with message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Constructor of progress
+     *
+     * @param id id of this progress
+     * @param user user of this progress
+     * @param task task of this progress
+     * @param message message of this progress
+     */
     public Progress(int id, PrivateUser user, Task task, String message) {
         this.id = id;
         this.user = user;

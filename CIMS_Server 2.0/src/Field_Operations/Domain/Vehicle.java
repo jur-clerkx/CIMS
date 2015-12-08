@@ -21,8 +21,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Vehicle")
 @NamedQueries({
-    @NamedQuery(name = "Vehicle.count", query = "SELECT m FROM Vehicle AS m"),
-    @NamedQuery(name = "Vehicle.getAll", query = "SELECT m FROM Vehicle AS m")
+    @NamedQuery(name = "Vehicle.count", query = "SELECT v FROM Vehicle AS v"),
+    @NamedQuery(name = "Vehicle.getAll", query = "SELECT v FROM Vehicle AS v")
 })
 public class Vehicle extends Material implements Serializable {
 
