@@ -62,7 +62,7 @@ public class Client {
     public static void main(String[] args) throws IOException {
 
         //ChatClient c = new Client("192.168.27.124", 4444);
-        Client c = new Client("schouten", 1234);
+        Client c = new Client("localhost", 1234);
         String[] credentials = "/Schouten".split("/");
         c.send(credentials);
 

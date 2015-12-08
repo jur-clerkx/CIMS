@@ -74,7 +74,7 @@ public class AssignRoadmapController implements Initializable {
     private void btnAssign(MouseEvent event) {
         try {
             if (ConnectionController.assignRoadmaps(cboxUnits.getSelectionModel().getSelectedItem().getTaskID(), cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Successfull");
                 alert.setContentText("Roadmap succesfully assigned");
                 alert.showAndWait();

@@ -24,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
@@ -72,6 +73,8 @@ public class CreateInformationController implements Initializable, Observer {
     private TextField txtURL;
     @FXML
     private AnchorPane thisAnchor;
+    @FXML
+    private ToggleButton toggleButton;
 
     /**
      * Initializes the controller class.
@@ -85,6 +88,7 @@ public class CreateInformationController implements Initializable, Observer {
     private void RegisterInformation(MouseEvent event) {
         String name = txtName.getText() + " " + txtLastname.getText();
 
+        boolean toggle;
         int danger = 0;
         int toxic = 0;
         if (radioSmall.isSelected()) {
@@ -100,7 +104,14 @@ public class CreateInformationController implements Initializable, Observer {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText())
+        
+        if(toggleButton.isSelected())
+        {
+            toggle = true;
+        }
+        else toggle = false;
+        
+        if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),toggle)
                 == true) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");

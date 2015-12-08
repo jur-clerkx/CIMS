@@ -20,7 +20,7 @@
       <VBox alignment="TOP_RIGHT" layoutX="22.0" layoutY="22.0" prefHeight="569.0" prefWidth="146.0">
          <children>
             <Label text="Information:" />
-            <Label text="Voornaam:">
+            <Label text="Id:">
                <VBox.margin>
                   <Insets left="20.0" top="30.0" />
                </VBox.margin>
@@ -153,5 +153,6 @@
          </children>
       </VBox>
       <TextField fx:id="txtURL" layoutX="626.0" layoutY="216.0" prefHeight="25.0" prefWidth="185.0" promptText="URL" />
+      <ToggleButton fx:id="toggleButton" layoutX="692.0" layoutY="522.0" mnemonicParsing="false" text="Private" />
    </children>
 </AnchorPane>

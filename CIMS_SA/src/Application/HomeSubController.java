@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -30,27 +32,43 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Nick van der Mullen
  */
-public class HomeSubController implements Initializable{
+public class HomeSubController implements Initializable {
 
     @FXML
-    private ListView<Information> listAvailableInformation;
+    public ListView<Information> listAvailableInformation;
+
     @FXML
     private Button btnRefresh;
     @FXML
     private Button btnOpenInfo;
     @FXML
     private AnchorPane thisAnchor;
+    private ObservableList<Information> myObservableList;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Timer t;
         if (CIMS_SA.con.getUser() instanceof PublicUser) {
+            
             if (CIMS_SA.con.getUser() != null) {
                 try {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
                     listAvailableInformation.setItems(myObservableList);
+                    t = new Timer();
+                    t.scheduleAtFixedRate(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                 myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                            } catch (IOException ex) {
+                                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }, 30, 30);
                 } catch (IOException ex) {
                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -59,8 +77,20 @@ public class HomeSubController implements Initializable{
         } else {
             try {
                 if (CIMS_SA.con.getUser() != null) {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
+                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
                     listAvailableInformation.setItems(myObservableList);
+                     t = new Timer();
+                    t.scheduleAtFixedRate(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                 myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                            } catch (IOException ex) {
+                                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }, 30, 30);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
