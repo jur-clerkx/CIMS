@@ -7,7 +7,7 @@ package Field_Operations.DAO;
 
 import Field_Operations.Domain.Progress;
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -56,7 +56,7 @@ public class ProgressDAOImpl implements ProgressDAO {
     }
 
     @Override
-    public Progress find(int id) {
+    public Progress find(long id) {
         return (Progress)em.find(Progress.class, id);
     }
 
@@ -69,9 +69,9 @@ public class ProgressDAOImpl implements ProgressDAO {
     }
 
     @Override
-    public ArrayList<Progress> findAll() {
+    public List<Progress> findAll() {
         Query q = em.createNamedQuery("Progress.getAll", Progress.class);
-        ArrayList<Progress> progresses = (ArrayList<Progress>) q.getResultList();
+        List<Progress> progresses = (List<Progress>) q.getResultList();
         
         return progresses;
     }

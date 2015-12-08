@@ -45,7 +45,7 @@ public interface VehicleDAO {
      * @param id 
      * @return Vehicle with @param id
      */
-    public Vehicle find(int id);
+    public Vehicle find(long id);
 
     /**
      * Find all Vehicles in the database.

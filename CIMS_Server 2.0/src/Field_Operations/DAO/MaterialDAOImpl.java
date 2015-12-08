@@ -26,11 +26,10 @@ public class MaterialDAOImpl implements MaterialDAO {
         this.em = em;
     }
     @Override
-    public int count() {
+    public long count() {
         Query q = em.createNamedQuery("Material.count", Material.class);
-        Integer amount = (Integer)q.getSingleResult();
-        
-        return amount;
+        return (long) q.getSingleResult();
+
     }
 
     @Override
@@ -55,7 +54,7 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public Material find(int id) {
+    public Material find(long id) {
         return (Material) em.find(Material.class, id);
     }
 

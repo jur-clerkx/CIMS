@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Roadmap;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -43,11 +43,11 @@ public interface RoadmapDAO {
      * @param id
      * @return Roadmap with @param id
      */
-    public Roadmap find(int id);
+    public Roadmap find(long id);
 
     /**
      * Find all Roadmaps in the database.
      * @return all roadmaps from the database.
      */
-    public ArrayList<Roadmap> findAll();
+    public List<Roadmap> findAll();
 }

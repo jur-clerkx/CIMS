@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Roadmap;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -55,14 +55,14 @@ public class RoadmapDAOImpl implements RoadmapDAO {
     }
 
     @Override
-    public Roadmap find(int id) {
+    public Roadmap find(long id) {
         return (Roadmap)em.find(Roadmap.class, id);
     }
 
     @Override
-    public ArrayList<Roadmap> findAll() {
+    public List<Roadmap> findAll() {
         Query q = em.createNamedQuery("Roadmap.getAll", Roadmap.class);
-        ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) q.getResultList();
+        List<Roadmap> roadmaps = q.getResultList();
         
         return roadmaps;
     }

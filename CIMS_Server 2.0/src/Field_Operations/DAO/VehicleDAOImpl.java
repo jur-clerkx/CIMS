@@ -56,7 +56,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public Vehicle find(int id) {
+    public Vehicle find(long id) {
         return (Vehicle) em.find(Vehicle.class, id);
     }
 

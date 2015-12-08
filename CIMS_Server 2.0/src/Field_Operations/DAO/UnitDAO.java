@@ -48,7 +48,7 @@ public interface UnitDAO {
      * @param id
      * @return unit with @param id
      */
-    public Unit find(int id);
+    public Unit find(long id);
 
     /**
      * Find all units in the database.

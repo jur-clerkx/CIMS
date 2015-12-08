@@ -7,7 +7,7 @@ package Field_Operations.DAO;
 
 import Field_Operations.Domain.Progress;
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,7 +44,7 @@ public interface ProgressDAO {
      * @param id
      * @return Progress with @param id
      */
-    public Progress find(int id);
+    public Progress find(long id);
 
     /**
      * Find a Progress using a task
@@ -57,6 +57,6 @@ public interface ProgressDAO {
      * Find all Progresses in the database.
      * @return all vehicles from the database.
      */
-    public ArrayList<Progress> findAll();
+    public List<Progress> findAll();
 
 }

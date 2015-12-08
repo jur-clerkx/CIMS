@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -43,23 +43,23 @@ public interface TaskDAO {
      * @param id
      * @return Task with @param id
      */
-    public Task find(int id);
+    public Task find(long id);
 
     /**
      * Find all Tasks in the database.
      * @return all tasks from the database.
      */
-    public ArrayList<Task> findAll();
+    public List<Task> findAll();
 
     /**
      * Find all Active Tasks in the database.
      * @return all active tasks from the database.
      */
-    public ArrayList<Task> findAllActive();
+    public List<Task> findAllActive();
 
     /**
      * Find all InativeTasks in the database.
      * @return all active tasks from the database.
      */
-    public ArrayList<Task> findAllInactive();
+    public List<Task> findAllInactive();
 }

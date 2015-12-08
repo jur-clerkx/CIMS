@@ -59,7 +59,7 @@ public class UnitDAOImpl implements UnitDAO {
     }
 
     @Override
-    public Unit find(int id) {
+    public Unit find(long id) {
         return (Unit) em.find(Unit.class, id);
     }
 
@@ -79,7 +79,7 @@ public class UnitDAOImpl implements UnitDAO {
                 Query q = em.createNamedQuery("Unit.getAllByUser", Unit.class);
                 q.setParameter("id", c.getUserId());
                 
-                hs.addAll((List<Unit>)q.getResultList());
+                hs.addAll(q.getResultList());
                 
             }
         }     
@@ -96,7 +96,7 @@ public class UnitDAOImpl implements UnitDAO {
                 Query q = em.createNamedQuery("Unit.getAllByUser", Unit.class);
                 q.setParameter("id", c.getUserId());
                 
-                hs.addAll((List<Unit>)q.getResultList());
+                hs.addAll(q.getResultList());
                 
             }
         }     

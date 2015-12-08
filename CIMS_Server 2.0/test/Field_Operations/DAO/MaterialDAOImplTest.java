@@ -58,8 +58,8 @@ public class MaterialDAOImplTest {
         System.out.println("count");
         Material m = new Material("Hamer", 1);
         instance.create(m);
-        int expResult = 1;
-        int result = instance.count();
+        long expResult = 1;
+        long result = instance.count();
         assertEquals(expResult, result);
     }
 

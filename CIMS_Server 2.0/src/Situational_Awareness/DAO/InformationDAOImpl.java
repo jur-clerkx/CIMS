@@ -6,7 +6,7 @@
 package Situational_Awareness.DAO;
 
 import Situational_Awareness.Domain.Information;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -50,14 +50,14 @@ public class InformationDAOImpl implements InformationDAO {
     }
 
     @Override
-    public Information find(int id) {
+    public Information find(long id) {
         return (Information) em.find(Information.class, id);
     }
 
     @Override
-    public ArrayList<Information> findAll() {
+    public List<Information> findAll() {
         Query q = em.createNamedQuery("Information.getAll", Information.class);
-        ArrayList<Information> infos = (ArrayList<Information>) q.getResultList();
+        List<Information> infos = q.getResultList();
         
         return infos;
     }

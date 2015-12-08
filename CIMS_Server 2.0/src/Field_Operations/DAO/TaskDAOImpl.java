@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -55,30 +55,30 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     @Override
-    public Task find(int id) {
+    public Task find(long id) {
         return (Task) em.find(Task.class, id);
     }
 
     @Override
-    public ArrayList<Task> findAll() {
+    public List<Task> findAll() {
         Query q = em.createNamedQuery("Task.getAll", Task.class);
-        ArrayList<Task> tasks = (ArrayList<Task>) q.getResultList();
+        List<Task> tasks = q.getResultList();
         
         return tasks;
     }
 
     @Override
-    public ArrayList<Task> findAllActive() {
+    public List<Task> findAllActive() {
         Query q = em.createNamedQuery("Task.getAllActive", Task.class);
-        ArrayList<Task> tasks = (ArrayList<Task>) q.getResultList();
+        List<Task> tasks = q.getResultList();
         
         return tasks;
     }
 
     @Override
-    public ArrayList<Task> findAllInactive() {
+    public List<Task> findAllInactive() {
         Query q = em.createNamedQuery("Task.getAllInActive", Task.class);
-        ArrayList<Task> tasks = (ArrayList<Task>) q.getResultList();
+        List<Task> tasks = q.getResultList();
         
         return tasks;
     }

@@ -31,7 +31,7 @@ public class Information implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String description;
     private String location;
@@ -68,7 +68,7 @@ public class Information implements Serializable {
      *
      * @return int with id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 

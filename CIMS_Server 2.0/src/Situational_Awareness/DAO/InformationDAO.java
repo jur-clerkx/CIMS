@@ -6,7 +6,7 @@
 package Situational_Awareness.DAO;
 
 import Situational_Awareness.Domain.Information;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -48,12 +48,12 @@ public interface InformationDAO {
      * @param id
      * @return Vehicle with @param id
      */
-    public Information find(int id);
+    public Information find(long id);
 
     /**
      * Find all Vehicles in the database.
      *
      * @return all vehicles from the database.
      */
-    public ArrayList<Information> findAll();
+    public List<Information> findAll();
 }

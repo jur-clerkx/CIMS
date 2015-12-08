@@ -19,7 +19,7 @@ public interface MaterialDAO {
      *
      * @return number of Materials
      */
-    public int count();
+    public long count();
 
     /**
      * Create a new Material and add it to the database.
@@ -46,7 +46,7 @@ public interface MaterialDAO {
      * @param id 
      * @return Material with @param id
      */
-    public Material find(int id);
+    public Material find(long id);
 
     /**
      * Find all Materials in the database.
