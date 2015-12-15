@@ -7,7 +7,9 @@ package Field_Operations.Domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,10 +41,10 @@ public class Task implements Serializable {
     private String description;
     private String location;
 
-    @OneToMany
-    private ArrayList<Progress> progressList;
-    @OneToMany
-    private ArrayList<Unit> units;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Progress> progressList;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Unit> units;
 
     public Task() {
     }
@@ -159,9 +161,9 @@ public class Task implements Serializable {
     /**
      * Gets all units of this task
      *
-     * @return ArrayList with units
+     * @return List with units
      */
-    public ArrayList<Unit> getUnits() {
+    public List<Unit> getUnits() {
         return this.units;
     }
 
@@ -183,9 +185,9 @@ public class Task implements Serializable {
     /**
      * Gets all progress of this task
      *
-     * @return ArrayList with progress
+     * @return List with progress
      */
-    public ArrayList<Progress> getProgressList() {
+    public List<Progress> getProgressList() {
         return this.progressList;
     }
 
@@ -254,7 +256,7 @@ public class Task implements Serializable {
         this.status = status;
         this.location = location;
         this.description = description;
-        this.progressList = new ArrayList<>();
-        this.units = new ArrayList<>();
+        this.progressList = new ArrayList();
+        this.units = new ArrayList();
     }
 }

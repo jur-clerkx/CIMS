@@ -6,10 +6,12 @@
 package Field_Operations.Domain;
 
 import Global.Domain.PrivateUser;
-import java.util.ArrayList;
+import java.util.List;
 import Network.User;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,8 +28,8 @@ import javax.persistence.Table;
 @Table(name = "Unit")
 @NamedQueries({
     @NamedQuery(name = "Unit.count", query = "SELECT u FROM Unit AS u"),
-    @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u"),
-    @NamedQuery(name = "Unit.getAllByUser", query = "SELECT u FROM Unit AS u WHERE u.members.id = :id")
+    @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u")//,
+    //@NamedQuery(name = "Unit.getAllByUser", query = "SELECT u FROM Unit AS u WHERE u.members.id in :id")
 })
 public class Unit implements Serializable {
 
@@ -36,12 +38,12 @@ public class Unit implements Serializable {
     private long id;
     private String name;
     private String description;
-    @OneToMany
-    private ArrayList<PrivateUser> members;
-    @OneToMany
-    private ArrayList<Material> materials;
-    @OneToMany
-    private ArrayList<Vehicle> vehicles;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<PrivateUser> members;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Material> materials;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Vehicle> vehicles;
 
     public Unit() {
     }
@@ -76,28 +78,28 @@ public class Unit implements Serializable {
     /**
      * Gets all Vehicles of this Unit
      *
-     * @return ArrayList with Vehicles
+     * @return List with Vehicles
      */
-    public ArrayList<Vehicle> getVehicles() {
-        return (ArrayList) this.vehicles;
+    public List<Vehicle> getVehicles() {
+        return this.vehicles;
     }
 
     /**
      * Gets all PrivateUsers of this Unit
      *
-     * @return ArrayList with PrivateUsers
+     * @return List with PrivateUsers
      */
-    public ArrayList<PrivateUser> getMembers() {
-        return (ArrayList) this.members;
+    public List<PrivateUser> getMembers() {
+        return this.members;
     }
 
     /**
      * Gets all Materials of this Unit
      *
-     * @return ArrayList with Materials
+     * @return List with Materials
      */
-    public ArrayList<Material> getMaterials() {
-        return (ArrayList) this.materials;
+    public List<Material> getMaterials() {
+        return this.materials;
     }
 
     /**
