@@ -68,7 +68,7 @@ public class HomeSubController implements Initializable {
                                 Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                    }, 30, 30);
+                    }, 15000, 15000);
                 } catch (IOException ex) {
                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                 }

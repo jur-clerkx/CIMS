@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -31,10 +32,6 @@ public class RoadmapCreateController implements Initializable {
     private TextField txtName;
     @FXML
     private TextArea txtDescription;
-    @FXML
-    private Button btnCancel;
-    @FXML
-    private Button btnCreate;
 
     /**
      * Initializes the controller class.
@@ -46,7 +43,6 @@ public class RoadmapCreateController implements Initializable {
 
   
 
-    @FXML
     private void create(ActionEvent event) {
 
         try {
