@@ -7,7 +7,7 @@ package Field_Operations.Domain;
 
 import Global.Domain.PrivateUser;
 import java.util.List;
-import Network.User;
+import Global.Domain.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;
