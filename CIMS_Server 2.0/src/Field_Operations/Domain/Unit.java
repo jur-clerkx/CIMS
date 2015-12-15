@@ -140,7 +140,7 @@ public class Unit implements Serializable {
      *
      * @param user not null and in the list
      */
-    public void removeUser(User user) {
+    public void removeUser(PrivateUser user) {
         if (user != null) {
             if (members.contains(user)) {
                 this.members.remove(user);

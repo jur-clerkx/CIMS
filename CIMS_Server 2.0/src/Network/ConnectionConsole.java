@@ -5,6 +5,8 @@
  */
 package Network;
 
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
 import Global.Domain.User;
 import java.io.IOException;
 import java.net.Socket;
@@ -28,12 +30,13 @@ public class ConnectionConsole {
         String typeOfAccount = "";
         String username = "";
         String password = "";
+        user = new User();
 
-        System.out.println("To autorize give Server-IP");
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            if (password.equals("")) {
+            if (!user.authorized()) {
                 if (serverIp.equals("")) {
+                    System.out.println("To autorize give Server-IP");
                     serverIp = scanner.nextLine();
                     System.out.println("Give Port ");
                 } else if (port.equals("")) {
@@ -48,16 +51,13 @@ public class ConnectionConsole {
                 } else if (password.equals("")) {
                     password = scanner.nextLine();
                     if (setupServer(Integer.parseInt(port), serverIp)) {
-                        if(authorize(typeOfAccount, username, password))
-                            System.out.println("Give Function");
-                        
-                    }                    
+                        authorize(typeOfAccount, username, password);
+                    }
                 }
-            }else{
-                sendCommand(scanner.nextLine());
-                System.out.println("Working..");
-                System.out.println("");
+            } else {
                 System.out.println("Give Function");
+                sendCommand(scanner.nextLine());
+                System.out.println("");
             }
         }
     }
@@ -82,15 +82,13 @@ public class ConnectionConsole {
         credentials[1] = username;
         credentials[2] = password;
         serverConnection.write(credentials);
+
         try {
             user = (User) serverConnection.read();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ConnectionConsole.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(user.toString());
-        if (user != null) {
-            
+            System.out.println("User: " + user.toString());
+            System.out.println("Autorized:" + user.authorized());
             return user.authorized();
+        } catch (Exception ex) {
         }
         return false;
     }
@@ -100,21 +98,32 @@ public class ConnectionConsole {
             if (!user.authorized()) {
                 return;
             }
+            System.out.println("Working..");
             serverConnection.write(command);
             functionControl(command);
-            System.out.println(serverConnection.read());
         } catch (Exception ex) {
             ex.getStackTrace();
         }
     }
 
-    private static void functionControl(String function) {
+    private static void functionControl(String function) throws ClassNotFoundException {
+        Object o;
         switch (function) {
             case "FOUS1":
                 serverConnection.write(1);
+                o = serverConnection.read();
+                if (o instanceof Task) {
+                    Task t = (Task) o;
+                    System.out.println("Task: " + t.toString());
+                }
                 break;
             case "FOUS2":
                 serverConnection.write(1);
+                o = serverConnection.read();
+                if (o instanceof Unit) {
+                    Unit u = (Unit) o;
+                    System.out.println("Unit: " + u.toString());
+                }
                 break;
         }
     }

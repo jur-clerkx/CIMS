@@ -34,7 +34,6 @@ public class Connection {
     private Socket socket;
     private User user;
 
-    private EntityManagerFactory emf;
     private EntityManager em;
 
     boolean developermode = true;
@@ -47,14 +46,13 @@ public class Connection {
      * @param socket Connection socket
      * @throws IOException
      */
-    Connection(Socket socket) throws IOException {
+    Connection(Socket socket, EntityManagerFactory emf) throws IOException {
+        em = emf.createEntityManager();
+
         this.socket = socket;
         this.user = new User();
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
-
-        emf = Persistence.createEntityManagerFactory("CIMS_ServerPU");
-        em = emf.createEntityManager();
 
         reading = true;
 
@@ -346,14 +344,24 @@ public class Connection {
             return false;
         }
         if (isNumeric(prvt)) {
-            if (prvt.equals("0")) {
-                Global.DAO.PublicUserDAO pudao = new PublicUserDAOImpl(em);
-                this.user = pudao.login(username, password);
-            } else if (prvt.equals("1")) {
-                Global.DAO.PrivateUserDAO pudao = new PrivateUserDAOImpl(em);
-                this.user = pudao.login(username, password);
+            switch (prvt) {
+                case "0":
+                    Global.DAO.PublicUserDAO pudao = new PublicUserDAOImpl(em);
+                    this.user = pudao.login(username, password);
+                    if (this.user != null) {
+                        this.user.setAuthorized(true);
+                        return true;
+                    }
+                    break;
+                case "1":
+                    Global.DAO.PrivateUserDAO prudao = new PrivateUserDAOImpl(em);
+                    this.user = prudao.login(username, password);
+                    if (this.user != null) {
+                        this.user.setAuthorized(true);
+                        return true;
+                    }
+                    break;
             }
-            return this.user != null;
         }
         return false;
     }

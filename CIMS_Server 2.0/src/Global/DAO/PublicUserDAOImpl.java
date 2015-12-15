@@ -16,12 +16,14 @@ import javax.persistence.Query;
  *
  * @author sebas
  */
-public class PublicUserDAOImpl implements PublicUserDAO,UserDAO {
+public class PublicUserDAOImpl implements PublicUserDAO, UserDAO {
+
     private EntityManager em;
-    
+
     /**
      * Constructor for Public User DAO Implementation
-     * @param em 
+     *
+     * @param em
      */
     public PublicUserDAOImpl(EntityManager em) {
         this.em = em;
@@ -57,7 +59,7 @@ public class PublicUserDAOImpl implements PublicUserDAO,UserDAO {
     public ArrayList<PublicUser> findall() {
         Query q = em.createNamedQuery("PublicUser.getAll", PublicUser.class);
         ArrayList<PublicUser> puList = (ArrayList<PublicUser>) q.getResultList();
-                
+
         return puList;
     }
 
@@ -66,19 +68,21 @@ public class PublicUserDAOImpl implements PublicUserDAO,UserDAO {
         Query q = em.createNamedQuery("User.login", User.class);
         q.setParameter("username", username);
         q.setParameter("password", password);
-        
-        if (q.getSingleResult() != null) {
-            PublicUser pu = (PublicUser) q.getSingleResult();
-            return pu;
+        try {
+            if (q.getSingleResult() != null) {
+                PublicUser pu = (PublicUser) q.getSingleResult();
+                return pu;
+            }
+        } catch (Exception ex) {
         }
-        return null;       
+        return null;
     }
 
     @Override
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
         Integer amount = (Integer) q.getSingleResult();
-        return amount.intValue();
+        return amount;
     }
-    
+
 }

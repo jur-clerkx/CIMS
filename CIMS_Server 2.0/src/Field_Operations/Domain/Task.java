@@ -259,4 +259,10 @@ public class Task implements Serializable {
         this.progressList = new ArrayList();
         this.units = new ArrayList();
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name +", Urgency: "+ this.urgency + ", Status: " + this.status;
+    }
+    
 }

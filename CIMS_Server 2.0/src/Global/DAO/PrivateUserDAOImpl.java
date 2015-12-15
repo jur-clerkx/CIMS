@@ -15,18 +15,19 @@ import javax.persistence.Query;
  *
  * @author sebas
  */
-public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
+public class PrivateUserDAOImpl implements PrivateUserDAO, UserDAO {
 
     private final EntityManager em;
-    
+
     /**
      * Constructor for Private User DAO Implementation
-     * @param em 
+     *
+     * @param em
      */
     public PrivateUserDAOImpl(EntityManager em) {
         this.em = em;
     }
-    
+
     @Override
     public void create(PrivateUser pu) {
         em.getTransaction().begin();
@@ -64,7 +65,7 @@ public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
     public ArrayList<PrivateUser> findAll() {
         Query q = em.createNamedQuery("PrivateUser.getAll", PrivateUser.class);
         ArrayList<PrivateUser> puList = (ArrayList<PrivateUser>) q.getResultList();
-                
+
         return puList;
     }
 
@@ -73,12 +74,15 @@ public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
         Query q = em.createNamedQuery("User.login", User.class);
         q.setParameter("username", username);
         q.setParameter("password", password);
-        
-        if (q.getSingleResult() != null) {
-            PrivateUser pu = (PrivateUser) q.getSingleResult();
-            return pu;
+        try {
+            if (q.getSingleResult() != null) {
+                PrivateUser pu = (PrivateUser) q.getSingleResult();
+                return pu;
+            }
+        } catch (Exception ex) {
+
         }
-        return null; 
+        return null;
     }
-    
+
 }

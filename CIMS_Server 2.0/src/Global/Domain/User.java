@@ -97,6 +97,10 @@ public class User implements Serializable {
         this.authorized = true;
     }
 
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
+    }
+
     /**
      * overrides the ToString method
      *

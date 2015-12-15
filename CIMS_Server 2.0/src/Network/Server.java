@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Server {
     public static ArrayList<Connection> connections;
     private ServerSocket serverSocket;
     public boolean searching;
+    private EntityManagerFactory emf;
 
     /**
      * creates a instance of the class 'Server'.
@@ -26,6 +29,8 @@ public class Server {
      */
     public Server(int port) {
         connections = new ArrayList<>();
+
+        emf = Persistence.createEntityManagerFactory("CIMS_ServerPU");
 
         try {
             this.serverSocket = new ServerSocket(port);
@@ -58,7 +63,7 @@ public class Server {
                     try {
                         Socket s = serverSocket.accept();
                         if (searching) {
-                            Connection c = new Connection(s);                            
+                            Connection c = new Connection(s, emf);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
