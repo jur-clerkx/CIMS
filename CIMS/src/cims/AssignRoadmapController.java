@@ -42,38 +42,47 @@ public class AssignRoadmapController implements Initializable {
 
     private ObservableList unitList;
     private ObservableList roadmapList;
+    private boolean Simulation = false;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        unitList = FXCollections.observableArrayList();
-        roadmapList = FXCollections.observableArrayList();
-        try {
-            if (OperatorMainController.myController.user != null) {
-                ArrayList<Task> myTasks = OperatorMainController.myController.getActiveTasks();
-                myTasks.addAll(OperatorMainController.myController.getInactiveTasks());
-                ArrayList<Roadmap> myroadmaps = ConnectionController.getRoadmaps();
-                if (myTasks != null) {
-                    unitList.addAll(myTasks);
+
+        if (!Simulation) {
+            unitList = FXCollections.observableArrayList();
+            roadmapList = FXCollections.observableArrayList();
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    ArrayList<Task> myTasks = OperatorMainController.myController.getActiveTasks();
+                    myTasks.addAll(OperatorMainController.myController.getInactiveTasks());
+                    ArrayList<Roadmap> myroadmaps = OperatorMainController.myController.getRoadmaps();
+                    if (myTasks != null) {
+                        unitList.addAll(myTasks);
+                    }
+                    if (myroadmaps != null) {
+                        roadmapList.addAll(myroadmaps);
+                    }
+                    cboxUnits.getItems().addAll(unitList);
+                    cboxRoadmaps.getItems().addAll(roadmapList);
                 }
-                if (myroadmaps != null) {
-                    roadmapList.addAll(myroadmaps);
-                }
-                cboxUnits.getItems().addAll(unitList);
-                cboxRoadmaps.getItems().addAll(roadmapList);
+            } catch (IOException ex) {
+                Logger.getLogger(AssignRoadmapController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(AssignRoadmapController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        else
+        {
+            //PlaceHolder
+            //DOSTuff
+            
         }
     }
 
     @FXML
     private void btnAssign(MouseEvent event) {
         try {
-            if (ConnectionController.assignRoadmaps(cboxUnits.getSelectionModel().getSelectedItem().getTaskID(), cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
+            if (OperatorMainController.myController.assignRoadmaps(cboxUnits.getSelectionModel().getSelectedItem().getTaskID(), cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Successfull");
                 alert.setContentText("Roadmap succesfully assigned");

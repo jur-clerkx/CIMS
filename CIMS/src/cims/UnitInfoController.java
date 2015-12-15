@@ -101,7 +101,7 @@ public class UnitInfoController implements Initializable {
         int ID = OperatorMainController.myController.selectedUnitID;
         mySelectedUnit = null;
         try {
-            mySelectedUnit = (Unit)ConnectionController.getUnitInfo(ID);
+            mySelectedUnit = (Unit)OperatorMainController.myController.getUnitInfo(ID);
         } catch (IOException ex) {
             Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -65,6 +65,8 @@ public class CreateTaskController implements Initializable {
 
     ObservableList<Unit> AvailableList = FXCollections.observableArrayList();
     ObservableList<Unit> AssignedList = FXCollections.observableArrayList();
+    //PlaceHolder
+    private boolean Simulation = false;
 
     /**
      * Initializes the controller class.
@@ -76,17 +78,23 @@ public class CreateTaskController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
-        if(ConnectionController.user != null)
-        {
-            try {
-                AvailableList.addAll(OperatorMainController.myController.getActiveUnits());
-                if(!AvailableList.isEmpty())
-                {
-                    listviewAvailableUnits.setItems(AvailableList);
+
+        if (!Simulation) {
+            if (OperatorMainController.myController.user != null) {
+                try {
+                    AvailableList.addAll(OperatorMainController.myController.getInactiveUnits());
+                    if (!AvailableList.isEmpty()) {
+                        listviewAvailableUnits.setItems(AvailableList);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        else
+        {
+            //Placeholder
+            //DOSTUFF
         }
 //        task = null;
     }
@@ -151,7 +159,7 @@ public class CreateTaskController implements Initializable {
             alert.showAndWait();
         } else {
             task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
-            OperatorMainController.myController.createTask( taskName, urgencyCode, description);
+            OperatorMainController.myController.createTask(taskName, urgencyCode, description);
             ArrayList<Integer> assignedUnits = new ArrayList<>();
             assignedUnits.add(task.getTaskID());
             for (Unit u : AssignedList) {
