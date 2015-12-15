@@ -1,13 +1,22 @@
 package Network;
 
-import Field_Operations.Domain.Task;
+import Field_Operations.DAO.TaskDAO;
+import Field_Operations.DAO.TaskDAOImpl;
+import Field_Operations.DAO.UnitDAO;
+import Field_Operations.DAO.UnitDAOImpl;
 import Field_Operations.Domain.Unit;
+import Global.Domain.User;
+import Global.DAO.PrivateUserDAOImpl;
+import Global.DAO.PublicUserDAOImpl;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,8 +32,13 @@ public class Connection {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Socket socket;
-    private PublicUser user;
-    private boolean reading;
+    private User user;
+
+    private EntityManagerFactory emf;
+    private EntityManager em;
+
+    boolean developermode = true;
+    private boolean reading = false;
 
     /**
      * creates an instance of this class, creates the thread for executing
@@ -38,6 +52,10 @@ public class Connection {
         this.user = new User();
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
+
+        emf = Persistence.createEntityManagerFactory("CIMS_ServerPU");
+        em = emf.createEntityManager();
+
         reading = true;
 
         Thread read;
@@ -57,8 +75,8 @@ public class Connection {
                         } else {
                             if (obj instanceof String[]) {
                                 String[] credentials = (String[]) obj;
-                                if (credentials.length == 2) {
-                                    if (login(credentials[0], credentials[1])) {
+                                if (credentials.length == 3) {
+                                    if (login(credentials[0], credentials[1], credentials[2])) {
                                         write(user);
                                         System.out.println("connection made, Access authorized");
                                     } else {
@@ -72,7 +90,6 @@ public class Connection {
                             } else {
                                 System.out.println("No credentials format entered, Acces denied");
                                 reading = false;
-
                             }
                         }
                     } catch (IOException | ClassNotFoundException | NumberFormatException ex) {
@@ -119,135 +136,136 @@ public class Connection {
      * @throws ClassNotFoundException if cannot cast to class
      */
     private void fieldOperations(String s) throws IOException, ClassNotFoundException {
+        TaskDAO taskDAO = new TaskDAOImpl(em);
+        UnitDAO unitDAO = new UnitDAOImpl(em);
         Object o;
-        Task t;
         Unit u;
-        /*switch (s.toUpperCase()) {
+        switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
-                t = dbMediator.getTaskById(o);
-                if (t != null) {
-                    t = dbMediator.getTaskLists(t);
+                if (o instanceof Integer) {
+                    write(taskDAO.find((int) o));
+                } else {
+                    write("Error, Param is not a integer");
                 }
-                write(t);
                 break;
             case "FOUS2":
                 o = in.readObject();
-                u = dbMediator.getUnitById(o);
-                if (u != null) {
-                    u = dbMediator.getUnitLists(u);
-                }
-                write(u);
-                break;
-            case "FOUS3":
-                o = in.readObject();
-                if (dbMediator.updateTaskStatus(o)) {
-                    write("FOUS3: carried out successfully");
+                if (o instanceof Integer) {
+                    write(unitDAO.find((int) o));
                 } else {
-                    write("Could not execute FOUS3");
+                    write("Error, Param is not a integer");
                 }
                 break;
-            case "FOUS4":
-                write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
-                break;
-            case "FOUS5":
-                o = in.readObject();
-                if (dbMediator.acceptOrDeniedTask(o)) {
-                    write("FOUS5: carried out successfully");
-                } else {
-                    write("Could not execute FOUS5");
-                }
-                break;
-            case "FOUS6":
-                write(dbMediator.getUnitListByUserId(this.user.getUser_ID()));
-                break;
-            case "FOUS7":
-                o = in.readObject();
-                if (dbMediator.createProgress(this.getUserId(), o)) {
-                    write("Progress succesfully created");
-                } else {
-                    write("Could not create progress");
-                }
-            case "FOOP2":
-                o = in.readObject();
-                if (dbMediator.createUnit(o)) {
-                    write("Unit succesfully created");
-                } else {
-                    write("Could not create unit");
-                }
-                break;
-            case "FOOP3":
-                o = in.readObject();
-                if (dbMediator.disbandUnit(o)) {
-                    write("Unit disbanded succesfully");
-                } else {
-                    write("Could not disband unit");
-                }
-                break;
-            case "FOOP4":
-                o = in.readObject();
-                write(dbMediator.getActiveInactiveUnits(o));
-                break;
-            case "FOOP5":
-                o = in.readObject();
-                write(dbMediator.getActiveInactiveTasks(o));
-                break;
-            case "FOOP6":
-                o = in.readObject();
-                if (dbMediator.createTask(o)) {
-                    write("Task succesfully created");
-                } else {
-                    write("Could not create task");
-                }
-                break;
-            case "FOOP7":
-                o = in.readObject();
-                if (dbMediator.removeTask(o)) {
-                    write("Task succesfully removed");
-                } else {
-                    write("Could not remove task");
-                }
-                break;
-            case "FOOP8":
-                o = in.readObject();
-                if (dbMediator.assignTask(o)) {
-                    write("Task succesfully created");
-                } else {
-                    write("Could not create task");
-                }
-                break;
-            case "FOOP9":
-                o = in.readObject();
-                if (dbMediator.alterLocationTask(o)) {
-                    write("Task succesfully altered");
-                } else {
-                    write("Could not alter task");
-                }
-                break;
-            case "FOUS8":
-                o = in.readObject();
-                write(dbMediator.getRoadmapByTaskId(o));
-                break;
-            case "FOUS9":
-                write(dbMediator.getAllRoadmaps());
-                break;
-            case "FOUS10":
-                o = in.readObject();
-                if (dbMediator.createRoadmap(o)) {
-                    write("Roadmap succesfully created");
-                } else {
-                    write("Could not create roadmap");
-                }
-                break;
-            case "FOOP10":
-                o = in.readObject();
-                if (dbMediator.assignRoadmap(o)) {
-                    write("Roadmap succesfully assigned");
-                } else {
-                    write("Could not assign roadmap");
-                }
-                break;
-        }*/
+            /*case "FOUS3":
+             o = in.readObject();
+             if (dbMediator.updateTaskStatus(o)) {
+             write("FOUS3: carried out successfully");
+             } else {
+             write("Could not execute FOUS3");
+             }
+             break;
+             case "FOUS4":
+             write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
+             break;
+             case "FOUS5":
+             o = in.readObject();
+             if (dbMediator.acceptOrDeniedTask(o)) {
+             write("FOUS5: carried out successfully");
+             } else {
+             write("Could not execute FOUS5");
+             }
+             break;
+             case "FOUS6":
+             write(dbMediator.getUnitListByUserId(this.user.getUser_ID()));
+             break;
+             case "FOUS7":
+             o = in.readObject();
+             if (dbMediator.createProgress(this.getUserId(), o)) {
+             write("Progress succesfully created");
+             } else {
+             write("Could not create progress");
+             }
+             case "FOOP2":
+             o = in.readObject();
+             if (dbMediator.createUnit(o)) {
+             write("Unit succesfully created");
+             } else {
+             write("Could not create unit");
+             }
+             break;
+             case "FOOP3":
+             o = in.readObject();
+             if (dbMediator.disbandUnit(o)) {
+             write("Unit disbanded succesfully");
+             } else {
+             write("Could not disband unit");
+             }
+             break;
+             case "FOOP4":
+             o = in.readObject();
+             write(dbMediator.getActiveInactiveUnits(o));
+             break;
+             case "FOOP5":
+             o = in.readObject();
+             write(dbMediator.getActiveInactiveTasks(o));
+             break;
+             case "FOOP6":
+             o = in.readObject();
+             if (dbMediator.createTask(o)) {
+             write("Task succesfully created");
+             } else {
+             write("Could not create task");
+             }
+             break;
+             case "FOOP7":
+             o = in.readObject();
+             if (dbMediator.removeTask(o)) {
+             write("Task succesfully removed");
+             } else {
+             write("Could not remove task");
+             }
+             break;
+             case "FOOP8":
+             o = in.readObject();
+             if (dbMediator.assignTask(o)) {
+             write("Task succesfully created");
+             } else {
+             write("Could not create task");
+             }
+             break;
+             case "FOOP9":
+             o = in.readObject();
+             if (dbMediator.alterLocationTask(o)) {
+             write("Task succesfully altered");
+             } else {
+             write("Could not alter task");
+             }
+             break;
+             case "FOUS8":
+             o = in.readObject();
+             write(dbMediator.getRoadmapByTaskId(o));
+             break;
+             case "FOUS9":
+             write(dbMediator.getAllRoadmaps());
+             break;
+             case "FOUS10":
+             o = in.readObject();
+             if (dbMediator.createRoadmap(o)) {
+             write("Roadmap succesfully created");
+             } else {
+             write("Could not create roadmap");
+             }
+             break;
+             case "FOOP10":
+             o = in.readObject();
+             if (dbMediator.assignRoadmap(o)) {
+             write("Roadmap succesfully assigned");
+             } else {
+             write("Could not assign roadmap");
+             }
+             break;*/
+        }
     }
 
     /**
@@ -260,56 +278,56 @@ public class Connection {
     private void situationalAwareness(String s) throws IOException, ClassNotFoundException {
         Object o;
         /*switch (s.toUpperCase()) {
-            case "SAPU1":
-                o = in.readObject();
-                if (dbMediator.createPublicUser(o)) {
-                    write("User succesfully created");
-                } else {
-                    write("Could not create user");
-                }
-                break;
-            case "SAPU2":
-                write(dbMediator.GetAllPublicUsers());
-                break;
-            case "SAPU3":
-                o = in.readObject();
-                if (dbMediator.createInformation(this.getUserId(), o)) {
-                    write("Information succesfully created");
-                } else {
-                    write("Could not create information");
-                }
-                break;
-            case "SAPU4":
-                o = in.readObject();
-                if (dbMediator.removeInformation(o)) {
-                    write("Information succesfully removed");
-                } else {
-                    write("Could not remove information");
-                }
-                break;
-            case "SAPU5":
-                o = in.readObject();
-                write(dbMediator.getInformationById(o));
-                break;
-            case "SAPU6":
-                o = in.readObject();
-                write(dbMediator.getInformationByTaskId(o));
-                break;
-            case "SAPU7":
-                write(dbMediator.GetAllInformation());
-                break;
-            case "SAPU8":
-                o = in.readObject();
-                if (dbMediator.sendinformation(o)) {
-                    write("Information succesfully send");
-                } else {
-                    write("Could not send information");
-                }
-                break;
-            case "SAPU10":
-                write(dbMediator.GetAllPublicInformation(getUserId()));
-                break;
-        }*/
+         case "SAPU1":
+         o = in.readObject();
+         if (dbMediator.createPublicUser(o)) {
+         write("User succesfully created");
+         } else {
+         write("Could not create user");
+         }
+         break;
+         case "SAPU2":
+         write(dbMediator.GetAllPublicUsers());
+         break;
+         case "SAPU3":
+         o = in.readObject();
+         if (dbMediator.createInformation(this.getUserId(), o)) {
+         write("Information succesfully created");
+         } else {
+         write("Could not create information");
+         }
+         break;
+         case "SAPU4":
+         o = in.readObject();
+         if (dbMediator.removeInformation(o)) {
+         write("Information succesfully removed");
+         } else {
+         write("Could not remove information");
+         }
+         break;
+         case "SAPU5":
+         o = in.readObject();
+         write(dbMediator.getInformationById(o));
+         break;
+         case "SAPU6":
+         o = in.readObject();
+         write(dbMediator.getInformationByTaskId(o));
+         break;
+         case "SAPU7":
+         write(dbMediator.GetAllInformation());
+         break;
+         case "SAPU8":
+         o = in.readObject();
+         if (dbMediator.sendinformation(o)) {
+         write("Information succesfully send");
+         } else {
+         write("Could not send information");
+         }
+         break;
+         case "SAPU10":
+         write(dbMediator.GetAllPublicInformation(getUserId()));
+         break;
+         }*/
     }
 
     /**
@@ -319,33 +337,34 @@ public class Connection {
      * @param password Password of a user
      * @return if login is success or not
      */
-    private boolean login(String username, String password) {
+    private boolean login(String prvt, String username, String password) {
+
         if (username == null || password == null) {
             return false;
         }
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return false;
         }
-        /*User us = dbMediator.checkLogin(username, password);
-        if (us.authorized()) {
-            if (Network.Server.connections.stream().filter(
-                    c -> c.getUserId() == us.getUser_ID()).count() > 1) {
-                Network.Server.cleanUpList(us.getUser_ID());
+        if (isNumeric(prvt)) {
+            if (prvt.equals("0")) {
+                Global.DAO.PublicUserDAO pudao = new PublicUserDAOImpl(em);
+                this.user = pudao.login(username, password);
+            } else if (prvt.equals("1")) {
+                Global.DAO.PrivateUserDAO pudao = new PrivateUserDAOImpl(em);
+                this.user = pudao.login(username, password);
             }
-            this.user = us;
-            return true;
+            return this.user != null;
         }
-        PublicUser pu = dbMediator.checkPublicLogin(username, password);
-        if (pu.authorized()) {
-            if (Network.Server.connections.stream().filter(
-                    c -> c.getUserId() == pu.getUser_ID()).count() > 1) {
-                Network.Server.cleanUpList(pu.getUser_ID());
-            }
-            this.user = pu;
-            return true;
-        }*/
-
         return false;
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -381,7 +400,7 @@ public class Connection {
      * @return a userId
      */
     public int getUserId() {
-        return this.user.getUser_ID();
+        return (int) this.user.getUserId();
     }
 
     /**

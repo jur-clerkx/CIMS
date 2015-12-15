@@ -13,6 +13,7 @@ import Field_Operations.Unit;
 import Network.User;
 import Situational_Awareness.Information;
 import Situational_Awareness.PublicUser;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -64,7 +65,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String login = username + "/" + password;
             sendData(login.split("/"));
 
+            Thread.sleep(5000);
             //Check if login succeeded
+
             user = (User) readData();
 
             if (user == null) {
@@ -85,7 +88,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 }
             }
         } catch (Exception ex) {
-           Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
             setStatus((byte) 2);
             //Close connection
             try {
@@ -250,7 +253,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         return false;
     }
 
-    public synchronized boolean createInformation(String Name, String description, String location, int casualties, int toxic, int danger, int impact, String URL,boolean Private) {
+    public synchronized boolean createInformation(String Name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, boolean Private) {
         Object result = null;
         if (authorized == 1) {
             try {
@@ -283,7 +286,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         }
     }
 
-    public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id,boolean Private) {
+    public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id, boolean Private) {
         Object result = null;
         if (authorized == 1) {
 
