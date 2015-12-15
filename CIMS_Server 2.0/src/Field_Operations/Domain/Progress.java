@@ -35,7 +35,7 @@ public class Progress implements Serializable {
     private long id;
     @OneToOne(fetch = FetchType.EAGER)
     private PrivateUser user;
-    @OneToOne(mappedBy = "progressList", fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private Task task;
     private String message;
 

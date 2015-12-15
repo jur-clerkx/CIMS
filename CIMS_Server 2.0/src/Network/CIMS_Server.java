@@ -33,7 +33,7 @@ public class CIMS_Server extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        server = new Server(1234);
+        server = new Server(1250);
         GridPane grid;
         grid = new GridPane();
         grid.setHgap(10);

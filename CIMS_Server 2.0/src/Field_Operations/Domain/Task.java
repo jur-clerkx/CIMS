@@ -41,7 +41,7 @@ public class Task implements Serializable {
     private String description;
     private String location;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
     private List<Progress> progressList;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Unit> units;
