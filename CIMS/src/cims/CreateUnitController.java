@@ -76,6 +76,7 @@ public class CreateUnitController implements Initializable {
     private int NrOFPolicemen;
     private int NRofAmbulancePeople;
     private int NRofFireFIghters;
+    private boolean Simulation;
 
     /**
      * Initializes the controller class.
@@ -87,34 +88,39 @@ public class CreateUnitController implements Initializable {
 
     @FXML
     private void buttonCreate(MouseEvent event) {
-        boolean succes = false;
-        int size = 0;
-        if (radioButtonSmall.isSelected()) {
-            size = 1;
-        } else if (radioButtonMedium.isSelected()) {
-            size = 2;
-        } else if (radioButtonLarge.isSelected()) {
-            size = 3;
-        }
-        convertToInt();
+        if (!Simulation) {
+            boolean succes = false;
+            int size = 0;
+            if (radioButtonSmall.isSelected()) {
+                size = 1;
+            } else if (radioButtonMedium.isSelected()) {
+                size = 2;
+            } else if (radioButtonLarge.isSelected()) {
+                size = 3;
+            }
+            convertToInt();
 
-        try {
-            succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
-        } catch (Exception ex) {
+            try {
+                succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+            } catch (Exception ex) {
 
+            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            if (succes) {
+                alert.setContentText("Unit succesfully created.");
+                alert.showAndWait();
+                Stage stage = (Stage) buttonCancel.getScene().getWindow();
+                stage.close();
+            } else {
+                alert.setContentText("An error has occured");
+                alert.showAndWait();
+            }
         }
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        if (succes) {
-            alert.setContentText("Unit succesfully created.");
-            alert.showAndWait();
-            Stage stage = (Stage) buttonCancel.getScene().getWindow();
-            stage.close();
-        } else {
-            alert.setContentText("An error has occured");
-            alert.showAndWait();
+        {
+            //PlaceHolder
+            //DOSTUFF
         }
-
     }
 
     @FXML

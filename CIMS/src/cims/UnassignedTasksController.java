@@ -91,7 +91,7 @@ public class UnassignedTasksController implements Initializable {
                     
                     Task myTask = row.getItem();
                     try {
-                        ConnectionController.selectedTaskID = myTask.getTaskID();
+                        OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         Stage stage = new Stage();

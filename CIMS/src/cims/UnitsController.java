@@ -88,7 +88,7 @@ public class UnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            ConnectionController.selectedUnitID = myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -111,7 +111,7 @@ public class UnitsController implements Initializable {
                     if (event.getClickCount() == 2 && (!row.isEmpty())) {
                         Unit myUnit = row.getItem();
                         try {
-                            ConnectionController.selectedUnitID = myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();

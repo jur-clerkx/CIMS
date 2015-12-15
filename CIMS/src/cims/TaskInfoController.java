@@ -78,7 +78,7 @@ public class TaskInfoController implements Initializable {
         
         // TODO: getTaskInfo.
         try {
-            selectedTask = ConnectionController.getTaskInfo(ID);
+            selectedTask = OperatorMainController.myController.getTaskInfo(ID);
         } catch (IOException ex) {
             Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }

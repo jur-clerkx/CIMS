@@ -71,19 +71,19 @@ public class TasksController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         if (OperatorMainController.myController.user != null) {
             try {
-                if (OperatorMainController.myController.getInactiveUnits() != null) {
+                if (OperatorMainController.myController.getInactiveTasks()!= null) {
                     InactiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
                 }
-                if (OperatorMainController.myController.getActiveUnits() != null) {
+                if (OperatorMainController.myController.getActiveTasks()!= null) {
                     ActiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
                 }
-                ActiveTasks = FXCollections.observableArrayList();
-                ActiveTasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-                ActiveTasks.add(new Task(3, "Task 3: Dummy", "Low", "Active", "Eindhoven", "TU"));
-
-                InactiveTasks = FXCollections.observableArrayList();
-                InactiveTasks.add(new Task(2, "Task 2: Dummy", "High", "Inactive", "Eindhoven", "Fontys"));
-                InactiveTasks.add(new Task(4, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+//                ActiveTasks = FXCollections.observableArrayList();
+//                ActiveTasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
+//                ActiveTasks.add(new Task(3, "Task 3: Dummy", "Low", "Active", "Eindhoven", "TU"));
+//
+//                InactiveTasks = FXCollections.observableArrayList();
+//                InactiveTasks.add(new Task(2, "Task 2: Dummy", "High", "Inactive", "Eindhoven", "Fontys"));
+//                InactiveTasks.add(new Task(4, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
 
                 ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
                 ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));

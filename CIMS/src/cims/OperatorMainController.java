@@ -67,11 +67,11 @@ public class OperatorMainController implements Initializable, Observer {
         if (myController != null) {
             myController.addObserver(this);
         }
-        try {
-            myController.RegisterObserver(this);
-        } catch (IOException ex) {
-            Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            myController.RegisterObserver(this);
+//        } catch (IOException ex) {
+//            Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @FXML
@@ -128,9 +128,10 @@ public class OperatorMainController implements Initializable, Observer {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
-                alert.setContentText("Username or password error.");
+                alert.setContentText("Connection Closed.");
                 alert.showAndWait(); 
                 con.deleteObserver(this);
+                System.exit(1);
             });
 
         }

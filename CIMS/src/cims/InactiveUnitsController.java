@@ -5,17 +5,10 @@
  */
 package cims;
 
-import Field_Operations.Task;
 import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,46 +53,80 @@ public class InactiveUnitsController implements Initializable {
 
     ObservableList<Unit> InactiveUnits;
 
+    //PlaceHolder
+    private boolean Simulation = false;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            if (OperatorMainController.myController.user != null) {
-                InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
-            }
-        } catch (Exception ex) {
-            InactiveUnits = FXCollections.observableArrayList();
-        }
-
-        IUnitTable.setRowFactory(tv -> {
-            TableRow<Unit> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-
-                    Unit myUnit = row.getItem();
-                    try {
-                        ConnectionController.selectedUnitID = myUnit.getUnitID();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        stage.setTitle("Unit");
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println("Error" + x.toString() + x.getMessage());
-                    }
+        if (!Simulation) {
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
                 }
+            } catch (Exception ex) {
+                InactiveUnits = FXCollections.observableArrayList();
+            }
+
+            IUnitTable.setRowFactory(tv -> {
+                TableRow<Unit> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                        Unit myUnit = row.getItem();
+                        try {
+                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            stage.setTitle("Unit");
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println("Error" + x.toString() + x.getMessage());
+                        }
+                    }
+                });
+                return row;
             });
-            return row;
-        });
-        tableID.setCellValueFactory(new PropertyValueFactory<>("unitID"));
-        tableUnitName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
-        IUnitTable.setItems(InactiveUnits);
+            tableID.setCellValueFactory(new PropertyValueFactory<>("unitID"));
+            tableUnitName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
+            IUnitTable.setItems(InactiveUnits);
+        } else {
+            IUnitTable.setRowFactory(tv -> {
+                TableRow<Unit> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                        Unit myUnit = row.getItem();
+                        try {
+                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            stage.setTitle("Unit");
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println("Error" + x.toString() + x.getMessage());
+                        }
+                    }
+                });
+                return row;
+            });
+            tableID.setCellValueFactory(new PropertyValueFactory<>("unitID"));
+            tableUnitName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
+            InactiveUnits.add(new Unit(3, "Test", "test", "Monday"));
+            IUnitTable.setItems(InactiveUnits);
+        }
     }
 
     @FXML
@@ -123,20 +150,26 @@ public class InactiveUnitsController implements Initializable {
     private void disbandClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) IUnitTable.getSelectionModel().getSelectedItem();
 
-        try {
-            if (selectedUnit != null) {
-                OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
-            } else {
+        if (!Simulation) {
+            try {
+                if (selectedUnit != null) {
+                    OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please select a Unit");
+                    alert.showAndWait();
+                }
+            } catch (IOException ex) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("Please select a Unit");
+                alert.setContentText("An error has occured.");
                 alert.showAndWait();
             }
-        } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("An error has occured.");
-            alert.showAndWait();
+        }
+        else
+        {
+            InactiveUnits.remove(selectedUnit);
         }
     }
 

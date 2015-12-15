@@ -46,7 +46,7 @@ public class RoadmapCreateController implements Initializable {
     private void create(ActionEvent event) {
 
         try {
-            if (ConnectionController.createRoadmap(txtName.getText(), txtDescription.getText())) {
+            if (OperatorMainController.myController.createRoadmap(txtName.getText(), txtDescription.getText())) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
                 alert.setContentText("Roadmap succesfully created.");
