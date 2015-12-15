@@ -9,7 +9,6 @@ import Field_Operations.Domain.Unit;
 import Network.Server;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -74,7 +73,7 @@ public class UnitDAOImpl implements UnitDAO {
     @Override
     public ArrayList<Unit> findAllActive() {
         Set<Unit> hs = new HashSet<>();
-        for (Network.Connection c : Server.connections) {
+        /*for (Network.Connection c : Server.connections) {
             if (c.isOpen()) {
                 Query q = em.createNamedQuery("Unit.getAllByUser", Unit.class);
                 q.setParameter("id", c.getUserId());
@@ -82,16 +81,16 @@ public class UnitDAOImpl implements UnitDAO {
                 hs.addAll(q.getResultList());
                 
             }
-        }     
+        }     */
         
-        return new ArrayList<Unit>(hs);
+        return new ArrayList<>(hs);
         
     }
 
     @Override
     public ArrayList<Unit> findAllInactive() {
         Set<Unit> hs = new HashSet<>();
-        for (Network.Connection c : Server.connections) {
+        /*for (Network.Connection c : Server.connections) {
             if (!c.isOpen()) {
                 Query q = em.createNamedQuery("Unit.getAllByUser", Unit.class);
                 q.setParameter("id", c.getUserId());
@@ -99,9 +98,9 @@ public class UnitDAOImpl implements UnitDAO {
                 hs.addAll(q.getResultList());
                 
             }
-        }     
+        }   */  
         
-        return new ArrayList<Unit>(hs);
+        return new ArrayList<>(hs);
     }
     
 }

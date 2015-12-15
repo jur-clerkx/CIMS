@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Schouten" name="Field_Operations.DAO.MaterialDAOImplTest" skipped="0" tests="5" time="3.029" timestamp="2015-12-08T18:13:16">
+<testsuite errors="3" failures="0" hostname="Schouten" name="Field_Operations.DAO.ProgressDAOImplTest" skipped="0" tests="5" time="2.996" timestamp="2015-12-09T10:54:32">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
@@ -11,7 +11,7 @@
     <property name="javafx.signing.blob" value="false" />
     <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 8.0.2\java\docs\junit-3.8.2-api.zip" />
     <property name="libs.spring-webmvc4.0.src" value="" />
-    <property name="javac.includes" value="Field_Operations/DAO/MaterialDAOImplTest.java" />
+    <property name="javac.includes" value="Field_Operations/DAO/ProgressDAOImplTest.java" />
     <property name="ant.core.lib" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\ant\lib\ant.jar" />
     <property name="javadoc.windowtitle" value="" />
     <property name="libs.jsp-compilation.javadoc" value="" />
@@ -60,7 +60,7 @@
     <property name="copylibs.rebase" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Field_Operations.DAO.MaterialDAOImplTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\results\TEST-Field_Operations.DAO.MaterialDAOImplTest.xml crashfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junitvmwatcher6595528314718198525.properties propsfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junit1088319215988890925.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Field_Operations.DAO.ProgressDAOImplTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\results\TEST-Field_Operations.DAO.ProgressDAOImplTest.xml crashfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junitvmwatcher4128408003925660290.properties propsfile=C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\junit3803373872098037325.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -85,7 +85,7 @@
     <property name="libs.jsp-compilation-syscp.classpath" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\ant\lib\ant.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\glassfish-jspparser-4.0.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\jstl-impl.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\jsf-2_2\javax.faces.jar" />
     <property name="javafx.deploy.includeDT" value="true" />
     <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_31\jre\lib\endorsed" />
-    <property name="test.includes" value="Field_Operations/DAO/MaterialDAOImplTest.java" />
+    <property name="test.includes" value="Field_Operations/DAO/ProgressDAOImplTest.java" />
     <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 8.0.2\platform\core\core.jar;C:\Program Files\NetBeans 8.0.2\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_zh_CN.jar" />
     <property name="jnlp.enabled" value="false" />
     <property name="java.vm.specification.version" value="1.8" />
@@ -104,7 +104,7 @@
     <property name="javadoc.splitindex" value="true" />
     <property name="file.separator" value="\" />
     <property name="ant.file.type.CIMS_Server-impl" value="file" />
-    <property name="javac.includesfile.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\null1988034046" />
+    <property name="javac.includesfile.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\null830414637" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="false" />
     <property name="javac.test.processorpath" value="C:\Program Files\Java\jdk1.8.0_31\jre/lib/javaws.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/deploy.jar:C:\Program Files\Java\jdk1.8.0_31\jre/lib/plugin.jar:src\mysql-connector-java-5.1.36-bin.jar:C:\Users\Jense\Downloads\mysql-connector-java-5.1.37.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 8.0.2\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar:C:\Users\Jense\Downloads\derbyclient.jar:build/classes:C:\Program Files\NetBeans 8.0.2\platform\modules\ext\junit-4.10.jar" />
@@ -119,7 +119,7 @@
     <property name="libs.hibernate4-persistencemodelgen.javadoc" value="" />
     <property name="libs.jaxb.javadoc" value="C:\Program Files\NetBeans 8.0.2\ide\docs\jaxb-api-doc.zip" />
     <property name="libs.struts.classpath" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\antlr-2.7.2.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\bsf-2.3.0.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-beanutils-1.8.0.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-chain-1.2.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-digester-1.8.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-fileupload-1.1.1.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-io-1.1.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-logging-1.0.4.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\commons-validator-1.3.1.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\jstl-1.0.2.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\oro-2.0.8.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\standard-1.0.6.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-core-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-el-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-extras-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-faces-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-mailreader-dao-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-scripting-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-taglib-1.3.10.jar;C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\modules\ext\struts\struts-tiles-1.3.10.jar" />
-    <property name="javac.includes.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\classes\Field_Operations\DAO\MaterialDAOImplTest.class" />
+    <property name="javac.includes.binary" value="C:\Users\Jense\Desktop\PTS\CIMS\CIMS_Server 2.0\build\test\classes\Field_Operations\DAO\ProgressDAOImplTest.class" />
     <property name="ant.home" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\ant" />
     <property name="libs.junit_4.src" value="C:\Program Files\NetBeans 8.0.2\java\docs\junit-4.10-sources.jar" />
     <property name="javafx.run.height" value="600" />
@@ -431,18 +431,37 @@
     <property name="javafx.deploy.installpermanently" value="false" />
     <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Users\Jense\AppData\Roaming\NetBeans\8.0.2\docs\javaee-doc-api.jar" />
   </properties>
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFind" time="0.104" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCreate" time="0.255" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testRemove" time="0.027" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testCount" time="0.279" />
-  <testcase classname="Field_Operations.DAO.MaterialDAOImplTest" name="testFindAll" time="0.248" />
-  <system-out><![CDATA[[EL Info]: 2015-12-08 19:13:17.018--ServerSession(1967434886)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
-[EL Info]: connection: 2015-12-08 19:13:17.946--ServerSession(1967434886)--file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server 2.0/build/classes/_CIMS_ServerPU login successful
-find
-create
-remove
-count
+  <testcase classname="Field_Operations.DAO.ProgressDAOImplTest" name="testFindAll" time="0.264">
+    <error message="&#xd;&#xa;Exception Description: Transaction is currently active" type="java.lang.IllegalStateException">java.lang.IllegalStateException: 
+Exception Description: Transaction is currently active
+	at org.eclipse.persistence.internal.jpa.transaction.EntityTransactionImpl.begin(EntityTransactionImpl.java:89)
+	at Field_Operations.DAO.TaskDAOImpl.create(TaskDAOImpl.java:40)
+	at Field_Operations.DAO.ProgressDAOImplTest.testFindAll(ProgressDAOImplTest.java:124)
+</error>
+  </testcase>
+  <testcase classname="Field_Operations.DAO.ProgressDAOImplTest" name="testCount" time="0.03">
+    <error message="java.lang.Long cannot be cast to java.lang.Integer" type="java.lang.ClassCastException">java.lang.ClassCastException: java.lang.Long cannot be cast to java.lang.Integer
+	at Field_Operations.DAO.ProgressDAOImpl.count(ProgressDAOImpl.java:32)
+	at Field_Operations.DAO.ProgressDAOImplTest.testCount(ProgressDAOImplTest.java:60)
+</error>
+  </testcase>
+  <testcase classname="Field_Operations.DAO.ProgressDAOImplTest" name="testCreate" time="0.215">
+    <error message="&#xd;&#xa;Exception Description: Transaction is currently active" type="java.lang.IllegalStateException">java.lang.IllegalStateException: 
+Exception Description: Transaction is currently active
+	at org.eclipse.persistence.internal.jpa.transaction.EntityTransactionImpl.begin(EntityTransactionImpl.java:89)
+	at Field_Operations.DAO.TaskDAOImpl.create(TaskDAOImpl.java:40)
+	at Field_Operations.DAO.ProgressDAOImplTest.testCreate(ProgressDAOImplTest.java:84)
+</error>
+  </testcase>
+  <testcase classname="Field_Operations.DAO.ProgressDAOImplTest" name="testFind" time="0.051" />
+  <testcase classname="Field_Operations.DAO.ProgressDAOImplTest" name="testRemove" time="0.024" />
+  <system-out><![CDATA[[EL Info]: 2015-12-09 11:54:33.176--ServerSession(2070372626)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
+[EL Info]: connection: 2015-12-09 11:54:34.089--ServerSession(2070372626)--file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server 2.0/build/classes/_CIMS_ServerPU login successful
 findAll
+count
+create
+find
+remove
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

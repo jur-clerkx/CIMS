@@ -56,9 +56,9 @@ public class MaterialDAOImplTest {
     @Test
     public void testCount() {
         System.out.println("count");
+        long expResult = instance.count() + 1;
         Material m = new Material("Hamer", 1);
         instance.create(m);
-        long expResult = 1;
         long result = instance.count();
         assertEquals(expResult, result);
     }
@@ -90,7 +90,7 @@ public class MaterialDAOImplTest {
     public void testFind() {
         System.out.println("find");
         int id = 17;
-        Material expResult = new Material("henk", 2);
+        Material expResult = instance.find(id);
         Material result = instance.find(id);
         assertEquals(expResult, result);
     }
@@ -103,7 +103,7 @@ public class MaterialDAOImplTest {
         System.out.println("findAll");
         Material m = new Material("Sand", 2);
         instance.create(m);
-        int expResult = 2;
+        long expResult = instance.count();
         List<Material> result = instance.findAll();
         assertEquals(expResult, result.size());
     }
