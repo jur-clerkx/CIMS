@@ -28,7 +28,6 @@ public class UserDAOImpl implements UserDAO {
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
         Integer amount = (Integer)q.getSingleResult();
-        return amount.intValue();
-    }
-    
+        return amount;
+    }    
 }

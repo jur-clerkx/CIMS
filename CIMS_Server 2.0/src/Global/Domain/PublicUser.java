@@ -36,14 +36,13 @@ public class PublicUser extends User implements Serializable {
     /**
      * Constructor for authorized users
      *
-     * @param id id of this user
      * @param firstname firstname of this user
      * @param lastname lastname of this user
      * @param BSNnumber BSN-number of this user
      * @param password password of this user
      */
-    public PublicUser(int id, String firstname, String lastname, String BSNnumber, String password) {
-        super(id, firstname, lastname, password);
+    public PublicUser(String firstname, String lastname, String BSNnumber, String password) {
+        super(firstname, lastname, password);
         this.BSNnumber = BSNnumber;
 
     }

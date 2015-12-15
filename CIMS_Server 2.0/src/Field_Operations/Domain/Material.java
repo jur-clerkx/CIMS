@@ -21,23 +21,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Material")
 @NamedQueries({
-    @NamedQuery(name = "Material.count", query = "SELECT m FROM Material AS m"),
+    @NamedQuery(name = "Material.count", query = "SELECT COUNT(m) FROM Material AS m"),
     @NamedQuery(name = "Material.getAll", query = "SELECT m FROM Material AS m")
 })
 public class Material implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private int type;
+
+    public Material() {
+    }
 
     /**
      * gets id of this material
      *
-     * @return int with id
+     * @return long with id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -60,13 +63,10 @@ public class Material implements Serializable {
     }
 
     /**
-     *
-     * @param id id of this material
      * @param name name of this material
      * @param type type of this material
      */
-    public Material(int id, String name, int type) {
-        this.id = id;
+    public Material(String name, int type) {
         this.name = name;
         this.type = type;
     }

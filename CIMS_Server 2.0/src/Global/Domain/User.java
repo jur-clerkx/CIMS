@@ -31,7 +31,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String username;
     private String password;
     private String firstname;
@@ -44,7 +44,7 @@ public class User implements Serializable {
      *
      * @return int, the id of this user.
      */
-    public int getUserId() {
+    public long getUserId() {
         return this.id;
     }
 
@@ -85,13 +85,11 @@ public class User implements Serializable {
     /**
      * Constructor for authorized users
      *
-     * @param id Int, id of this user
      * @param firstname String, firstname of this user.
      * @param lastname String, lastname of this user.
      * @param password String, password of this user
      */
-    public User(int id, String firstname, String lastname, String password) {
-        this.id = id;
+    public User(String firstname, String lastname, String password) {
         this.username = (firstname + lastname.trim()).toLowerCase();
         this.firstname = firstname;
         this.lastname = lastname;

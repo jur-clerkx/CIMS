@@ -21,23 +21,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Roadmap")
 @NamedQueries({
-    @NamedQuery(name = "Roadmap.count", query = "SELECT r FROM Roadmap AS r"),
+    @NamedQuery(name = "Roadmap.count", query = "SELECT COUNT(r) FROM Roadmap AS r"),
     @NamedQuery(name = "Roadmap.getAll", query = "SELECT r FROM Roadmap AS r")
 })
 public class Roadmap implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String description;
+
+    public Roadmap() {
+    }
 
     /**
      * Gets id of this Roadmap
      *
      * @return int with id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -62,12 +65,10 @@ public class Roadmap implements Serializable {
     /**
      * Constructor of this Roadmap
      *
-     * @param id id of this Roadmap
      * @param name name of this Roadmap
      * @param description description of this Roadmap
      */
-    public Roadmap(int id, String name, String description) {
-        this.id = id;
+    public Roadmap(String name, String description) {
         this.name = name;
         this.description = description;
     }

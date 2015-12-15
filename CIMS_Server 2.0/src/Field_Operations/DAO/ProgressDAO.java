@@ -5,8 +5,9 @@
  */
 package Field_Operations.DAO;
 
+import Field_Operations.Domain.Progress;
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,18 +15,48 @@ import java.util.ArrayList;
  */
 public interface ProgressDAO {
 
+    /**
+     * Count the number of Progresses in the database.
+     * @return number of Progresses
+     */
     public int count();
 
-    public void create(Process p);
+    /**
+     * Create a new Progress and add it to the database.
+     * @param p Not null
+     */
+    public void create(Progress p);
 
-    public void edit(Process p);
+    /**
+     * Edit an existing Progress in the database.
+     * @param p Not null
+     */
+    public void edit(Progress p);
 
-    public void remove(Process p);
+    /**
+     * Remove an existing Progress from the database.
+     * @param p Not null
+     */
+    public void remove(Progress p);
 
-    public Process find(int id);
+    /**
+     * Find a Progress using it's id.
+     * @param id
+     * @return Progress with @param id
+     */
+    public Progress find(long id);
 
-    public Process findByTask(Task t);
+    /**
+     * Find a Progress using a task
+     * @param t Not null
+     * @return Progress with @param task
+     */
+    public Progress findByTask(Task t);
 
-    public ArrayList<Process> findall();
+     /**
+     * Find all Progresses in the database.
+     * @return all vehicles from the database.
+     */
+    public List<Progress> findAll();
 
 }

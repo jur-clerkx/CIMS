@@ -6,7 +6,6 @@
 package Global.DAO;
 
 import Global.Domain.PrivateUser;
-import Global.Domain.PublicUser;
 import Global.Domain.User;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
@@ -18,7 +17,7 @@ import javax.persistence.Query;
  */
 public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
 
-    private EntityManager em;
+    private final EntityManager em;
     
     /**
      * Constructor for Private User DAO Implementation
@@ -58,7 +57,7 @@ public class PrivateUserDAOImpl implements PrivateUserDAO,UserDAO {
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
         Integer amount = (Integer) q.getSingleResult();
-        return amount.intValue();
+        return amount;
     }
 
     @Override

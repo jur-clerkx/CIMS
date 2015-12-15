@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Field_Operations.DAO;
+package Situational_Awareness.DAO;
 
-import Field_Operations.Domain.Vehicle;
-import java.util.ArrayList;
+import Situational_Awareness.Domain.Information;
+import java.util.List;
 
 /**
  *
  * @author Jense Schouten
  */
-public interface VehicleDAO {
+public interface InformationDAO {
 
     /**
      * Count the number of Vehicle in the database.
+     *
      * @return number of Vehicles
      */
     public int count();
@@ -23,33 +24,36 @@ public interface VehicleDAO {
     /**
      * Create a new Vehicle and add it to the database.
      *
-     * @param v Not null
+     * @param i Not null
      */
-    public void create(Vehicle v);
+    public void create(Information i);
 
     /**
      * Edit an existing Vehicle in the database.
      *
-     * @param v Not null
+     * @param i Not null
      */
-    public void edit(Vehicle v);
+    public void edit(Information i);
 
     /**
      * Remove an existing Vehicle from the database.
-     * @param v Not null
+     *
+     * @param i Not null
      */
-    public void remove(Vehicle v);
+    public void remove(Information i);
 
     /**
      * Find a Vehicle using it's id.
-     * @param id 
+     *
+     * @param id
      * @return Vehicle with @param id
      */
-    public Vehicle find(long id);
+    public Information find(long id);
 
     /**
      * Find all Vehicles in the database.
+     *
      * @return all vehicles from the database.
      */
-    public ArrayList<Vehicle> findAll();
+    public List<Information> findAll();
 }

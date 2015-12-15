@@ -6,7 +6,7 @@
 package Field_Operations.DAO;
 
 import Field_Operations.Domain.Material;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +19,7 @@ public interface MaterialDAO {
      *
      * @return number of Materials
      */
-    public int count();
+    public long count();
 
     /**
      * Create a new Material and add it to the database.
@@ -46,11 +46,11 @@ public interface MaterialDAO {
      * @param id 
      * @return Material with @param id
      */
-    public Material find(int id);
+    public Material find(long id);
 
     /**
      * Find all Materials in the database.
      * @return all materials from the database.
      */
-    public ArrayList<Material> findAll();
+    public List<Material> findAll();
 }

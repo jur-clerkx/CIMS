@@ -25,7 +25,6 @@ public class Connection {
     private Socket socket;
     private PublicUser user;
     private boolean reading;
-    private DatabaseMediator dbMediator;
 
     /**
      * creates an instance of this class, creates the thread for executing
@@ -35,7 +34,6 @@ public class Connection {
      * @throws IOException
      */
     Connection(Socket socket) throws IOException {
-        this.dbMediator = new DatabaseMediator();
         this.socket = socket;
         this.user = new User();
         out = new ObjectOutputStream(socket.getOutputStream());
@@ -124,7 +122,7 @@ public class Connection {
         Object o;
         Task t;
         Unit u;
-        switch (s.toUpperCase()) {
+        /*switch (s.toUpperCase()) {
             case "FOUS1":
                 o = in.readObject();
                 t = dbMediator.getTaskById(o);
@@ -249,7 +247,7 @@ public class Connection {
                     write("Could not assign roadmap");
                 }
                 break;
-        }
+        }*/
     }
 
     /**
@@ -261,7 +259,7 @@ public class Connection {
      */
     private void situationalAwareness(String s) throws IOException, ClassNotFoundException {
         Object o;
-        switch (s.toUpperCase()) {
+        /*switch (s.toUpperCase()) {
             case "SAPU1":
                 o = in.readObject();
                 if (dbMediator.createPublicUser(o)) {
@@ -311,7 +309,7 @@ public class Connection {
             case "SAPU10":
                 write(dbMediator.GetAllPublicInformation(getUserId()));
                 break;
-        }
+        }*/
     }
 
     /**
@@ -328,7 +326,7 @@ public class Connection {
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return false;
         }
-        User us = dbMediator.checkLogin(username, password);
+        /*User us = dbMediator.checkLogin(username, password);
         if (us.authorized()) {
             if (Network.Server.connections.stream().filter(
                     c -> c.getUserId() == us.getUser_ID()).count() > 1) {
@@ -345,7 +343,7 @@ public class Connection {
             }
             this.user = pu;
             return true;
-        }
+        }*/
 
         return false;
     }

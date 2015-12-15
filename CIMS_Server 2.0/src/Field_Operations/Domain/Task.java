@@ -23,32 +23,36 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Task")
 @NamedQueries({
-    @NamedQuery(name = "Task.count", query = "SELECT t FROM Task AS t"),
-    @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t")
+    @NamedQuery(name = "Task.count", query = "SELECT COUNT(t) FROM Task AS t"),
+    @NamedQuery(name = "Task.getAll", query = "SELECT t FROM Task AS t"),
+    @NamedQuery(name = "Task.getAllActive", query = "SELECT t FROM Task AS t WHERE t.status != 'Completed' AND t.status != 'Cancelled'"),
+    @NamedQuery(name = "Task.getAllInActive", query = "SELECT t FROM Task AS t WHERE t.status = 'Completed' AND t.status = 'Cancelled'")
 })
 public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String urgency;
     private String status;
     private String description;
     private String location;
-    private boolean accepted;
 
     @OneToMany
     private ArrayList<Progress> progressList;
     @OneToMany
     private ArrayList<Unit> units;
 
+    public Task() {
+    }
+
     /**
      * Gets the id of this task
      *
      * @return int with id
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -124,7 +128,7 @@ public class Task implements Serializable {
     /**
      * Sets the location of this task
      *
-     * @param status new location of this task
+     * @param location new location of this task
      */
     public void setLocation(String location) {
         if (!this.location.equals(location)) {
@@ -167,9 +171,9 @@ public class Task implements Serializable {
      * @param ID id of this unit
      * @return unit with the specific unit
      */
-    public Unit getUnit(int ID) {
+    public Unit getUnit(long ID) {
         for (Unit unit : units) {
-            if (unit.getUnitID() == ID) {
+            if (unit.getId() == ID) {
                 return unit;
             }
         }
@@ -183,10 +187,6 @@ public class Task implements Serializable {
      */
     public ArrayList<Progress> getProgressList() {
         return this.progressList;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     /**
@@ -212,13 +212,6 @@ public class Task implements Serializable {
     }
 
     /**
-     * Task gets accepted by a unit.
-     */
-    public void operateAcceptance() {
-        this.accepted = !this.accepted;
-    }
-
-    /**
      * Sets the status of a task
      *
      * @param status Not longer than 255 characters or null
@@ -241,7 +234,7 @@ public class Task implements Serializable {
     //generate an string with task information
     public String generateInfo() {
         String info;
-        int infoInt = this.id;
+        long infoInt = this.id;
         info = infoInt + "||" + this.name + "||" + this.urgency + "||" + this.status + "||" + this.location + "||" + this.description;
         return info;
     }
@@ -249,21 +242,18 @@ public class Task implements Serializable {
     /**
      * Constructs a task object
      *
-     * @param taskID Greater than 0
      * @param name Not longer than 255 characters or null
      * @param urgency Low, Medium or High
      * @param status Not longer than 255 characters or null
      * @param location Not longer than 255 characters or null
      * @param description Not longer than 255 characters or null
      */
-    public Task(int taskID, String name, String urgency, String status, String location, String description) {
-        this.id = taskID;
+    public Task(String name, String urgency, String status, String location, String description) {
         this.name = name;
         this.urgency = urgency;
         this.status = status;
         this.location = location;
         this.description = description;
-        this.accepted = false;
         this.progressList = new ArrayList<>();
         this.units = new ArrayList<>();
     }
