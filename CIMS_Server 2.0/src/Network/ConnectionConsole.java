@@ -145,9 +145,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Task> tasks = (ArrayList<Task>) o;
                     System.out.println("Tasks: " + tasks.size());
-                }else{
+                } else {
                     System.out.println("No tasks available");
-                }                
+                }
                 break;
             }
             case "FOUS5": {
@@ -165,9 +165,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Unit> units = (ArrayList<Unit>) o;
                     System.out.println("Units: " + units.size());
-                }else{
+                } else {
                     System.out.println("No units available");
-                }  
+                }
                 break;
             }
             case "FOUS7": {
@@ -185,9 +185,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
-                }else{
+                } else {
                     System.out.println("No roadmaps available");
-                }                  
+                }
                 break;
             }
             case "FOUS9": {
@@ -195,9 +195,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
-                }else{
+                } else {
                     System.out.println("No roadmaps available");
-                }  
+                }
                 break;
             }
             case "FOUS10": {
@@ -210,6 +210,23 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
+            case "FOOP3": {
+                serverConnection.write(1);                      //id
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FOOP5": {
+                serverConnection.write(1);                      //id
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Task> tasks = (ArrayList<Task>) o;
+                    System.out.println("Tasks: " + tasks.size());
+                } else {
+                    System.out.println("No tasks available");
+                }
+                break;
+            }
             case "FOOP6": {
                 Object[] objects = new Object[5];
                 objects[0] = "Marktkraam staat in de brand";    //name
@@ -218,6 +235,12 @@ public class ConnectionConsole {
                 objects[3] = "Markt Eindhoven";                 //location
                 objects[4] = "Burnnnnn";                        //description
                 serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FOOP7":{
+                serverConnection.write(1);                      //id
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
                 break;

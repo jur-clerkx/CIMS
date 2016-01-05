@@ -28,30 +28,11 @@ public class ConnectionToServer {
         out = new ObjectOutputStream(this.socket.getOutputStream());
     }
 
-    private void closeconn() {
-        try {
-            if (!socket.isClosed()) {
-                in.close();
-                out.close();
-                socket.close();
-            }
-        } catch (IOException ex) {
-        }
-    }
-
     /**
      * Writes an object to to the server
      *
-     * @param obj object to be send to Server
-     *//*
-    public void write(Object obj) {
-        try {
-            out.writeObject(obj);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }*/
-    
+     * @param function object to be send to Server
+     */
     public void write(Object function) {
         try {
             Object obj = function;
@@ -60,11 +41,13 @@ public class ConnectionToServer {
             ex.getStackTrace();
         }
     }
+
     public Object read() throws ClassNotFoundException {
         try {
             return in.readObject();
-            
-        } catch(IOException ex){}
+
+        } catch (IOException ex) {
+        }
         return null;
     }
 }
