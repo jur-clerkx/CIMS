@@ -67,14 +67,6 @@ public class Connection {
                         } else {
                             if (obj instanceof String[]) {
                                 String[] credentials = (String[]) obj;
-                                //if (credentials.length == 1) {
-                                //    try {
-                                //        switchToChipherStreams(credentials[0]);
-                                //    } catch (Exception ex) {
-                                //        //Authentication failed!
-                                //        reading = false;
-                                //    }
-                                //}
                                 if (credentials.length == 2) {
                                     if (login(credentials[0], credentials[1])) {
                                         write(user);
@@ -405,32 +397,5 @@ public class Connection {
             out.flush();
         } catch (IOException ex) {
         }
-    }
-
-    /**
-     * Switches from the normal stream to the encrypted cipher streams
-     *
-     * @param username The username of the user, so that the password can be
-     * used for encryption
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws IOException
-     */
-    private void switchToChipherStreams(String username) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException {
-        byte key[] = dbMediator.getPasswordCypher(username);
-        SecretKey key64 = new SecretKeySpec(key, "Blowfish");
-        Cipher cipher = Cipher.getInstance("Blowfish");
-        cipher.init(Cipher.ENCRYPT_MODE, key64);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        out = new ObjectOutputStream(new CipherOutputStream(socket.getOutputStream(), cipher));
-        out.reset();
-        out.flush();
-        out.writeObject("switch");
-        in = new ObjectInputStream(new CipherInputStream(socket.getInputStream(), cipher));
     }
 }
