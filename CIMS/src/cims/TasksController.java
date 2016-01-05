@@ -64,87 +64,149 @@ public class TasksController implements Initializable {
     ObservableList<Task> ActiveTasks;
     ObservableList<Task> InactiveTasks;
 
+    private boolean Simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (OperatorMainController.myController.user != null) {
-            try {
-                if (OperatorMainController.myController.getInactiveTasks()!= null) {
-                    InactiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
-                }
-                if (OperatorMainController.myController.getActiveTasks()!= null) {
-                    ActiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
-                }
-//                ActiveTasks = FXCollections.observableArrayList();
-//                ActiveTasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-//                ActiveTasks.add(new Task(3, "Task 3: Dummy", "Low", "Active", "Eindhoven", "TU"));
-//
-//                InactiveTasks = FXCollections.observableArrayList();
-//                InactiveTasks.add(new Task(2, "Task 2: Dummy", "High", "Inactive", "Eindhoven", "Fontys"));
-//                InactiveTasks.add(new Task(4, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+        Simulation = OperatorMainController.is_Simulation;
+        if (!Simulation) {
+            if (OperatorMainController.myController.user != null) {
+                try {
+                    if (OperatorMainController.myController.getInactiveTasks() != null) {
+                        InactiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
+                    }
+                    if (OperatorMainController.myController.getActiveTasks() != null) {
+                        ActiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
+                    }
 
-                ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
-                ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
-                ATaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-                ATaskUnit.setCellValueFactory(new PropertyValueFactory<>("units"));
+                    ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+                    ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                    ATaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+                    ATaskUnit.setCellValueFactory(new PropertyValueFactory<>("units"));
 
-                UTaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
-                UTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
-                UTaskUrgency.setCellValueFactory(new PropertyValueFactory<>("urgency"));
-                
-                ATaskTable.setRowFactory(tv -> {
-                    TableRow<Task> row = new TableRow<>();
-                    row.setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    UTaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+                    UTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                    UTaskUrgency.setCellValueFactory(new PropertyValueFactory<>("urgency"));
 
-                            Task myTask = row.getItem();
-                            try {
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
-                                Parent root1 = (Parent) fxmlLoader.load();
-                                Stage stage = new Stage();
-                                stage.initModality(Modality.APPLICATION_MODAL);
-                                stage.initStyle(StageStyle.DECORATED);
-                                OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
-                                stage.setTitle("Task" + myTask.getTaskID());
-                                stage.setScene(new Scene(root1));
-                                stage.show();
-                            } catch (Exception x) {
-                                System.out.println(x.getMessage());
+                    ATaskTable.setRowFactory(tv -> {
+                        TableRow<Task> row = new TableRow<>();
+                        row.setOnMouseClicked(event -> {
+                            if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                                Task myTask = row.getItem();
+                                try {
+                                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                                    Parent root1 = (Parent) fxmlLoader.load();
+                                    Stage stage = new Stage();
+                                    stage.initModality(Modality.APPLICATION_MODAL);
+                                    stage.initStyle(StageStyle.DECORATED);
+                                    OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                                    stage.setTitle("Task" + myTask.getTaskID());
+                                    stage.setScene(new Scene(root1));
+                                    stage.show();
+                                } catch (Exception x) {
+                                    System.out.println(x.getMessage());
+                                }
                             }
-                        }
+                        });
+                        return row;
                     });
-                    return row;
-                });
 
-                UTaskTable.setRowFactory(tv -> {
-                    TableRow<Task> row = new TableRow<>();
-                    row.setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                            Task myTask = row.getItem();
-                            try {
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
-                                Parent root1 = (Parent) fxmlLoader.load();
-                                Stage stage = new Stage();
-                                stage.initModality(Modality.APPLICATION_MODAL);
-                                stage.initStyle(StageStyle.DECORATED);
-                                stage.setTitle("Unit" + myTask.getTaskID());
-                                stage.setScene(new Scene(root1));
-                                stage.show();
-                            } catch (Exception x) {
-                                System.out.println(x.getMessage());
+                    UTaskTable.setRowFactory(tv -> {
+                        TableRow<Task> row = new TableRow<>();
+                        row.setOnMouseClicked(event -> {
+                            if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                                Task myTask = row.getItem();
+                                try {
+                                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                                    Parent root1 = (Parent) fxmlLoader.load();
+                                    Stage stage = new Stage();
+                                    stage.initModality(Modality.APPLICATION_MODAL);
+                                    stage.initStyle(StageStyle.DECORATED);
+                                    stage.setTitle("Unit" + myTask.getTaskID());
+                                    stage.setScene(new Scene(root1));
+                                    stage.show();
+                                } catch (Exception x) {
+                                    System.out.println(x.getMessage());
+                                }
                             }
-                        }
+                        });
+                        return row;
                     });
-                    return row;
-                });
 
-                UTaskTable.setItems(InactiveTasks);
-                ATaskTable.setItems(ActiveTasks);
-            } catch (IOException ex) {
-                Logger.getLogger(TasksController.class.getName()).log(Level.SEVERE, null, ex);
+                    UTaskTable.setItems(InactiveTasks);
+                    ATaskTable.setItems(ActiveTasks);
+                } catch (IOException ex) {
+                    Logger.getLogger(TasksController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+        } else {
+            InactiveTasks = FXCollections.observableArrayList(OperatorMainController.inactive_Task);
+
+            ActiveTasks = FXCollections.observableArrayList(OperatorMainController.active_Tasks);
+
+            ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+            ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            ATaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+            ATaskUnit.setCellValueFactory(new PropertyValueFactory<>("units"));
+
+            UTaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+            UTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            UTaskUrgency.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+
+            ATaskTable.setRowFactory(tv -> {
+                TableRow<Task> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                        Task myTask = row.getItem();
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            OperatorMainController.selectedTaskID = myTask.getTaskID();
+                            stage.setTitle("Task" + myTask.getTaskID());
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println(x.getMessage());
+                        }
+                    }
+                });
+                return row;
+            });
+
+            UTaskTable.setRowFactory(tv -> {
+                TableRow<Task> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                        Task myTask = row.getItem();
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            OperatorMainController.selectedTaskID = myTask.getTaskID();
+                            stage.setTitle("Unit" + myTask.getTaskID());
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println(x.getMessage());
+                        }
+                    }
+                });
+                return row;
+            });
+
+            UTaskTable.setItems(InactiveTasks);
+            ATaskTable.setItems(ActiveTasks);
+
         }
     }
 
@@ -162,23 +224,33 @@ public class TasksController implements Initializable {
         } catch (Exception x) {
             System.out.println(x.getMessage());
         }
+
     }
 
     @FXML
     private void deleteClick(MouseEvent event) {
         Task selectedTask = (Task) ATaskTable.getSelectionModel().getSelectedItem();
-        try {
-            if (selectedTask.isAccepted()) {
-                OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
-                ActiveTasks.remove(selectedTask);
-            } else {
-                OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
-                InactiveTasks.remove(selectedTask);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(InactiveUnitsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (!Simulation) {
+            try {
+                if (selectedTask.isAccepted()) {
+                    OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+                    ActiveTasks.remove(selectedTask);
+                } else {
+                    OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
+                    InactiveTasks.remove(selectedTask);
 
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(InactiveUnitsController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            if (selectedTask.isAccepted()) {
+                OperatorMainController.active_Tasks.remove(selectedTask.getTaskID());
+            } else {
+                OperatorMainController.inactive_Task.remove(selectedTask.getTaskID());
+            }
+        }
     }
 
 }

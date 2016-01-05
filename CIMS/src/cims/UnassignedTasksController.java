@@ -39,6 +39,7 @@ import javafx.stage.StageStyle;
  * @author rick
  */
 public class UnassignedTasksController implements Initializable {
+
     @FXML
     private TableView<Task> tableviewUnassignedTasks;
     @FXML
@@ -55,8 +56,10 @@ public class UnassignedTasksController implements Initializable {
     private TableColumn<Task, String> tableStatus;
     @FXML
     private TableColumn<Task, String> tableTaskUnit;
-    
+
     private ObservableList<Task> tasks;
+
+    private boolean Simulation;
 
     /**
      * Initializes the controller class.
@@ -64,67 +67,92 @@ public class UnassignedTasksController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Database Data:
-        try {
-            if(OperatorMainController.myController.user != null){
-            tasks  = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
-            }
-         } catch (IOException ex) {
-        tasks = FXCollections.observableArrayList();
-         Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        // Dummy Data:
-        /*tasks = FXCollections.observableArrayList();
-        tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-        tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));*/
+        Simulation = OperatorMainController.is_Simulation;
 
-        tableId.setCellValueFactory(new PropertyValueFactory<>("taskID"));
-        tableTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory<>("status")); 
-        //tableTaskUnit.setCellValueFactory(new PropertyValueFactory<Task, Number>("units")); - TODO Fill units Column
-
-        tableviewUnassignedTasks.setItems(tasks);        
-        
-        tableviewUnassignedTasks.setRowFactory(tv -> {
-            TableRow<Task> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    
-                    Task myTask = row.getItem();
-                    try {
-                        OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.DECORATED);
-                        stage.setTitle("Task: " + myTask.getTaskID());
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch (Exception x) {
-                        System.out.println("Error: " + x.getMessage());
-                    }
+        if (!Simulation) {
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    tasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
                 }
+            } catch (IOException ex) {
+                tasks = FXCollections.observableArrayList();
+                Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            tableId.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+            tableTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            tableStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+            tableviewUnassignedTasks.setItems(tasks);
+            tableviewUnassignedTasks.setRowFactory(tv -> {
+                TableRow<Task> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                        Task myTask = row.getItem();
+                        try {
+                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println("Error: " + x.getMessage());
+                        }
+                    }
                 });
-            return row;
-        });
-    }    
+                return row;
+            });
+        } else {
+                tasks = FXCollections.observableArrayList(OperatorMainController.inactive_Task);
+
+            tableId.setCellValueFactory(new PropertyValueFactory<>("taskID"));
+            tableTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            tableStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+            tableviewUnassignedTasks.setItems(tasks);
+            tableviewUnassignedTasks.setRowFactory(tv -> {
+                TableRow<Task> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+
+                        Task myTask = row.getItem();
+                        try {
+                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.DECORATED);
+                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setScene(new Scene(root1));
+                            stage.show();
+                        } catch (Exception x) {
+                            System.out.println("Error: " + x.getMessage());
+                        }
+                    }
+                });
+                return row;
+            });
+        }
+    }
 
     @FXML
-    private void buttonNewClick(MouseEvent event) 
-    {
-          try {
+    private void buttonNewClick(MouseEvent event) {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
             stage.setTitle("Create Task");
-            stage.setScene(new Scene(root1));  
+            stage.setScene(new Scene(root1));
             stage.show();
-          }
-          catch(Exception x) {
-              System.out.println(x.getMessage());
-          }
+        } catch (Exception x) {
+            System.out.println(x.getMessage());
+        }
     }
 
     @FXML
@@ -143,5 +171,5 @@ public class UnassignedTasksController implements Initializable {
             alert.close();
         }
     }
-    
+
 }

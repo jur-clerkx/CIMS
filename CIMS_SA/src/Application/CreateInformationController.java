@@ -75,7 +75,8 @@ public class CreateInformationController implements Initializable, Observer {
     private AnchorPane thisAnchor;
     @FXML
     private ToggleButton toggleButton;
-
+    
+    private boolean simulation;
     /**
      * Initializes the controller class.
      */
@@ -110,7 +111,7 @@ public class CreateInformationController implements Initializable, Observer {
             toggle = true;
         }
         else toggle = false;
-        
+        if(!simulation) {
         if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),toggle)
                 == true) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -118,6 +119,8 @@ public class CreateInformationController implements Initializable, Observer {
             alert.setContentText("Information succesfully created");
             alert.showAndWait();
         }
+        }
+        
     }
 
     @FXML

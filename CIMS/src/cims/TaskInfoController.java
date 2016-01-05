@@ -33,6 +33,7 @@ import javafx.stage.Stage;
  * @author rick
  */
 public class TaskInfoController implements Initializable {
+
     @FXML
     private GridPane TaskInfo;
     @FXML
@@ -61,144 +62,180 @@ public class TaskInfoController implements Initializable {
     private ListView listviewUUnits;
     @FXML
     private ListView listviewAUnits;
-    
+
     ObservableList<Unit> ActiveUnits;
     ObservableList<Unit> InactiveUnits;
     private Task selectedTask;
-    
+
+    private boolean Simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        int ID = OperatorMainController.myController.selectedTaskID;
-        selectedTask = null;
-        // Dummy Data
-        //selectedTask = new Task(1, "Task 1", "High", "Open", "Eindhoven", "shiiiet");
-        
-        // TODO: getTaskInfo.
-        try {
-            selectedTask = OperatorMainController.myController.getTaskInfo(ID);
-        } catch (IOException ex) {
-            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+
+        Simulation = OperatorMainController.is_Simulation;
+        if (!Simulation) {
+            int ID = OperatorMainController.myController.selectedTaskID;
+            selectedTask = null;
+            try {
+                selectedTask = OperatorMainController.myController.getTaskInfo(ID);
+            } catch (IOException ex) {
+                Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (selectedTask != null) {
+                fillPage();
+            }
+        } else {
+            int ID = OperatorMainController.selectedTaskID;
+            selectedTask = null;
+
+            for (Task t : OperatorMainController.active_Tasks) {
+                if (t.getTaskID() == ID) {
+                    selectedTask = t;
+                    fillPage();
+                }
+            }
+            for (Task t : OperatorMainController.inactive_Task) {
+                if (t.getTaskID() == ID) {
+                    selectedTask = t;
+                    fillPage();
+                }
+            }
         }
-        if(selectedTask != null)
-        {
-            fillPage();
-        }
-    }    
+    }
+
     /**
      * Move selected unassigned unit, available unit to the assigned units.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void buttonAdd(MouseEvent event) {
-        Unit selectedUnit = (Unit)listviewUUnits.getSelectionModel().getSelectedItem();
+        Unit selectedUnit = (Unit) listviewUUnits.getSelectionModel().getSelectedItem();
         ActiveUnits.add(selectedUnit);
         InactiveUnits.remove(selectedUnit);
-        
+
         selectedTask.addUnit(selectedUnit);
     }
+
     /**
      * Move selected assigned unit, unavailable unit to the unassigned units.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void buttonRemove(MouseEvent event) {
-        Unit selectedUnit = (Unit)listviewAUnits.getSelectionModel().getSelectedItem();
+        Unit selectedUnit = (Unit) listviewAUnits.getSelectionModel().getSelectedItem();
         InactiveUnits.add(selectedUnit);
         ActiveUnits.remove(selectedUnit);
-        
+
         listviewUUnits.setItems(InactiveUnits);
         listviewAUnits.setItems(ActiveUnits);
-        
+
         selectedTask.delUnit(selectedUnit);
     }
+
     /**
      * Save changes made to task.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void buttonOK(MouseEvent event) throws IOException {
         Task editedTask = null;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Save changes to " + selectedTask.getName() +"?");
-        
+        alert.setHeaderText("Save changes to " + selectedTask.getName() + "?");
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {            
+        if (result.get() == ButtonType.OK) {
             String newLocation = textFieldLocation.getText();
             // Edit currently selected task with new task.
             if (newLocation != null) {
                 OperatorMainController.myController.editTask(selectedTask.getTaskID(), newLocation);
                 editedTask = selectedTask;
                 editedTask.setLocation(newLocation);
-            }           
+            }
             // TODO assignTask database.
-            if(editedTask != null) {
+            if (editedTask != null) {
                 for (Unit u : ActiveUnits) {
                     editedTask.addUnit(u);
                 }
-                
-                //OperatorMainController.myController.assignTask(editedTask.getTaskID(),editedTask.getUnits().toArray());
             }
-            
-            
-            
+
         } else {
             alert.close();
         }
     }
+
     /**
      * Delete task.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void buttonDelete(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Save changes to " + selectedTask.getName() +"?");
+        alert.setHeaderText("Save changes to " + selectedTask.getName() + "?");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            if(selectedTask.getStatus() == "Active") {
-                OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+        if (!Simulation) {
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                if (selectedTask.getStatus() == "Active") {
+                    OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+                } else {
+                    OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
+                }
             } else {
-                OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
-            } 
+                alert.close();
+            }
         } else {
-            alert.close();
+            if (selectedTask.getStatus() == "Active") {
+                OperatorMainController.active_Tasks.remove(selectedTask);
+            } else {
+                OperatorMainController.inactive_Task.remove(selectedTask);
+            }
         }
     }
+
     /**
      * Close window
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void buttonCancel(MouseEvent event) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }
+
     /**
      * Fill the page with information from selected task.
      */
     private void fillPage() {
         try {
-            ActiveUnits.addAll(OperatorMainController.myController.getActiveUnits());
-            InactiveUnits.addAll(OperatorMainController.myController.getInactiveUnits());
-            
-            if(selectedTask != null) {
+            if (!Simulation) {
+                ActiveUnits.addAll(OperatorMainController.myController.getActiveUnits());
+                InactiveUnits.addAll(OperatorMainController.myController.getInactiveUnits());
+            } else {
+                ActiveUnits.addAll(OperatorMainController.active_Units);
+                InactiveUnits.addAll(OperatorMainController.inactive_Units);
+            }
+            if (selectedTask != null) {
                 textFieldName.setText(selectedTask.getName());
                 textAreaDescription.setText(selectedTask.getDescription());
-                textFieldID.setText(""+selectedTask.getTaskID());
+                textFieldID.setText("" + selectedTask.getTaskID());
                 textFieldLocation.setText(selectedTask.getLocation());
                 comboboxUrgency.setPromptText(selectedTask.getUrgency());
                 comboboxStatus.setPromptText(selectedTask.getStatus());
             }
-            
+
         } catch (IOException ex) {
             Logger.getLogger(TaskInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

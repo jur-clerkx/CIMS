@@ -84,6 +84,7 @@ public class CreateUnitController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        Simulation = OperatorMainController.is_Simulation;
     }
 
     @FXML
@@ -116,15 +117,40 @@ public class CreateUnitController implements Initializable {
                 alert.setContentText("An error has occured");
                 alert.showAndWait();
             }
-        }
-        {
-            //PlaceHolder
-            //DOSTUFF
+        } else {
+            boolean succes = false;
+            int size = 0;
+            if (radioButtonSmall.isSelected()) {
+                size = 1;
+            } else if (radioButtonMedium.isSelected()) {
+                size = 2;
+            } else if (radioButtonLarge.isSelected()) {
+                size = 3;
+            }
+            convertToInt();
+
+            try {
+                succes = OperatorMainController.inactive_Units.add(new Unit(100, textFieldName.getText(), textFieldLocation.getText(), getSelectedSpecials()));
+            } catch (Exception ex) {
+
+            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            if (succes) {
+                alert.setContentText("Unit succesfully created.");
+                alert.showAndWait();
+                Stage stage = (Stage) buttonCancel.getScene().getWindow();
+                stage.close();
+            } else {
+                alert.setContentText("An error has occured");
+                alert.showAndWait();
+            }
         }
     }
 
     @FXML
-    private void buttonCancel(MouseEvent event) {
+    private void buttonCancel(MouseEvent event
+    ) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
 
         stage.close();

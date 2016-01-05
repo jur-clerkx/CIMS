@@ -64,15 +64,14 @@ public class ActiveTasksController implements Initializable {
 
     private ObservableList<Task> tasks;
 
-    //PlaceHolder
-    boolean Simulation = false;
-
+    boolean Simulation;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             // Database Data:
             try {
@@ -114,9 +113,7 @@ public class ActiveTasksController implements Initializable {
                 return row;
             });
         } else {
-            tasks = FXCollections.observableArrayList();
-            tasks.add(new Task(1, "Task 1: Dummy", "High", "Active", "Eindhoven", "Fontys"));
-            tasks.add(new Task(3, "Task 3: Dummy", "Low", "Inactive", "Eindhoven", "TU"));
+            tasks = FXCollections.observableArrayList(OperatorMainController.active_Tasks);
             tableId.setCellValueFactory(new PropertyValueFactory<>("taskID"));
             tableTaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
             tableStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -128,7 +125,7 @@ public class ActiveTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            OperatorMainController.selectedTaskID = myTask.getTaskID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -150,37 +147,57 @@ public class ActiveTasksController implements Initializable {
 
     @FXML
     private void deleteButtonClick(MouseEvent event) throws IOException {
-        Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Removing Task: " + task.getName());
+        if (!Simulation) {
+            Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Removing Task: " + task.getName());
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            tasks.remove(task);
-            task.operateStatus("Cancelled");
-            if (!Simulation) {
-                OperatorMainController.myController.removeActiveTask(task.getTaskID());
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                tasks.remove(task);
+                task.operateStatus("Cancelled");
+                if (!Simulation) {
+                    OperatorMainController.myController.removeActiveTask(task.getTaskID());
+                }
+
+            } else {
+                alert.close();
             }
+        }
+        else
+        {
+            
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
 
-        } else {
-            alert.close();
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                if (!Simulation) {
+                    OperatorMainController.active_Tasks.remove(tableviewActiveTask.getSelectionModel().getSelectedItem());
+                }
+
+            } else {
+                alert.close();
+            }
         }
     }
 
     @FXML
     private void newButtonClick(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("Create Task");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception x) {
-            System.out.println("Error: " + x.getMessage());
+        if (!Simulation) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateTask.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initStyle(StageStyle.DECORATED);
+                stage.setTitle("Create Task");
+                stage.setScene(new Scene(root1));
+                stage.show();
+            } catch (Exception x) {
+                System.out.println("Error: " + x.getMessage());
+            }
         }
     }
 }

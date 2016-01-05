@@ -7,9 +7,11 @@ package Application;
 
 import Connection.ConnectionRunnable;
 import Network.User;
+import Situational_Awareness.Information;
 import Situational_Awareness.PublicUser;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -53,58 +55,79 @@ public class LoginGuiController implements Initializable, Observer {
     public static ConnectionRunnable myController;
     public static int SelectedInfoID = 0;
     private boolean[] result;
+    
+    public static ArrayList<Information> information;
+    private boolean simulation;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        information = new ArrayList<>();
     }
 
     @FXML
     private void Login(MouseEvent event) {
-        myController = new ConnectionRunnable(txtUserIDLogin.getText(), txtPasswordLogin.getText());
-        Thread t = new Thread(myController);
-        t.setDaemon(true);
-        t.start();
-        if (myController != null) {
-            CIMS_SA.con = myController;
-            CIMS_SA.con.addObserver(this);
+        if(txtUserIDLogin.getText() == "Simulation" && txtPasswordLogin.getText() == "Simulation") {
+            simulation = true;
         }
-        if (CIMS_SA.con.getUser() != null) {
-            if (CIMS_SA.con.getUser() instanceof User) {
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
-                    Scene scene = new Scene(root);
-                    Stage primaryStage = new Stage();
-                    primaryStage.setTitle("User Information");
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    primaryStage.resizableProperty().set(false);
-                    CIMS_SA.con.deleteObserver(this);
-                    CIMS_SA.primaryStage.close();
-                } catch (IOException ex) {
-                    System.out.println("Error when opening UserGui");
-                }
-            } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
-                    Scene scene = new Scene(root);
-                    Stage primaryStage = new Stage();
-                    primaryStage.setTitle("User Information");
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    primaryStage.resizableProperty().set(false);
-                    CIMS_SA.con.deleteObserver(this);
-                    CIMS_SA.primaryStage.close();
-                } catch (IOException ex) {
-                    System.out.println("Error when opening UserGui");
-                }
+        if (!simulation) {
+            myController = new ConnectionRunnable(txtUserIDLogin.getText(), txtPasswordLogin.getText());
+            Thread t = new Thread(myController);
+            t.setDaemon(true);
+            t.start();
+            if (myController != null) {
+                CIMS_SA.con = myController;
+                CIMS_SA.con.addObserver(this);
             }
+            if (CIMS_SA.con.getUser() != null) {
+                if (CIMS_SA.con.getUser() instanceof User) {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage primaryStage = new Stage();
+                        primaryStage.setTitle("User Information");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();
+                        primaryStage.resizableProperty().set(false);
+                        CIMS_SA.con.deleteObserver(this);
+                        CIMS_SA.primaryStage.close();
+                    } catch (IOException ex) {
+                        System.out.println("Error when opening UserGui");
+                    }
+                } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage primaryStage = new Stage();
+                        primaryStage.setTitle("User Information");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();
+                        primaryStage.resizableProperty().set(false);
+                        CIMS_SA.con.deleteObserver(this);
+                        CIMS_SA.primaryStage.close();
+                    } catch (IOException ex) {
+                        System.out.println("Error when opening UserGui");
+                    }
+                }
 
+            }
+        } else {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
+                Scene scene = new Scene(root);
+                Stage primaryStage = new Stage();
+                primaryStage.setTitle("User Information");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+                primaryStage.resizableProperty().set(false);
+                CIMS_SA.con.deleteObserver(this);
+                CIMS_SA.primaryStage.close();
+            } catch (IOException ex) {
+                System.out.println("Error when opening UserGui");
+            }
         }
-
     }
 
     @FXML
