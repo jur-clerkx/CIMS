@@ -71,6 +71,9 @@ public class MaterialDAOImplTest {
         System.out.println("create");
         Material m = new Material("henkie", 2);
         instance.create(m);
+        
+        boolean result = instance.findAll().contains(m);
+        assertTrue(result);
     }
 
     /**
@@ -90,7 +93,7 @@ public class MaterialDAOImplTest {
     public void testFind() {
         System.out.println("find");
         int id = 17;
-        Material expResult = instance.find(id);
+        Material expResult = null;
         Material result = instance.find(id);
         assertEquals(expResult, result);
     }
