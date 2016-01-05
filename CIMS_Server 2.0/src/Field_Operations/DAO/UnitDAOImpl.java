@@ -9,6 +9,7 @@ import Field_Operations.Domain.Unit;
 import Network.Server;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -63,10 +64,10 @@ public class UnitDAOImpl implements UnitDAO {
     }
 
     @Override
-    public ArrayList<Unit> findAll() {
+    public List<Unit> findAll() {
         Query q = em.createNamedQuery("Unit.getAll", Unit.class);
         
-        return (ArrayList<Unit>)q.getResultList();
+        return q.getResultList();
     }
 
     @Override

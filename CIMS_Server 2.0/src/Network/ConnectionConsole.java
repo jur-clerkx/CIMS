@@ -31,9 +31,9 @@ public class ConnectionConsole {
         String username = "";
         String password = "";
         user = new User();
-
+        Scanner scanner;
         while (true) {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             if (!user.authorized()) {
                 if (serverIp.equals("")) {
                     System.out.println("To autorize give Server-IP");
@@ -115,8 +115,7 @@ public class ConnectionConsole {
                 if (o instanceof Task) {
                     Task t = (Task) o;
                     System.out.println("Task: " + t.toString());
-                }
-                else{
+                } else {
                     System.out.println("No task available");
                 }
                 break;
@@ -127,8 +126,7 @@ public class ConnectionConsole {
                 if (o instanceof Unit) {
                     Unit u = (Unit) o;
                     System.out.println("Unit: " + u.toString());
-                }
-                else{
+                } else {
                     System.out.println("No unit available");
                 }
                 break;
@@ -147,7 +145,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Task> tasks = (ArrayList<Task>) o;
                     System.out.println("Tasks: " + tasks.size());
-                }
+                }else{
+                    System.out.println("No tasks available");
+                }                
                 break;
             }
             case "FOUS5": {
@@ -165,7 +165,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Unit> units = (ArrayList<Unit>) o;
                     System.out.println("Units: " + units.size());
-                }
+                }else{
+                    System.out.println("No units available");
+                }  
                 break;
             }
             case "FOUS7": {
@@ -183,7 +185,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
-                }
+                }else{
+                    System.out.println("No roadmaps available");
+                }                  
                 break;
             }
             case "FOUS9": {
@@ -191,7 +195,9 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
-                }
+                }else{
+                    System.out.println("No roadmaps available");
+                }  
                 break;
             }
             case "FOUS10": {
@@ -220,13 +226,13 @@ public class ConnectionConsole {
                 break;
             }
             case "FO0P6": {
-                String[] strings = new String[5];
-                strings[0] = "Marktkraam staat in de brand";    //name
-                strings[1] = "High";                            //urgency
-                strings[2] = "Active";                          //status
-                strings[3] = "Markt Eindhoven";                 //location
-                strings[4] = "Burnnnnn";                        //description
-                serverConnection.write(strings);
+                Object[] objects = new Object[5];
+                objects[0] = "Marktkraam staat in de brand";    //name
+                objects[1] = "High";                            //urgency
+                objects[2] = "Active";                          //status
+                objects[3] = "Markt Eindhoven";                 //location
+                objects[4] = "Burnnnnn";                        //description
+                serverConnection.write(objects);
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
                 break;

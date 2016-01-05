@@ -53,7 +53,7 @@ public class TaskMGR {
     }
 
     public boolean createTask(Object o) {
-        if (!(o instanceof String[])) {
+        if (!(o instanceof Object[])) {
             return false;
         }
 
@@ -78,6 +78,11 @@ public class TaskMGR {
             return false;
         }
         Task task = taskDAO.find((int) objects[0]);
+        
+        if (task == null) {
+            return false;
+        }
+        
         task.setStatus((String) objects[1]);
         taskDAO.edit(task);
         return true;

@@ -21,6 +21,7 @@ import Global.DAO.PrivateUserDAO;
 import Global.DAO.PrivateUserDAOImpl;
 import Global.Domain.PrivateUser;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -95,7 +96,11 @@ public class UnitMGR {
 
     public ArrayList<Unit> findAllUnitsByUserId(int id) {
         ArrayList<Unit> units = new ArrayList<>();
-        for (Unit unit : unitDAO.findAll()) {
+        List<Unit>uList = unitDAO.findAll();
+        if (uList.isEmpty()) {
+            return units;
+        }
+        for (Unit unit : uList) {
             for (PrivateUser pu : unit.getMembers()) {
                 if (pu.getUserId() == id) {
                     units.add(unit);
