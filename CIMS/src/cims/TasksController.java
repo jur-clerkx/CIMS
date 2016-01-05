@@ -164,13 +164,12 @@ public class TasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.selectedTaskID = myTask.getTaskID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            System.out.println(myTask.getTaskID());
+                            OperatorMainController.selectedTaskID = myTask.getTaskID();
                             stage.setTitle("Task" + myTask.getTaskID());
                             stage.setScene(new Scene(root1));
                             stage.show();
@@ -187,14 +186,13 @@ public class TasksController implements Initializable {
                 row.setOnMouseClicked(event -> {
                     if (event.getClickCount() == 2 && (!row.isEmpty())) {
                         Task myTask = row.getItem();
-                        try 
-                        {
-                            OperatorMainController.selectedTaskID = myTask.getTaskID();
+                        try {
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
+                            OperatorMainController.selectedTaskID = myTask.getTaskID();
                             stage.setTitle("Unit" + myTask.getTaskID());
                             stage.setScene(new Scene(root1));
                             stage.show();
