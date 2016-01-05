@@ -16,7 +16,8 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "PrivateUser.getAll", query = "SELECT a FROM User AS a")
+    @NamedQuery(name = "PrivateUser.getAllPrivateUsers", query = "SELECT u FROM PrivateUser AS u"),
+    @NamedQuery(name = "PrivateUser.getAllBySector", query = "SELECT u FROM PrivateUser AS u WHERE u.sector = :sectorName")
 })
 public class PrivateUser extends User implements Serializable {
 

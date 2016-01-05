@@ -30,7 +30,7 @@ public class TaskDAOImpl implements TaskDAO {
         Query q = em.createNamedQuery("Task.count", Task.class);
         Integer amount = (Integer) q.getSingleResult();
         
-        return amount.intValue();
+        return amount;
     }
 
     @Override
@@ -81,6 +81,5 @@ public class TaskDAOImpl implements TaskDAO {
         List<Task> tasks = q.getResultList();
         
         return tasks;
-    }
-    
+    }    
 }

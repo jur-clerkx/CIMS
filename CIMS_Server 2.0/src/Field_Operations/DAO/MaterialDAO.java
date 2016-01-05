@@ -53,4 +53,6 @@ public interface MaterialDAO {
      * @return all materials from the database.
      */
     public List<Material> findAll();
+    
+    public List<Material> findAllByType(int type);
 }

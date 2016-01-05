@@ -25,7 +25,8 @@ import javax.persistence.Table;
 @Table(name = "Information")
 @NamedQueries({
     @NamedQuery(name = "Information.count", query = "SELECT COUNT(i) FROM Information AS i"),
-    @NamedQuery(name = "Information.getAll", query = "SELECT i FROM Information AS i")
+    @NamedQuery(name = "Information.getAll", query = "SELECT i FROM Information AS i"),
+    @NamedQuery(name = "Information.getAllPublicInfo", query = "SELECT i FROM Information AS i WHERE i.publicInfo = 1")
 })
 public class Information implements Serializable {
 
@@ -39,6 +40,7 @@ public class Information implements Serializable {
     private int toxic;
     private int danger;
     private int impact;
+    private int publicInfo;
     private String image;
     @OneToOne
     private User user;
@@ -144,6 +146,22 @@ public class Information implements Serializable {
         return image;
     }
 
+    public int getCasualties() {
+        return casualties;
+    }
+
+    public void setCasualties(int casualties) {
+        this.casualties = casualties;
+    }
+
+    public int getPublicInfo() {
+        return publicInfo;
+    }
+
+    public void setPublicInfo(int publicInfo) {
+        this.publicInfo = publicInfo;
+    }
+
     public Information() {
     }
 
@@ -174,6 +192,7 @@ public class Information implements Serializable {
         this.image = image;
         this.user = user;
         this.name = name;
+        this.publicInfo = 0;
     }
 
     /**

@@ -40,11 +40,15 @@ public class Task implements Serializable {
     private String status;
     private String description;
     private String location;
+    private boolean accepted;
+    private String reason;
 
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
     private List<Progress> progressList;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Unit> units;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Roadmap> roadmaps;
 
     public Task() {
     }
@@ -158,6 +162,22 @@ public class Task implements Serializable {
         }
     }
 
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     /**
      * Gets all units of this task
      *
@@ -189,6 +209,32 @@ public class Task implements Serializable {
      */
     public List<Progress> getProgressList() {
         return this.progressList;
+    }
+
+    public List<Roadmap> getRoadmaps() {
+        return roadmaps;
+    }
+
+    /**
+     * Adds a roadmap to the list of roadmaps working on the task
+     *
+     * @param roadmap can't be in the list already
+     */
+    public void addRoadmap(Roadmap roadmap) {
+        if (!this.roadmaps.contains(roadmap)) {
+            this.roadmaps.add(roadmap);
+        }
+    }
+
+    /**
+     * Adds a roadmap to the list of roadmaps working on the task
+     *
+     * @param roadmap must be in the list already
+     */
+    public void removeRoadmap(Roadmap roadmap) {
+        if (this.roadmaps.contains(roadmap)) {
+            this.roadmaps.remove(roadmap);
+        }
     }
 
     /**
@@ -262,7 +308,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "Name: " + this.name +", Urgency: "+ this.urgency + ", Status: " + this.status;
+        return "Name: " + this.name + ", Urgency: " + this.urgency + ", Status: " + this.status;
     }
-    
+
 }

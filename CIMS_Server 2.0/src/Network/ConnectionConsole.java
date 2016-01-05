@@ -10,9 +10,8 @@ import Field_Operations.Domain.Unit;
 import Global.Domain.User;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -123,6 +122,15 @@ public class ConnectionConsole {
                 if (o instanceof Unit) {
                     Unit u = (Unit) o;
                     System.out.println("Unit: " + u.toString());
+                }
+                break;
+            case "FOUS3":
+                break;
+            case "FOUS4":
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Task> tasks = (ArrayList<Task>) o;
+                    System.out.println("Tasks: " + tasks.size());
                 }
                 break;
         }

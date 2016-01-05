@@ -17,14 +17,16 @@ import javax.persistence.Query;
 public class MaterialDAOImpl implements MaterialDAO {
 
     private EntityManager em;
-    
+
     /**
      * Constructor for Material DAO Implementation
-     * @param em 
+     *
+     * @param em
      */
     public MaterialDAOImpl(EntityManager em) {
         this.em = em;
     }
+
     @Override
     public long count() {
         Query q = em.createNamedQuery("Material.count", Material.class);
@@ -62,8 +64,16 @@ public class MaterialDAOImpl implements MaterialDAO {
     public List<Material> findAll() {
         Query q = em.createNamedQuery("Material.getAll", Material.class);
         List<Material> materials = q.getResultList();
-        
+
         return materials;
     }
-    
+
+    @Override
+    public List<Material> findAllByType(int type) {
+        Query q = em.createNamedQuery("Material.getAllByType", Material.class);
+        q.setParameter("typeId", type);
+        List<Material> materials = q.getResultList();
+        return materials;
+    }
+
 }

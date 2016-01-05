@@ -63,7 +63,7 @@ public class PrivateUserDAOImpl implements PrivateUserDAO, UserDAO {
 
     @Override
     public ArrayList<PrivateUser> findAll() {
-        Query q = em.createNamedQuery("PrivateUser.getAll", PrivateUser.class);
+        Query q = em.createNamedQuery("PrivateUser.getAllPrivateUsers", PrivateUser.class);
         ArrayList<PrivateUser> puList = (ArrayList<PrivateUser>) q.getResultList();
 
         return puList;
@@ -83,6 +83,14 @@ public class PrivateUserDAOImpl implements PrivateUserDAO, UserDAO {
 
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<PrivateUser> findAllBySector(String sector) {
+        Query q = em.createNamedQuery("PrivateUser.getAll", PrivateUser.class);
+        q.setParameter("sectorName", sector);
+        ArrayList<PrivateUser> puList = (ArrayList<PrivateUser>) q.getResultList();
+        return puList;
     }
 
 }

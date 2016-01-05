@@ -1,13 +1,15 @@
 package Network;
 
-import Field_Operations.DAO.TaskDAO;
-import Field_Operations.DAO.TaskDAOImpl;
-import Field_Operations.DAO.UnitDAO;
-import Field_Operations.DAO.UnitDAOImpl;
-import Field_Operations.Domain.Unit;
+import Field_Operations.MGR.ProgressMGR;
+import Field_Operations.MGR.RoadmapMGR;
+import Field_Operations.MGR.TaskMGR;
+import Field_Operations.MGR.UnitMGR;
 import Global.Domain.User;
 import Global.DAO.PrivateUserDAOImpl;
 import Global.DAO.PublicUserDAOImpl;
+import Global.Domain.PrivateUser;
+import Situational_Awareness.MGR.InformationMGR;
+import Global.MGR.PublicUserMGR;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -134,135 +135,151 @@ public class Connection {
      * @throws ClassNotFoundException if cannot cast to class
      */
     private void fieldOperations(String s) throws IOException, ClassNotFoundException {
-        TaskDAO taskDAO = new TaskDAOImpl(em);
-        UnitDAO unitDAO = new UnitDAOImpl(em);
+        TaskMGR taskMGR = new TaskMGR(em);
+        UnitMGR unitMGR = new UnitMGR(em);
+        ProgressMGR progressMGR = new ProgressMGR(em);
+        RoadmapMGR roadmapMGR = new RoadmapMGR(em);
         Object o;
-        Unit u;
         switch (s.toUpperCase()) {
-            case "FOUS1":
+            case "FOUS1": //Get task by taskId input int
                 o = in.readObject();
                 if (o instanceof Integer) {
-                    write(taskDAO.find((int) o));
+                    write(taskMGR.findTask((int) o));
                 } else {
                     write("Error, Param is not a integer");
                 }
                 break;
-            case "FOUS2":
+            case "FOUS2": //Get unit by UnitId input int
                 o = in.readObject();
                 if (o instanceof Integer) {
-                    write(unitDAO.find((int) o));
+                    write(unitMGR.findUnit((int) o));
                 } else {
                     write("Error, Param is not a integer");
                 }
                 break;
-            /*case "FOUS3":
-             o = in.readObject();
-             if (dbMediator.updateTaskStatus(o)) {
-             write("FOUS3: carried out successfully");
-             } else {
-             write("Could not execute FOUS3");
-             }
-             break;
-             case "FOUS4":
-             write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
-             break;
-             case "FOUS5":
-             o = in.readObject();
-             if (dbMediator.acceptOrDeniedTask(o)) {
-             write("FOUS5: carried out successfully");
-             } else {
-             write("Could not execute FOUS5");
-             }
-             break;
-             case "FOUS6":
-             write(dbMediator.getUnitListByUserId(this.user.getUser_ID()));
-             break;
-             case "FOUS7":
-             o = in.readObject();
-             if (dbMediator.createProgress(this.getUserId(), o)) {
-             write("Progress succesfully created");
-             } else {
-             write("Could not create progress");
-             }
-             case "FOOP2":
-             o = in.readObject();
-             if (dbMediator.createUnit(o)) {
-             write("Unit succesfully created");
-             } else {
-             write("Could not create unit");
-             }
-             break;
-             case "FOOP3":
-             o = in.readObject();
-             if (dbMediator.disbandUnit(o)) {
-             write("Unit disbanded succesfully");
-             } else {
-             write("Could not disband unit");
-             }
-             break;
-             case "FOOP4":
-             o = in.readObject();
-             write(dbMediator.getActiveInactiveUnits(o));
-             break;
-             case "FOOP5":
-             o = in.readObject();
-             write(dbMediator.getActiveInactiveTasks(o));
-             break;
-             case "FOOP6":
-             o = in.readObject();
-             if (dbMediator.createTask(o)) {
-             write("Task succesfully created");
-             } else {
-             write("Could not create task");
-             }
-             break;
-             case "FOOP7":
-             o = in.readObject();
-             if (dbMediator.removeTask(o)) {
-             write("Task succesfully removed");
-             } else {
-             write("Could not remove task");
-             }
-             break;
-             case "FOOP8":
-             o = in.readObject();
-             if (dbMediator.assignTask(o)) {
-             write("Task succesfully created");
-             } else {
-             write("Could not create task");
-             }
-             break;
-             case "FOOP9":
-             o = in.readObject();
-             if (dbMediator.alterLocationTask(o)) {
-             write("Task succesfully altered");
-             } else {
-             write("Could not alter task");
-             }
-             break;
-             case "FOUS8":
-             o = in.readObject();
-             write(dbMediator.getRoadmapByTaskId(o));
-             break;
-             case "FOUS9":
-             write(dbMediator.getAllRoadmaps());
-             break;
-             case "FOUS10":
-             o = in.readObject();
-             if (dbMediator.createRoadmap(o)) {
-             write("Roadmap succesfully created");
-             } else {
-             write("Could not create roadmap");
-             }
-             break;
-             case "FOOP10":
-             o = in.readObject();
-             if (dbMediator.assignRoadmap(o)) {
-             write("Roadmap succesfully assigned");
-             } else {
-             write("Could not assign roadmap");
-             }
-             break;*/
+            case "FOUS3": //Edit Task Satus input object[] of int, string
+                o = in.readObject();
+                if (o instanceof Object[]) {
+                    if (taskMGR.editTaskStatus((Object[]) o)) {
+                        write("FOUS3: carried out successfully");
+                        break;
+                    }
+                }
+                write("Could not execute FOUS3");
+                break;
+            case "FOUS4"://Get tasks of this user            
+                write(taskMGR.findAllTasksByUserId(getUserId()));
+                break;
+            case "FOUS5"://Accep or deny task input object[] of int, boolean,(optimal) string
+                o = in.readObject();
+                if (o instanceof Object[]) {
+                    if (taskMGR.accepOrDenyTasks((Object[]) o)) {
+                        write("FOUS5: carried out successfully");
+                        break;
+                    }
+                }
+                write("Could not execute FOUS5");
+                break;
+            case "FOUS6": //Gets all units of this user                
+                write(unitMGR.findAllUnitsByUserId(getUserId()));
+                break;
+            case "FOUS7": //Creates progress for task by user input object[] of int and string
+                o = in.readObject();
+                if (o instanceof Object[]) {
+                    if (progressMGR.createProgress((Object[]) o, (PrivateUser) this.user)) {
+                        write("Progress succesfully created");
+                        break;
+                    }
+                }
+                write("Could not create progress");
+                break;
+            case "FOOP1"://Edit unit input unit
+                o = in.readObject();
+                if (unitMGR.editUnit(o)) {
+                    write("Unit succesfully edit");
+                    break;
+                }
+                write("Could not edit unit");
+                break;
+            case "FOOP2"://Create unit input object[] with values
+                o = in.readObject();
+                if (unitMGR.createUnit(o)) {
+                    write("Unit succesfully created");
+                    break;
+                }
+                write("Could not create unit");
+                break;
+            case "FOOP3"://Disband unit
+                o = in.readObject();
+                if (unitMGR.disbandUnit(o)) {
+                    write("Unit disbanded succesfully");
+                    break;
+                }
+                write("Error, could not disband unit");
+                break;
+            case "FOOP4"://Get all active units
+                o = in.readObject();
+                write(unitMGR.getActiveInactiveUnits(o));
+                break;
+            case "FOOP5"://Get all inactive units
+                o = in.readObject();
+                write(taskMGR.getActiveInactiveTasks(o));
+                break;
+            case "FOOP6"://Creates a task
+                o = in.readObject();
+                if (taskMGR.createTask(o)) {
+                    write("Task succesfully created");
+                } else {
+                    write("Error, values incorrect");
+                }
+                break;
+            case "FOOP7": //Removes a task from database
+                o = in.readObject();
+                if (taskMGR.removeTask(o)) {
+                    write("Task succesfully removed");
+                    break;
+                }
+                write("Error, param is not a integer");
+                break;
+            case "FOOP8"://Assigns multiple units to a task
+                o = in.readObject();
+                if (unitMGR.assignUnitToTask(o)) {
+                    write("Task succesfully assigned");
+                    break;
+                }
+                write("Could not assign task");
+                break;
+            case "FOOP9"://Alters the a task requests a task
+                o = in.readObject();
+                if (taskMGR.alterTask(o)) {
+                    write("Task location succesfully altered");
+                    break;
+                }
+                write("Could not alter task");
+                break;
+            case "FOUS8":
+                o = in.readObject();
+                write(roadmapMGR.getRoadmapByTaskId(o));
+                break;
+            case "FOUS9":
+                write(roadmapMGR.getAllRoadmaps());
+                break;
+            case "FOUS10":
+                o = in.readObject();
+                if (roadmapMGR.createRoadmap(o)) {
+                    write("Roadmap succesfully created");
+                    break;
+                }
+                write("Could not create roadmap");
+                break;
+            case "FOOP10":
+                o = in.readObject();
+                if (roadmapMGR.assignRoadmap(o)) {
+                    write("Roadmap succesfully assigned");
+                    break;
+                }
+                write("Could not assign roadmap");
+                break;
         }
     }
 
@@ -274,58 +291,62 @@ public class Connection {
      * @throws ClassNotFoundException if cannot cast to class
      */
     private void situationalAwareness(String s) throws IOException, ClassNotFoundException {
+        InformationMGR informationMGR = new InformationMGR(em);
+        PublicUserMGR PublicUserMGR = new PublicUserMGR(em);
         Object o;
-        /*switch (s.toUpperCase()) {
-         case "SAPU1":
-         o = in.readObject();
-         if (dbMediator.createPublicUser(o)) {
-         write("User succesfully created");
-         } else {
-         write("Could not create user");
-         }
-         break;
-         case "SAPU2":
-         write(dbMediator.GetAllPublicUsers());
-         break;
-         case "SAPU3":
-         o = in.readObject();
-         if (dbMediator.createInformation(this.getUserId(), o)) {
-         write("Information succesfully created");
-         } else {
-         write("Could not create information");
-         }
-         break;
-         case "SAPU4":
-         o = in.readObject();
-         if (dbMediator.removeInformation(o)) {
-         write("Information succesfully removed");
-         } else {
-         write("Could not remove information");
-         }
-         break;
-         case "SAPU5":
-         o = in.readObject();
-         write(dbMediator.getInformationById(o));
-         break;
-         case "SAPU6":
-         o = in.readObject();
-         write(dbMediator.getInformationByTaskId(o));
-         break;
-         case "SAPU7":
-         write(dbMediator.GetAllInformation());
-         break;
-         case "SAPU8":
-         o = in.readObject();
-         if (dbMediator.sendinformation(o)) {
-         write("Information succesfully send");
-         } else {
-         write("Could not send information");
-         }
-         break;
-         case "SAPU10":
-         write(dbMediator.GetAllPublicInformation(getUserId()));
-         break;
-         }*/
+        switch (s.toUpperCase()) {
+            case "SAPU1":
+                o = in.readObject();
+                if (PublicUserMGR.createPublicUser(o)) {
+                    write("User succesfully created");
+                    break;
+                }
+                write("Could not create user");
+                break;
+            case "SAPU2":
+                write(PublicUserMGR.GetAllPublicUsers());
+                break;
+            case "SAPU3":
+                o = in.readObject();
+                if (informationMGR.createInformation(this.user, o)) {
+                    write("Information succesfully created");
+                    break;
+                }
+                write("Could not create information");
+
+                break;
+            case "SAPU4":
+                o = in.readObject();
+                if (informationMGR.removeInformation(o)) {
+                    write("Information succesfully removed");
+                    break;
+                }
+                write("Could not remove information");
+
+                break;
+            case "SAPU5":
+                o = in.readObject();
+                write(informationMGR.getInformationById(o));
+                break;
+            case "SAPU6":
+                o = in.readObject();
+                write(informationMGR.getInformationByTaskId(o));
+                break;
+            case "SAPU7":
+                write(informationMGR.GetAllInformation());
+                break;
+            case "SAPU8":
+                o = in.readObject();
+                if (informationMGR.sendinformation(o)) {
+                    write("Information succesfully send");
+                    break;
+                }
+                write("Could not send information");
+                break;
+            case "SAPU10":
+                write(informationMGR.GetAllPublicInformation(getUserId()));
+                break;
+        }
     }
 
     /**
@@ -393,8 +414,10 @@ public class Connection {
         reading = false;
         try {
             socket.close();
+
         } catch (IOException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Connection.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

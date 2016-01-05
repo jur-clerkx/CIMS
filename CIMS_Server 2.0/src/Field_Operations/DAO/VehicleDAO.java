@@ -52,4 +52,5 @@ public interface VehicleDAO {
      * @return all vehicles from the database.
      */
     public ArrayList<Vehicle> findAll();
+    public ArrayList<Vehicle> findAllByType(int typeId);
 }

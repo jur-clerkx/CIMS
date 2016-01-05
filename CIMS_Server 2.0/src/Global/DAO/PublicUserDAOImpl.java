@@ -8,7 +8,6 @@ package Global.DAO;
 import Global.Domain.PublicUser;
 import Global.Domain.User;
 import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -57,7 +56,7 @@ public class PublicUserDAOImpl implements PublicUserDAO, UserDAO {
 
     @Override
     public ArrayList<PublicUser> findall() {
-        Query q = em.createNamedQuery("PublicUser.getAll", PublicUser.class);
+        Query q = em.createNamedQuery("PublicUser.getAllPublicUsers", PublicUser.class);
         ArrayList<PublicUser> puList = (ArrayList<PublicUser>) q.getResultList();
 
         return puList;

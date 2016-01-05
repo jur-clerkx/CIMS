@@ -15,11 +15,13 @@ import javax.persistence.Query;
  * @author sebas
  */
 public class VehicleDAOImpl implements VehicleDAO {
+
     private EntityManager em;
-    
+
     /**
      * Constructor for Vehicle DAO Implementation
-     * @param em 
+     *
+     * @param em
      */
     public VehicleDAOImpl(EntityManager em) {
         this.em = em;
@@ -27,9 +29,9 @@ public class VehicleDAOImpl implements VehicleDAO {
 
     @Override
     public int count() {
-        Query q = em.createNamedQuery("Vehicle.count",Vehicle.class);
-        Integer amount = (Integer)q.getSingleResult();
-        
+        Query q = em.createNamedQuery("Vehicle.count", Vehicle.class);
+        Integer amount = (Integer) q.getSingleResult();
+
         return amount.intValue();
     }
 
@@ -38,7 +40,7 @@ public class VehicleDAOImpl implements VehicleDAO {
         em.getTransaction().begin();
         em.persist(v);
         em.getTransaction().commit();
-        
+
     }
 
     @Override
@@ -64,7 +66,14 @@ public class VehicleDAOImpl implements VehicleDAO {
     public ArrayList<Vehicle> findAll() {
         Query q = em.createNamedQuery("Vehicle.getAll", Vehicle.class);
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) q.getResultList();
-        
+        return vehicles;
+    }
+
+    @Override
+    public ArrayList<Vehicle> findAllByType(int typeId) {
+        Query q = em.createNamedQuery("Vehicle.getAll", Vehicle.class);
+        q.setParameter("typeId", typeId);
+        ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) q.getResultList();
         return vehicles;
     }
 }
