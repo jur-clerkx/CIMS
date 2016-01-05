@@ -21,6 +21,7 @@ import Global.DAO.PrivateUserDAO;
 import Global.DAO.PrivateUserDAOImpl;
 import Global.Domain.PrivateUser;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -95,7 +96,11 @@ public class UnitMGR {
 
     public ArrayList<Unit> findAllUnitsByUserId(int id) {
         ArrayList<Unit> units = new ArrayList<>();
-        for (Unit unit : unitDAO.findAll()) {
+        List<Unit>uList = unitDAO.findAll();
+        if (uList.isEmpty()) {
+            return units;
+        }
+        for (Unit unit : uList) {
             for (PrivateUser pu : unit.getMembers()) {
                 if (pu.getUserId() == id) {
                     units.add(unit);
@@ -128,6 +133,7 @@ public class UnitMGR {
                 unit.addVehicle(vehicles.get(j));
             }
         }
+        
         ArrayList<PrivateUser> fire = privateUserDAO.findAllBySector("Fire");
         int amount = fire.size() - (int) ob[6];
         if (amount < 0) {
@@ -136,6 +142,7 @@ public class UnitMGR {
         for (int j = amount; j < fire.size(); j++) {
             unit.addUser(fire.get(j));
         }
+        
         ArrayList<PrivateUser> medical = privateUserDAO.findAllBySector("Medical");
         amount = medical.size() - (int) ob[7];
         if (amount < 0) {
@@ -144,6 +151,7 @@ public class UnitMGR {
         for (int j = amount; j < medical.size(); j++) {
             unit.addUser(medical.get(j));
         }
+        
         ArrayList<PrivateUser> police = privateUserDAO.findAllBySector("Police");
         amount = police.size() - (int) ob[8];
         if (amount < 0) {
@@ -152,6 +160,7 @@ public class UnitMGR {
         for (int j = amount; j < police.size(); j++) {
             unit.addUser(police.get(j));
         }
+        
         return true;
     }
 

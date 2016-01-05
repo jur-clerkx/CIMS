@@ -7,6 +7,7 @@ package Field_Operations.DAO;
 
 import Field_Operations.Domain.Unit;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -55,7 +56,7 @@ public interface UnitDAO {
      *
      * @return all units from the database.
      */
-    public ArrayList<Unit> findAll();
+    public List<Unit> findAll();
 
     /**
      * Find all active units in the database.

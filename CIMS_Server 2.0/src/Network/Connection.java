@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -79,6 +80,7 @@ public class Connection {
                                         write(user);
                                         System.out.println("connection made, Access authorized");
                                     } else {
+                                        write(user);
                                         System.out.println("Wrong credentials, Acces denied");
                                         reading = false;
                                     }
@@ -161,27 +163,27 @@ public class Connection {
                 o = in.readObject();
                 if (o instanceof Object[]) {
                     if (taskMGR.editTaskStatus((Object[]) o)) {
-                        write("FOUS3: carried out successfully");
+                        write("EditTaskStatus: carried out successfully");
                         break;
                     }
                 }
-                write("Could not execute FOUS3");
+                write("Error, can not edit task status");
                 break;
             case "FOUS4"://Get tasks of this user            
-                write(taskMGR.findAllTasksByUserId(getUserId()));
+                write(new ArrayList<>(taskMGR.findAllTasksByUserId(getUserId())));
                 break;
             case "FOUS5"://Accep or deny task input object[] of int, boolean,(optimal) string
                 o = in.readObject();
                 if (o instanceof Object[]) {
                     if (taskMGR.accepOrDenyTasks((Object[]) o)) {
-                        write("accepOrDenyTasks: carried out successfully");
+                        write("AccepOrDenyTasks: carried out successfully");
                         break;
                     }
                 }
                 write("Error, Could not accept or deny task");
                 break;
             case "FOUS6": //Gets all units of this user                
-                write(unitMGR.findAllUnitsByUserId(getUserId()));
+                write(new ArrayList<>(unitMGR.findAllUnitsByUserId(getUserId())));
                 break;
             case "FOUS7": //Creates progress for task by user input object[] of int and string
                 o = in.readObject();
@@ -219,11 +221,11 @@ public class Connection {
                 break;
             case "FOOP4"://Get all active units
                 o = in.readObject();
-                write(unitMGR.getActiveInactiveUnits(o));
+                write(new ArrayList<>(unitMGR.getActiveInactiveUnits(o)));
                 break;
             case "FOOP5"://Get all inactive units
                 o = in.readObject();
-                write(taskMGR.getActiveInactiveTasks(o));
+                write(new ArrayList<>(taskMGR.getActiveInactiveTasks(o)));
                 break;
             case "FOOP6"://Creates a task requires string array length 5
                 o = in.readObject();
@@ -262,7 +264,7 @@ public class Connection {
                 write(roadmapMGR.getRoadmapByTaskId(o));
                 break;
             case "FOUS9":
-                write(roadmapMGR.getAllRoadmaps());
+                write(new ArrayList<>(roadmapMGR.getAllRoadmaps()));
                 break;
             case "FOUS10":
                 o = in.readObject();

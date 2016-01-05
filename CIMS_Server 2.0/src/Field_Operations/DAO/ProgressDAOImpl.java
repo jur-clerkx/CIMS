@@ -31,7 +31,7 @@ public class ProgressDAOImpl implements ProgressDAO {
         Query q = em.createNamedQuery("Progress.count", Progress.class);
         Integer amount = (Integer) q.getSingleResult();
         
-        return amount.intValue();
+        return amount;
     }
 
     @Override

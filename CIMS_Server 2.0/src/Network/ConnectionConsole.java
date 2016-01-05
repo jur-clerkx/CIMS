@@ -31,9 +31,9 @@ public class ConnectionConsole {
         String username = "";
         String password = "";
         user = new User();
-
+        Scanner scanner;
         while (true) {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             if (!user.authorized()) {
                 if (serverIp.equals("")) {
                     System.out.println("To autorize give Server-IP");
@@ -115,8 +115,7 @@ public class ConnectionConsole {
                 if (o instanceof Task) {
                     Task t = (Task) o;
                     System.out.println("Task: " + t.toString());
-                }
-                else{
+                } else {
                     System.out.println("No task available");
                 }
                 break;
@@ -127,8 +126,7 @@ public class ConnectionConsole {
                 if (o instanceof Unit) {
                     Unit u = (Unit) o;
                     System.out.println("Unit: " + u.toString());
-                }
-                else{
+                } else {
                     System.out.println("No unit available");
                 }
                 break;
@@ -147,6 +145,8 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Task> tasks = (ArrayList<Task>) o;
                     System.out.println("Tasks: " + tasks.size());
+                } else {
+                    System.out.println("No tasks available");
                 }
                 break;
             }
@@ -165,6 +165,8 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Unit> units = (ArrayList<Unit>) o;
                     System.out.println("Units: " + units.size());
+                } else {
+                    System.out.println("No units available");
                 }
                 break;
             }
@@ -183,6 +185,8 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
+                } else {
+                    System.out.println("No roadmaps available");
                 }
                 break;
             }
@@ -191,6 +195,8 @@ public class ConnectionConsole {
                 if (o instanceof ArrayList) {
                     ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
                     System.out.println("Roadmaps: " + roadmaps.size());
+                } else {
+                    System.out.println("No roadmaps available");
                 }
                 break;
             }
@@ -204,43 +210,39 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
-            case "FO0P1": {
-                break;
-            }
-            case "FO0P2": {
-                break;
-            }
-            case "FO0P3": {
-                break;
-            }
-            case "FO0P4": {
-                break;
-            }
-            case "FO0P5": {
-                break;
-            }
-            case "FO0P6": {
-                String[] strings = new String[5];
-                strings[0] = "Marktkraam staat in de brand";    //name
-                strings[1] = "High";                            //urgency
-                strings[2] = "Active";                          //status
-                strings[3] = "Markt Eindhoven";                 //location
-                strings[4] = "Burnnnnn";                        //description
-                serverConnection.write(strings);
+            case "FOOP3": {
+                serverConnection.write(1);                      //id
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
                 break;
             }
-            case "FO0P7": {
+            case "FOOP5": {
+                serverConnection.write(1);                      //id
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Task> tasks = (ArrayList<Task>) o;
+                    System.out.println("Tasks: " + tasks.size());
+                } else {
+                    System.out.println("No tasks available");
+                }
                 break;
             }
-            case "FO0P8": {
+            case "FOOP6": {
+                Object[] objects = new Object[5];
+                objects[0] = "Marktkraam staat in de brand";    //name
+                objects[1] = "High";                            //urgency
+                objects[2] = "Active";                          //status
+                objects[3] = "Markt Eindhoven";                 //location
+                objects[4] = "Burnnnnn";                        //description
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
                 break;
             }
-            case "FO0P9": {
-                break;
-            }
-            case "FO0P10": {
+            case "FOOP7":{
+                serverConnection.write(1);                      //id
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
                 break;
             }
         }

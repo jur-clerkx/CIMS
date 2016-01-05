@@ -34,6 +34,9 @@ public class ProgressMGR {
         }
 
         Task task = taskDAO.find((int) objects[0]);
+        if (task == null) {
+            return false;
+        }
         Progress progress = new Progress(user, task, (String) objects[1]);
         progressDAO.create(progress);
         return true;

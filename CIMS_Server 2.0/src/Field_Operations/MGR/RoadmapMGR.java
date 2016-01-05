@@ -11,7 +11,7 @@ import Field_Operations.DAO.TaskDAO;
 import Field_Operations.DAO.TaskDAOImpl;
 import Field_Operations.Domain.Roadmap;
 import Field_Operations.Domain.Task;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -44,8 +44,8 @@ public class RoadmapMGR {
         return true;
     }
 
-    public ArrayList<Roadmap> getAllRoadmaps() {
-        return (ArrayList) roadmapDAO.findAll();
+    public List<Roadmap> getAllRoadmaps() {
+        return  roadmapDAO.findAll();
     }
 
     public Roadmap getRoadmapByTaskId(Object o) {
