@@ -6,7 +6,6 @@
 package Application;
 
 import static Application.MainOperatorController.SelectedInformationID;
-import Situational_Awareness.TwitterSearch;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observer;
@@ -48,8 +47,6 @@ public class MainUserController implements Initializable,Observer {
     private Button btnSearch;
     @FXML
     private AnchorPane AnchorMain;
-    @FXML
-    private Button btnTwitter;
 
     /**
      * Initializes the controller class.
@@ -136,17 +133,5 @@ public class MainUserController implements Initializable,Observer {
                 }
             });
     }
-    @FXML
-    private void btnTwitter(MouseEvent event) {
-        try {
-           TwitterSearch ts = new TwitterSearch();
-
-           ts.twitterFeed("%23" + txtSearch.getText());
-        } catch (Exception ex) {
-            Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 
 }
-

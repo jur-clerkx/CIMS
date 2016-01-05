@@ -14,7 +14,6 @@
             <Button fx:id="btnEditInformation" mnemonicParsing="false" onMouseClicked="#btnEditInformation" text="Edit information" />
             <TextField fx:id="txtSearch" />
             <Button fx:id="btnSearch" mnemonicParsing="false" onMouseClicked="#btnSearch" text="Search" />
-            <Button fx:id="btnTwitter" mnemonicParsing="false" onMouseClicked="#btnTwitter" text="Twitter" />
         </items>
          <opaqueInsets>
             <Insets />
