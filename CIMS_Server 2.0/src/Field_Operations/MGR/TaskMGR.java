@@ -57,7 +57,7 @@ public class TaskMGR {
             return false;
         }
 
-        String[] objects = (String[]) o;
+        Object[] objects = (Object[]) o;
 
         if (objects.length != 5) {
             return false;
@@ -65,7 +65,8 @@ public class TaskMGR {
         if (!objects[1].equals("Low") && !objects[1].equals("Medium") && !objects[1].equals("High")) {
             return false;
         }
-        taskDAO.create(new Task(objects[0], objects[1], objects[2], objects[3], objects[4]));
+        taskDAO.create(new Task((String) objects[0], (String) objects[1], 
+                (String) objects[2], (String) objects[3], (String) objects[4]));
         return true;
     }
 
@@ -78,11 +79,11 @@ public class TaskMGR {
             return false;
         }
         Task task = taskDAO.find((int) objects[0]);
-        
+
         if (task == null) {
             return false;
         }
-        
+
         task.setStatus((String) objects[1]);
         taskDAO.edit(task);
         return true;

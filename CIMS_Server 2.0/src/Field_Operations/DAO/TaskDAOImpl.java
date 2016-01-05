@@ -37,7 +37,7 @@ public class TaskDAOImpl implements TaskDAO {
     public void create(Task t) {
         em.getTransaction().begin();
         em.persist(t);
-        em.getTransaction().begin();
+        em.getTransaction().commit();
     }
 
     @Override

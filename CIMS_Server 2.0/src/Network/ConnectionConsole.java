@@ -210,22 +210,7 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
-            case "FO0P1": {
-                break;
-            }
-            case "FO0P2": {
-                break;
-            }
-            case "FO0P3": {
-                break;
-            }
-            case "FO0P4": {
-                break;
-            }
-            case "FO0P5": {
-                break;
-            }
-            case "FO0P6": {
+            case "FOOP6": {
                 Object[] objects = new Object[5];
                 objects[0] = "Marktkraam staat in de brand";    //name
                 objects[1] = "High";                            //urgency
@@ -235,18 +220,6 @@ public class ConnectionConsole {
                 serverConnection.write(objects);
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
-                break;
-            }
-            case "FO0P7": {
-                break;
-            }
-            case "FO0P8": {
-                break;
-            }
-            case "FO0P9": {
-                break;
-            }
-            case "FO0P10": {
                 break;
             }
         }
