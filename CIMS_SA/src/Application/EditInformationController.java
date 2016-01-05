@@ -5,6 +5,7 @@
  */
 package Application;
 
+import Network.PublicUser;
 import Situational_Awareness.Information;
 import java.io.IOException;
 import java.net.URL;
@@ -77,32 +78,48 @@ public class EditInformationController implements Initializable {
     @FXML
     private ToggleButton toggleButton;
 
+    private PublicUser user;
+    private boolean simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        simulation = LoginGuiController.simulation;
+        comboInformation.setOnAction((event) -> {
+            if (simulation) {
+                info = LoginGuiController.information.get(0);
+                txtName.setText(info.getFirstName());
+                txtLastname.setText(info.getLastName());
+                txtDescription.setText(info.getDescription());
+                txtLocation.setText(info.getLocation());
+                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                txtURL.setText(info.getURL());
+                Image newImage = new Image(txtURL.getText());
+                imageView.setImage(newImage);
+                txtArea.setText(Integer.toString(info.getImpact()));
+            } else {
+                try {
+                    if (CIMS_SA.con.getUser() != null) {
 
-        comboInformation.setOnAction((event) ->{
-          try {
-                if (CIMS_SA.con.getUser() != null) {
-                    
-                                      
-                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                    txtName.setText(info.getFirstName());
-                    txtLastname.setText(info.getLastName());
-                    txtDescription.setText(info.getDescription());
-                    txtLocation.setText(info.getLocation());
-                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                    txtURL.setText(info.getURL());
-                    Image newImage = new Image(txtURL.getText());
-                    imageView.setImage(newImage);
-                    txtArea.setText(Integer.toString(info.getImpact()));
+                        info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
+                        txtName.setText(info.getFirstName());
+                        txtLastname.setText(info.getLastName());
+                        txtDescription.setText(info.getDescription());
+                        txtLocation.setText(info.getLocation());
+                        txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                        txtURL.setText(info.getURL());
+                        Image newImage = new Image(txtURL.getText());
+                        imageView.setImage(newImage);
+                        txtArea.setText(Integer.toString(info.getImpact()));
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
             }
-    });
+        });
+
         ToggleGroup group1 = new ToggleGroup();
         ToggleGroup group2 = new ToggleGroup();
         radioLarge.setToggleGroup(group1);
@@ -113,40 +130,59 @@ public class EditInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
-        try
-        {
-        obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));    
+        if (!simulation) {
+            try {
+                obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));
+            } catch (Exception ex) {
+                System.out.println("Error filling combobox");
+            }
+        } else {
+            obsInformationList.addAll(LoginGuiController.information);
         }
-        catch(Exception ex)
-        {
-            System.out.println("Error filling combobox");
-        }
+
         comboInformation.getItems().addAll(obsInformationList);
 
         if (LoginGuiController.SelectedInfoID != 0) {
-            try {
-                if (CIMS_SA.con.getUser() != null) {
-                    
-                                      
-                    info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                    txtName.setText(info.getFirstName());
-                    txtLastname.setText(info.getLastName());
-                    txtDescription.setText(info.getDescription());
-                    txtLocation.setText(info.getLocation());
-                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                    txtURL.setText(info.getURL());
-                    Image newImage = new Image(txtURL.getText());
-                    imageView.setImage(newImage);
-                    txtArea.setText(Integer.toString(info.getImpact()));
+            if (simulation) {
+                int infoID = MainOperatorController.SelectedInformationID;
+                
+                info = LoginGuiController.information.get(infoID);
+                txtName.setText(info.getFirstName());
+                txtLastname.setText(info.getLastName());
+                txtDescription.setText(info.getDescription());
+                txtLocation.setText(info.getLocation());
+                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                txtURL.setText(info.getURL());
+                Image newImage = new Image(txtURL.getText());
+                imageView.setImage(newImage);
+                txtArea.setText(Integer.toString(info.getImpact()));
+            } else {
+
+                try {
+                    if (CIMS_SA.con.getUser() != null) {
+
+                        info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
+                        txtName.setText(info.getFirstName());
+                        txtLastname.setText(info.getLastName());
+                        txtDescription.setText(info.getDescription());
+                        txtLocation.setText(info.getLocation());
+                        txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                        txtURL.setText(info.getURL());
+                        Image newImage = new Image(txtURL.getText());
+                        imageView.setImage(newImage);
+                        txtArea.setText(Integer.toString(info.getImpact()));
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
     }
 
     @FXML
-    private void RegisterInformation(MouseEvent event) {
+    private void RegisterInformation(MouseEvent event
+    ) {
         String name = txtName.getText() + " " + txtLastname.getText();
 
         boolean Private;
@@ -165,25 +201,42 @@ public class EditInformationController implements Initializable {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        
-        if(toggleButton.isSelected())
-        {
+
+        if (toggleButton.isSelected()) {
             Private = true;
+        } else {
+            Private = false;
         }
-        else Private = false;
-        
-        if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),this.comboInformation.getSelectionModel().getSelectedItem().getID(),Private)
+        if (simulation) {
+            user = new PublicUser(1, "Bas", "Koch", "00000");
+            
+            Information editedInfo = new Information(info.getID(), info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
+                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
+                    user, Private);
+            Information infoOG = LoginGuiController.information.get(0);
+            if(infoOG != null) {
+                LoginGuiController.information.remove(infoOG);
+                LoginGuiController.information.add(info);
+            }
+            obsInformationList.addAll(LoginGuiController.information);
+        } else {
+            if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
+                toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
+                this.comboInformation.getSelectionModel().getSelectedItem().getID(), Private)
                 == true) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Information succesfully edited");
             alert.showAndWait();
         }
+        }
+        
 
     }
 
     @FXML
-    private void Cancel(MouseEvent event) {
+    private void Cancel(MouseEvent event
+    ) {
 
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
