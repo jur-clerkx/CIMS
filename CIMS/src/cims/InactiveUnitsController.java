@@ -54,13 +54,14 @@ public class InactiveUnitsController implements Initializable {
     ObservableList<Unit> InactiveUnits;
 
     //PlaceHolder
-    private boolean Simulation = false;
+    private boolean Simulation;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             try {
                 if (OperatorMainController.myController.user != null) {
@@ -98,6 +99,7 @@ public class InactiveUnitsController implements Initializable {
             tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
             IUnitTable.setItems(InactiveUnits);
         } else {
+            InactiveUnits = FXCollections.observableArrayList(OperatorMainController.inactive_Units);
             IUnitTable.setRowFactory(tv -> {
                 TableRow<Unit> row = new TableRow<>();
                 row.setOnMouseClicked(event -> {
@@ -124,7 +126,6 @@ public class InactiveUnitsController implements Initializable {
             tableID.setCellValueFactory(new PropertyValueFactory<>("unitID"));
             tableUnitName.setCellValueFactory(new PropertyValueFactory<>("name"));
             tableStatus.setCellValueFactory(new PropertyValueFactory<>("description"));
-            InactiveUnits.add(new Unit(3, "Test", "test", "Monday"));
             IUnitTable.setItems(InactiveUnits);
         }
     }
@@ -169,7 +170,7 @@ public class InactiveUnitsController implements Initializable {
         }
         else
         {
-            InactiveUnits.remove(selectedUnit);
+            OperatorMainController.inactive_Units.remove(selectedUnit);
         }
     }
 

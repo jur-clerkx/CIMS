@@ -19,25 +19,28 @@ import javafx.scene.control.TextField;
  * @author Nick van der Mullen
  */
 public class viewRoadMapController implements Initializable {
+
     @FXML
     private TextField txtName;
     @FXML
     private TextArea txtDescription;
 
     private Roadmap selectedRoadmap = null;
+
+    private boolean Simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-       selectedRoadmap = OperatorMainController.selectedRoadmap;
-       
-       if(selectedRoadmap != null)
-       {
-           txtName.setText(selectedRoadmap.getName());
-           txtDescription.setText(selectedRoadmap.getDescription());
-       }
-    }    
-    
+        Simulation = OperatorMainController.is_Simulation;
+        selectedRoadmap = OperatorMainController.selectedRoadmap;
+
+        if (selectedRoadmap != null) {
+            txtName.setText(selectedRoadmap.getName());
+            txtDescription.setText(selectedRoadmap.getDescription());
+        }
+    }
+
 }

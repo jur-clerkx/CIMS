@@ -66,7 +66,7 @@ public class CreateTaskController implements Initializable {
     ObservableList<Unit> AvailableList = FXCollections.observableArrayList();
     ObservableList<Unit> AssignedList = FXCollections.observableArrayList();
     //PlaceHolder
-    private boolean Simulation = false;
+    private boolean Simulation;
 
     /**
      * Initializes the controller class.
@@ -79,6 +79,7 @@ public class CreateTaskController implements Initializable {
         comboboxUrgency.getItems().addAll("High", "Medium", "Low");
         comboboxStatus.getItems().addAll("Open", "Closed");
 
+        Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             if (OperatorMainController.myController.user != null) {
                 try {
@@ -90,19 +91,18 @@ public class CreateTaskController implements Initializable {
                     Logger.getLogger(CreateTaskController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        } else {
+
+            AvailableList.addAll(OperatorMainController.inactive_Units);
+            if (!AvailableList.isEmpty()) {
+                listviewAvailableUnits.setItems(AvailableList);
+            }
+
         }
-        else
-        {
-            //Placeholder
-            //DOSTUFF
-        }
-//        task = null;
     }
 
     @FXML
     private void assignButtonClick(MouseEvent event) {
-        //int selectedItem = listviewAvailableUnits.getSelectionModel().getSelectedIndex();
-        //String Content = AvailableList.get(selectedItem);
         Unit selectedUnit = (Unit) listviewAvailableUnits.getSelectionModel().getSelectedItem();
         if (selectedUnit != null) {
             AvailableList.remove(selectedUnit);
@@ -116,8 +116,6 @@ public class CreateTaskController implements Initializable {
 
     @FXML
     private void revokeButtonClick(MouseEvent event) {
-        //int selectedItem = listviewAssignedUnits.getSelectionModel().getSelectedIndex();
-        //String Content = AssignedList.get(selectedItem);
         Unit selectedUnit = (Unit) listviewAssignedUnits.getSelectionModel().getSelectedItem();
         if (selectedUnit != null) {
 
@@ -130,43 +128,85 @@ public class CreateTaskController implements Initializable {
 
     @FXML
     private void createButtonClick(MouseEvent event) throws IOException {
-        int taskID = Integer.parseInt(textfieldTaskID.getText());
-        String taskName = textfieldTaskName.getText();
-        String taskLocation = textfieldTaskLocation.getText();
-        int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
-        String urgencyCode = "";
-        String statusCode = "";
-        int status = comboboxStatus.getSelectionModel().getSelectedIndex();
-        if (urgency == 1) {
-            urgencyCode = "Low";
-        } else if (urgency == 2) {
-            urgencyCode = "Medium";
-        } else if (urgency == 3) {
-            urgencyCode = "High";
-        }
-
-        if (status == 1) {
-            statusCode = "open";
-        } else if (status == 2) {
-            statusCode = "closed";
-        }
-        String description = textareaDescription.getText();
-
-        if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText("You forgot to fill in the tasks ID, name or location.");
-            alert.showAndWait();
-        } else {
-            task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
-            OperatorMainController.myController.createTask(taskName, urgencyCode, description);
-            ArrayList<Integer> assignedUnits = new ArrayList<>();
-            assignedUnits.add(task.getTaskID());
-            for (Unit u : AssignedList) {
-                assignedUnits.add(u.getUnitID());
+        if (!Simulation) {
+            int taskID = Integer.parseInt(textfieldTaskID.getText());
+            String taskName = textfieldTaskName.getText();
+            String taskLocation = textfieldTaskLocation.getText();
+            int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
+            String urgencyCode = "";
+            String statusCode = "";
+            int status = comboboxStatus.getSelectionModel().getSelectedIndex();
+            if (urgency == 1) {
+                urgencyCode = "Low";
+            } else if (urgency == 2) {
+                urgencyCode = "Medium";
+            } else if (urgency == 3) {
+                urgencyCode = "High";
             }
 
-            OperatorMainController.myController.assignTask(assignedUnits.toArray());
+            if (status == 1) {
+                statusCode = "open";
+            } else if (status == 2) {
+                statusCode = "closed";
+            }
+            String description = textareaDescription.getText();
+
+            if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("You forgot to fill in the tasks ID, name or location.");
+                alert.showAndWait();
+            } else {
+                task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
+                OperatorMainController.myController.createTask(taskName, urgencyCode, description);
+                ArrayList<Integer> assignedUnits = new ArrayList<>();
+                assignedUnits.add(task.getTaskID());
+                for (Unit u : AssignedList) {
+                    assignedUnits.add(u.getUnitID());
+                }
+
+                OperatorMainController.myController.assignTask(assignedUnits.toArray());
+            }
+        }
+        else
+        {
+            int taskID = Integer.parseInt(textfieldTaskID.getText());
+            String taskName = textfieldTaskName.getText();
+            String taskLocation = textfieldTaskLocation.getText();
+            int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
+            String urgencyCode = "";
+            String statusCode = "";
+            int status = comboboxStatus.getSelectionModel().getSelectedIndex();
+            if (urgency == 1) {
+                urgencyCode = "Low";
+            } else if (urgency == 2) {
+                urgencyCode = "Medium";
+            } else if (urgency == 3) {
+                urgencyCode = "High";
+            }
+
+            if (status == 1) {
+                statusCode = "open";
+            } else if (status == 2) {
+                statusCode = "closed";
+            }
+            String description = textareaDescription.getText();
+
+            if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("You forgot to fill in the tasks ID, name or location.");
+                alert.showAndWait();
+            } else {
+                task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
+                OperatorMainController.active_Tasks.add(task);
+                ArrayList<Integer> assignedUnits = new ArrayList<>();
+                assignedUnits.add(task.getTaskID());
+                for (Unit u : AssignedList) {
+                    u.setTask(task);
+                }
+
+            }
         }
     }
 

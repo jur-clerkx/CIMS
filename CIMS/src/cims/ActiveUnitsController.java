@@ -53,8 +53,7 @@ public class ActiveUnitsController implements Initializable {
 
     ObservableList<Unit> activeUnits;
 
-    //PlaceHolder
-    public boolean Simulation = false;
+    boolean Simulation;
 
     /**
      * Initializes the controller class.
@@ -62,6 +61,7 @@ public class ActiveUnitsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+         Simulation= OperatorMainController.is_Simulation;
         if (!Simulation) {
             try {
                 if (OperatorMainController.myController.user != null) {

@@ -88,58 +88,153 @@ public class UnitInfoController implements Initializable {
     private int NRofFireFIghters;
     private Unit mySelectedUnit;
 
+    private boolean Simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ToggleGroup group = new ToggleGroup();
-        radiobuttonSmall.setToggleGroup(group);
-        radiobuttonMedium.setToggleGroup(group);
-        radiobuttonLarge.setToggleGroup(group);
-        
-        int ID = OperatorMainController.myController.selectedUnitID;
-        mySelectedUnit = null;
-        try {
-            mySelectedUnit = (Unit)OperatorMainController.myController.getUnitInfo(ID);
-        } catch (IOException ex) {
-            Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(mySelectedUnit != null)
-        {
-            fillPage();
+        Simulation = OperatorMainController.is_Simulation;
+        if (!Simulation) {
+            ToggleGroup group = new ToggleGroup();
+            radiobuttonSmall.setToggleGroup(group);
+            radiobuttonMedium.setToggleGroup(group);
+            radiobuttonLarge.setToggleGroup(group);
+
+            int ID = OperatorMainController.myController.selectedUnitID;
+            mySelectedUnit = null;
+            try {
+                mySelectedUnit = (Unit) OperatorMainController.myController.getUnitInfo(ID);
+            } catch (IOException ex) {
+                Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (mySelectedUnit != null) {
+                fillPage();
+            }
+        } else {
+            ToggleGroup group = new ToggleGroup();
+            radiobuttonSmall.setToggleGroup(group);
+            radiobuttonMedium.setToggleGroup(group);
+            radiobuttonLarge.setToggleGroup(group);
+
+            int ID = OperatorMainController.selectedUnitID;
+            mySelectedUnit = null;
+            for (Unit i : OperatorMainController.inactive_Units) {
+                if (i.getUnitID() == ID) {
+                    mySelectedUnit = i;
+                }
+            }
+
+            for (Unit i : OperatorMainController.active_Units) {
+                if (i.getUnitID() == ID) {
+                    mySelectedUnit = i;
+                }
+            }
+            if (mySelectedUnit != null) {
+                System.out.println(mySelectedUnit.getTasks());
+                fillPage();
+            }
         }
 
     }
 
     @FXML
     private void saveClick(MouseEvent event) {
-        boolean succes = false;
-        int size = 0;
-        if (radiobuttonSmall.isSelected()) {
-            size = 1;
-        } else if (radiobuttonMedium.isSelected()) {
-            size = 2;
-        } else if (radiobuttonLarge.isSelected()) {
-            size = 3;
-        }
-        convertToInt();
-        try {
-            succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
-        } catch (Exception ex) {
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        if (succes) {
+        if (!Simulation) {
+            boolean succes = false;
+            int size = 0;
+            if (radiobuttonSmall.isSelected()) {
+                size = 1;
+            } else if (radiobuttonMedium.isSelected()) {
+                size = 2;
+            } else if (radiobuttonLarge.isSelected()) {
+                size = 3;
+            }
+            convertToInt();
+            try {
+                succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+            } catch (Exception ex) {
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            if (succes) {
+                alert.setContentText("Unit succesfully created.");
+                alert.showAndWait();
+                Stage stage = (Stage) buttonCancel.getScene().getWindow();
+                stage.close();
+            } else {
+                alert.setContentText("An error has occured");
+                alert.showAndWait();
+            }
+        } else {
+            boolean succes = false;
+            int size = 0;
+            if (radiobuttonSmall.isSelected()) {
+                size = 1;
+            } else if (radiobuttonMedium.isSelected()) {
+                size = 2;
+            } else if (radiobuttonLarge.isSelected()) {
+                size = 3;
+            }
+            convertToInt();
+
+            Unit myunit = new Unit(OperatorMainController.selectedUnitID, textfieldName.getText(), textfieldLocation.getText(), getSelectedSpecials());
+            
+            
+            
+            for(int i = 0; i < NRofAmbulancePeople; i++)
+            {
+                myunit.addUser(new User(00023,"test","test,","test","test","Medical","test",0));
+            }
+            
+            for(int i = 0; i < NrOFPolicemen; i++)
+            {
+                myunit.addUser(new User(00023,"test","test,","test","test","Police","test",0));
+            }
+            
+            for(int i = 0; i < NRofFireFIghters; i++)
+            {
+                myunit.addUser(new User(00023,"test","test,","test","test","Fire","test",0));
+            }
+            
+            String selectedUnit = "inactive";
+            Unit uss = null;
+            for (Unit us : OperatorMainController.active_Units) {
+                if (myunit.getUnitID() == us.getUnitID()) {
+                    selectedUnit = "Active";
+                    uss = us;
+                }
+            }
+
+            for (Unit us : OperatorMainController.inactive_Units) {
+                if (myunit.getUnitID() == us.getUnitID()) {
+                    selectedUnit = "Inactive";
+                    uss = us;
+                }
+            }
+            if (uss != null) {
+                myunit.setTask(uss.getTasks().get(0));
+            }
+            if (selectedUnit.equals("Active")) {
+                int i = OperatorMainController.active_Units.indexOf(uss);
+                OperatorMainController.active_Units.remove(i);
+                OperatorMainController.active_Units.add(myunit);
+            } else {
+                int i = OperatorMainController.inactive_Units.indexOf(uss);
+                OperatorMainController.inactive_Units.remove(i);
+                OperatorMainController.inactive_Units.add(myunit);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+
             alert.setContentText("Unit succesfully created.");
             alert.showAndWait();
             Stage stage = (Stage) buttonCancel.getScene().getWindow();
             stage.close();
-        } else {
-            alert.setContentText("An error has occured");
-            alert.showAndWait();
-        }
 
+        }
     }
 
     @FXML
@@ -149,7 +244,6 @@ public class UnitInfoController implements Initializable {
 
     }
 
- 
     private String getSelectedSpecials() {
         String selected = "F";
 
@@ -213,7 +307,7 @@ public class UnitInfoController implements Initializable {
         int policeCars = 0;
         int firetrucks = 0;
         int ambulance = 0;
-        
+
         if (!mySelectedUnit.getName().isEmpty()) {
             textfieldName.setText(mySelectedUnit.getName());
         }
@@ -225,7 +319,7 @@ public class UnitInfoController implements Initializable {
             radiobuttonLarge.setSelected(true);
         }
         if (mySelectedUnit.getTasks().size() > 0) {
-            Task task = (Task) mySelectedUnit.getTasks();
+            Task task = (Task) mySelectedUnit.getTasks().get(0);
             textfieldTaskID.setText(Integer.toString(task.getTaskID()));
             textfieldTaskname.setText(task.getName());
         }
@@ -247,50 +341,38 @@ public class UnitInfoController implements Initializable {
                 radiobuttonTerrorist.setSelected(true);
             }
         }
-       
-        
+
         for (User u : mySelectedUnit.getMembers()) {
 
             if (u.getSector().contains("Police")) {
                 policeUsers++;
                 radiobuttonPolice.setSelected(true);
-            }
-            else if(u.getSector().contains("Medical"))
-            {
+            } else if (u.getSector().contains("Medical")) {
                 ambulanceUsers++;
                 radiobuttonAmbulance.setSelected(true);
-            }
-            else if(u.getSector().contains("Fire"))
-            {
+            } else if (u.getSector().contains("Fire")) {
                 firefighters++;
                 radiobuttonFireFighter.setSelected(true);
             }
         }
-        
-        for(Vehicle v : mySelectedUnit.getVehicles())
-        {
-            if(v.getCarType() == 1)
-            {
+
+        for (Vehicle v : mySelectedUnit.getVehicles()) {
+            if (v.getCarType() == 1) {
                 firetrucks++;
-            }
-            else if(v.getCarType() == 2)
-            {
+            } else if (v.getCarType() == 2) {
                 policeCars++;
-            }
-            else if(v.getCarType() == 3)
-            {
+            } else if (v.getCarType() == 3) {
                 ambulance++;
             }
         }
-        
+
         textfieldPPCAmbulance.setText(Integer.toString(ambulanceUsers));
         textfieldPPCFire.setText(Integer.toString(firefighters));
         textfieldPPCPolice.setText(Integer.toString(policeUsers));
         textfieldPoliceCars.setText(Integer.toString(policeCars));
         textfieldFiretrucks.setText(Integer.toString(firetrucks));
         textfieldAmbulances.setText(Integer.toString(ambulance));
-       
-        
+
     }
 
 }
