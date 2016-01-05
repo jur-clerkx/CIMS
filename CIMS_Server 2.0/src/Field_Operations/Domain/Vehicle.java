@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "Vehicle")
 @NamedQueries({
     @NamedQuery(name = "Vehicle.count", query = "SELECT COUNT(v) FROM Vehicle AS v"),
-    @NamedQuery(name = "Vehicle.getAll", query = "SELECT v FROM Vehicle AS v WHERE v.Type = :typeId"),
+    @NamedQuery(name = "Vehicle.getAllByType", query = "SELECT v FROM Vehicle AS v WHERE v.Type = :typeId"),
     @NamedQuery(name = "Vehicle.getAll", query = "SELECT v FROM Vehicle AS v")
 })
 public class Vehicle implements Serializable {

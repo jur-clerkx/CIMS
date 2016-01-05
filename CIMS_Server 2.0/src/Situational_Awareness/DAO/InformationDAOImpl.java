@@ -17,14 +17,16 @@ import javax.persistence.Query;
 public class InformationDAOImpl implements InformationDAO {
 
     private EntityManager em;
+
     public InformationDAOImpl(EntityManager em) {
         this.em = em;
     }
+
     @Override
     public int count() {
         Query q = em.createNamedQuery("Information.count");
-        Integer amount = (Integer)q.getSingleResult();
-        
+        Integer amount = (Integer) q.getSingleResult();
+
         return amount;
     }
 
@@ -58,8 +60,26 @@ public class InformationDAOImpl implements InformationDAO {
     public List<Information> findAll() {
         Query q = em.createNamedQuery("Information.getAll", Information.class);
         List<Information> infos = q.getResultList();
-        
+
         return infos;
     }
-    
+
+    @Override
+    public List<Information> findByTaskId(long id) {
+        Query q = em.createNamedQuery("Information.getByTaskId", Information.class);
+        q.setParameter("id", id);
+        List<Information> infos = q.getResultList();
+
+        return infos;
+    }
+
+    @Override
+    public List<Information> findAllPublicInformation(long id) {
+        Query q = em.createNamedQuery("Information.getAllPublicInfo", Information.class);
+        q.setParameter("id", id);
+        List<Information> infos = q.getResultList();
+
+        return infos;
+    }
+
 }

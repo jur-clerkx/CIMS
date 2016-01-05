@@ -62,7 +62,7 @@ public class TaskMGR {
         if (objects.length != 5) {
             return false;
         }
-        if (!objects[2].equals("Low") && !objects[2].equals("Medium") && !objects[2].equals("High")) {
+        if (!objects[1].equals("Low") && !objects[1].equals("Medium") && !objects[1].equals("High")) {
             return false;
         }
         taskDAO.create(new Task(objects[0], objects[1], objects[2], objects[3], objects[4]));
@@ -106,6 +106,11 @@ public class TaskMGR {
         }
 
         Task task = taskDAO.find((int) objects[0]);
+
+        if (task == null) {
+            return false;
+        }
+
         task.setAccepted((boolean) objects[1]);
 
         if (!(boolean) objects[1]) {

@@ -5,6 +5,7 @@
  */
 package Network;
 
+import Field_Operations.Domain.Roadmap;
 import Field_Operations.Domain.Task;
 import Field_Operations.Domain.Unit;
 import Global.Domain.User;
@@ -108,31 +109,140 @@ public class ConnectionConsole {
     private static void functionControl(String function) throws ClassNotFoundException {
         Object o;
         switch (function) {
-            case "FOUS1":
-                serverConnection.write(1);
+            case "FOUS1": {
+                serverConnection.write(1);                      //id
                 o = serverConnection.read();
                 if (o instanceof Task) {
                     Task t = (Task) o;
                     System.out.println("Task: " + t.toString());
                 }
+                else{
+                    System.out.println("No task available");
+                }
                 break;
-            case "FOUS2":
-                serverConnection.write(1);
+            }
+            case "FOUS2": {
+                serverConnection.write(1);                      //id
                 o = serverConnection.read();
                 if (o instanceof Unit) {
                     Unit u = (Unit) o;
                     System.out.println("Unit: " + u.toString());
                 }
+                else{
+                    System.out.println("No unit available");
+                }
                 break;
-            case "FOUS3":
+            }
+            case "FOUS3": {
+                Object[] objects = new Object[2];
+                objects[0] = 1;                                 //id
+                objects[1] = "Cancelled";                       //status
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
                 break;
-            case "FOUS4":
+            }
+            case "FOUS4": {
                 o = serverConnection.read();
                 if (o instanceof ArrayList) {
                     ArrayList<Task> tasks = (ArrayList<Task>) o;
                     System.out.println("Tasks: " + tasks.size());
                 }
                 break;
+            }
+            case "FOUS5": {
+                Object[] objects = new Object[3];
+                objects[0] = 1;                                 //id
+                objects[1] = false;                             //accepted
+                objects[2] = "Onderbezet";                      //reason (optimal)
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FOUS6": {
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Unit> units = (ArrayList<Unit>) o;
+                    System.out.println("Units: " + units.size());
+                }
+                break;
+            }
+            case "FOUS7": {
+                Object[] objects = new Object[2];
+                objects[0] = 1;                                 //taskId
+                objects[1] = "Brand onder controle.";           //message
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FOUS8": {
+                serverConnection.write(1);                      //id
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
+                    System.out.println("Roadmaps: " + roadmaps.size());
+                }
+                break;
+            }
+            case "FOUS9": {
+                o = serverConnection.read();
+                if (o instanceof ArrayList) {
+                    ArrayList<Roadmap> roadmaps = (ArrayList<Roadmap>) o;
+                    System.out.println("Roadmaps: " + roadmaps.size());
+                }
+                break;
+            }
+            case "FOUS10": {
+                Object[] objects = new Object[2];
+                objects[0] = "Brand blussen";                   //name
+                objects[1] = "1. draai de brandkraan open "
+                        + "\r\n2. enz..";                       //description 
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FO0P1": {
+                break;
+            }
+            case "FO0P2": {
+                break;
+            }
+            case "FO0P3": {
+                break;
+            }
+            case "FO0P4": {
+                break;
+            }
+            case "FO0P5": {
+                break;
+            }
+            case "FO0P6": {
+                String[] strings = new String[5];
+                strings[0] = "Marktkraam staat in de brand";    //name
+                strings[1] = "High";                            //urgency
+                strings[2] = "Active";                          //status
+                strings[3] = "Markt Eindhoven";                 //location
+                strings[4] = "Burnnnnn";                        //description
+                serverConnection.write(strings);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
+            case "FO0P7": {
+                break;
+            }
+            case "FO0P8": {
+                break;
+            }
+            case "FO0P9": {
+                break;
+            }
+            case "FO0P10": {
+                break;
+            }
         }
     }
 

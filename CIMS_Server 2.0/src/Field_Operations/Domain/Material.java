@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "Material")
 @NamedQueries({
     @NamedQuery(name = "Material.count", query = "SELECT COUNT(m) FROM Material AS m"),
-    @NamedQuery(name = "Material.getAllByType", query = "SELECT m FROM Material AS m Where type = :typeId"),
+    @NamedQuery(name = "Material.getAllByType", query = "SELECT m FROM Material AS m Where m.type = :typeId"),
     @NamedQuery(name = "Material.getAll", query = "SELECT m FROM Material AS m")
 })
 public class Material implements Serializable {

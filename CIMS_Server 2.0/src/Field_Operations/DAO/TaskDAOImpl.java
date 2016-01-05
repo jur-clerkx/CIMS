@@ -65,7 +65,7 @@ public class TaskDAOImpl implements TaskDAO {
         List<Task> tasks = q.getResultList();
         
         return tasks;
-    }
+    }    
 
     @Override
     public List<Task> findAllActive() {
@@ -81,5 +81,5 @@ public class TaskDAOImpl implements TaskDAO {
         List<Task> tasks = q.getResultList();
         
         return tasks;
-    }    
+    }
 }

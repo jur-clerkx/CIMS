@@ -56,4 +56,8 @@ public interface InformationDAO {
      * @return all vehicles from the database.
      */
     public List<Information> findAll();
+
+    public List<Information> findByTaskId(long id);
+
+    public List<Information> findAllPublicInformation(long id);
 }

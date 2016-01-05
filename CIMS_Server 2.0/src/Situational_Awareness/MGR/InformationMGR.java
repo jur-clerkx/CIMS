@@ -22,11 +22,9 @@ import javax.persistence.EntityManager;
 public class InformationMGR {
 
     private InformationDAO informationDAO;
-    private TaskDAO taskDAO;
 
     public InformationMGR(EntityManager em) {
         informationDAO = new InformationDAOImpl(em);
-        taskDAO = new TaskDAOImpl(em);
     }
 
     public boolean createInformation(User user, Object o) {
@@ -70,8 +68,7 @@ public class InformationMGR {
         if (!(o instanceof Integer)) {
             return null;
         }
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (ArrayList<Information>) informationDAO.findByTaskId((int) o);
     }
 
     public ArrayList<Information> GetAllInformation() {
@@ -97,7 +94,7 @@ public class InformationMGR {
             return false;
         }
         Information information = informationDAO.find((int) info[0]);
-        
+
         if (information == null) {
             return false;
         }
@@ -106,6 +103,6 @@ public class InformationMGR {
     }
 
     public Object GetAllPublicInformation(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (ArrayList<Information>) informationDAO.findAllPublicInformation(userId);
     }
 }

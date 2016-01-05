@@ -32,7 +32,7 @@ public class VehicleDAOImpl implements VehicleDAO {
         Query q = em.createNamedQuery("Vehicle.count", Vehicle.class);
         Integer amount = (Integer) q.getSingleResult();
 
-        return amount.intValue();
+        return amount;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class VehicleDAOImpl implements VehicleDAO {
 
     @Override
     public ArrayList<Vehicle> findAllByType(int typeId) {
-        Query q = em.createNamedQuery("Vehicle.getAll", Vehicle.class);
+        Query q = em.createNamedQuery("Vehicle.getAllByType", Vehicle.class);
         q.setParameter("typeId", typeId);
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) q.getResultList();
         return vehicles;

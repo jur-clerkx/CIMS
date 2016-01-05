@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Unit")
 @NamedQueries({
-    @NamedQuery(name = "Unit.count", query = "SELECT u FROM Unit AS u"),
+    @NamedQuery(name = "Unit.count", query = "SELECT COUNT(u) FROM Unit AS u"),
     @NamedQuery(name = "Unit.getAll", query = "SELECT u FROM Unit AS u")//,
     //@NamedQuery(name = "Unit.getAllByUser", query = "SELECT u FROM Unit AS u WHERE u.members.id in :id")
 })

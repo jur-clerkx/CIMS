@@ -174,11 +174,11 @@ public class Connection {
                 o = in.readObject();
                 if (o instanceof Object[]) {
                     if (taskMGR.accepOrDenyTasks((Object[]) o)) {
-                        write("FOUS5: carried out successfully");
+                        write("accepOrDenyTasks: carried out successfully");
                         break;
                     }
                 }
-                write("Could not execute FOUS5");
+                write("Error, Could not accept or deny task");
                 break;
             case "FOUS6": //Gets all units of this user                
                 write(unitMGR.findAllUnitsByUserId(getUserId()));
@@ -225,7 +225,7 @@ public class Connection {
                 o = in.readObject();
                 write(taskMGR.getActiveInactiveTasks(o));
                 break;
-            case "FOOP6"://Creates a task
+            case "FOOP6"://Creates a task requires string array length 5
                 o = in.readObject();
                 if (taskMGR.createTask(o)) {
                     write("Task succesfully created");
@@ -233,7 +233,7 @@ public class Connection {
                     write("Error, values incorrect");
                 }
                 break;
-            case "FOOP7": //Removes a task from database
+            case "FOOP7": //Removes a task from database params int id
                 o = in.readObject();
                 if (taskMGR.removeTask(o)) {
                     write("Task succesfully removed");
@@ -247,7 +247,7 @@ public class Connection {
                     write("Task succesfully assigned");
                     break;
                 }
-                write("Could not assign task");
+                write("Could not assign to task");
                 break;
             case "FOOP9"://Alters the a task requests a task
                 o = in.readObject();

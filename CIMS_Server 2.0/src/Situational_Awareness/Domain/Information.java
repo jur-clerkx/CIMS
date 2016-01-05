@@ -26,7 +26,8 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Information.count", query = "SELECT COUNT(i) FROM Information AS i"),
     @NamedQuery(name = "Information.getAll", query = "SELECT i FROM Information AS i"),
-    @NamedQuery(name = "Information.getAllPublicInfo", query = "SELECT i FROM Information AS i WHERE i.publicInfo = 1")
+    @NamedQuery(name = "Information.getByTaskId", query = "SELECT i FROM Information AS i WHERE i.task.id = :id"),
+    @NamedQuery(name = "Information.getAllPublicInfo", query = "SELECT i FROM Information AS i WHERE i.publicInfo = 1 OR i.user.id = :id")
 })
 public class Information implements Serializable {
 

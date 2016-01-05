@@ -65,9 +65,8 @@ public class UnitDAOImpl implements UnitDAO {
     @Override
     public ArrayList<Unit> findAll() {
         Query q = em.createNamedQuery("Unit.getAll", Unit.class);
-        ArrayList<Unit> units = (ArrayList<Unit>)q.getResultList();
         
-        return units;
+        return (ArrayList<Unit>)q.getResultList();
     }
 
     @Override
