@@ -38,8 +38,8 @@ import javafx.scene.layout.AnchorPane;
 public class OperatorMainController implements Initializable, Observer {
 
     static ConnectionRunnable myController;
-    static int selectedUnitID;
-    static int selectedTaskID;
+    static int selectedUnitID= 0;
+    static int selectedTaskID= 0;
     @FXML
     public AnchorPane MainField;
     @FXML
