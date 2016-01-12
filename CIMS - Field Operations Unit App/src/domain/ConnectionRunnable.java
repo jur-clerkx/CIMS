@@ -50,7 +50,6 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private KeyPair personalKeyPair;
     private Cipher cipherIn;
     private Cipher cipherOut;
     private Cipher RSAcipher;
