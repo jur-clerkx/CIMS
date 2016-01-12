@@ -126,9 +126,14 @@ public class UnitMGR {
             return false;
         }
         Unit unit = new Unit((String) ob[0], (String) ob[1]);
-        for (Material material : materialDAO.findAllByType((int) ob[2])) {
-            unit.addMaterial(material);
+        int target = 0;
+        String items = (String) ob[2];
+        while(target < items.length()){
+            for (Material material : materialDAO.findAllByType(Integer.parseInt(items.substring(target, 1)))) {
+                unit.addMaterial(material);
+            }
         }
+        
 
         for (int i = 1; i < 4; i++) {
             ArrayList<Vehicle> vehicles = vehicleDAO.findAllByType(i);
