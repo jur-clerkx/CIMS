@@ -47,9 +47,9 @@ public class TaskMGR {
             return new ArrayList<>();
         }
         if ((int) o == 1) {
-            return (ArrayList) taskDAO.findAllActive();
+            return new ArrayList<>(taskDAO.findAllActive());
         }
-        return (ArrayList) taskDAO.findAllInactive();
+        return new ArrayList<>(taskDAO.findAllInactive());
     }
 
     public boolean createTask(Object o) {
