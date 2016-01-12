@@ -77,6 +77,7 @@ public class OperatorMainController implements Initializable, Observer {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        is_Simulation = StartSimController.is_sim;
         if (!is_Simulation) {
             myController = new ConnectionRunnable("nickmullen", "0000");
             Thread t = new Thread(myController);

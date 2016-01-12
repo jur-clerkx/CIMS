@@ -6,6 +6,7 @@
 package Application;
 
 import Connection.ConnectionRunnable;
+import Field_Operations.Task;
 import Network.User;
 import Situational_Awareness.Information;
 import Situational_Awareness.PublicUser;
@@ -57,20 +58,21 @@ public class LoginGuiController implements Initializable, Observer {
     private boolean[] result;
     
     public static ArrayList<Information> information;
-    private boolean simulation;
+    public static boolean simulation;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        information = new ArrayList<>();
+      information = new ArrayList<>();
     }
 
     @FXML
     private void Login(MouseEvent event) {
-        if(txtUserIDLogin.getText() == "Simulation" && txtPasswordLogin.getText() == "Simulation") {
+        if(txtUserIDLogin.getText().equals("Simulation") && txtPasswordLogin.getText().equals("Simulation")) {
             simulation = true;
+            information = fillInformation();
         }
         if (!simulation) {
             myController = new ConnectionRunnable(txtUserIDLogin.getText(), txtPasswordLogin.getText());
@@ -122,7 +124,7 @@ public class LoginGuiController implements Initializable, Observer {
                 primaryStage.setScene(scene);
                 primaryStage.show();
                 primaryStage.resizableProperty().set(false);
-                CIMS_SA.con.deleteObserver(this);
+                //CIMS_SA.con.deleteObserver(this);
                 CIMS_SA.primaryStage.close();
             } catch (IOException ex) {
                 System.out.println("Error when opening UserGui");
@@ -193,5 +195,21 @@ public class LoginGuiController implements Initializable, Observer {
                 }
             });
         }
+    }
+    private ArrayList<Information> fillInformation() {
+        ArrayList<Information> dummyInfoList = new ArrayList<Information>();
+        Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        Network.PublicUser user = new Network.PublicUser(1, "Bas", "Koch", "12345467");
+        Information simulationInformation = new Information(LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
+        dummyInfoList.add(simulationInformation);
+        
+        task = new Task(2, "Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(LoginGuiController.information.size() + 1, task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, null, user, false);
+        dummyInfoList.add(simulationInformation);
+        
+        task = new Task(3, "Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(LoginGuiController.information.size() + 1, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
+        dummyInfoList.add(simulationInformation);
+        return dummyInfoList;
     }
 }

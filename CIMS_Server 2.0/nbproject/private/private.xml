@@ -2,15 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server%202.0/src/Network/Connection.java</file>
-            <file>file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server%202.0/src/Field_Operations/MGR/TaskMGR.java</file>
-            <file>file:/C:/Users/Jense/Desktop/PTS/CIMS/CIMS_Server%202.0/src/Network/ConnectionConsole.java</file>
-=======
-            <file>file:/F:/Documents/GitHub/CIMS/CIMS_Server%202.0/test/Field_Operations/DAO/MaterialDAOImplTest.java</file>
-            <file>file:/F:/Documents/GitHub/CIMS/CIMS_Server%202.0/src/Field_Operations/DAO/MaterialDAOImpl.java</file>
->>>>>>> 4e214dd94435ee2dfb6651725591d86f2f1da3ec
-        </group>
+        <group/>
     </open-files>
 </project-private>
