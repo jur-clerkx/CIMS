@@ -76,45 +76,11 @@ public class LoginGuiController implements Initializable, Observer {
         }
         if (!simulation) {
             myController = new ConnectionRunnable(txtUserIDLogin.getText(), txtPasswordLogin.getText());
+            CIMS_SA.con = myController;
+            CIMS_SA.con.addObserver(this);
             Thread t = new Thread(myController);
             t.setDaemon(true);
             t.start();
-            if (myController != null) {
-                CIMS_SA.con = myController;
-                CIMS_SA.con.addObserver(this);
-            }
-            if (CIMS_SA.con.getUser() != null) {
-                if (CIMS_SA.con.getUser() instanceof User) {
-                    try {
-                        Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
-                        Scene scene = new Scene(root);
-                        Stage primaryStage = new Stage();
-                        primaryStage.setTitle("User Information");
-                        primaryStage.setScene(scene);
-                        primaryStage.show();
-                        primaryStage.resizableProperty().set(false);
-                        CIMS_SA.con.deleteObserver(this);
-                        CIMS_SA.primaryStage.close();
-                    } catch (IOException ex) {
-                        System.out.println("Error when opening UserGui");
-                    }
-                } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                    try {
-                        Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
-                        Scene scene = new Scene(root);
-                        Stage primaryStage = new Stage();
-                        primaryStage.setTitle("User Information");
-                        primaryStage.setScene(scene);
-                        primaryStage.show();
-                        primaryStage.resizableProperty().set(false);
-                        CIMS_SA.con.deleteObserver(this);
-                        CIMS_SA.primaryStage.close();
-                    } catch (IOException ex) {
-                        System.out.println("Error when opening UserGui");
-                    }
-                }
-
-            }
         } else {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
@@ -145,26 +111,36 @@ public class LoginGuiController implements Initializable, Observer {
         con.deleteObserver(this);
         //Check if login succeeded
         if (con.getStatus() == 1) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-
-                    CIMS_SA.con = con;
-
-                    if (CIMS_SA.con.getUser() != null) {
-                        if (CIMS_SA.con.getUser() instanceof User) {
-                            try {
-                                Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
-                                Scene scene = new Scene(root);
-                                Stage primaryStage = new Stage();
-                                primaryStage.setTitle("User Information");
-                                primaryStage.setScene(scene);
-                                primaryStage.show();
-                                primaryStage.resizableProperty().set(false);;
-                                CIMS_SA.primaryStage.close();
-                            } catch (IOException ex) {
-                                System.out.println("Error when opening UserGui");
-                            }
+            Platform.runLater(() -> {
+                CIMS_SA.con = con;
+                
+                if (CIMS_SA.con.getUser() != null) {
+                    if (CIMS_SA.con.getUser() instanceof User) {
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("MainUser.fxml"));
+                            Scene scene = new Scene(root);
+                            Stage primaryStage = new Stage();
+                            primaryStage.setTitle("User Information");
+                            primaryStage.setScene(scene);
+                            primaryStage.show();
+                            primaryStage.resizableProperty().set(false);;
+                            CIMS_SA.primaryStage.close();
+                        } catch (IOException ex) {
+                            System.out.println("Error when opening UserGui");
+                        }
+                    } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
+                            Scene scene = new Scene(root);
+                            Stage primaryStage = new Stage();
+                            primaryStage.setTitle("User Information");
+                            primaryStage.setScene(scene);
+                            primaryStage.show();
+                            primaryStage.resizableProperty().set(false);
+                            CIMS_SA.primaryStage.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
                             try {
                                 Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
@@ -182,7 +158,7 @@ public class LoginGuiController implements Initializable, Observer {
 
                     }
 
-                }
+                
             });
         } else {
             Platform.runLater(new Runnable() {

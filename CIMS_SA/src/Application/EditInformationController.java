@@ -88,8 +88,15 @@ public class EditInformationController implements Initializable {
         simulation = LoginGuiController.simulation;
         comboInformation.setOnAction((event) -> {
             if (simulation) {
-                info = LoginGuiController.information.get(0);
-                txtName.setText(""+info.getId());
+                int index = -1;
+                for (Information infoLoop : LoginGuiController.information) {
+                    if (infoLoop.equals(comboInformation.getSelectionModel().getSelectedItem())) {
+                        index = LoginGuiController.information.indexOf(infoLoop);
+                    }
+                }
+                info = LoginGuiController.information.get(index);
+
+                txtName.setText("" + info.getId());
                 txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
@@ -98,12 +105,13 @@ public class EditInformationController implements Initializable {
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
+                fillRadio();
             } else {
                 try {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText(""+info.getId());
+                        txtName.setText("" + info.getId());
                         txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
@@ -112,6 +120,7 @@ public class EditInformationController implements Initializable {
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
+                        fillRadio();
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,7 +140,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getInformation((int)CIMS_SA.con.getUser().getUserId()));
+                obsInformationList.addAll(CIMS_SA.con.getInformation((int) CIMS_SA.con.getUser().getUserId()));
             } catch (Exception ex) {
                 System.out.println("Error filling combobox");
             }
@@ -144,9 +153,14 @@ public class EditInformationController implements Initializable {
         if (LoginGuiController.SelectedInfoID != 0) {
             if (simulation) {
                 int infoID = MainOperatorController.SelectedInformationID;
-                
-                info = LoginGuiController.information.get(infoID);
-                txtName.setText(""+info.getId());
+
+                for (Information infoLoop : LoginGuiController.information) {
+                    if (infoLoop.getId() == infoID) {
+                        int indexFound = LoginGuiController.information.indexOf(infoLoop);
+                        info = LoginGuiController.information.get(indexFound);
+                    }
+                }
+                txtName.setText("" + info.getId());
                 txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
@@ -155,13 +169,14 @@ public class EditInformationController implements Initializable {
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
+                fillRadio();
             } else {
 
                 try {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText(""+info.getId());
+                        txtName.setText("" + info.getId());
                         txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
@@ -170,12 +185,34 @@ public class EditInformationController implements Initializable {
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
+                        fillRadio();
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
+        }
+    }
+
+    /**
+     * Fills all Radio buttons
+     */
+    private void fillRadio() {
+        if (info.getDanger() == 0) {
+            radioSmall.setSelected(true);
+        }
+        if (info.getDanger() == 1) {
+            radioMedium.setSelected(true);
+        }
+        if (info.getDanger() == 2) {
+            radioLarge.setSelected(true);
+        }
+        if (info.getToxic() == 0) {
+            radioNo.setSelected(true);
+        }
+        if (info.getToxic() == 1) {
+            radioYes.setSelected(true);
         }
     }
 
@@ -207,27 +244,42 @@ public class EditInformationController implements Initializable {
             Private = false;
         }
         if (simulation) {
-            user = new PublicUser("Bas", "Koch", "","00000");
+            user = new PublicUser("Bas", "Koch", "", "00000");
             Information editedInfo = new Information(info.getTask(), name, txtDescription.getText(), txtLocation.getText(),
                     Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user);
-            Information infoOG = LoginGuiController.information.get(0);
-            if(infoOG != null) {
-                LoginGuiController.information.remove(infoOG);
-                LoginGuiController.information.add(info);
+            /*Information infoOG = LoginGuiController.information.get(0);
+             if (infoOG != null) {
+             LoginGuiController.information.remove(infoOG);
+             LoginGuiController.information.add(info);
+             }
+             obsInformationList.addAll(LoginGuiController.information);*/
+
+            if (editedInfo != null) {
+                Information infoFound = null;
+                for (Information infoLoop : LoginGuiController.information) {
+                    if (infoLoop.getId() == editedInfo.getId()) {
+                        infoFound = infoLoop;
+                    }
+                }
+                LoginGuiController.information.remove(infoFound);
+                LoginGuiController.information.add(editedInfo);
+
             }
+            obsInformationList.clear();
             obsInformationList.addAll(LoginGuiController.information);
+
         } else {
-            if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
-                toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
-                (int)this.comboInformation.getSelectionModel().getSelectedItem().getId(), Private)
-                == true) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Successfull");
-            alert.setContentText("Information succesfully edited");
-            alert.showAndWait();
+            if (CIMS_SA.con.EditInformation(name, txtDescription.getText(),
+                    txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
+                    toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
+                    (int) this.comboInformation.getSelectionModel().getSelectedItem().getId(), Private)
+                    == true) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Successfull");
+                alert.setContentText("Information succesfully edited");
+                alert.showAndWait();
+            }
         }
-        }
-        
 
     }
 
