@@ -5,8 +5,6 @@
  */
 package Situational_Awareness.MGR;
 
-import Field_Operations.DAO.TaskDAO;
-import Field_Operations.DAO.TaskDAOImpl;
 import Field_Operations.Domain.Task;
 import Global.Domain.User;
 import Situational_Awareness.DAO.InformationDAO;
@@ -68,11 +66,11 @@ public class InformationMGR {
         if (!(o instanceof Integer)) {
             return null;
         }
-        return (ArrayList<Information>) informationDAO.findByTaskId((int) o);
+        return new ArrayList<>(informationDAO.findByTaskId((int) o));
     }
 
     public ArrayList<Information> GetAllInformation() {
-        return (ArrayList<Information>) informationDAO.findAll();
+        return new ArrayList<>(informationDAO.findAll());
     }
 
     public boolean sendinformation(Object o) {
@@ -103,6 +101,6 @@ public class InformationMGR {
     }
 
     public Object GetAllPublicInformation(int userId) {
-        return (ArrayList<Information>) informationDAO.findAllPublicInformation(userId);
+        return new ArrayList<>(informationDAO.findAllPublicInformation(userId));
     }
 }
