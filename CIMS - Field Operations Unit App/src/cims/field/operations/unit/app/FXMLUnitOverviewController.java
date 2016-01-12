@@ -5,14 +5,12 @@
  */
 package cims.field.operations.unit.app;
 
-import Field_Operations.Unit;
+import Field_Operations.Domain.Unit;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -52,10 +50,10 @@ public class FXMLUnitOverviewController implements Initializable {
             Stage stage = (Stage)textFieldUnitID.getScene().getWindow();
             stage.close();
         } else {
-            textFieldUnitID.setText("" + unitInfo.getUnitID());
+            textFieldUnitID.setText("" + unitInfo.getId());
             textFieldUnitName.setText(unitInfo.getName());
             textAreaUnitDescription.setText(unitInfo.getDescription());
-            textFieldUnitShift.setText(unitInfo.getShift());
+            textFieldUnitShift.setText("none");
             listViewUnitUsers.setItems(FXCollections.observableArrayList(unitInfo.getMembers()));
             listViewUnitMaterials.setItems(FXCollections.observableArrayList(unitInfo.getMaterials()));
             listViewUnitVehicles.setItems(FXCollections.observableArrayList(unitInfo.getVehicles()));

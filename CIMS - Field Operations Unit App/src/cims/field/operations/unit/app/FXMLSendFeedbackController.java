@@ -33,7 +33,7 @@ public class FXMLSendFeedbackController implements Initializable {
 
     @FXML
     private void handleSendFeedback(ActionEvent event) {
-        CIMSFieldOperationsUnitApp.con.sendFeedback(CIMSFieldOperationsUnitApp.currentTask.getTaskID(), textAreaMessage.getText());
+        CIMSFieldOperationsUnitApp.con.sendFeedback((int) CIMSFieldOperationsUnitApp.currentTask.getId(), textAreaMessage.getText());
         Stage currentstage = (Stage) textAreaMessage.getScene().getWindow();
         currentstage.close();
     }

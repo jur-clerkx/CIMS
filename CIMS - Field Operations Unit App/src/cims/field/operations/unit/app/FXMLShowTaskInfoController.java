@@ -5,8 +5,7 @@
  */
 package cims.field.operations.unit.app;
 
-import Field_Operations.Task;
-import Field_Operations.Unit;
+import Field_Operations.Domain.Task;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -46,7 +45,7 @@ public class FXMLShowTaskInfoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Task currentTask = CIMSFieldOperationsUnitApp.taskInfo;
         if(currentTask != null) {
-            textFieldTaskID.setText(currentTask.getTaskID() + "");
+            textFieldTaskID.setText(currentTask.getId() + "");
             textFieldTaskName.setText(currentTask.getName());
             textFieldTaskStatus.setText(currentTask.getStatus());
             textFieldTaskLocation.setText(currentTask.getLocation());

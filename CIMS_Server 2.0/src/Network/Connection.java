@@ -210,7 +210,7 @@ public class Connection {
                 write("Error, Could not accept or deny task");
                 break;
             case "FOUS6": //Gets all units of this user                
-                write(new ArrayList<>(unitMGR.findAllUnitsByUserId(getUserId())));
+                write(unitMGR.findAllUnitsByUserId(getUserId()));
                 break;
             case "FOUS7": //Creates progress for task by user input object[] of int and string
                 o = read();
