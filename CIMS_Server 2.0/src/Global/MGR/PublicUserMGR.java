@@ -40,7 +40,7 @@ public class PublicUserMGR {
     }
 
     public ArrayList<PublicUser> GetAllPublicUsers() {
-        return publicUserDAO.findall();
+        return new ArrayList<>(publicUserDAO.findall());
     }
 
 }
