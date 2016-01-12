@@ -13,10 +13,20 @@ import Global.MGR.PublicUserMGR;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -35,6 +45,9 @@ public class Connection {
     private ObjectOutputStream out;
     private Socket socket;
     private User user;
+    private Cipher cipherIn;
+    private Cipher cipherOut;
+    private Cipher RSAcipher;
 
     private EntityManager em;
 
@@ -48,7 +61,7 @@ public class Connection {
      * @param socket Connection socket
      * @throws IOException
      */
-    Connection(Socket socket, EntityManagerFactory emf) throws IOException {
+    Connection(Socket socket, EntityManagerFactory emf) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchPaddingException, ClassNotFoundException {
         em = emf.createEntityManager();
 
         this.socket = socket;
@@ -56,6 +69,20 @@ public class Connection {
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
 
+        //Get AES key
+        //SealedObject aesKeySealed = (SealedObject) read();
+        //byte[] easKeyEncoded = (byte[]) aesKeySealed.getObject(RSAcipher);
+        //SecretKey AESKey = new SecretKeySpec(easKeyEncoded, 0, easKeyEncoded.length, "AES");
+        //System.out.println(AESKey.getEncoded());
+        SecretKey AESKey = (SecretKey) in.readObject();
+
+        //Get the publickey from the client and initializa output cipher
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(AESKey.getEncoded());
+        cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipherOut.init(Cipher.ENCRYPT_MODE, AESKey, ivParameterSpec);
+        cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipherIn.init(Cipher.DECRYPT_MODE, AESKey, ivParameterSpec);
+        
         reading = true;
 
         Thread read;
@@ -64,7 +91,7 @@ public class Connection {
             public void run() {
                 while (reading) {
                     try {
-                        Object obj = in.readObject();
+                        Object obj = read();
                         if (user.authorized()) {
                             if (obj instanceof String) {
                                 String s = obj.toString();
@@ -144,7 +171,7 @@ public class Connection {
         Object o;
         switch (s.toUpperCase()) {
             case "FOUS1": //Get task by taskId input int
-                o = in.readObject();
+                o = read();
                 if (o instanceof Integer) {
                     write(taskMGR.findTask((int) o));
                 } else {
@@ -152,7 +179,7 @@ public class Connection {
                 }
                 break;
             case "FOUS2": //Get unit by UnitId input int
-                o = in.readObject();
+                o = read();
                 if (o instanceof Integer) {
                     write(unitMGR.findUnit((int) o));
                 } else {
@@ -160,7 +187,7 @@ public class Connection {
                 }
                 break;
             case "FOUS3": //Edit Task Satus input object[] of int, string
-                o = in.readObject();
+                o = read();
                 if (o instanceof Object[]) {
                     if (taskMGR.editTaskStatus((Object[]) o)) {
                         write("EditTaskStatus: carried out successfully");
@@ -173,7 +200,7 @@ public class Connection {
                 write(new ArrayList<>(taskMGR.findAllTasksByUserId(getUserId())));
                 break;
             case "FOUS5"://Accep or deny task input object[] of int, boolean,(optimal) string
-                o = in.readObject();
+                o = read();
                 if (o instanceof Object[]) {
                     if (taskMGR.accepOrDenyTasks((Object[]) o)) {
                         write("AccepOrDenyTasks: carried out successfully");
@@ -186,7 +213,7 @@ public class Connection {
                 write(new ArrayList<>(unitMGR.findAllUnitsByUserId(getUserId())));
                 break;
             case "FOUS7": //Creates progress for task by user input object[] of int and string
-                o = in.readObject();
+                o = read();
                 if (o instanceof Object[]) {
                     if (progressMGR.createProgress((Object[]) o, (PrivateUser) this.user)) {
                         write("Progress succesfully created");
@@ -196,7 +223,7 @@ public class Connection {
                 write("Could not create progress");
                 break;
             case "FOOP1"://Edit unit input unit
-                o = in.readObject();
+                o = read();
                 if (unitMGR.editUnit(o)) {
                     write("Unit succesfully edit");
                     break;
@@ -204,7 +231,7 @@ public class Connection {
                 write("Could not edit unit");
                 break;
             case "FOOP2"://Create unit input object[] with values
-                o = in.readObject();
+                o = read();
                 if (unitMGR.createUnit(o)) {
                     write("Unit succesfully created");
                     break;
@@ -212,7 +239,7 @@ public class Connection {
                 write("Could not create unit");
                 break;
             case "FOOP3"://Disband unit
-                o = in.readObject();
+                o = read();
                 if (unitMGR.disbandUnit(o)) {
                     write("Unit disbanded succesfully");
                     break;
@@ -220,15 +247,15 @@ public class Connection {
                 write("Error, could not disband unit");
                 break;
             case "FOOP4"://Get all active units
-                o = in.readObject();
+                o = read();
                 write(new ArrayList<>(unitMGR.getActiveInactiveUnits(o)));
                 break;
             case "FOOP5"://Get all inactive units
-                o = in.readObject();
+                o = read();
                 write(new ArrayList<>(taskMGR.getActiveInactiveTasks(o)));
                 break;
             case "FOOP6"://Creates a task requires string array length 5
-                o = in.readObject();
+                o = read();
                 if (taskMGR.createTask(o)) {
                     write("Task succesfully created");
                 } else {
@@ -236,7 +263,7 @@ public class Connection {
                 }
                 break;
             case "FOOP7": //Removes a task from database params int id
-                o = in.readObject();
+                o = read();
                 if (taskMGR.removeTask(o)) {
                     write("Task succesfully removed");
                     break;
@@ -244,7 +271,7 @@ public class Connection {
                 write("Error, param is not a integer");
                 break;
             case "FOOP8"://Assigns multiple units to a task
-                o = in.readObject();
+                o = read();
                 if (unitMGR.assignUnitToTask(o)) {
                     write("Task succesfully assigned");
                     break;
@@ -252,7 +279,7 @@ public class Connection {
                 write("Could not assign to task");
                 break;
             case "FOOP9"://Alters the a task requests a task
-                o = in.readObject();
+                o = read();
                 if (taskMGR.alterTask(o)) {
                     write("Task location succesfully altered");
                     break;
@@ -260,14 +287,14 @@ public class Connection {
                 write("Could not alter task");
                 break;
             case "FOUS8":
-                o = in.readObject();
+                o = read();
                 write(roadmapMGR.getRoadmapByTaskId(o));
                 break;
             case "FOUS9":
                 write(new ArrayList<>(roadmapMGR.getAllRoadmaps()));
                 break;
             case "FOUS10":
-                o = in.readObject();
+                o = read();
                 if (roadmapMGR.createRoadmap(o)) {
                     write("Roadmap succesfully created");
                     break;
@@ -275,7 +302,7 @@ public class Connection {
                 write("Could not create roadmap");
                 break;
             case "FOOP10":
-                o = in.readObject();
+                o = read();
                 if (roadmapMGR.assignRoadmap(o)) {
                     write("Roadmap succesfully assigned");
                     break;
@@ -298,7 +325,7 @@ public class Connection {
         Object o;
         switch (s.toUpperCase()) {
             case "SAPU1":
-                o = in.readObject();
+                o = read();
                 if (PublicUserMGR.createPublicUser(o)) {
                     write("User succesfully created");
                     break;
@@ -309,7 +336,7 @@ public class Connection {
                 write(PublicUserMGR.GetAllPublicUsers());
                 break;
             case "SAPU3":
-                o = in.readObject();
+                o = read();
                 if (informationMGR.createInformation(this.user, o)) {
                     write("Information succesfully created");
                     break;
@@ -318,7 +345,7 @@ public class Connection {
 
                 break;
             case "SAPU4":
-                o = in.readObject();
+                o = read();
                 if (informationMGR.removeInformation(o)) {
                     write("Information succesfully removed");
                     break;
@@ -327,18 +354,18 @@ public class Connection {
 
                 break;
             case "SAPU5":
-                o = in.readObject();
+                o = read();
                 write(informationMGR.getInformationById(o));
                 break;
             case "SAPU6":
-                o = in.readObject();
+                o = read();
                 write(informationMGR.getInformationByTaskId(o));
                 break;
             case "SAPU7":
                 write(informationMGR.GetAllInformation());
                 break;
             case "SAPU8":
-                o = in.readObject();
+                o = read();
                 if (informationMGR.sendinformation(o)) {
                     write("Information succesfully send");
                     break;
@@ -427,8 +454,27 @@ public class Connection {
      */
     public void write(Object obj) {
         try {
-            out.writeObject(obj);
+            SealedObject so = new SealedObject((Serializable) obj, cipherOut);
+            out.writeObject(so);
+            out.flush();
         } catch (IOException ex) {
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Read an object that the client send
+     *
+     * @return The object
+     */
+    public Object read() {
+        try {
+            SealedObject so = (SealedObject) in.readObject();
+            return so.getObject(cipherIn);
+        } catch (Exception ex) {
+        }
+        reading = false;
+        return null;
     }
 }
