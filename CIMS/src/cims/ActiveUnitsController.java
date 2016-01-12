@@ -102,7 +102,7 @@ public class ActiveUnitsController implements Initializable {
             });
         } else {
             activeUnits = FXCollections.observableArrayList();
-            activeUnits.add(new Unit(1, "test", "test", "test"));
+            activeUnits.addAll(OperatorMainController.active_Units);
             tableUnitID.setCellValueFactory(new PropertyValueFactory<Unit, Number>("unitID"));
             tableUnitName.setCellValueFactory(new PropertyValueFactory<Unit, String>("name"));
             tableviewActiveUnits.setItems(activeUnits);
@@ -114,7 +114,7 @@ public class ActiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
+                            OperatorMainController.selectedUnitID = myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
