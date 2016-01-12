@@ -367,7 +367,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU10";
                 output.writeObject(outputMessage);
-                Object o = input.readObject();
+                Object o = readData();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
                 }

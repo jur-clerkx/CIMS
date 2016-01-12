@@ -94,11 +94,11 @@ public class UnitMGR {
         return unitDAO.find(id);
     }
 
-    public ArrayList<Unit> findAllUnitsByUserId(int id) {
+    public Unit findAllUnitsByUserId(int id) {
         ArrayList<Unit> units = new ArrayList<>();
         List<Unit>uList = unitDAO.findAll();
         if (uList.isEmpty()) {
-            return units;
+            return units.get(0);
         }
         for (Unit unit : uList) {
             for (PrivateUser pu : unit.getMembers()) {
@@ -107,7 +107,7 @@ public class UnitMGR {
                 }
             }
         }
-        return units;
+        return units.get(0);
     }
 
     public boolean createUnit(Object o) {
