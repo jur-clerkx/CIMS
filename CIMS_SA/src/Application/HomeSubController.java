@@ -6,11 +6,9 @@
 package Application;
 
 import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,7 +57,7 @@ public class HomeSubController implements Initializable {
 
                 if (CIMS_SA.con.getUser() != null) {
                     try {
-                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
                         listAvailableInformation.setItems(myObservableList);
                         t = new Timer();
                         t.scheduleAtFixedRate(new TimerTask() {
@@ -67,7 +65,7 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -89,7 +87,7 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -113,7 +111,7 @@ public class HomeSubController implements Initializable {
         if (!simulation) {
             try {
                 if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
                     listAvailableInformation.setItems(myObservableList);
                 } else {
 

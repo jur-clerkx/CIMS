@@ -6,7 +6,7 @@
 package Situational_Awareness;
 
 import Field_Operations.Task;
-import Network.PublicUser;
+import Global.Domain.PublicUser;
 import java.io.Serializable;
 import static java.lang.Math.toIntExact;
 
@@ -27,9 +27,9 @@ public class Information implements Serializable{
     private int impact;
     private String image;
     private boolean Private;
-    private Network.PublicUser user;
+    private PublicUser user;
 
-    public Information(Long ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user, boolean Private) {
+    public Information(Long ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, PublicUser user, boolean Private) {
         if (ID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities >= 0 && toxic >= 0
                 && danger >= 0  && impact > 0 && impact < 10000) {
             this.ID = ID;
@@ -50,6 +50,7 @@ public class Information implements Serializable{
 
     }
     public Information(Long ID, String name, String description, String location, String image){
+        try{
         this.ID = ID;
         this.task = null;
         this.name = name; 
@@ -61,7 +62,10 @@ public class Information implements Serializable{
         this.danger = 0;
         this.impact = 0;
         this.user = null;
-        this.Private = false;
+        this.Private = false;}
+        catch(Exception e){
+            System.out.println("Information Exception: A parameter wasn't accepted." + e.getMessage());
+        }
         
     }
 

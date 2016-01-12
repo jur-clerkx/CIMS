@@ -5,11 +5,10 @@
  */
 package Application;
 
-import Network.PublicUser;
+import Global.Domain.PublicUser;
 import Situational_Awareness.Information;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,7 +131,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));
+                obsInformationList.addAll(CIMS_SA.con.getInformation((int)CIMS_SA.con.getUser().getUserId()));
             } catch (Exception ex) {
                 System.out.println("Error filling combobox");
             }
@@ -208,9 +207,9 @@ public class EditInformationController implements Initializable {
             Private = false;
         }
         if (simulation) {
-            user = new PublicUser(1, "Bas", "Koch", "00000");
+            user = new PublicUser("Bas", "Koch", "","00000");
             
-            Information editedInfo = new Information(info.getID(), info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
+            Information editedInfo = new Information((long)info.getID(), info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
                     Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
                     user, Private);
             Information infoOG = LoginGuiController.information.get(0);

@@ -41,8 +41,8 @@ public class TwitterSearch {
             for (Status tweet : tweets) {
                 System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                 //sort algorythm
-                Information information = new Information(tweet.getId(),tweet.getUser().getScreenName(),tweet.getText(),tweet.getGeoLocation().toString(), tweet.getUser().getProfileImageURL());
-                informationList.add(information);
+                Information newInfo = new Information(tweet.getId(),tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(), tweet.getUser().getProfileImageURL());
+                informationList.add(newInfo);
             }
         }
         catch (Exception te) {

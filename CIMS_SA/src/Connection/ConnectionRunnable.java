@@ -7,13 +7,10 @@ package Connection;
 
 import Application.CIMS_SA;
 import Application.SendInformationController;
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
 import Field_Operations.Unit;
-import Network.User;
+import Global.Domain.User;
 import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
-import java.io.EOFException;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,7 +31,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
     public User user;
     private Unit unit;
-    private String serverAddress;
+    private final String serverAddress;
 
     private Socket socket;
     private ObjectInputStream input;
@@ -50,6 +47,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
+        //serverAddress = "145.93.85.35";
         serverAddress = "localhost";
     }
 
@@ -57,7 +55,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void run() {
         try {
             //Try to connect to server
-            socket = new Socket(serverAddress, 1234);
+            socket = new Socket(serverAddress, 1250);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
 
@@ -194,7 +192,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 ArrayList<Information> info = new ArrayList();
-                sendData("SAPU7");;
+                sendData("SAPU7");
                 Object o = readData();
                 if (o instanceof String) {
                     info = null;
@@ -242,7 +240,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU8";
                 output.writeObject(outputMessage);
-                output.writeObject(user.getUser_ID());
+                output.writeObject((int)user.getUserId());
                 output.writeObject(info.getID());
                 return true;
             } catch (IOException ex) {
@@ -259,19 +257,20 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU3";
                 Object[] thisOutputMessage = new Object[9];
-                thisOutputMessage[0] = Name;
-                thisOutputMessage[1] = description;
-                thisOutputMessage[2] = location;
-                thisOutputMessage[3] = casualties;
-                thisOutputMessage[4] = toxic;
-                thisOutputMessage[5] = danger;
-                thisOutputMessage[6] = impact;
-                thisOutputMessage[7] = URL;
-                thisOutputMessage[8] = Private;
-
+                thisOutputMessage[0] = null;
+                thisOutputMessage[1] = Name;
+                thisOutputMessage[2] = description;
+                thisOutputMessage[3] = location;
+                thisOutputMessage[4] = casualties;
+                thisOutputMessage[5] = toxic;
+                thisOutputMessage[6] = danger;
+                thisOutputMessage[7] = impact;
+                thisOutputMessage[8] = URL;
+                
                 output.writeObject(outputMessage);
                 output.writeObject(thisOutputMessage);
                 result = input.readObject();
+                System.out.println(result.toString());
 
             } catch (IOException | ClassNotFoundException ex1) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex1);
