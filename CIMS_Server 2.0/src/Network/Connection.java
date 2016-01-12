@@ -383,15 +383,6 @@ public class Connection {
         return false;
     }
 
-    private boolean isNumeric(String str) {
-        try {
-            double d = Double.parseDouble(str);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Closes the connection
      */
