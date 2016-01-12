@@ -9,7 +9,7 @@ import Application.CIMS_SA;
 import Application.SendInformationController;
 import Field_Operations.Unit;
 import Global.Domain.User;
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -367,7 +367,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU10";
                 output.writeObject(outputMessage);
-                Object o = input.readObject();
+                Object o = readData();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
                 }
