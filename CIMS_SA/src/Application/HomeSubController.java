@@ -5,7 +5,7 @@
  */
 package Application;
 
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
@@ -133,8 +133,8 @@ public class HomeSubController implements Initializable {
         try {
             Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
 
-            if (info.getID() != -1) {
-                LoginGuiController.SelectedInfoID = info.getID();
+            if (info.getId() != -1) {
+                LoginGuiController.SelectedInfoID = (int)info.getId();
                 Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
 
                 thisAnchor.getChildren().setAll(node);
@@ -150,7 +150,7 @@ public class HomeSubController implements Initializable {
             try {
                 Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
 
-                LoginGuiController.SelectedInfoID = info.getID();
+                LoginGuiController.SelectedInfoID = (int)info.getId();
                 Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
                 thisAnchor.getChildren().setAll(node);
             } catch (IOException ex) {

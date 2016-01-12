@@ -9,7 +9,7 @@ import Application.CIMS_SA;
 import Application.SendInformationController;
 import Field_Operations.Unit;
 import Global.Domain.User;
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -281,7 +281,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 String outputMessage = "SAPU8";
                 output.writeObject(outputMessage);
                 output.writeObject((int)user.getUserId());
-                output.writeObject(info.getID());
+                output.writeObject(info.getId());
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);

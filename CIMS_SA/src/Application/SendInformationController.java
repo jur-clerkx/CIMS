@@ -5,7 +5,7 @@
  */
 package Application;
 
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
@@ -91,7 +91,7 @@ public class SendInformationController implements Initializable {
                 if (CIMS_SA.con.getUser() != null) {
 
                     info = ComboInformation.getValue();
-                    txtLastname.setText(info.getFirstName());
+                    txtLastname.setText(info.getName());
                     txtDescription.setText(info.getDescription());
                     txtLocation.setText(info.getLocation());
                     txtNRofVictims.setText(Integer.toString(info.getCasualities()));

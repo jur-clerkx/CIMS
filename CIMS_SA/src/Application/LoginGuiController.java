@@ -6,9 +6,9 @@
 package Application;
 
 import Connection.ConnectionRunnable;
-import Field_Operations.Task;
+import Field_Operations.Domain.Task;
 import Global.Domain.User;
-import Situational_Awareness.Information;
+import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
@@ -198,17 +198,20 @@ public class LoginGuiController implements Initializable, Observer {
     }
     private ArrayList<Information> fillInformation() {
         ArrayList<Information> dummyInfoList = new ArrayList<Information>();
-        Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        PublicUser user = new PublicUser("Bas", "Koch", "12345467","");
-        Information simulationInformation = new Information((long)LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
+        Task task = new Task("Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        User user = new PublicUser("Bas", "Koch", "12345467","");
+        Information simulationInformation = new Information(task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user);
+        //new Information((long)LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
+
+        
         dummyInfoList.add(simulationInformation);
         
-        task = new Task(2, "Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information((long)LoginGuiController.information.size() + 1, task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, null, user, false);
+        task = new Task("Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user);
         dummyInfoList.add(simulationInformation);
         
-        task = new Task(3, "Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information((long)LoginGuiController.information.size() + 1, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
+        task = new Task("Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user);
         dummyInfoList.add(simulationInformation);
         return dummyInfoList;
     }
