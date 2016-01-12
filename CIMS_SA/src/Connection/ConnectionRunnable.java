@@ -10,11 +10,7 @@ import Application.SendInformationController;
 import Field_Operations.Unit;
 import Global.Domain.User;
 import Situational_Awareness.Information;
-<<<<<<< HEAD
 import Global.Domain.PublicUser;
-=======
-import Situational_Awareness.PublicUser;
->>>>>>> 0b8f106960aa916f92a6969718e4f9978866090c
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -371,7 +367,6 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU10";
                 output.writeObject(outputMessage);
-                output.writeObject(Userid);
                 Object o = input.readObject();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
