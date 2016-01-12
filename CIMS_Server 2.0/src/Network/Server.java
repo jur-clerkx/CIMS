@@ -79,7 +79,7 @@ public class Server {
                         }
                     } catch (IOException e) {
                         LOG.log(Level.WARNING, "IOException occurred: {0}", e.getMessage());
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchPaddingException | ClassNotFoundException ex) {
+                    } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
