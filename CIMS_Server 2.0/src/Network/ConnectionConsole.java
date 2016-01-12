@@ -24,9 +24,10 @@ public class ConnectionConsole {
     private static Socket socket;
     private static User user;
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         String serverIp = "";
         String port = "";
+        String typeOfAccount = "";
         String username = "";
         String password = "";
         user = new User();
@@ -40,6 +41,9 @@ public class ConnectionConsole {
                     System.out.println("Give Port ");
                 } else if (port.equals("")) {
                     port = scanner.nextLine();
+                    System.out.println("Give accounttype ");
+                } else if (typeOfAccount.equals("")) {
+                    typeOfAccount = scanner.nextLine();
                     System.out.println("Give Username ");
                 } else if (username.equals("")) {
                     username = scanner.nextLine();
@@ -47,7 +51,7 @@ public class ConnectionConsole {
                 } else if (password.equals("")) {
                     password = scanner.nextLine();
                     if (setupServer(Integer.parseInt(port), serverIp)) {
-                        authorize(username, password);
+                        authorize(typeOfAccount, username, password);
                     }
                 }
             } else {
@@ -72,16 +76,21 @@ public class ConnectionConsole {
         return false;
     }
 
-    private static boolean authorize(String username, String password) throws ClassNotFoundException {
-        String[] credentials = new String[2];
-        credentials[0] = username;
-        credentials[1] = password;
+    private static boolean authorize(String accounttype, String username, String password) {
+        String[] credentials = new String[3];
+        credentials[0] = accounttype;
+        credentials[1] = username;
+        credentials[2] = password;
         serverConnection.write(credentials);
 
-        user = (User) serverConnection.read();
-        System.out.println("User: " + user.toString());
-        System.out.println("Autorized:" + user.authorized());
-        return user.authorized();
+        try {
+            user = (User) serverConnection.read();
+            System.out.println("User: " + user.toString());
+            System.out.println("Autorized:" + user.authorized());
+            return user.authorized();
+        } catch (Exception ex) {
+        }
+        return false;
     }
 
     private static void sendCommand(String command) {
@@ -230,18 +239,8 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
-            case "FOOP7": {
+            case "FOOP7":{
                 serverConnection.write(1);                      //id
-                o = serverConnection.read();
-                System.out.println("Message: " + o);
-                break;
-            }
-            case "FOOP8": {
-                Object[] objects = new Object[3];
-                objects[0] = 1;                                 //taskId
-                objects[1] = 1;                                 //unitId
-                objects[2] = 2;                                 //unitId etc.
-                serverConnection.write(objects);
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
                 break;

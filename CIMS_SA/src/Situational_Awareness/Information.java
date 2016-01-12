@@ -8,7 +8,6 @@ package Situational_Awareness;
 import Field_Operations.Task;
 import Network.PublicUser;
 import java.io.Serializable;
-import static java.lang.Math.toIntExact;
 
 /**
  *
@@ -16,7 +15,7 @@ import static java.lang.Math.toIntExact;
  */
 public class Information implements Serializable{
 
-    private Long ID;
+    private int ID;
     private Task task;
     private String name;
     private String description;
@@ -29,7 +28,7 @@ public class Information implements Serializable{
     private boolean Private;
     private Network.PublicUser user;
 
-    public Information(Long ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user, boolean Private) {
+    public Information(int ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user, boolean Private) {
         if (ID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities >= 0 && toxic >= 0
                 && danger >= 0  && impact > 0 && impact < 10000) {
             this.ID = ID;
@@ -49,21 +48,6 @@ public class Information implements Serializable{
         }
 
     }
-    public Information(Long ID, String name, String description, String location, String image){
-        this.ID = ID;
-        this.task = null;
-        this.name = name; 
-        this.description = description;
-        this.location = location;
-        this.image = image;
-        this.casualties = 0;
-        this.toxic = 0;
-        this.danger = 0;
-        this.impact = 0;
-        this.user = null;
-        this.Private = false;
-        
-    }
 
     public String getName() {
         return name;
@@ -74,7 +58,7 @@ public class Information implements Serializable{
     }
 
     public int getID() {
-        return toIntExact(ID);
+        return ID;
     }
 
     public Task getTaskID() {

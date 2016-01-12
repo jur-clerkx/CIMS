@@ -75,8 +75,8 @@ public class Connection {
                         } else {
                             if (obj instanceof String[]) {
                                 String[] credentials = (String[]) obj;
-                                if (credentials.length == 2) {
-                                    if (login(credentials[0], credentials[1])) {
+                                if (credentials.length == 3) {
+                                    if (login(credentials[0], credentials[1], credentials[2])) {
                                         write(user);
                                         System.out.println("connection made, Access authorized");
                                     } else {
@@ -358,7 +358,7 @@ public class Connection {
      * @param password Password of a user
      * @return if login is success or not
      */
-    private boolean login(String username, String password) {
+    private boolean login(String prvt, String username, String password) {
 
         if (username == null || password == null) {
             return false;
@@ -366,21 +366,36 @@ public class Connection {
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             return false;
         }
-
-        Global.DAO.PublicUserDAO pudao = new PublicUserDAOImpl(em);
-        this.user = pudao.login(username, password);
-        if (this.user != null) {
-            this.user.setAuthorized(true);
-            return true;
-        } else {
-            Global.DAO.PrivateUserDAO prudao = new PrivateUserDAOImpl(em);
-            this.user = prudao.login(username, password);
-            if (this.user != null) {
-                this.user.setAuthorized(true);
-                return true;
+        if (isNumeric(prvt)) {
+            switch (prvt) {
+                case "0":
+                    Global.DAO.PublicUserDAO pudao = new PublicUserDAOImpl(em);
+                    this.user = pudao.login(username, password);
+                    if (this.user != null) {
+                        this.user.setAuthorized(true);
+                        return true;
+                    }
+                    break;
+                case "1":
+                    Global.DAO.PrivateUserDAO prudao = new PrivateUserDAOImpl(em);
+                    this.user = prudao.login(username, password);
+                    if (this.user != null) {
+                        this.user.setAuthorized(true);
+                        return true;
+                    }
+                    break;
             }
         }
         return false;
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**

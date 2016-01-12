@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package Situational_Awareness;
-import java.util.ArrayList;
 import java.util.List;
 import twitter4j.*;
+import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 /**
  *
@@ -29,25 +29,24 @@ public class TwitterSearch {
     }
     
     
-    public ArrayList<Information> twitterFeed(String twitterURL){
-        ArrayList<Information> informationList = new ArrayList<>();
+    public String twitterFeed(String twitterURL){
 
-        try {
-            Query query = new Query(twitterURL);
-            QueryResult result;
-            result = twitter.search(query);
-            List<Status> tweets = result.getTweets();
+    try {
+        Query query = new Query(twitterURL);
+        QueryResult result;
+        result = twitter.search(query);
+        List<Status> tweets = result.getTweets();
 
-            for (Status tweet : tweets) {
-                System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-                //sort algorythm
-                Information information = new Information(tweet.getId(),tweet.getUser().getScreenName(),tweet.getText(),tweet.getGeoLocation().toString(), tweet.getUser().getProfileImageURL());
-                informationList.add(information);
-            }
+        for (Status tweet : tweets) {
+            System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+            tweetString += "@" + tweet.getUser().getScreenName() + " - " + tweet.getText() + "\n";
         }
-        catch (Exception te) {
-            System.out.println("Failed to search tweets: " + te.getMessage());
-        }
-        return informationList;
+    }
+    catch (Exception te) {
+        te.printStackTrace();
+        System.out.println("Failed to search tweets: " + te.getMessage());
+    }
+    return tweetString;
+    
     }
 }
