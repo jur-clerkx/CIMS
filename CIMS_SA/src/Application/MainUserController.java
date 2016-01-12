@@ -56,7 +56,7 @@ public class MainUserController implements Initializable,Observer {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        CIMS_SA.con.addObserver(this);
+        //CIMS_SA.con.addObserver(this);
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             AnchorMain.getChildren().setAll(node);

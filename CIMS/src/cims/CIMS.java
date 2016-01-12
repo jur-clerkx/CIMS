@@ -28,9 +28,9 @@ public class CIMS extends Application {
     public void start(Stage primaryStage) {
    
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("OperatorMain.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("StartSim.fxml"));
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Operator");
+            primaryStage.setTitle("Start");
             primaryStage.setScene(scene);
             primaryStage.show();
             primaryStage.resizableProperty().set(false);

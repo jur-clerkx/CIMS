@@ -6,6 +6,8 @@
 package Application;
 
 import Connection.ConnectionRunnable;
+import Situational_Awareness.Information;
+import Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
@@ -75,13 +77,15 @@ public class CreateInformationController implements Initializable, Observer {
     private AnchorPane thisAnchor;
     @FXML
     private ToggleButton toggleButton;
-    
+
     private boolean simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        simulation = LoginGuiController.simulation;
         imageView.setImage(new Image("Application/untitled.png"));
     }
 
@@ -105,22 +109,27 @@ public class CreateInformationController implements Initializable, Observer {
         } else if (radioNo.isSelected()) {
             toxic = 0;
         }
-        
-        if(toggleButton.isSelected())
-        {
+
+        if (toggleButton.isSelected()) {
             toggle = true;
+        } else {
+            toggle = false;
         }
-        else toggle = false;
-        if(!simulation) {
-        if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),toggle)
-                == true) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Successfull");
-            alert.setContentText("Information succesfully created");
-            alert.showAndWait();
+        if (!simulation) {
+            if (CIMS_SA.con.createInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), toggle)
+                    == true) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Successfull");
+                alert.setContentText("Information succesfully created");
+                alert.showAndWait();
+            }
+        } else {
+            Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+            Network.PublicUser user = new Network.PublicUser(1, "Bas", "Koch", "12345467");
+            Information simulationInformation = new Information(LoginGuiController.information.size() + 1, task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user, false);
+            LoginGuiController.information.add(simulationInformation);
         }
-        }
-        
+
     }
 
     @FXML

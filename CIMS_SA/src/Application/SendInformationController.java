@@ -82,40 +82,44 @@ public class SendInformationController implements Initializable {
     private ComboBox<Information> ComboInformation;
     private Information info;
 
+    public boolean simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        simulation = LoginGuiController.simulation;
+        ComboInformation.setOnAction((event) -> {
+            if (!simulation) {
+                if (CIMS_SA.con.getUser() != null) {
 
-         ComboInformation.setOnAction((event) -> {
+                    info = ComboInformation.getValue();
+                    txtLastname.setText(info.getFirstName());
+                    txtDescription.setText(info.getDescription());
+                    txtLocation.setText(info.getLocation());
+                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+                    txtArea.setText(Integer.toString(info.getImpact()));
+                    if (info.getDanger() == 0) {
+                        radioSmall.setSelected(true);
+                    }
+                    if (info.getDanger() == 1) {
+                        radioMedium.setSelected(true);
+                    }
+                    if (info.getDanger() == 1) {
+                        radioLarge.setSelected(true);
+                    }
+                    if (info.getToxic() == 0) {
+                        radioNo.setSelected(true);
+                    }
+                    if (info.getDanger() == 1) {
+                        radioYes.setSelected(true);
+                    }
+                }
 
-            if (CIMS_SA.con.getUser() != null) {
-
-                info = ComboInformation.getValue();
-                txtLastname.setText(info.getFirstName());
-                txtDescription.setText(info.getDescription());
-                txtLocation.setText(info.getLocation());
-                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtArea.setText(Integer.toString(info.getImpact()));
-                if (info.getDanger() == 0) {
-                    radioSmall.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioMedium.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioLarge.setSelected(true);
-                }
-                if (info.getToxic() == 0) {
-                    radioNo.setSelected(true);
-                }
-                if (info.getDanger() == 1) {
-                    radioYes.setSelected(true);
-                }
             }
-
         });
+
         ToggleGroup group1 = new ToggleGroup();
         ToggleGroup group2 = new ToggleGroup();
         radioLarge.setToggleGroup(group1);
@@ -126,14 +130,19 @@ public class SendInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
-        try {
-            obsInformationList.addAll(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-        } catch (Exception ex) {
+        if (simulation) {
+            try {
+                obsInformationList.addAll(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+            } catch (Exception ex) {
 
-            System.out.println("Error filling combobox");
+                System.out.println("Error filling combobox");
+            }
+        } else {
+            obsInformationList.addAll();
         }
+
         ComboInformation.getItems().addAll(obsInformationList);
-        
+
         ToggleGroup groupOne = new ToggleGroup();
         ToggleGroup groupTwo = new ToggleGroup();
 
@@ -153,7 +162,7 @@ public class SendInformationController implements Initializable {
 //            }
             obsUserList.addAll(CIMS_SA.con.getUsers());
 
-        // Dummy Data:
+            // Dummy Data:
             //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
             //obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
             comboUser.setItems(obsUserList);
@@ -206,7 +215,7 @@ public class SendInformationController implements Initializable {
             Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void Cancel(MouseEvent event) {
         try {

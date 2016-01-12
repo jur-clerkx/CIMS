@@ -45,72 +45,87 @@ public class HomeSubController implements Initializable {
     private AnchorPane thisAnchor;
     private ObservableList<Information> myObservableList;
 
+    private boolean simulation;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        simulation = LoginGuiController.simulation;
         Timer t;
-        if (CIMS_SA.con.getUser() instanceof PublicUser) {
-            
-            if (CIMS_SA.con.getUser() != null) {
-                try {
-                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-                    listAvailableInformation.setItems(myObservableList);
-                    t = new Timer();
-                    t.scheduleAtFixedRate(new TimerTask() {
+        if (!simulation) {
+            if (CIMS_SA.con.getUser() instanceof PublicUser) {
 
-                        @Override
-                        public void run() {
-                            try {
-                                 myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-                            } catch (IOException ex) {
-                                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                if (CIMS_SA.con.getUser() != null) {
+                    try {
+                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                        listAvailableInformation.setItems(myObservableList);
+                        t = new Timer();
+                        t.scheduleAtFixedRate(new TimerTask() {
+
+                            @Override
+                            public void run() {
+                                try {
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                                } catch (IOException ex) {
+                                    Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        }
-                    }, 15000, 15000);
+                        }, 15000, 15000);
+                    } catch (IOException ex) {
+                        Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            } else {
+                try {
+                    if (CIMS_SA.con.getUser() != null) {
+                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
+                        listAvailableInformation.setItems(myObservableList);
+                        t = new Timer();
+                        t.scheduleAtFixedRate(new TimerTask() {
+
+                            @Override
+                            public void run() {
+                                try {
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                                } catch (IOException ex) {
+                                    Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }, 30, 30);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         } else {
-            try {
-                if (CIMS_SA.con.getUser() != null) {
-                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
-                    listAvailableInformation.setItems(myObservableList);
-                     t = new Timer();
-                    t.scheduleAtFixedRate(new TimerTask() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                 myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-                            } catch (IOException ex) {
-                                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }, 30, 30);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            // TODO SImulatie HomeSub.
+            myObservableList = FXCollections.observableArrayList(LoginGuiController.information);
+            listAvailableInformation.setItems(myObservableList);
         }
+
     }
 
     @FXML
     private void btnRefresh(MouseEvent event) {
-        try {
-            if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
-                listAvailableInformation.setItems(myObservableList);
-            } else {
+        if (!simulation) {
+            try {
+                if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                    listAvailableInformation.setItems(myObservableList);
+                } else {
 
-                ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
-                listAvailableInformation.setItems(myObservableList);
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
+                    listAvailableInformation.setItems(myObservableList);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            myObservableList = FXCollections.observableArrayList(LoginGuiController.information);
+            listAvailableInformation.setItems(myObservableList);
         }
         listAvailableInformation.refresh();
     }
