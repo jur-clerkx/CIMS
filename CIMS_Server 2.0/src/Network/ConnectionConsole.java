@@ -24,7 +24,7 @@ public class ConnectionConsole {
     private static Socket socket;
     private static User user;
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         String serverIp = "";
         String port = "";
         String username = "";
@@ -72,16 +72,20 @@ public class ConnectionConsole {
         return false;
     }
 
-    private static boolean authorize(String username, String password) throws ClassNotFoundException {
+    private static boolean authorize(String username, String password) {
         String[] credentials = new String[2];
         credentials[0] = username;
         credentials[1] = password;
         serverConnection.write(credentials);
 
-        user = (User) serverConnection.read();
-        System.out.println("User: " + user.toString());
-        System.out.println("Autorized:" + user.authorized());
-        return user.authorized();
+        try {
+            user = (User) serverConnection.read();
+            System.out.println("User: " + user.toString());
+            System.out.println("Autorized:" + user.authorized());
+            return user.authorized();
+        } catch (Exception ex) {
+        }
+        return false;
     }
 
     private static void sendCommand(String command) {
@@ -230,18 +234,8 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
-            case "FOOP7": {
+            case "FOOP7":{
                 serverConnection.write(1);                      //id
-                o = serverConnection.read();
-                System.out.println("Message: " + o);
-                break;
-            }
-            case "FOOP8": {
-                Object[] objects = new Object[3];
-                objects[0] = 1;                                 //taskId
-                objects[1] = 1;                                 //unitId
-                objects[2] = 2;                                 //unitId etc.
-                serverConnection.write(objects);
                 o = serverConnection.read();
                 System.out.println("Message: " + o);
                 break;

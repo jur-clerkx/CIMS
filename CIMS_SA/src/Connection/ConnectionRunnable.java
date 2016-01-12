@@ -10,15 +10,27 @@ import Application.SendInformationController;
 import Field_Operations.Unit;
 import Global.Domain.User;
 import Situational_Awareness.Information;
+<<<<<<< HEAD
 import Global.Domain.PublicUser;
+=======
+import Situational_Awareness.PublicUser;
+>>>>>>> 0b8f106960aa916f92a6969718e4f9978866090c
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 /**
  *
@@ -36,6 +48,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    
+    private Cipher cipherIn;
+    private Cipher cipherOut;
 
     private boolean keepRunning;
 
@@ -58,6 +73,22 @@ public class ConnectionRunnable extends Observable implements Runnable {
             socket = new Socket(serverAddress, 1250);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
+            
+            //Generate AES key
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey aesKey = kgen.generateKey();
+            //Send key to server
+            //SealedObject aesKeySealed = new SealedObject(aesKey.getEncoded(), RSAcipher);
+            output.writeObject(aesKey);
+            output.flush();
+            
+            // Initialize ciphers
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(aesKey.getEncoded());
+            cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherOut.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
+            cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherIn.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
 
             //Try to log in
             String login = username + "/" + password;
@@ -110,12 +141,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
     }
 
     private synchronized void sendData(Object data) throws IOException {
-        output.writeObject(data);
-        output.flush();
+        try {
+            SealedObject so = new SealedObject((Serializable) data, cipherOut);
+            output.writeObject(so);
+            output.flush();
+        } catch (Exception ex) {
+            System.out.println("tjup");
+        }
     }
 
     private synchronized Object readData() throws IOException, ClassNotFoundException {
-        return input.readObject();
+        SealedObject so = (SealedObject) input.readObject();
+        try {
+            return so.getObject(cipherIn);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**

@@ -9,21 +9,29 @@ import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import Network.User;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -42,6 +50,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
+    private Cipher cipherIn;
+    private Cipher cipherOut;
+    private Cipher RSAcipher;
+
     private boolean keepRunning;
 
     //0 = in process, 1 = logged in, 2 = logged out/acces denied
@@ -57,11 +69,40 @@ public class ConnectionRunnable extends Observable implements Runnable {
     @Override
     public void run() {
         try {
+            //Get public key of server
+            FileInputStream publicin = new FileInputStream(new File("publickey.txt"));
+            int i, counter = 0;
+            byte[] publickeybytes = new byte[publicin.available()];
+            while ((i = publicin.read()) != -1) {
+                publickeybytes[counter] = (byte) i;
+                counter++;
+            }
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            PublicKey publickey = kf.generatePublic(new X509EncodedKeySpec(publickeybytes));
+            RSAcipher = Cipher.getInstance("RSA");
+            RSAcipher.init(Cipher.ENCRYPT_MODE, publickey);
+
             //Try to connect to server
             socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1234);
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
 
+            //Generate AES key
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey aesKey = kgen.generateKey();
+            //Send key to server
+            //SealedObject aesKeySealed = new SealedObject(aesKey.getEncoded(), RSAcipher);
+            out.writeObject(aesKey);
+            out.flush();
+
+            // Initialize ciphers
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(aesKey.getEncoded());
+            cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherOut.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
+            cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherIn.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
+            
             //Try to log in
             String login = username + "/" + password;
             sendData(login.split("/"));
@@ -116,12 +157,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
     }
 
     private synchronized void sendData(Object data) throws IOException {
-        out.writeObject(data);
-        out.flush();
+        try {
+            SealedObject so = new SealedObject((Serializable) data, cipherOut);
+            out.writeObject(so);
+            out.flush();
+        } catch (Exception ex) {
+            System.out.println("tjup");
+        }
     }
 
     private synchronized Object readData() throws IOException, ClassNotFoundException {
-        return in.readObject();
+        SealedObject so = (SealedObject) in.readObject();
+        try {
+            return so.getObject(cipherIn);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**

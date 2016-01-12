@@ -5,8 +5,6 @@
  */
 package Situational_Awareness.MGR;
 
-import Field_Operations.DAO.TaskDAO;
-import Field_Operations.DAO.TaskDAOImpl;
 import Field_Operations.Domain.Task;
 import Global.Domain.User;
 import Situational_Awareness.DAO.InformationDAO;
@@ -36,11 +34,10 @@ public class InformationMGR {
         if (info.length != 9) {
             return false;
         }
-        if (!(info[0] instanceof Task) || !(info[1] instanceof String)
-                || !(info[2] instanceof String) || !(info[3] instanceof String)
-                || !(info[4] instanceof Integer) || !(info[5] instanceof Integer)
-                || !(info[6] instanceof Integer) || !(info[7] instanceof Integer)
-                || !(info[8] instanceof String)) {
+        if (!(info[1] instanceof String) || !(info[2] instanceof String)
+                || !(info[3] instanceof String) || !(info[4] instanceof Integer)
+                || !(info[5] instanceof Integer) || !(info[6] instanceof Integer)
+                || !(info[7] instanceof Integer) || !(info[8] instanceof String)) {
             return false;
         }
         informationDAO.create(new Information((Task) info[0], (String) info[1], (String) info[2], (String) info[3], (int) info[4], (int) info[5], (int) info[6], (int) info[7], (String) info[8], user));
@@ -68,11 +65,11 @@ public class InformationMGR {
         if (!(o instanceof Integer)) {
             return null;
         }
-        return (ArrayList<Information>) informationDAO.findByTaskId((int) o);
+        return new ArrayList<>(informationDAO.findByTaskId((int) o));
     }
 
     public ArrayList<Information> GetAllInformation() {
-        return (ArrayList<Information>) informationDAO.findAll();
+        return new ArrayList<>(informationDAO.findAll());
     }
 
     public boolean sendinformation(Object o) {
@@ -102,7 +99,7 @@ public class InformationMGR {
         return true;
     }
 
-    public Object GetAllPublicInformation(int userId) {
-        return (ArrayList<Information>) informationDAO.findAllPublicInformation(userId);
+    public ArrayList<Information> GetAllPublicInformation(int userId) {
+        return new ArrayList<>(informationDAO.findAllPublicInformation(userId));
     }
 }

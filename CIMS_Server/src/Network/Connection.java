@@ -2,20 +2,29 @@ package Network;
 
 import Field_Operations.Task;
 import Field_Operations.Unit;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,6 +43,9 @@ public class Connection {
     private PublicUser user;
     private boolean reading;
     private DatabaseMediator dbMediator;
+    private Cipher cipherIn;
+    private Cipher cipherOut;
+    private Cipher RSAcipher;
 
     /**
      * creates an instance of this class, creates the thread for executing
@@ -42,12 +54,42 @@ public class Connection {
      * @param socket Connection socket
      * @throws IOException
      */
-    Connection(Socket socket) throws IOException {
+    Connection(Socket socket) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, ClassNotFoundException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         this.dbMediator = new DatabaseMediator();
         this.socket = socket;
         this.user = new User();
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
+
+        //Get private key of the server
+        FileInputStream privatein = new FileInputStream(new File("privatekey.txt"));
+        int i, counter = 0;
+        byte[] privatekeybytes = new byte[privatein.available()];
+        while ((i = privatein.read()) != -1) {
+            privatekeybytes[counter] = (byte) i;
+            counter++;
+        }
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privatekeybytes));
+
+        //Initialize input cipher
+        RSAcipher = Cipher.getInstance("RSA");
+        RSAcipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+        //Get AES key
+        //SealedObject aesKeySealed = (SealedObject) in.readObject();
+        //byte[] easKeyEncoded = (byte[]) aesKeySealed.getObject(RSAcipher);
+        //SecretKey AESKey = new SecretKeySpec(easKeyEncoded, 0, easKeyEncoded.length, "AES");
+        //System.out.println(AESKey.getEncoded());
+        SecretKey AESKey = (SecretKey) in.readObject();
+
+        //Get the publickey from the client and initializa output cipher
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(AESKey.getEncoded());
+        cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipherOut.init(Cipher.ENCRYPT_MODE, AESKey, ivParameterSpec);
+        cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipherIn.init(Cipher.DECRYPT_MODE, AESKey, ivParameterSpec);
+
         reading = true;
 
         Thread read;
@@ -56,7 +98,7 @@ public class Connection {
             public void run() {
                 while (reading) {
                     try {
-                        Object obj = in.readObject();
+                        Object obj = read();
                         if (user.authorized()) {
                             if (obj instanceof String) {
                                 String s = obj.toString();
@@ -134,7 +176,7 @@ public class Connection {
         Unit u;
         switch (s.toUpperCase()) {
             case "FOUS1":
-                o = in.readObject();
+                o = read();
                 t = dbMediator.getTaskById(o);
                 if (t != null) {
                     t = dbMediator.getTaskLists(t);
@@ -142,7 +184,7 @@ public class Connection {
                 write(t);
                 break;
             case "FOUS2":
-                o = in.readObject();
+                o = read();
                 u = dbMediator.getUnitById(o);
                 if (u != null) {
                     u = dbMediator.getUnitLists(u);
@@ -150,7 +192,7 @@ public class Connection {
                 write(u);
                 break;
             case "FOUS3":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.updateTaskStatus(o)) {
                     write("FOUS3: carried out successfully");
                 } else {
@@ -161,7 +203,7 @@ public class Connection {
                 write(dbMediator.getTaskListByUser(this.user.getUser_ID()));
                 break;
             case "FOUS5":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.acceptOrDeniedTask(o)) {
                     write("FOUS5: carried out successfully");
                 } else {
@@ -172,14 +214,14 @@ public class Connection {
                 write(dbMediator.getUnitListByUserId(this.user.getUser_ID()));
                 break;
             case "FOUS7":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createProgress(this.getUserId(), o)) {
                     write("Progress succesfully created");
                 } else {
                     write("Could not create progress");
                 }
             case "FOOP2":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createUnit(o)) {
                     write("Unit succesfully created");
                 } else {
@@ -187,7 +229,7 @@ public class Connection {
                 }
                 break;
             case "FOOP3":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.disbandUnit(o)) {
                     write("Unit disbanded succesfully");
                 } else {
@@ -195,15 +237,15 @@ public class Connection {
                 }
                 break;
             case "FOOP4":
-                o = in.readObject();
+                o = read();
                 write(dbMediator.getActiveInactiveUnits(o));
                 break;
             case "FOOP5":
-                o = in.readObject();
+                o = read();
                 write(dbMediator.getActiveInactiveTasks(o));
                 break;
             case "FOOP6":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createTask(o)) {
                     write("Task succesfully created");
                 } else {
@@ -211,7 +253,7 @@ public class Connection {
                 }
                 break;
             case "FOOP7":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.removeTask(o)) {
                     write("Task succesfully removed");
                 } else {
@@ -219,7 +261,7 @@ public class Connection {
                 }
                 break;
             case "FOOP8":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.assignTask(o)) {
                     write("Task succesfully created");
                 } else {
@@ -227,7 +269,7 @@ public class Connection {
                 }
                 break;
             case "FOOP9":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.alterLocationTask(o)) {
                     write("Task succesfully altered");
                 } else {
@@ -235,14 +277,14 @@ public class Connection {
                 }
                 break;
             case "FOUS8":
-                o = in.readObject();
+                o = read();
                 write(dbMediator.getRoadmapByTaskId(o));
                 break;
             case "FOUS9":
                 write(dbMediator.getAllRoadmaps());
                 break;
             case "FOUS10":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createRoadmap(o)) {
                     write("Roadmap succesfully created");
                 } else {
@@ -250,7 +292,7 @@ public class Connection {
                 }
                 break;
             case "FOOP10":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.assignRoadmap(o)) {
                     write("Roadmap succesfully assigned");
                 } else {
@@ -271,7 +313,7 @@ public class Connection {
         Object o;
         switch (s.toUpperCase()) {
             case "SAPU1":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createPublicUser(o)) {
                     write("User succesfully created");
                 } else {
@@ -282,7 +324,7 @@ public class Connection {
                 write(dbMediator.GetAllPublicUsers());
                 break;
             case "SAPU3":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.createInformation(this.getUserId(), o)) {
                     write("Information succesfully created");
                 } else {
@@ -290,7 +332,7 @@ public class Connection {
                 }
                 break;
             case "SAPU4":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.removeInformation(o)) {
                     write("Information succesfully removed");
                 } else {
@@ -298,18 +340,18 @@ public class Connection {
                 }
                 break;
             case "SAPU5":
-                o = in.readObject();
+                o = read();
                 write(dbMediator.getInformationById(o));
                 break;
             case "SAPU6":
-                o = in.readObject();
+                o = read();
                 write(dbMediator.getInformationByTaskId(o));
                 break;
             case "SAPU7":
                 write(dbMediator.GetAllInformation());
                 break;
             case "SAPU8":
-                o = in.readObject();
+                o = read();
                 if (dbMediator.sendinformation(o)) {
                     write("Information succesfully send");
                 } else {
@@ -393,9 +435,27 @@ public class Connection {
      */
     public void write(Object obj) {
         try {
-            out.writeObject(obj);
+            SealedObject so = new SealedObject((Serializable) obj, cipherOut);
+            out.writeObject(so);
             out.flush();
         } catch (IOException ex) {
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Read an object that the client send
+     *
+     * @return The object
+     */
+    public Object read() {
+        try {
+            SealedObject so = (SealedObject) in.readObject();
+            return so.getObject(cipherIn);
+        } catch (Exception ex) {
+        }
+        reading = false;
+        return null;
     }
 }

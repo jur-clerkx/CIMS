@@ -199,4 +199,8 @@ public class Unit implements Serializable {
     public int getSize() {
         return this.members.size();
     }
+
+    public void setTask(Task get) {
+        this.tasks.add(get);
+    }
 }

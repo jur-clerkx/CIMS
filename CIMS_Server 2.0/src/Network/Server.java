@@ -3,10 +3,14 @@ package Network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javax.crypto.NoSuchPaddingException;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -75,6 +79,8 @@ public class Server {
                         }
                     } catch (IOException e) {
                         LOG.log(Level.WARNING, "IOException occurred: {0}", e.getMessage());
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchPaddingException | ClassNotFoundException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
