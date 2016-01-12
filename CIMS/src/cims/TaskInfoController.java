@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,15 +54,13 @@ public class TaskInfoController implements Initializable {
     @FXML
     private Button buttonDelete;
     @FXML
-    private ComboBox<?> comboboxUrgency;
+    private ComboBox<String> comboboxUrgency;
     @FXML
-    private ComboBox<?> comboboxStatus;
+    private ComboBox<String> comboboxStatus;
     @FXML
     private TextArea textAreaDescription;
-    @FXML
-    private ListView listviewUUnits;
-    @FXML
-    private ListView listviewAUnits;
+    private ListView<Unit> listviewUUnits;
+    private ListView<Unit> listviewAUnits;
 
     ObservableList<Unit> ActiveUnits;
     ObservableList<Unit> InactiveUnits;
@@ -74,7 +73,7 @@ public class TaskInfoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        ActiveUnits = FXCollections.observableArrayList(OperatorMainController.active_Units);
         Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             int ID = OperatorMainController.myController.selectedTaskID;
@@ -90,7 +89,7 @@ public class TaskInfoController implements Initializable {
         } else {
             int ID = OperatorMainController.selectedTaskID;
             selectedTask = null;
-
+            InactiveUnits = FXCollections.observableArrayList();
             for (Task t : OperatorMainController.active_Tasks) {
                 if (t.getTaskID() == ID) {
                     selectedTask = t;
@@ -103,6 +102,8 @@ public class TaskInfoController implements Initializable {
                     fillPage();
                 }
             }
+
+            //listviewAUnits.setItems(FXCollections.observableArrayList(OperatorMainController.inactive_Units));
         }
     }
 
@@ -127,14 +128,44 @@ public class TaskInfoController implements Initializable {
      */
     @FXML
     private void buttonRemove(MouseEvent event) {
-        Unit selectedUnit = (Unit) listviewAUnits.getSelectionModel().getSelectedItem();
-        InactiveUnits.add(selectedUnit);
-        ActiveUnits.remove(selectedUnit);
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Save changes to " + selectedTask.getName() + "?");
 
-        listviewUUnits.setItems(InactiveUnits);
-        listviewAUnits.setItems(ActiveUnits);
-
-        selectedTask.delUnit(selectedUnit);
+            if (!Simulation) {
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    if (selectedTask.getStatus() == "Active") {
+                        OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+                    } else {
+                        OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
+                    }
+                } else {
+                    alert.close();
+                }
+            } else {
+                if (selectedTask.getStatus() == "Active") {
+                    int index = -1;
+                    for (Task t : OperatorMainController.active_Tasks) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                            index = OperatorMainController.active_Tasks.indexOf(t);
+                        }
+                    }
+                    OperatorMainController.active_Tasks.remove(index);
+                } else {
+                    int index = -1;
+                    for (Task t : OperatorMainController.inactive_Task) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                            index = OperatorMainController.inactive_Task.indexOf(t);
+                        }
+                    }
+                    OperatorMainController.inactive_Task.remove(index);
+                }
+            }
+        }
+        catch(Exception ex)
+                {}
     }
 
     /**
@@ -194,9 +225,19 @@ public class TaskInfoController implements Initializable {
             }
         } else {
             if (selectedTask.getStatus() == "Active") {
-                OperatorMainController.active_Tasks.remove(selectedTask);
+                int index = -1;
+                for (Task t : OperatorMainController.active_Tasks) {
+                    if (t.getTaskID() == selectedTask.getTaskID()) {
+                        index = OperatorMainController.active_Tasks.indexOf(t);
+                    }
+                }
             } else {
-                OperatorMainController.inactive_Task.remove(selectedTask);
+                int index = -1;
+                for (Task t : OperatorMainController.inactive_Task) {
+                    if (t.getTaskID() == selectedTask.getTaskID()) {
+                        index = OperatorMainController.inactive_Task.indexOf(t);
+                    }
+                }
             }
         }
     }
@@ -216,6 +257,7 @@ public class TaskInfoController implements Initializable {
      * Fill the page with information from selected task.
      */
     private void fillPage() {
+
         try {
             if (!Simulation) {
                 ActiveUnits.addAll(OperatorMainController.myController.getActiveUnits());

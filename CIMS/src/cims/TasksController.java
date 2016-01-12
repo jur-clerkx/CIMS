@@ -164,12 +164,15 @@ public class TasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
+                             OperatorMainController.selectedTaskID = myTask.getTaskID();
+                            System.out.println("HIER NICK: " + myTask.getTaskID());
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            OperatorMainController.selectedTaskID = myTask.getTaskID();
+                           
+                            System.out.println("HIER NICK: " + myTask.getTaskID());
                             stage.setTitle("Task" + myTask.getTaskID());
                             stage.setScene(new Scene(root1));
                             stage.show();
@@ -245,11 +248,24 @@ public class TasksController implements Initializable {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            if (selectedTask.isAccepted()) {
-                OperatorMainController.active_Tasks.remove(selectedTask.getTaskID());
-            } else {
-                OperatorMainController.inactive_Task.remove(selectedTask.getTaskID());
-            }
+            if (!selectedTask.isAccepted()) {
+                
+                    int index = -1;
+                    for (Task t : OperatorMainController.active_Tasks) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                            index = OperatorMainController.active_Tasks.indexOf(t);
+                        }
+                    }
+                    OperatorMainController.active_Tasks.remove(index);
+                } else {
+                    int index = -1;
+                    for (Task t : OperatorMainController.inactive_Task) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                            index = OperatorMainController.inactive_Task.indexOf(t);
+                        }
+                    }
+                    OperatorMainController.inactive_Task.remove(index);
+                }
         }
     }
 
