@@ -245,6 +245,16 @@ public class ConnectionConsole {
                 System.out.println("Message: " + o);
                 break;
             }
+            case "FOOP8":{
+                Object[] objects = new Object[3];
+                objects[0] = 1;                                 //taskId
+                objects[1] = 1;                                 //unitId
+                objects[2] = 2;                                 //unitId etc.
+                serverConnection.write(objects);
+                o = serverConnection.read();
+                System.out.println("Message: " + o);
+                break;
+            }
         }
     }
 
