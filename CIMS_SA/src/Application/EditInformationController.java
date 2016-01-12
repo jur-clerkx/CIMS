@@ -5,11 +5,10 @@
  */
 package Application;
 
-import Network.PublicUser;
-import Situational_Awareness.Information;
+import Global.Domain.PublicUser;
+import Situational_Awareness.Domain.Information;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,12 +89,12 @@ public class EditInformationController implements Initializable {
         comboInformation.setOnAction((event) -> {
             if (simulation) {
                 info = LoginGuiController.information.get(0);
-                txtName.setText(info.getFirstName());
-                txtLastname.setText(info.getLastName());
+                txtName.setText(""+info.getId());
+                txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getURL());
+                txtURL.setText(info.getImageURL());
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
@@ -104,12 +103,12 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText(info.getFirstName());
-                        txtLastname.setText(info.getLastName());
+                        txtName.setText(""+info.getId());
+                        txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getURL());
+                        txtURL.setText(info.getImageURL());
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
@@ -132,7 +131,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getInformation(CIMS_SA.con.getUser().getUser_ID()));
+                obsInformationList.addAll(CIMS_SA.con.getInformation((int)CIMS_SA.con.getUser().getUserId()));
             } catch (Exception ex) {
                 System.out.println("Error filling combobox");
             }
@@ -147,12 +146,12 @@ public class EditInformationController implements Initializable {
                 int infoID = MainOperatorController.SelectedInformationID;
                 
                 info = LoginGuiController.information.get(infoID);
-                txtName.setText(info.getFirstName());
-                txtLastname.setText(info.getLastName());
+                txtName.setText(""+info.getId());
+                txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getURL());
+                txtURL.setText(info.getImageURL());
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
@@ -162,12 +161,12 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText(info.getFirstName());
-                        txtLastname.setText(info.getLastName());
+                        txtName.setText(""+info.getId());
+                        txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getURL());
+                        txtURL.setText(info.getImageURL());
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
@@ -208,11 +207,9 @@ public class EditInformationController implements Initializable {
             Private = false;
         }
         if (simulation) {
-            user = new PublicUser(1, "Bas", "Koch", "00000");
-            
-            Information editedInfo = new Information(info.getID(), info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
-                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
-                    user, Private);
+            user = new PublicUser("Bas", "Koch", "","00000");
+            Information editedInfo = new Information(info.getTask(), name, txtDescription.getText(), txtLocation.getText(),
+                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user);
             Information infoOG = LoginGuiController.information.get(0);
             if(infoOG != null) {
                 LoginGuiController.information.remove(infoOG);
@@ -222,7 +219,7 @@ public class EditInformationController implements Initializable {
         } else {
             if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
                 toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
-                this.comboInformation.getSelectionModel().getSelectedItem().getID(), Private)
+                (int)this.comboInformation.getSelectionModel().getSelectedItem().getId(), Private)
                 == true) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");

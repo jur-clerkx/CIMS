@@ -6,8 +6,9 @@
 package Application;
 
 import Connection.ConnectionRunnable;
-import Situational_Awareness.Information;
-import Field_Operations.Task;
+import Situational_Awareness.Domain.Information;
+import Field_Operations.Domain.Task;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
@@ -124,9 +125,9 @@ public class CreateInformationController implements Initializable, Observer {
                 alert.showAndWait();
             }
         } else {
-            Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
-            Network.PublicUser user = new Network.PublicUser(1, "Bas", "Koch", "12345467");
-            Information simulationInformation = new Information(LoginGuiController.information.size() + 1, task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user, false);
+            Task task = new Task("Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+            PublicUser user = new PublicUser("Bas", "Koch", "12345467","");
+            Information simulationInformation = new Information(task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user);
             LoginGuiController.information.add(simulationInformation);
         }
 

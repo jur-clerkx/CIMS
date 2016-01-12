@@ -7,21 +7,26 @@ package Connection;
 
 import Application.CIMS_SA;
 import Application.SendInformationController;
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
 import Field_Operations.Unit;
-import Network.User;
-import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
-import java.io.EOFException;
+import Global.Domain.User;
+import Situational_Awareness.Domain.Information;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 /**
  *
@@ -34,11 +39,14 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
     public User user;
     private Unit unit;
-    private String serverAddress;
+    private final String serverAddress;
 
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    
+    private Cipher cipherIn;
+    private Cipher cipherOut;
 
     private boolean keepRunning;
 
@@ -50,6 +58,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
+        //serverAddress = "145.93.85.35";
         serverAddress = "localhost";
     }
 
@@ -57,9 +66,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void run() {
         try {
             //Try to connect to server
-            socket = new Socket(serverAddress, 1234);
+            socket = new Socket(serverAddress, 1250);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
+            
+            //Generate AES key
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey aesKey = kgen.generateKey();
+            //Send key to server
+            //SealedObject aesKeySealed = new SealedObject(aesKey.getEncoded(), RSAcipher);
+            output.writeObject(aesKey);
+            output.flush();
+            
+            // Initialize ciphers
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(aesKey.getEncoded());
+            cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherOut.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
+            cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipherIn.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
 
             //Try to log in
             String login = username + "/" + password;
@@ -112,12 +137,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
     }
 
     private synchronized void sendData(Object data) throws IOException {
-        output.writeObject(data);
-        output.flush();
+        try {
+            SealedObject so = new SealedObject((Serializable) data, cipherOut);
+            output.writeObject(so);
+            output.flush();
+        } catch (Exception ex) {
+            System.out.println("tjup");
+        }
     }
 
     private synchronized Object readData() throws IOException, ClassNotFoundException {
-        return input.readObject();
+        SealedObject so = (SealedObject) input.readObject();
+        try {
+            return so.getObject(cipherIn);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
@@ -194,7 +232,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 ArrayList<Information> info = new ArrayList();
-                sendData("SAPU7");;
+                sendData("SAPU7");
                 Object o = readData();
                 if (o instanceof String) {
                     info = null;
@@ -242,8 +280,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU8";
                 output.writeObject(outputMessage);
-                output.writeObject(user.getUser_ID());
-                output.writeObject(info.getID());
+                output.writeObject((int)user.getUserId());
+                output.writeObject(info.getId());
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
@@ -259,19 +297,20 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU3";
                 Object[] thisOutputMessage = new Object[9];
-                thisOutputMessage[0] = Name;
-                thisOutputMessage[1] = description;
-                thisOutputMessage[2] = location;
-                thisOutputMessage[3] = casualties;
-                thisOutputMessage[4] = toxic;
-                thisOutputMessage[5] = danger;
-                thisOutputMessage[6] = impact;
-                thisOutputMessage[7] = URL;
-                thisOutputMessage[8] = Private;
-
+                thisOutputMessage[0] = null;
+                thisOutputMessage[1] = Name;
+                thisOutputMessage[2] = description;
+                thisOutputMessage[3] = location;
+                thisOutputMessage[4] = casualties;
+                thisOutputMessage[5] = toxic;
+                thisOutputMessage[6] = danger;
+                thisOutputMessage[7] = impact;
+                thisOutputMessage[8] = URL;
+                
                 output.writeObject(outputMessage);
                 output.writeObject(thisOutputMessage);
                 result = input.readObject();
+                System.out.println(result.toString());
 
             } catch (IOException | ClassNotFoundException ex1) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex1);
@@ -328,8 +367,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU10";
                 output.writeObject(outputMessage);
-                output.writeObject(Userid);
-                Object o = input.readObject();
+                Object o = readData();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
                 }
