@@ -6,11 +6,9 @@
 package Application;
 
 import Situational_Awareness.Information;
-import Situational_Awareness.PublicUser;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Blob;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,11 +24,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -132,7 +128,7 @@ public class SendInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getPublicInformation(CIMS_SA.con.getUser().getUser_ID()));
+                obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
             } catch (Exception ex) {
 
                 System.out.println("Error filling combobox");
