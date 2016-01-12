@@ -6,9 +6,11 @@
 package Application;
 
 import static Application.MainOperatorController.SelectedInformationID;
+import Situational_Awareness.Domain.Information;
 import Situational_Awareness.TwitterSearch;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -141,7 +143,18 @@ public class MainUserController implements Initializable,Observer {
         try {
            TwitterSearch ts = new TwitterSearch();
 
-           ts.twitterFeed("%23" + txtSearch.getText());
+            ArrayList<Information> information = ts.twitterFeed("%23" + txtSearch.getText());
+           
+           for (Information info : information){
+               
+              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImageURL(), false)){
+                  System.out.println("Twitter information retrieved");
+              }else {
+                  System.out.println("Twitter information retrieval error");
+              }
+              
+           }
+
         } catch (Exception ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
