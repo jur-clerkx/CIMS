@@ -27,7 +27,6 @@ public class ConnectionConsole {
     public static void main(String[] args) {
         String serverIp = "";
         String port = "";
-        String typeOfAccount = "";
         String username = "";
         String password = "";
         user = new User();
@@ -41,9 +40,6 @@ public class ConnectionConsole {
                     System.out.println("Give Port ");
                 } else if (port.equals("")) {
                     port = scanner.nextLine();
-                    System.out.println("Give accounttype ");
-                } else if (typeOfAccount.equals("")) {
-                    typeOfAccount = scanner.nextLine();
                     System.out.println("Give Username ");
                 } else if (username.equals("")) {
                     username = scanner.nextLine();
@@ -51,7 +47,7 @@ public class ConnectionConsole {
                 } else if (password.equals("")) {
                     password = scanner.nextLine();
                     if (setupServer(Integer.parseInt(port), serverIp)) {
-                        authorize(typeOfAccount, username, password);
+                        authorize(username, password);
                     }
                 }
             } else {
@@ -76,11 +72,10 @@ public class ConnectionConsole {
         return false;
     }
 
-    private static boolean authorize(String accounttype, String username, String password) {
-        String[] credentials = new String[3];
-        credentials[0] = accounttype;
-        credentials[1] = username;
-        credentials[2] = password;
+    private static boolean authorize(String username, String password) {
+        String[] credentials = new String[2];
+        credentials[0] = username;
+        credentials[1] = password;
         serverConnection.write(credentials);
 
         try {

@@ -11,11 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< HEAD
-    <jar href="CIMS_Server.jar" size="985992" download="eager" />
-=======
-    <jar href="CIMS_Server.jar" size="986237" download="eager" />
->>>>>>> 9c1f95fcda9e6186e6b103999ee1ab2bf81a6612
+    <jar href="CIMS_Server.jar" size="986319" download="eager" />
     <jar href="lib/derbyclient.jar" size="535985" download="eager" />
     <jar href="lib/eclipselink.jar" size="8384130" download="eager" />
     <jar href="lib/javax.persistence_2.1.0.v201304241213.jar" size="160564" download="eager" />
