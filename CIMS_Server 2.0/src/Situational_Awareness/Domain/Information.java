@@ -69,7 +69,7 @@ public class Information implements Serializable {
     /**
      * Gets the id of this information
      *
-     * @return int with id
+     * @return long with id
      */
     public long getId() {
         return id;

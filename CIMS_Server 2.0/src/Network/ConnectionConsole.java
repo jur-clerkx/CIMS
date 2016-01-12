@@ -44,7 +44,7 @@ public class ConnectionConsole {
                 } else if (username.equals("")) {
                     username = scanner.nextLine();
                     System.out.println("Give Password ");
-                } else if (!password.equals("")) {
+                } else if (password.equals("")) {
                     password = scanner.nextLine();
                     if (setupServer(Integer.parseInt(port), serverIp)) {
                         authorize(username, password);
