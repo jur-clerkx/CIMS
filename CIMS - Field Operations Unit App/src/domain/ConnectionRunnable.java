@@ -5,10 +5,10 @@
  */
 package domain;
 
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
-import Field_Operations.Unit;
-import Network.User;
+import Field_Operations.Domain.Roadmap;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
+import Global.Domain.PrivateUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    private User user;
+    private PrivateUser user;
     private Unit unit;
 
     private Socket socket;
@@ -83,7 +83,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             RSAcipher.init(Cipher.ENCRYPT_MODE, publickey);
 
             //Try to connect to server
-            socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1234);
+            socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1250);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -110,7 +110,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             password = "apahvohiewaldjfpaoivwe";
 
             //Check if login succeeded
-            user = (User) readData();
+            user = (PrivateUser) readData();
 
             //Get the unit of the user
             sendData("FOUS6");
@@ -170,10 +170,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         SealedObject so = (SealedObject) in.readObject();
         try {
             return so.getObject(cipherIn);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            System.out.println("Reading data failed!");
+            System.out.println(ex.getMessage());
         }
         return null;
     }
@@ -252,7 +251,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      *
      * @return Can be null if not logged in
      */
-    public synchronized User getUser() {
+    public synchronized PrivateUser getUser() {
         return this.user;
     }
 
@@ -324,7 +323,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      */
     public synchronized void acceptDenyTask(int taskID, boolean accepted, String reason) {
         Object[] params = new Object[4];
-        params[0] = this.unit.getUnitID();
+        params[0] = this.unit.getId();
         params[1] = taskID;
         if (accepted) {
             params[2] = 1;
@@ -361,7 +360,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (getStatus() == 1) {
             try {
                 sendData("FOUS8");
-                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
+                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getId());
                 return (ArrayList<Roadmap>) readData();
             } catch (IOException ex) {
                 System.out.println("IO exception!");
