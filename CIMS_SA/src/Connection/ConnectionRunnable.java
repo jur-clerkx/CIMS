@@ -58,8 +58,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        //serverAddress = "145.93.85.35";
-        serverAddress = "localhost";
+        serverAddress = "145.93.85.35";
+        //serverAddress = "localhost";
     }
 
     @Override
