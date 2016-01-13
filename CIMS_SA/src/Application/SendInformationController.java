@@ -7,6 +7,8 @@ package Application;
 
 import Situational_Awareness.Domain.Information;
 import Global.Domain.PublicUser;
+import Global.Domain.User;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -76,7 +78,7 @@ public class SendInformationController implements Initializable {
     private AnchorPane thisAnchor;
     @FXML
     private ComboBox<Information> ComboInformation;
-    private Information info;
+    
 
     public boolean simulation;
 
@@ -86,34 +88,22 @@ public class SendInformationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         simulation = LoginGuiController.simulation;
+        selectedInformation = null;
+        selectedUser = null;
         ComboInformation.setOnAction((event) -> {
-            if (!simulation) {
-                if (CIMS_SA.con.getUser() != null) {
+            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+            txtName.setText("" + selectedInformation.getId());
+            //txtLastname.setText(selectedInformation.getName());
+            txtDescription.setText(selectedInformation.getDescription());
+            txtLocation.setText(selectedInformation.getLocation());
+            txtNRofVictims.setText(Integer.toString(selectedInformation.getCasualities()));
+            txtArea.setText(Integer.toString(selectedInformation.getImpact()));
+            fillRadio();
 
-                    info = ComboInformation.getValue();
-                    txtLastname.setText(info.getName());
-                    txtDescription.setText(info.getDescription());
-                    txtLocation.setText(info.getLocation());
-                    txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                    txtArea.setText(Integer.toString(info.getImpact()));
-                    if (info.getDanger() == 0) {
-                        radioSmall.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioMedium.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioLarge.setSelected(true);
-                    }
-                    if (info.getToxic() == 0) {
-                        radioNo.setSelected(true);
-                    }
-                    if (info.getDanger() == 1) {
-                        radioYes.setSelected(true);
-                    }
-                }
-
-            }
+        });
+        comboUser.setOnAction((event) -> {
+            selectedUser = comboUser.getSelectionModel().getSelectedItem();
+            txtLastname.setText(selectedUser.getFirstname() + " " + selectedUser.getLastname());
         });
 
         ToggleGroup group1 = new ToggleGroup();
@@ -126,7 +116,7 @@ public class SendInformationController implements Initializable {
         radioYes.setToggleGroup(group2);
 
         obsInformationList = FXCollections.observableArrayList();
-        if (simulation) {
+        if (!simulation) {
             try {
                 obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
             } catch (Exception ex) {
@@ -134,7 +124,7 @@ public class SendInformationController implements Initializable {
                 System.out.println("Error filling combobox");
             }
         } else {
-            obsInformationList.addAll();
+            obsInformationList.addAll(LoginGuiController.information);
         }
 
         ComboInformation.getItems().addAll(obsInformationList);
@@ -156,7 +146,19 @@ public class SendInformationController implements Initializable {
 //            {
 //            obsInformationList.addAll(CIMS_SA.con.getAllInformation());
 //            }
-            obsUserList.addAll(CIMS_SA.con.getUsers());
+            if (!simulation) {
+                obsUserList.addAll(CIMS_SA.con.getUsers());
+            } else {
+                User user = new PublicUser("Bas", "Koch", "123456789", "password");
+                ArrayList<User> users = new ArrayList<User>();
+                users.add(user);
+                user = new PublicUser("Jur", "Clerkx", "234567891", "password");
+                users.add(user);
+                for (User u : users) {
+                    PublicUser userTemp = (PublicUser) u;
+                    obsUserList.add(userTemp);
+                }
+            }
 
             // Dummy Data:
             //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
@@ -225,10 +227,9 @@ public class SendInformationController implements Initializable {
     @FXML
     private void SendInfo(MouseEvent event) {
         try {
-            selectedUser = comboUser.getSelectionModel().getSelectedItem();
-            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
-            if (selectedUser != null && selectedInformation != null) {
-                if (CIMS_SA.con.sendInfo(selectedUser, selectedInformation) == true) {
+            if (simulation) {
+                if (selectedUser != null && selectedInformation != null) {
+            
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information sent");
                     alert.setContentText("Information was sent to user.");
@@ -236,18 +237,47 @@ public class SendInformationController implements Initializable {
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
-                    alert.setContentText("Information couldn't be sent to user.");
+                    alert.setContentText("Information is null");
                     alert.showAndWait();
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Information is null.");
-                alert.showAndWait();
+                if (selectedUser != null && selectedInformation != null) {
+                    if (CIMS_SA.con.sendInfo(selectedUser, selectedInformation) == true) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information sent");
+                        alert.setContentText("Information was sent to user.");
+                        alert.showAndWait();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Information couldn't be sent to user.");
+                        alert.showAndWait();
+                    }
+                }
             }
 
         } catch (IOException ex) {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * Selects the radio buttons according to the value from Information
+     */
+    private void fillRadio() {
+        if (selectedInformation.getDanger() == 0) {
+            radioSmall.setSelected(true);
+        }
+        if (selectedInformation.getDanger() == 1) {
+            radioMedium.setSelected(true);
+        }
+        if (selectedInformation.getDanger() == 2) {
+            radioLarge.setSelected(true);
+        }
+        if (selectedInformation.getToxic() == 0) {
+            radioNo.setSelected(true);
+        }
+        if (selectedInformation.getToxic() == 1) {
+            radioYes.setSelected(true);
         }
     }
 
