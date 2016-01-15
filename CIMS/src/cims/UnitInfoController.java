@@ -5,11 +5,12 @@
  */
 package cims;
 
-import Field_Operations.Material;
-import Field_Operations.Task;
-import Field_Operations.Unit;
-import Field_Operations.Vehicle;
-import Network.User;
+
+import Field_Operations.Domain.Material;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
+import Field_Operations.Domain.Vehicle;
+import Global.Domain.PrivateUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -121,13 +122,13 @@ public class UnitInfoController implements Initializable {
             int ID = OperatorMainController.selectedUnitID;
             mySelectedUnit = null;
             for (Unit i : OperatorMainController.inactive_Units) {
-                if (i.getUnitID() == ID) {
+                if (i.getId() == ID) {
                     mySelectedUnit = i;
                 }
             }
 
             for (Unit i : OperatorMainController.active_Units) {
-                if (i.getUnitID() == ID) {
+                if (i.getId() == ID) {
                     mySelectedUnit = i;
                 }
             }
@@ -179,42 +180,42 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
 
-            Unit myunit = new Unit(OperatorMainController.selectedUnitID, textfieldName.getText(), textfieldLocation.getText(), getSelectedSpecials());
+            Unit myunit = new Unit(textfieldName.getText(), textfieldLocation.getText());
             
             
             
             for(int i = 0; i < NRofAmbulancePeople; i++)
             {
-                myunit.addUser(new User(00023,"test","test,","test","test","Medical","test",0));
+                myunit.addUser(new PrivateUser("test","test,","test","test","Medical","test",0,"test"));
             }
             
             for(int i = 0; i < NrOFPolicemen; i++)
             {
-                myunit.addUser(new User(00023,"test","test,","test","test","Police","test",0));
+                myunit.addUser(new PrivateUser("test","test,","test","test","Police","test",0,"test"));
             }
             
             for(int i = 0; i < NRofFireFIghters; i++)
             {
-                myunit.addUser(new User(00023,"test","test,","test","test","Fire","test",0));
+                myunit.addUser(new PrivateUser("test","test,","test","test","Fire","test",0,"test"));
             }
             
             String selectedUnit = "inactive";
             Unit uss = null;
             for (Unit us : OperatorMainController.active_Units) {
-                if (myunit.getUnitID() == us.getUnitID()) {
+                if (myunit.getId() == us.getId()) {
                     selectedUnit = "Active";
                     uss = us;
                 }
             }
 
             for (Unit us : OperatorMainController.inactive_Units) {
-                if (myunit.getUnitID() == us.getUnitID()) {
+                if (myunit.getId() == us.getId()) {
                     selectedUnit = "Inactive";
                     uss = us;
                 }
             }
             if (uss != null) {
-                myunit.setTask(uss.getTasks().get(0));
+                myunit.setTask(uss.getTasks());
             }
             if (selectedUnit.equals("Active")) {
                 int i = OperatorMainController.active_Units.indexOf(uss);
@@ -311,16 +312,16 @@ public class UnitInfoController implements Initializable {
         if (!mySelectedUnit.getName().isEmpty()) {
             textfieldName.setText(mySelectedUnit.getName());
         }
-        if (mySelectedUnit.getSize() <= 5) {
+        if (mySelectedUnit.getMembers().size() <= 5) {
             radiobuttonSmall.setSelected(true);
-        } else if (mySelectedUnit.getSize() > 6 && mySelectedUnit.getSize() < 10) {
+        } else if (mySelectedUnit.getMembers().size() > 6 && mySelectedUnit.getMembers().size() < 10) {
             radiobuttonMedium.setSelected(true);
         } else {
             radiobuttonLarge.setSelected(true);
         }
-        if (mySelectedUnit.getTasks().size() > 0) {
-            Task task = (Task) mySelectedUnit.getTasks().get(0);
-            textfieldTaskID.setText(Integer.toString(task.getTaskID()));
+        if (mySelectedUnit.getTasks() != null) {
+            Task task = (Task) mySelectedUnit.getTasks();
+            textfieldTaskID.setText(Integer.toString((int)task.getId()));
             textfieldTaskname.setText(task.getName());
         }
 
@@ -342,7 +343,7 @@ public class UnitInfoController implements Initializable {
             }
         }
 
-        for (User u : mySelectedUnit.getMembers()) {
+        for (PrivateUser u : mySelectedUnit.getMembers()) {
 
             if (u.getSector().contains("Police")) {
                 policeUsers++;
@@ -357,11 +358,11 @@ public class UnitInfoController implements Initializable {
         }
 
         for (Vehicle v : mySelectedUnit.getVehicles()) {
-            if (v.getCarType() == 1) {
+            if (v.getType()== 1) {
                 firetrucks++;
-            } else if (v.getCarType() == 2) {
+            } else if (v.getType() == 2) {
                 policeCars++;
-            } else if (v.getCarType() == 3) {
+            } else if (v.getType() == 3) {
                 ambulance++;
             }
         }
@@ -372,6 +373,7 @@ public class UnitInfoController implements Initializable {
         textfieldPoliceCars.setText(Integer.toString(policeCars));
         textfieldFiretrucks.setText(Integer.toString(firetrucks));
         textfieldAmbulances.setText(Integer.toString(ambulance));
+        
 
     }
 

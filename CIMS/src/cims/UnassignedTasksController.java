@@ -5,7 +5,7 @@
  */
 package cims;
 
-import Field_Operations.Task;
+import Field_Operations.Domain.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -90,13 +90,13 @@ public class UnassignedTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            OperatorMainController.myController.selectedTaskID = (int)myTask.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setTitle("Task: " + myTask.getId());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -120,13 +120,13 @@ public class UnassignedTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            OperatorMainController.myController.selectedTaskID = (int)myTask.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setTitle("Task: " + myTask.getId());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -165,7 +165,7 @@ public class UnassignedTasksController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             task.operateStatus("Cancelled");
-            OperatorMainController.myController.cancelTask(task.getTaskID());
+            OperatorMainController.myController.cancelTask((int)task.getId());
 
         } else {
             alert.close();

@@ -121,6 +121,26 @@ public class Unit implements Serializable {
         }
 
     }
+    
+     /**
+     * Constructs a unit object
+     *
+     * @param name Not longer than 255 characters or null
+     * @param description Not longer than 255 characters
+     */
+    public Unit(int id,String name, String description) {
+        if (name != null && name.length() < 255 && description != null && description.length() < 255) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.members = new ArrayList<>();
+            this.materials = new ArrayList<>();
+            this.vehicles = new ArrayList<>();
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
+
+    }
 
     /**
      * Adds a user to the unit
@@ -231,7 +251,11 @@ public class Unit implements Serializable {
                 + this.materials.size() + "materials";
     }
 
-    public void AssignTask(Task task) {
+    public void setTask(Task task) {
         this.task = task;
+    }
+
+    public Task getTasks() {
+       return this.task;
     }
 }

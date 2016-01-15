@@ -6,10 +6,10 @@
 package cims;
 
 import Connection.ConnectionRunnable;
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
-import Field_Operations.Unit;
-import Network.User;
+import Field_Operations.Domain.Roadmap;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
+import Global.Domain.PrivateUser;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,7 +79,7 @@ public class OperatorMainController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         is_Simulation = StartSimController.is_sim;
         if (!is_Simulation) {
-            myController = new ConnectionRunnable("nickmullen", "0000");
+            myController = new ConnectionRunnable("JenseSchouten", "0000");
             Thread t = new Thread(myController);
             t.setDaemon(true);
             t.start();
@@ -94,31 +94,31 @@ public class OperatorMainController implements Initializable, Observer {
             roadmaps = new ArrayList();
 
             // Test Units
-            Unit unit1 = new Unit(00001, "PoliceForce1", "Standard Police Unit", "Normal");
-            Unit unit2 = new Unit(00002, "PoliceForce2", "Standard Police Unit", "Normal");
-            Unit unit3 = new Unit(00003, "PoliceForce3", "Standard Police Unit", "Normal");
-            Unit unit4 = new Unit(00004, "PoliceForce4", "Standard Police Unit", "Night");
-            Unit unit5 = new Unit(00005, "PoliceForce5", "Standard Police Unit", "Night");
-            Unit unit11 = new Unit(0101, "Ambulance1", "Standard Ambolance Unit", "Normal");
-            Unit unit12 = new Unit(00201, "FireSquad1", "Standard FireSquad Unit", "Normal");
-            Unit unit13 = new Unit(03001, "SWAT", "Specialized Police Unit", "Normal");
-            Unit unit14 = new Unit(04001, "SpecialistForce", "Specialized Unit for Disasters", "Special");
+            Unit unit1 = new Unit(1,"PoliceForce1", "Standard Police Unit");
+            Unit unit2 = new Unit(2, "PoliceForce2", "Standard Police Unit");
+            Unit unit3 = new Unit(3,"PoliceForce3", "Standard Police Unit");
+            Unit unit4 = new Unit(4, "PoliceForce4", "Standard Police Unit");
+            Unit unit5 = new Unit(5, "PoliceForce5", "Standard Police Unit");
+            Unit unit11 = new Unit(6, "Ambulance1", "Standard Ambolance Unit");
+            Unit unit12 = new Unit(7, "FireSquad1", "Standard FireSquad Unit");
+            Unit unit13 = new Unit(8, "SWAT", "Specialized Police Unit");
+            Unit unit14 = new Unit(9, "SpecialistForce", "Specialized Unit for Disasters");
 
             // Test Tasks
-            Task task1 = new Task(001, "Fire1", "High", "Unassigned", "Eindhoven Airport", "Plane on fire");
-            Task task2 = new Task(002, "Fire2", "High", "Unassigned", "Beukelaan 3", "Kitchen Fire");
-            Task task3 = new Task(003, "Fire3", "High", "Unassigned", "Ijswendelweg 4-7", "Car Fire");
-            Task task4 = new Task(004, "Health1", "High", "Heart attack", "Keukenseweg 2004", "Elder man");
-            Task task5 = new Task(005, "Health2", "Low", "Fall", "AH Eindhoven", "Elderly lady fell");
-            Task task6 = new Task(006, "Health3", "Low", "Fainting", "Fontys Eindhoven", "Student fainted");
-            Task task7 = new Task(007, "Robbery", "High", "Single suspect", "ABN-AMRO Eindhoven", "Bankheist");
-            Task task8 = new Task(0104, "Accident", "Medium", "Car crash", "A2 - 54", "Car on car");
-            Task task9 = new Task(0105, "Domestic Dispute", "Low", "Fight", "Heggeweg 24", "People heard screaming");
+            Task task1 = new Task( 1,"Fire1", "High", "Unassigned", "Eindhoven Airport", "Plane on fire");
+            Task task2 = new Task( 2,"Fire2", "High", "Unassigned", "Beukelaan 3", "Kitchen Fire");
+            Task task3 = new Task( 3,"Fire3", "High", "Unassigned", "Ijswendelweg 4-7", "Car Fire");
+            Task task4 = new Task( 4,"Health1", "High", "Heart attack", "Keukenseweg 2004", "Elder man");
+            Task task5 = new Task( 5,"Health2", "Low", "Fall", "AH Eindhoven", "Elderly lady fell");
+            Task task6 = new Task( 6,"Health3", "Low", "Fainting", "Fontys Eindhoven", "Student fainted");
+            Task task7 = new Task( 7,"Robbery", "High", "Single suspect", "ABN-AMRO Eindhoven", "Bankheist");
+            Task task8 = new Task( 8,"Accident", "Medium", "Car crash", "A2 - 54", "Car on car");
+            Task task9 = new Task( 9,"Domestic Dispute", "Low", "Fight", "Heggeweg 24", "People heard screaming");
 
             // Test Personeel
-            User u = new User(0001, "dave", "test", "male", "Boss", "Police", "1-1-2001", 1);
-            User u1 = new User(0011, "dave", "test", "male", "Boss", "Medical", "1-1-2001", 1);
-            User u2 = new User(0021, "dave", "test", "male", "Boss", "Fire", "1-1-2001", 1);
+            PrivateUser u = new PrivateUser("dave", "test", "male", "Boss", "Police", "1-1-2001", 1,"test");
+            PrivateUser u1 = new PrivateUser( "dave", "test", "male", "Boss", "Medical", "1-1-2001", 1,"test");
+            PrivateUser u2 = new PrivateUser( "dave", "test", "male", "Boss", "Fire", "1-1-2001", 1,"test");
 
             unit1.addUser(u);
             unit2.addUser(u);
@@ -134,8 +134,8 @@ public class OperatorMainController implements Initializable, Observer {
             
             
             
-            Roadmap roadmap1 = new Roadmap(001, "Domestic Dispute", "When at the scene stay calm and try to calm the situation down.");
-            Roadmap roadmap2 = new Roadmap(002, "Fire", "Never risk your own life.");
+            Roadmap roadmap1 = new Roadmap("Domestic Dispute", "When at the scene stay calm and try to calm the situation down.");
+            Roadmap roadmap2 = new Roadmap("Fire", "Never risk your own life.");
 
             unit1.setTask(task1);
             unit2.setTask(task1);
@@ -151,7 +151,6 @@ public class OperatorMainController implements Initializable, Observer {
             task9.addUnit(unit12);
             task9.addUnit(unit13);
             
-            System.out.println(unit1.getTasks().size());
             roadmaps.add(roadmap1);
             roadmaps.add(roadmap2);
 

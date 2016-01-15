@@ -5,7 +5,8 @@
  */
 package cims;
 
-import Field_Operations.Unit;
+
+import Field_Operations.Domain.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -83,7 +84,7 @@ public class ActiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedUnitID = myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = (int)myUnit.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -114,7 +115,7 @@ public class ActiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.selectedUnitID = myUnit.getUnitID();
+                            OperatorMainController.selectedUnitID = (int)myUnit.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -157,7 +158,7 @@ public class ActiveUnitsController implements Initializable {
         if (!Simulation) {
             try {
                 if (selectedUnit != null) {
-                    OperatorMainController.myController.DisbandUnit(selectedUnit.getUnitID());
+                    OperatorMainController.myController.DisbandUnit((int)selectedUnit.getId());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);

@@ -5,7 +5,8 @@
  */
 package cims;
 
-import Field_Operations.Task;
+
+import Field_Operations.Domain.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -96,13 +97,13 @@ public class ActiveTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedTaskID = myTask.getTaskID();
+                            OperatorMainController.myController.selectedTaskID = (int)myTask.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setTitle("Task: " + (int)myTask.getId());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -125,13 +126,13 @@ public class ActiveTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.selectedTaskID = myTask.getTaskID();
+                            OperatorMainController.selectedTaskID = (int)myTask.getId();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + myTask.getTaskID());
+                            stage.setTitle("Task: " + (int)myTask.getId());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -158,7 +159,7 @@ public class ActiveTasksController implements Initializable {
                 tasks.remove(task);
                 task.operateStatus("Cancelled");
                 if (!Simulation) {
-                    OperatorMainController.myController.removeActiveTask(task.getTaskID());
+                    OperatorMainController.myController.removeActiveTask((int)task.getId());
                 }
 
             } else {

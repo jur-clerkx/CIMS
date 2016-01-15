@@ -44,6 +44,7 @@ public class Unit implements Serializable {
     private List<Material> materials;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Vehicle> vehicles;
+    private Task task;
 
     public Unit() {
     }
@@ -110,6 +111,26 @@ public class Unit implements Serializable {
      */
     public Unit(String name, String description) {
         if (name != null && name.length() < 255 && description != null && description.length() < 255) {
+            this.name = name;
+            this.description = description;
+            this.members = new ArrayList<>();
+            this.materials = new ArrayList<>();
+            this.vehicles = new ArrayList<>();
+        } else {
+            throw new IllegalArgumentException("Make sure you fill in every field.");
+        }
+
+    }
+    
+     /**
+     * Constructs a unit object
+     *
+     * @param name Not longer than 255 characters or null
+     * @param description Not longer than 255 characters
+     */
+    public Unit(int id,String name, String description) {
+        if (name != null && name.length() < 255 && description != null && description.length() < 255) {
+            this.id = id;
             this.name = name;
             this.description = description;
             this.members = new ArrayList<>();
@@ -228,5 +249,13 @@ public class Unit implements Serializable {
                 + this.members.size() + " Members, "
                 + this.vehicles.size() + "Vehicles "
                 + this.materials.size() + "materials";
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public Task getTasks() {
+       return this.task;
     }
 }

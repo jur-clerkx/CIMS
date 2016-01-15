@@ -5,7 +5,9 @@
  */
 package cims;
 
-import Field_Operations.Unit;
+import Field_Operations.Domain.Unit;
+import Field_Operations.Domain.Vehicle;
+import Global.Domain.PrivateUser;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -45,8 +47,7 @@ public class CreateUnitController implements Initializable {
     private RadioButton radioButtonAmbulance;
     @FXML
     private TextField textFieldName;
-    @FXML
-    private TextField textFieldLocation;
+
     @FXML
     private RadioButton radioButtonGas;
     @FXML
@@ -102,7 +103,7 @@ public class CreateUnitController implements Initializable {
             convertToInt();
 
             try {
-                succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), textFieldLocation.getText(), size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+                succes = OperatorMainController.myController.CreateUnit(textFieldName.getText(), "", size, getSelectedSpecials(), NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
             } catch (Exception ex) {
 
             }
@@ -130,7 +131,40 @@ public class CreateUnitController implements Initializable {
             convertToInt();
 
             try {
-                succes = OperatorMainController.inactive_Units.add(new Unit(100, textFieldName.getText(), textFieldLocation.getText(), getSelectedSpecials()));
+                int i = 0;
+                Unit u = new Unit(textFieldName.getText(), "");
+                while (this.NRofAmbulancePeople != i) {
+                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Medical", "1-1-2001", 1, "test"));
+                    i++;
+                }
+                i = 0;
+                while (this.NRofFireFIghters != i) {
+                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Fire", "1-1-2001", 1, "test"));
+                    i++;
+                }
+                i = 0;
+                while (this.NrOfPoliceCars != i) {
+                    u.addVehicle(new Vehicle("test","test",2) );
+                    i++;
+                }
+                i = 0;
+                
+                while (this.NrOfFireTrucks != i) {
+                    u.addVehicle(new Vehicle("test","test",1) );
+                    i++;
+                }
+                i = 0;
+                while (this.NrOfAmbulances != i) {
+                     u.addVehicle(new Vehicle("test","test",3) );
+                    i++;
+                }
+                i = 0;
+                while (this.NrOFPolicemen != i) {
+                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Police", "1-1-2001", 1, "test"));
+                    i++;
+                }
+                i = 0;
+                succes = OperatorMainController.inactive_Units.add(u);
             } catch (Exception ex) {
 
             }

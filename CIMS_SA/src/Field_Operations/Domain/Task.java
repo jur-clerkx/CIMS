@@ -306,6 +306,25 @@ public class Task implements Serializable {
         this.units = new ArrayList();
     }
 
+      /**
+     * Constructs a task object
+     *
+     * @param name Not longer than 255 characters or null
+     * @param urgency Low, Medium or High
+     * @param status Not longer than 255 characters or null
+     * @param location Not longer than 255 characters or null
+     * @param description Not longer than 255 characters or null
+     */
+    public Task(int id,String name, String urgency, String status, String location, String description) {
+        this.id = id;
+        this.name = name;
+        this.urgency = urgency;
+        this.status = status;
+        this.location = location;
+        this.description = description;
+        this.progressList = new ArrayList();
+        this.units = new ArrayList();
+    }
     @Override
     public String toString() {
         return "Name: " + this.name + ", Urgency: " + this.urgency + ", Status: " + this.status;

@@ -5,8 +5,8 @@
  */
 package cims;
 
-import Field_Operations.Task;
-import Field_Operations.Unit;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -157,16 +157,18 @@ public class CreateTaskController implements Initializable {
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
+                task = new Task(taskName, urgencyCode, statusCode, taskLocation, description);
                 OperatorMainController.myController.createTask(taskName, urgencyCode, description);
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add(task.getTaskID());
+                assignedUnits.add((int)task.getId());
                 for (Unit u : AssignedList) {
-                    assignedUnits.add(u.getUnitID());
+                    assignedUnits.add((int)u.getId());
                 }
 
                 OperatorMainController.myController.assignTask(assignedUnits.toArray());
             }
+            Stage stage = (Stage)textareaDescription.getScene().getWindow();
+            stage.close();
         }
         else
         {
@@ -198,10 +200,10 @@ public class CreateTaskController implements Initializable {
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(taskID, taskName, urgencyCode, statusCode, taskLocation, description);
+                task = new Task(taskName, urgencyCode, statusCode, taskLocation, description);
                 OperatorMainController.active_Tasks.add(task);
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add(task.getTaskID());
+                assignedUnits.add((int)task.getId());
                 for (Unit u : AssignedList) {
                     u.setTask(task);
                 }

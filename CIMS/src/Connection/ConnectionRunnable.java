@@ -5,10 +5,11 @@
  */
 package Connection;
 
-import Field_Operations.Roadmap;
-import Field_Operations.Task;
-import Field_Operations.Unit;
-import Network.User;
+
+import Field_Operations.Domain.Roadmap;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
+import Global.Domain.PrivateUser;
 import cims.OperatorMainController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -38,7 +39,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    public User user;
+    public PrivateUser user;
     private Unit unit;
     private String serverAddress;
 
@@ -68,7 +69,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void run() {
         try {
             //Try to connect to server
-            socket = new Socket(serverAddress, 1234);
+            socket = new Socket(serverAddress, 1250);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
             
@@ -93,7 +94,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             sendData(login.split("/"));
 
             //Check if login succeeded
-            user = (User) readData();
+            user = (PrivateUser) readData();
 
             if (user == null) {
                 throw new Exception("fail");
@@ -184,7 +185,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      *
      * @return Can be null if not logged in
      */
-    public synchronized User getUser() {
+    public synchronized PrivateUser getUser() {
         return this.user;
     }
 
@@ -234,7 +235,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
             output.writeObject(outputMessage);
             output.writeObject(myUnit);
-            String feedback = (String) input.readObject();
+            String feedback = (String) readData();
             return feedback.equals("Unit succesfully created");
         } catch (IOException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -258,7 +259,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP4";
             output.writeObject(outputMessage);
             output.writeObject(false);
-            return (ArrayList<Unit>) input.readObject();
+            return (ArrayList<Unit>) readData();
 
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -278,7 +279,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP4";
             output.writeObject(outputMessage);
             output.writeObject(true);
-            return (ArrayList<Unit>) input.readObject();
+            return (ArrayList<Unit>) readData();
 
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -299,7 +300,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP5";
             output.writeObject(outputMessage);
             output.writeObject(0);
-            return (ArrayList<Task>) input.readObject();
+            return (ArrayList<Task>) readData();
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
@@ -318,7 +319,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP5";
             output.writeObject(outputMessage);
             output.writeObject(1);
-            ArrayList<Task> tasks = (ArrayList<Task>) input.readObject();
+            ArrayList<Task> tasks = (ArrayList<Task>) readData();
             return tasks;
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -429,10 +430,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP1";
             String feedback;
-            output.writeObject(outputMessage);
-            output.writeObject(selectedUnitID);
-            output.writeObject(myUnit);
-            feedback = (String) input.readObject();
+            sendData(outputMessage);
+            sendData(selectedUnitID);
+            sendData(myUnit);
+            feedback = (String) readData();
             return feedback.equals("Unit succesfully created");
 
         } catch (IOException ex2) {
@@ -456,9 +457,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOUS2";
 
-            output.writeObject(outputMessage);
-            output.writeObject(unitID);
-            return (Unit) input.readObject();
+            sendData(outputMessage);
+            sendData(unitID);
+            return (Unit) readData();
 
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -478,9 +479,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOUS1";
 
-            output.writeObject(outputMessage);
-            output.writeObject(taskID);
-            return (Task) input.readObject();
+            sendData(outputMessage);
+            sendData(taskID);
+            return (Task) readData();
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
@@ -498,8 +499,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP9";
 
-            output.writeObject(outputMessage);
-            output.writeObject(taskID);
+            sendData(outputMessage);
+            sendData(taskID);
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -517,8 +518,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP8";
 
-            output.writeObject(outputMessage);
-            output.writeObject(objects);
+            sendData(outputMessage);
+            sendData(objects);
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -541,8 +542,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP9";
 
-            output.writeObject(outputMessage);
-            output.writeObject(myTask);
+            sendData(outputMessage);
+            sendData(myTask);
 
             return true;
 
@@ -569,9 +570,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOUS10";
 
-            output.writeObject(outputMessage);
-            output.writeObject(roadmap);
-            input.readObject();
+            sendData(outputMessage);
+            sendData(roadmap);
+            readData();
             return true;
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -584,9 +585,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         ArrayList<Roadmap> roadmaps = new ArrayList();
         try {
             String outputMessage = "FOUS9";
-            output.writeObject(outputMessage);
+            sendData(outputMessage);
             try {
-                ArrayList<Roadmap> myRoads = (ArrayList<Roadmap>) input.readObject();
+                ArrayList<Roadmap> myRoads = (ArrayList<Roadmap>) readData();
                 roadmaps.addAll(myRoads);
 
             } catch (ClassNotFoundException ex) {
@@ -603,8 +604,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
         try {
             String outputMessage = "FOOP10";
-            output.writeObject(outputMessage);
-            output.writeObject(message);
+            sendData(outputMessage);
+            sendData(message);
             return true;
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -614,11 +615,11 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
     public boolean DisbandUnit(int ID) throws IOException, ClassNotFoundException {
         try {
-            output.writeObject("FOOP3");
+            sendData("FOOP3");
             Object[] myObject = new Object[1];
             myObject[0] = ID;
-            output.writeObject(myObject);
-            String message = (String) input.readObject();
+            sendData(myObject);
+            String message = (String) readData();
             if (message != null) {
                 return true;
             } else {
@@ -634,15 +635,15 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void RegisterObserver(Observer aThis) throws IOException {
 
         try {
-            output.writeObject("FOOP11");
+            sendData("FOOP11");
         } catch (IOException ex) {
             Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
         }
         {
             try {
                 Object myObject = aThis;
-                input.readObject();
-                output.writeObject(myObject);
+                readData();
+                sendData(myObject);
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
                 KillConnection();

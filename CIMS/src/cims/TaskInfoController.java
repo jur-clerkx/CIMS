@@ -5,10 +5,11 @@
  */
 package cims;
 
-import Field_Operations.Task;
-import Field_Operations.Unit;
+import Field_Operations.Domain.Task;
+import Field_Operations.Domain.Unit;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -91,13 +92,13 @@ public class TaskInfoController implements Initializable {
             selectedTask = null;
             InactiveUnits = FXCollections.observableArrayList();
             for (Task t : OperatorMainController.active_Tasks) {
-                if (t.getTaskID() == ID) {
+                if (t.getId() == ID) {
                     selectedTask = t;
                     fillPage();
                 }
             }
             for (Task t : OperatorMainController.inactive_Task) {
-                if (t.getTaskID() == ID) {
+                if (t.getId() == ID) {
                     selectedTask = t;
                     fillPage();
                 }
@@ -137,9 +138,9 @@ public class TaskInfoController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     if (selectedTask.getStatus() == "Active") {
-                        OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+                        OperatorMainController.myController.removeActiveTask((int) selectedTask.getId());
                     } else {
-                        OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
+                        OperatorMainController.myController.removeInactiveTask((int) selectedTask.getId());
                     }
                 } else {
                     alert.close();
@@ -148,7 +149,7 @@ public class TaskInfoController implements Initializable {
                 if (selectedTask.getStatus() == "Active") {
                     int index = -1;
                     for (Task t : OperatorMainController.active_Tasks) {
-                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                        if (t.getId() == selectedTask.getId()) {
                             index = OperatorMainController.active_Tasks.indexOf(t);
                         }
                     }
@@ -156,16 +157,15 @@ public class TaskInfoController implements Initializable {
                 } else {
                     int index = -1;
                     for (Task t : OperatorMainController.inactive_Task) {
-                        if (t.getTaskID() == selectedTask.getTaskID()) {
+                        if (t.getId() == selectedTask.getId()) {
                             index = OperatorMainController.inactive_Task.indexOf(t);
                         }
                     }
                     OperatorMainController.inactive_Task.remove(index);
                 }
             }
+        } catch (Exception ex) {
         }
-        catch(Exception ex)
-                {}
     }
 
     /**
@@ -182,23 +182,52 @@ public class TaskInfoController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            String newLocation = textFieldLocation.getText();
-            // Edit currently selected task with new task.
-            if (newLocation != null) {
-                OperatorMainController.myController.editTask(selectedTask.getTaskID(), newLocation);
-                editedTask = selectedTask;
-                editedTask.setLocation(newLocation);
-            }
-            // TODO assignTask database.
-            if (editedTask != null) {
-                for (Unit u : ActiveUnits) {
-                    editedTask.addUnit(u);
+            if (!OperatorMainController.is_Simulation) {
+                String newLocation = textFieldLocation.getText();
+                // Edit currently selected task with new task.
+                if (newLocation != null) {
+                    OperatorMainController.myController.editTask((int) selectedTask.getId(), newLocation);
+                    editedTask = selectedTask;
+                    editedTask.setLocation(newLocation);
+                }
+                // TODO assignTask database.
+                if (editedTask != null) {
+                    for (Unit u : ActiveUnits) {
+                        editedTask.addUnit(u);
+                    }
+                }
+            } else {
+                int id = -1;
+                String state = "";
+                for (Task t : OperatorMainController.active_Tasks) {
+                    if (t.getId() == Long.parseLong(textFieldID.getText())) {
+                        id = OperatorMainController.active_Tasks.indexOf(t);
+                        state = "true";
+                    }
+                }
+                for (Task t : OperatorMainController.inactive_Task) {
+                    if (t.getId() == Long.parseLong(textFieldID.getText())) {
+                        id = OperatorMainController.inactive_Task.indexOf(t);
+                        state = "false";
+                    }
+                }
+
+                Task t = new Task(textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
+
+                if (state.equals("true")) {
+                    OperatorMainController.active_Tasks.remove(id);
+                    OperatorMainController.active_Tasks.add(t);
+                } else {
+                    OperatorMainController.inactive_Task.remove(id);
+                    OperatorMainController.inactive_Task.add(t);
                 }
             }
 
         } else {
             alert.close();
         }
+        Stage stage = (Stage) textAreaDescription.getScene().getWindow();
+        stage.close();
     }
 
     /**
@@ -216,28 +245,44 @@ public class TaskInfoController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 if (selectedTask.getStatus() == "Active") {
-                    OperatorMainController.myController.removeActiveTask(selectedTask.getTaskID());
+                    OperatorMainController.myController.removeActiveTask((int) selectedTask.getId());
                 } else {
-                    OperatorMainController.myController.removeInactiveTask(selectedTask.getTaskID());
+                    OperatorMainController.myController.removeInactiveTask((int) selectedTask.getId());
                 }
             } else {
                 alert.close();
             }
         } else {
-            if (selectedTask.getStatus() == "Active") {
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                String state = "";
                 int index = -1;
-                for (Task t : OperatorMainController.active_Tasks) {
-                    if (t.getTaskID() == selectedTask.getTaskID()) {
-                        index = OperatorMainController.active_Tasks.indexOf(t);
+                    for (Task t : OperatorMainController.active_Tasks) {
+                        if (t.getId() == selectedTask.getId()) {
+                            index = OperatorMainController.active_Tasks.indexOf(t);
+                            state = "active";
+                        }
                     }
-                }
-            } else {
-                int index = -1;
-                for (Task t : OperatorMainController.inactive_Task) {
-                    if (t.getTaskID() == selectedTask.getTaskID()) {
-                        index = OperatorMainController.inactive_Task.indexOf(t);
+                    OperatorMainController.active_Tasks.remove(index);
+
+                    for (Task t : OperatorMainController.inactive_Task) {
+                        if (t.getId() == selectedTask.getId()) {
+                            index = OperatorMainController.inactive_Task.indexOf(t);
+                            state = "inactive";
+                        }
                     }
-                }
+                   
+                    if(state.equals("active"))
+                    {
+                    OperatorMainController.active_Tasks.remove(index);
+                    }
+                    else
+                    {
+                        OperatorMainController.inactive_Task.remove(index);
+                    }
+                    Stage stage = (Stage)textAreaDescription.getScene().getWindow();
+                    stage.close();
+                
             }
         }
     }
@@ -248,7 +293,8 @@ public class TaskInfoController implements Initializable {
      * @param event
      */
     @FXML
-    private void buttonCancel(MouseEvent event) {
+    private void buttonCancel(MouseEvent event
+    ) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }
@@ -269,11 +315,19 @@ public class TaskInfoController implements Initializable {
             if (selectedTask != null) {
                 textFieldName.setText(selectedTask.getName());
                 textAreaDescription.setText(selectedTask.getDescription());
-                textFieldID.setText("" + selectedTask.getTaskID());
+                textFieldID.setText("" + selectedTask.getId());
                 textFieldLocation.setText(selectedTask.getLocation());
                 comboboxUrgency.setPromptText(selectedTask.getUrgency());
                 comboboxStatus.setPromptText(selectedTask.getStatus());
             }
+            ArrayList<String> choices = new ArrayList();
+            ArrayList<String> status = new ArrayList();
+            choices.add("Low");
+            choices.add("High");
+            choices.add("Medium");
+            status.add("ongoing");
+            status.add("open");
+            comboboxStatus.setItems(FXCollections.observableArrayList());
 
         } catch (IOException ex) {
             Logger.getLogger(TaskInfoController.class.getName()).log(Level.SEVERE, null, ex);
