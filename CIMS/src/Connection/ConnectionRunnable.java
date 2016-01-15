@@ -233,8 +233,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP2";
 
-            output.writeObject(outputMessage);
-            output.writeObject(myUnit);
+            sendData(outputMessage);
+            sendData(myUnit);
             String feedback = (String) readData();
             return feedback.equals("Unit succesfully created");
         } catch (IOException ex2) {
@@ -257,8 +257,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public ArrayList<Unit> getInactiveUnits() throws IOException {
         try {
             String outputMessage = "FOOP4";
-            output.writeObject(outputMessage);
-            output.writeObject(false);
+            sendData(outputMessage);
+            sendData(false);
             return (ArrayList<Unit>) readData();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -277,8 +277,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public ArrayList<Unit> getActiveUnits() throws IOException {
         try {
             String outputMessage = "FOOP4";
-            output.writeObject(outputMessage);
-            output.writeObject(true);
+            sendData(outputMessage);
+            sendData(true);
             return (ArrayList<Unit>) readData();
 
         } catch (IOException | ClassNotFoundException ex2) {
@@ -298,8 +298,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public ArrayList<Task> getInactiveTasks() throws IOException {
         try {
             String outputMessage = "FOOP5";
-            output.writeObject(outputMessage);
-            output.writeObject(0);
+            sendData(outputMessage);
+            sendData(0); 
             return (ArrayList<Task>) readData();
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
@@ -317,8 +317,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public ArrayList<Task> getActiveTasks() throws IOException {
         try {
             String outputMessage = "FOOP5";
-            output.writeObject(outputMessage);
-            output.writeObject(1);
+            sendData(outputMessage);
+            sendData(1);
             ArrayList<Task> tasks = (ArrayList<Task>) readData();
             return tasks;
         } catch (IOException | ClassNotFoundException ex2) {
@@ -337,8 +337,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void removeActiveTask(int taskID) throws IOException {
         try {
             String outputMessage = "FOOP7";
-            output.writeObject(outputMessage);
-            output.writeObject(taskID);
+            sendData(outputMessage);
+            sendData(taskID);
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -354,8 +354,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public void removeInactiveTask(int taskID) throws IOException {
         try {
             String outputMessage = "FOOP7";
-            output.writeObject(outputMessage);
-            output.writeObject(taskID);
+            sendData(outputMessage);
+            sendData(taskID);
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
@@ -387,7 +387,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP6";
 
-            output.writeObject(outputMessage);
+            sendData(outputMessage);
             output.writeObject(myTask);
             return true;
 

@@ -191,7 +191,7 @@ public class CreateUnitController implements Initializable {
     }
 
     private String getSelectedSpecials() {
-        String selected = "F";
+        String selected = "";
         if (radioButtonFire.isSelected()) {
             selected += "1";
         }
