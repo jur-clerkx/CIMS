@@ -384,15 +384,14 @@ public class ConnectionRunnable extends Observable implements Runnable {
      * @return True if the task was created
      * @throws IOException
      */
-    public boolean createTask(String name, String urgency, String description) throws IOException {
-        Object[] myTask = new Object[6];
+    public boolean createTask(String name, int urgency, String description,String Location) throws IOException {
+        Object[] myTask = new Object[4];
 
-        myTask[0] = "Description";
-        myTask[1] = description;
-        myTask[2] = "Name";
-        myTask[3] = name;
-        myTask[4] = "Urgency";
-        myTask[5] = urgency;
+        
+        myTask[0] = description;
+        myTask[1] = name;
+        myTask[3] = Location;
+        myTask[2] = urgency;
 
         try {
             String outputMessage = "FOOP6";

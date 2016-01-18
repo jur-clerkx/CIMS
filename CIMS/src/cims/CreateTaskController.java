@@ -136,17 +136,17 @@ public class CreateTaskController implements Initializable {
             String urgencyCode = "";
             String statusCode = "";
             int status = comboboxStatus.getSelectionModel().getSelectedIndex();
-            if (urgency == 1) {
+            if (urgency == 0) {
                 urgencyCode = "Low";
-            } else if (urgency == 2) {
+            } else if (urgency == 1) {
                 urgencyCode = "Medium";
-            } else if (urgency == 3) {
+            } else if (urgency == 2) {
                 urgencyCode = "High";
             }
 
-            if (status == 1) {
+            if (status == 0) {
                 statusCode = "open";
-            } else if (status == 2) {
+            } else if (status == 1) {
                 statusCode = "closed";
             }
             String description = textareaDescription.getText();
@@ -158,7 +158,7 @@ public class CreateTaskController implements Initializable {
                 alert.showAndWait();
             } else {
                 task = new Task(taskID,taskName, urgencyCode, statusCode, taskLocation, description);
-                OperatorMainController.myController.createTask(taskName, urgencyCode, description);
+                OperatorMainController.myController.createTask(taskName, urgency, description,textfieldTaskLocation.getText());
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
                 assignedUnits.add((int)task.getTaskID());
                 for (Unit u : AssignedList) {

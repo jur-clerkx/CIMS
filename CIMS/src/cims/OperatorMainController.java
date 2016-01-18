@@ -79,7 +79,7 @@ public class OperatorMainController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         is_Simulation = StartSimController.is_sim;
         if (!is_Simulation) {
-            myController = new ConnectionRunnable("NickMullen", "0000");
+            myController = new ConnectionRunnable("SebasKoch", "1111");
             Thread t = new Thread(myController);
             t.setDaemon(true);
             t.start();
