@@ -66,7 +66,7 @@ public class Server {
                         Socket s = serverSocket.accept();
                         if (searching) {
                             Connection c = new Connection(s);
-                            cleanUpList(c.getUserId());
+                            //cleanUpList(c.getUserId());
                             connections.add(c);
                             LOG.log(Level.INFO, "New Client Connected: {0}", s.getInetAddress());
                         }

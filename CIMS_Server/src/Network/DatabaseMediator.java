@@ -485,11 +485,15 @@ public class DatabaseMediator {
         if (objects.length != 4) {
             return false;
         }
+        if (!(objects[0] instanceof String) || !(objects[1] instanceof String)
+                || !(objects[2] instanceof Integer) || !(objects[3] instanceof String)) {
+            return false;
+        }
 
         if (openConnection()) {
             try {
                 String query = "INSERT INTO `CIMS`.`Task` (`description`, `status`, `name`, `urgency`, `location`, `active`) "
-                        + "VALUES ('" + objects[0] + "', 'Unassigned', '" + objects[1] + "', '" + objects[2] + "', '" + objects[3] + "', '1');';";
+                        + "VALUES ('" + objects[0] + "', 'Unassigned', '" + objects[1] + "', '" + objects[2] + "', '" + objects[3] + "', '1');";
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("createTask: " + e.getMessage());
@@ -800,9 +804,9 @@ public class DatabaseMediator {
                 cp = setCars(ob[3], "P", unitID);
                 cf = setCars(ob[4], "F", unitID);
                 ch = setCars(ob[5], "H", unitID);
-                pp = setPersons(ob[6], "P", unitID);
-                pf = setPersons(ob[7], "F", unitID);
-                ph = setPersons(ob[8], "H", unitID);
+                pp = setPersons(ob[6], "Police", unitID);
+                pf = setPersons(ob[7], "Fire", unitID);
+                ph = setPersons(ob[8], "Medical", unitID);
 
                 if (s && cp && cf && ch && pp && pf && ph) {
                     closeConnection();
@@ -941,9 +945,7 @@ public class DatabaseMediator {
 
         if (openConnection()) {
             try {
-                String query = "SELECT u.id FROM CIMS.User u "
-                        + "WHERE u.department = '" + type + "' AND u.id NOT IN ("
-                        + "SELECT uc.id  FROM CIMS.Unit_Containment uc) limit " + amount + ";";
+                String query = "SELECT u.id FROM CIMS.User u WHERE u.sector = '" + type + "'AND u.id NOT IN (SELECT uc.id  FROM CIMS.Unit_Containment uc, CIMS.Task t, CIMS.Task_Unit tu WHERE uc.unitId = tu.unitId AND t.id = tu.taskId AND t.active = 1) limit " + amount + ";";
                 ResultSet rs = executeQuery(query);
                 int i = 0;
                 while (rs.next()) {
@@ -1152,7 +1154,8 @@ public class DatabaseMediator {
      *
      * @param userId ID of user that is logged on
      * @param o object array with all the information format:
-     * name,description,location,casualties, toxic, danger, impect, image and if its private
+     * name,description,location,casualties, toxic, danger, impect, image and if
+     * its private
      * @return a boolean true if success false if not.
      */
     public boolean createInformation(int userId, Object o) {
@@ -1248,7 +1251,7 @@ public class DatabaseMediator {
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu,toggle);
+                        casualties, toxic, danger, impact, image, pu, toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1292,7 +1295,7 @@ public class DatabaseMediator {
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu,toggle);
+                        casualties, toxic, danger, impact, image, pu, toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
