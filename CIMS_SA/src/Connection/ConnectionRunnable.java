@@ -210,9 +210,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU5";
-                output.writeObject(outputMessage);
-                output.writeObject(infID);
-                return (Information) input.readObject();
+                sendData(outputMessage);
+                sendData(infID);
+                return (Information) readData();
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
                 KillConnection();
@@ -278,9 +278,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU8";
-                output.writeObject(outputMessage);
-                output.writeObject((int)user.getUser_ID());
-                output.writeObject(info.getID());
+                sendData(outputMessage);
+                sendData((int)user.getUser_ID());
+                sendData(info.getID());
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,19 +296,19 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU3";
                 Object[] thisOutputMessage = new Object[9];
-                thisOutputMessage[0] = null;
-                thisOutputMessage[1] = Name;
-                thisOutputMessage[2] = description;
-                thisOutputMessage[3] = location;
-                thisOutputMessage[4] = casualties;
-                thisOutputMessage[5] = toxic;
-                thisOutputMessage[6] = danger;
-                thisOutputMessage[7] = impact;
-                thisOutputMessage[8] = URL;
+                thisOutputMessage[0] = Name;
+                thisOutputMessage[1] = description;
+                thisOutputMessage[2] = location;
+                thisOutputMessage[3] = casualties;
+                thisOutputMessage[4] = toxic;
+                thisOutputMessage[5] = danger;
+                thisOutputMessage[6] = impact;
+                thisOutputMessage[7] = URL;
+                thisOutputMessage[8] = Private;
                 
-                output.writeObject(outputMessage);
-                output.writeObject(thisOutputMessage);
-                result = input.readObject();
+                sendData(outputMessage);
+                sendData(thisOutputMessage);
+                result = readData();
                 System.out.println(result.toString());
 
             } catch (IOException | ClassNotFoundException ex1) {
@@ -329,8 +329,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
 
             try {
-                output.writeObject("SAPU4");
-                output.writeObject(id);
+                sendData("SAPU4");
+                sendData(id);
 
                 String outputMessage = "SAPU3";
                 Object[] thisOutputMessage = new Object[9];
@@ -344,9 +344,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 thisOutputMessage[7] = URL;
                 thisOutputMessage[8] = Private;
 
-                output.writeObject(outputMessage);
-                output.writeObject(thisOutputMessage);
-                result = input.readObject();
+                sendData(outputMessage);
+                sendData(thisOutputMessage);
+                result = readData();
 
             } catch (IOException | ClassNotFoundException ex1) {
                 System.out.println("Error creating new Information");
