@@ -61,7 +61,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        serverAddress = "145.93.84.244";
+        serverAddress = "localhost";
     }
 
     @Override
@@ -267,7 +267,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
         }
-        return null;
+        return new ArrayList<Unit>();
     }
 
     /**
@@ -290,7 +290,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
         }
-        return null;
+        return new ArrayList<Unit>();
 
     }
 

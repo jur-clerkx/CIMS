@@ -60,21 +60,25 @@ public class TaskInfoController implements Initializable {
     private ComboBox<String> comboboxStatus;
     @FXML
     private TextArea textAreaDescription;
-    private ListView<Unit> listviewUUnits;
-    private ListView<Unit> listviewAUnits;
 
     ObservableList<Unit> ActiveUnits;
     ObservableList<Unit> InactiveUnits;
     private Task selectedTask;
 
     private boolean Simulation;
+    @FXML
+    private ListView<Unit> lvAvailable;
+    @FXML
+    private ListView<Unit> lvAssigned;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ActiveUnits = FXCollections.observableArrayList(OperatorMainController.active_Units);
+
+        ActiveUnits = FXCollections.observableArrayList();
+
         Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             int ID = OperatorMainController.myController.selectedTaskID;
@@ -115,7 +119,7 @@ public class TaskInfoController implements Initializable {
      */
     @FXML
     private void buttonAdd(MouseEvent event) {
-        Unit selectedUnit = (Unit) listviewUUnits.getSelectionModel().getSelectedItem();
+        Unit selectedUnit = (Unit) lvAvailable.getSelectionModel().getSelectedItem();
         ActiveUnits.add(selectedUnit);
         InactiveUnits.remove(selectedUnit);
 
@@ -306,8 +310,8 @@ public class TaskInfoController implements Initializable {
 
         try {
             if (!Simulation) {
-                ActiveUnits.addAll(OperatorMainController.myController.getActiveUnits());
-                InactiveUnits.addAll(OperatorMainController.myController.getInactiveUnits());
+                lvAssigned.getItems().addAll(FXCollections.observableArrayList(selectedTask.getUnits()));
+                lvAvailable.getItems().addAll(OperatorMainController.myController.getInactiveUnits());
             } else {
                 ActiveUnits.addAll(OperatorMainController.active_Units);
                 InactiveUnits.addAll(OperatorMainController.inactive_Units);
