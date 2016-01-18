@@ -232,7 +232,16 @@ public class TasksController implements Initializable {
 
     @FXML
     private void deleteClick(MouseEvent event) {
-        Task selectedTask = (Task) ATaskTable.getSelectionModel().getSelectedItem();
+        Task selectedTask = null;
+        if(ATaskTable.getSelectionModel().getSelectedItem() != null)
+        {
+           selectedTask  = (Task) ATaskTable.getSelectionModel().getSelectedItem();
+        }
+        else if(UTaskTable.getSelectionModel().getSelectedItem() != null)
+        {
+            selectedTask = (Task) this.UTaskTable.getSelectionModel().getSelectedItem();
+        }
+        
         if (!Simulation) {
             try {
                 if (selectedTask.isAccepted()) {
@@ -248,7 +257,7 @@ public class TasksController implements Initializable {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            if (!selectedTask.isAccepted()) {
+            if (!selectedTask.getUnits().isEmpty()) {
                 
                     int index = -1;
                     for (Task t : OperatorMainController.active_Tasks) {

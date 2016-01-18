@@ -201,17 +201,17 @@ public class TaskInfoController implements Initializable {
                     }
                 }
             } else {
-                int id = -1;
+                Task at = null;
                 String state = "";
                 for (Task t : OperatorMainController.active_Tasks) {
                     if (t.getId() == Long.parseLong(textFieldID.getText())) {
-                        id = OperatorMainController.active_Tasks.indexOf(t);
+                        at = t;
                         state = "true";
                     }
                 }
                 for (Task t : OperatorMainController.inactive_Task) {
                     if (t.getId() == Long.parseLong(textFieldID.getText())) {
-                        id = OperatorMainController.inactive_Task.indexOf(t);
+                        at = t;
                         state = "false";
                     }
                 }
@@ -219,10 +219,10 @@ public class TaskInfoController implements Initializable {
                 Task t = new Task(textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
 
                 if (state.equals("true")) {
-                    OperatorMainController.active_Tasks.remove(id);
+                    OperatorMainController.active_Tasks.remove(at);
                     OperatorMainController.active_Tasks.add(t);
                 } else {
-                    OperatorMainController.inactive_Task.remove(id);
+                    OperatorMainController.inactive_Task.remove(at);
                     OperatorMainController.inactive_Task.add(t);
                 }
             }

@@ -180,7 +180,7 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
 
-            Unit myunit = new Unit(textfieldName.getText(), textfieldLocation.getText());
+            Unit myunit = new Unit(OperatorMainController.selectedUnitID,textfieldName.getText(),"");
             
             
             
@@ -218,12 +218,32 @@ public class UnitInfoController implements Initializable {
                 myunit.setTask(uss.getTasks());
             }
             if (selectedUnit.equals("Active")) {
-                int i = OperatorMainController.active_Units.indexOf(uss);
-                OperatorMainController.active_Units.remove(i);
+                Unit ua = null;
+                for(Unit u : OperatorMainController.active_Units)
+                {
+                    if(u.getId() == uss.getId())
+                    {
+                        ua = u;
+                    }
+                }
+                if(ua != null)
+                {
+                OperatorMainController.active_Units.remove(ua);
+                }
                 OperatorMainController.active_Units.add(myunit);
             } else {
-                int i = OperatorMainController.inactive_Units.indexOf(uss);
-                OperatorMainController.inactive_Units.remove(i);
+               Unit ua = null;
+                for(Unit u : OperatorMainController.inactive_Units)
+                {
+                    if(u.getId() == uss.getId())
+                    {
+                        ua = u;
+                    }
+                }
+                if(ua != null)
+                {
+                OperatorMainController.inactive_Units.remove(ua);
+                }
                 OperatorMainController.inactive_Units.add(myunit);
             }
 
