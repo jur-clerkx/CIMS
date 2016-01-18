@@ -8,9 +8,9 @@ package Connection;
 import Application.CIMS_SA;
 import Application.SendInformationController;
 import Field_Operations.Unit;
-import Global.Domain.User;
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
+import Network.PublicUser;
+import Network.User;
+import Situational_Awareness.Information;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -58,15 +58,15 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        serverAddress = "145.93.85.35";
-        //serverAddress = "localhost";
+        //serverAddress = "145.93.85.35";
+        serverAddress = "localhost";
     }
 
     @Override
     public void run() {
         try {
             //Try to connect to server
-            socket = new Socket(serverAddress, 1250);
+            socket = new Socket(serverAddress, 1234);
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
             
@@ -90,9 +90,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String login = username + "/" + password;
             sendData(login.split("/"));
 
-            Thread.sleep(5000);
             //Check if login succeeded
-
             user = (User) readData();
 
             if (user == null) {
@@ -198,6 +196,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private void KillConnection() throws IOException {
         input.close();
         output.close();
+        this.authorized = 2;
     }
 
     /**
@@ -210,7 +209,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized Information getInformation(int infID) throws IOException {
         if (authorized == 1) {
             try {
-                String outputMessage = "SAPU";
+                String outputMessage = "SAPU5";
                 output.writeObject(outputMessage);
                 output.writeObject(infID);
                 return (Information) input.readObject();
@@ -280,8 +279,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU8";
                 output.writeObject(outputMessage);
-                output.writeObject((int)user.getUserId());
-                output.writeObject(info.getId());
+                output.writeObject((int)user.getUser_ID());
+                output.writeObject(info.getID());
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
@@ -366,7 +365,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU10";
-                output.writeObject(outputMessage);
+                sendData(outputMessage);
                 Object o = readData();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;
