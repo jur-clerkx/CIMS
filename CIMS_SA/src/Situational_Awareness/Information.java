@@ -6,7 +6,7 @@
 package Situational_Awareness;
 
 import Field_Operations.Task;
-import Global.Domain.PublicUser;
+import Network.PublicUser;
 import java.io.Serializable;
 import static java.lang.Math.toIntExact;
 

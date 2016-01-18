@@ -5,8 +5,9 @@
  */
 package Application;
 
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
+import Situational_Awareness.Information;
+import Network.PublicUser;
+import Network.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -53,11 +54,11 @@ public class HomeSubController implements Initializable {
         simulation = LoginGuiController.simulation;
         Timer t;
         if (!simulation) {
-            if (CIMS_SA.con.getUser() instanceof PublicUser) {
-
+            if (!(CIMS_SA.con.getUser() instanceof User)) {
+                
                 if (CIMS_SA.con.getUser() != null) {
                     try {
-                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
                         listAvailableInformation.setItems(myObservableList);
                         t = new Timer();
                         t.scheduleAtFixedRate(new TimerTask() {
@@ -65,7 +66,7 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -75,7 +76,7 @@ public class HomeSubController implements Initializable {
                         Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
+                
             } else {
                 try {
                     if (CIMS_SA.con.getUser() != null) {
@@ -87,7 +88,7 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -110,8 +111,8 @@ public class HomeSubController implements Initializable {
     private void btnRefresh(MouseEvent event) {
         if (!simulation) {
             try {
-                if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                if (!(CIMS_SA.con.getUser() instanceof User)) {
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
                     listAvailableInformation.setItems(myObservableList);
                 } else {
 
@@ -133,8 +134,8 @@ public class HomeSubController implements Initializable {
         try {
             Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
 
-            if (info.getId() != -1) {
-                LoginGuiController.SelectedInfoID = (int)info.getId();
+            if (info.getID() != -1) {
+                LoginGuiController.SelectedInfoID = (int)info.getID();
                 Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
 
                 thisAnchor.getChildren().setAll(node);
@@ -150,7 +151,7 @@ public class HomeSubController implements Initializable {
             try {
                 Information info = (Information) listAvailableInformation.getSelectionModel().getSelectedItem();
 
-                LoginGuiController.SelectedInfoID = (int)info.getId();
+                LoginGuiController.SelectedInfoID = (int)info.getID();
                 Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));
                 thisAnchor.getChildren().setAll(node);
             } catch (IOException ex) {
