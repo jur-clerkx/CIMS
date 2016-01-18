@@ -90,9 +90,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String login = username + "/" + password;
             sendData(login.split("/"));
 
-            Thread.sleep(5000);
             //Check if login succeeded
-
             user = (User) readData();
 
             if (user == null) {
@@ -198,6 +196,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private void KillConnection() throws IOException {
         input.close();
         output.close();
+        this.authorized = 2;
     }
 
     /**
@@ -210,7 +209,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public synchronized Information getInformation(int infID) throws IOException {
         if (authorized == 1) {
             try {
-                String outputMessage = "SAPU";
+                String outputMessage = "SAPU5";
                 output.writeObject(outputMessage);
                 output.writeObject(infID);
                 return (Information) input.readObject();
@@ -366,7 +365,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU10";
-                output.writeObject(outputMessage);
+                sendData(outputMessage);
                 Object o = readData();
                 if (o instanceof ArrayList) {
                     returnInfo = (ArrayList<Information>) o;

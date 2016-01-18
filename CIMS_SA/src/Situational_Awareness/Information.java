@@ -49,10 +49,6 @@ public class Information implements Serializable{
 
     }
 
-    Information(Object object, String screenName, String text, String location, int i, int i0, int i1, int i2, String profileImageURL, Object object0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public String getName() {
         return name;
     }
