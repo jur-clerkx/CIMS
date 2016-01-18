@@ -5,7 +5,7 @@
  */
 package cims.field.operations.unit.app;
 
-import Field_Operations.Domain.Task;
+import Field_Operations.Task;
 import domain.ConnectionRunnable;
 import domain.PropertiesMediator;
 import javafx.application.Application;

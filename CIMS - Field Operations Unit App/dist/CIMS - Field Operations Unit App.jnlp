@@ -8,8 +8,6 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="lib/derbyclient.jar" size="535985" download="eager" />
-    <jar href="lib/javax.persistence_2.1.0.v201304241213.jar" size="160564" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="CIMS - Field Operations Unit App" >
     <param name="requiredFXVersion" value="8.0+"/>

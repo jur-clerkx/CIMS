@@ -5,9 +5,8 @@
  */
 package cims.field.operations.unit.app;
 
-import Field_Operations.Domain.Task;
-import Global.Domain.PrivateUser;
-import Global.Domain.User;
+import Field_Operations.Task;
+import Network.User;
 import domain.ConnectionRunnable;
 import java.io.IOException;
 import java.net.URL;
@@ -109,7 +108,7 @@ public class FXMLMainController implements Initializable, Observer {
     int counter = 0;
     ArrayList<Task> tasks;
     Task currentTask;
-    PrivateUser user;
+    User user;
     LocalTime lastUpdateTime;
 
     /**
@@ -180,7 +179,7 @@ public class FXMLMainController implements Initializable, Observer {
 
         //Fill current task
         if (currentTask != null) {
-            textFieldTaskID.setText(currentTask.getId() + "");
+            textFieldTaskID.setText(currentTask.getTaskID() + "");
             textFieldTaskName.setText(currentTask.getName());
             textFieldTaskStatus.setText(currentTask.getStatus());
             textFieldTaskLocation.setText(currentTask.getLocation());
@@ -199,7 +198,7 @@ public class FXMLMainController implements Initializable, Observer {
         }
 
         //Fill current user
-        textFieldID.setText("" + user.getUserId());
+        textFieldID.setText("" + user.getUser_ID());
         textFieldFirstName.setText(user.getFirstname());
         textFieldLastName.setText(user.getLastname());
         textFieldDate.setText("none");
@@ -254,7 +253,7 @@ public class FXMLMainController implements Initializable, Observer {
      */
     public void handleUpdateStatus(ActionEvent ae) {
         if (currentTask != null) {
-            CIMSFieldOperationsUnitApp.con.updateTaskStatus((int) currentTask.getId(), ((Button) ae.getSource()).getText());
+            CIMSFieldOperationsUnitApp.con.updateTaskStatus((int) currentTask.getTaskID(), ((Button) ae.getSource()).getText());
             currentTask.setStatus(((Button) ae.getSource()).getText());
         }
         updatePanes(null);
@@ -279,7 +278,7 @@ public class FXMLMainController implements Initializable, Observer {
     public void handleAcceptTask(ActionEvent ae) {
         Task selectedTask = (Task) tableViewTasks.getSelectionModel().getSelectedItem();
         if (selectedTask != null && currentTask == null) {
-            CIMSFieldOperationsUnitApp.con.acceptDenyTask((int) selectedTask.getId(), true, "Accepted");
+            CIMSFieldOperationsUnitApp.con.acceptDenyTask((int) selectedTask.getTaskID(), true, "Accepted");
             currentTask = selectedTask;
             tabPaneMain.getSelectionModel().select(tabActive);
         }
@@ -293,7 +292,7 @@ public class FXMLMainController implements Initializable, Observer {
     public void handleDenyTask(ActionEvent ae) {
         Task selectedTask = (Task) tableViewTasks.getSelectionModel().getSelectedItem();
         if (selectedTask != null) {
-            CIMSFieldOperationsUnitApp.con.acceptDenyTask((int) selectedTask.getId(), false, textAreaReasonDeny.getText());
+            CIMSFieldOperationsUnitApp.con.acceptDenyTask((int) selectedTask.getTaskID(), false, textAreaReasonDeny.getText());
             updatePanes(null);
         }
     }
