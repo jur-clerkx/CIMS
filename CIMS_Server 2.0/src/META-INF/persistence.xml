@@ -4,13 +4,13 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Field_Operations.Domain.Material</class>
     <class>Field_Operations.Domain.Progress</class>
-    <class>Field_Operations.Domain.Task</class>
-    <class>Global.Domain.PrivateUser</class>
-    <class>Global.Domain.User</class>
     <class>Field_Operations.Domain.Roadmap</class>
+    <class>Field_Operations.Domain.Task</class>
     <class>Field_Operations.Domain.Unit</class>
     <class>Field_Operations.Domain.Vehicle</class>
+    <class>Global.Domain.PrivateUser</class>
     <class>Global.Domain.PublicUser</class>
+    <class>Global.Domain.User</class>
     <class>Situational_Awareness.Domain.Information</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>

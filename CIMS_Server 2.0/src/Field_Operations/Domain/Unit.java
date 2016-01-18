@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -44,7 +45,8 @@ public class Unit implements Serializable {
     private List<Material> materials;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Vehicle> vehicles;
-    private Task task;
+    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
+    private List<Task> task;
 
     public Unit() {
     }
@@ -252,10 +254,10 @@ public class Unit implements Serializable {
     }
 
     public void setTask(Task task) {
-        this.task = task;
+        this.task.add(task);
     }
 
-    public Task getTasks() {
+    public List<Task> getTasks() {
        return this.task;
     }
 }

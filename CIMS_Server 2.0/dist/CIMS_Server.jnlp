@@ -7,13 +7,16 @@
     <offline-allowed/>
   </information>
   <resources>
+    <jfx:javafx-runtime version="8.0+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="CIMS_Server.jar" size="61825" download="eager" />
-    <jar href="lib\derbyclient.jar" size="535985" download="eager" />
-    <jar href="lib\eclipselink.jar" size="8478776" download="eager" />
-    <jar href="lib\javax.persistence_2.1.0.v201304241213.jar" size="164637" download="eager" />
-    <jar href="lib\mysql-connector-java-5.1.36-bin.jar" size="972009" download="eager" />
-    <jar href="lib\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar" size="1366247" download="eager" />
+    <jar href="CIMS_Server.jar" size="987055" download="eager" />
+    <jar href="lib/derbyclient.jar" size="535985" download="eager" />
+    <jar href="lib/eclipselink.jar" size="8384130" download="eager" />
+    <jar href="lib/javax.persistence_2.1.0.v201304241213.jar" size="160564" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.37.jar" size="985600" download="eager" />
+    <jar href="lib/org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar" size="1366247" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="CIMS_Server" >
     <param name="requiredFXVersion" value="8.0+"/>
