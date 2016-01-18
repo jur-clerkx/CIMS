@@ -125,7 +125,7 @@ public class CreateInformationController implements Initializable, Observer {
                 alert.showAndWait();
             }
         } else {
-            Task task = new Task("Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+            Task task = new Task("TaskCreated", "High", "Open", "Eindhoven", "Fuuuuuuck");
             PublicUser user = new PublicUser("Bas", "Koch", "12345467","");
             Information simulationInformation = new Information(task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user);
             LoginGuiController.information.add(simulationInformation);
