@@ -8,9 +8,9 @@ package Connection;
 import Application.CIMS_SA;
 import Application.SendInformationController;
 import Field_Operations.Unit;
-import Network.User;
-import Situational_Awareness.Information;
-import Network.PublicUser;
+import Global.Domain.User;
+import Situational_Awareness.Domain.Information;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -280,8 +280,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
             try {
                 String outputMessage = "SAPU8";
                 output.writeObject(outputMessage);
-                output.writeObject((int)user.getUser_ID());
-                output.writeObject(info.getID());
+                output.writeObject(user.getUserId());
+                output.writeObject(info.getId());
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);

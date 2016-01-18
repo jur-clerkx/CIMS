@@ -6,9 +6,9 @@
 package Application;
 
 import Connection.ConnectionRunnable;
-import Situational_Awareness.Information;
-import Field_Operations.Task;
-import Network.PublicUser;
+import Field_Operations.Domain.Task;
+import Situational_Awareness.Domain.Information;
+import Global.Domain.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
@@ -30,7 +30,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -126,8 +125,8 @@ public class CreateInformationController implements Initializable, Observer {
             }
         } else {
             Task task = new Task(190,"Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
-            PublicUser user = new PublicUser(10001, "Bas", "Koch","12345467");
-            Information simulationInformation = new Information(101L,task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user, false);
+            PublicUser user = new PublicUser("Bas", "Koch","12345467", "1");
+            Information simulationInformation = new Information(task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user);
             LoginGuiController.information.add(simulationInformation);
         }
 

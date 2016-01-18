@@ -5,8 +5,8 @@
  */
 package Application;
 
-import Network.PublicUser;
-import Situational_Awareness.Information;
+import Global.Domain.PublicUser;
+import Situational_Awareness.Domain.Information;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -88,7 +88,6 @@ public class EditInformationController implements Initializable {
         simulation = LoginGuiController.simulation;
         comboInformation.setOnAction((event) -> {
             if (simulation) {
-<<<<<<< HEAD
                 int index = -1;
                 for (Information infoLoop : LoginGuiController.information) {
                     if (infoLoop.equals(comboInformation.getSelectionModel().getSelectedItem())) {
@@ -98,15 +97,11 @@ public class EditInformationController implements Initializable {
                 info = LoginGuiController.information.get(index);
 
                 txtName.setText("" + info.getId());
-=======
-                info = LoginGuiController.information.get(0);
-                txtName.setText(""+info.getID());
->>>>>>> Twitter_server_change
                 txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getURL());
+                txtURL.setText(info.getImageURL());
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
@@ -116,16 +111,12 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-<<<<<<< HEAD
                         txtName.setText("" + info.getId());
-=======
-                        txtName.setText(""+info.getID());
->>>>>>> Twitter_server_change
                         txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getURL());
+                        txtURL.setText(info.getImageURL());
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
@@ -149,11 +140,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-<<<<<<< HEAD
                 obsInformationList.addAll(CIMS_SA.con.getInformation((int) CIMS_SA.con.getUser().getUserId()));
-=======
-                obsInformationList.addAll(CIMS_SA.con.getInformation((int)CIMS_SA.con.getUser().getUser_ID()));
->>>>>>> Twitter_server_change
             } catch (Exception ex) {
                 System.out.println("Error filling combobox");
             }
@@ -166,8 +153,6 @@ public class EditInformationController implements Initializable {
         if (LoginGuiController.SelectedInfoID != 0) {
             if (simulation) {
                 int infoID = MainOperatorController.SelectedInformationID;
-<<<<<<< HEAD
-
                 for (Information infoLoop : LoginGuiController.information) {
                     if (infoLoop.getId() == infoID) {
                         int indexFound = LoginGuiController.information.indexOf(infoLoop);
@@ -175,16 +160,11 @@ public class EditInformationController implements Initializable {
                     }
                 }
                 txtName.setText("" + info.getId());
-=======
-                
-                info = LoginGuiController.information.get(infoID);
-                txtName.setText(""+info.getID());
->>>>>>> Twitter_server_change
                 txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getURL());
+                txtURL.setText(info.getImageURL());
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
@@ -195,16 +175,13 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-<<<<<<< HEAD
                         txtName.setText("" + info.getId());
-=======
-                        txtName.setText(""+info.getID());
->>>>>>> Twitter_server_change
+
                         txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getURL());
+                        txtURL.setText(info.getImageURL());
                         Image newImage = new Image(txtURL.getText());
                         imageView.setImage(newImage);
                         txtArea.setText(Integer.toString(info.getImpact()));
@@ -267,7 +244,6 @@ public class EditInformationController implements Initializable {
             Private = false;
         }
         if (simulation) {
-<<<<<<< HEAD
             user = new PublicUser("Bas", "Koch", "", "00000");
             Information editedInfo = new Information(info.getTask(), name, txtDescription.getText(), txtLocation.getText(),
                     Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user);
@@ -288,21 +264,19 @@ public class EditInformationController implements Initializable {
                 LoginGuiController.information.remove(infoFound);
                 LoginGuiController.information.add(editedInfo);
 
-=======
-            user = new PublicUser(108, "Bas", "Koch","00000");
-            Information editedInfo = new Information((long)info.getID(),info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
-                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user, false);
-            Information infoOG = LoginGuiController.information.get(0);
-            if(infoOG != null) {
-                LoginGuiController.information.remove(infoOG);
-                LoginGuiController.information.add(info);
->>>>>>> Twitter_server_change
+
+//            user = new PublicUser(108, "Bas", "Koch","00000");
+//            Information editedInfo2 = new Information((long)info.getID(),info.getTaskID(), name, txtDescription.getText(), txtLocation.getText(),
+//                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user, false);
+//            Information infoOG = LoginGuiController.information.get(0);
+//            if(infoOG != null) {
+//                LoginGuiController.information.remove(infoOG);
+//                LoginGuiController.information.add(info);
             }
             obsInformationList.clear();
             obsInformationList.addAll(LoginGuiController.information);
 
         } else {
-<<<<<<< HEAD
             if (CIMS_SA.con.EditInformation(name, txtDescription.getText(),
                     txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
                     toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
@@ -313,21 +287,10 @@ public class EditInformationController implements Initializable {
                 alert.setContentText("Information succesfully edited");
                 alert.showAndWait();
             }
-=======
-            if (CIMS_SA.con.EditInformation(name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
-                toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
-                (int)this.comboInformation.getSelectionModel().getSelectedItem().getID(), Private)
-                == true) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Successfull");
-            alert.setContentText("Information succesfully edited");
-            alert.showAndWait();
         }
->>>>>>> Twitter_server_change
         }
 
-    }
-
+    
     @FXML
     private void Cancel(MouseEvent event
     ) {
