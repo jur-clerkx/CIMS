@@ -34,19 +34,14 @@ public class Unit implements Serializable {
      * @param shift Not longer than 255 characters or null
      */
     public Unit(int unitID, String name, String description, String shift) {
-        if (unitID > 0 && name != null && name.length() < 255 && description != null && description.length() < 255 && shift != null && shift.length() < 255) {
-            this.unitID = unitID;
-            this.name = name;
-            this.description = description;
-            this.shift = shift;
-            this.members = new ArrayList<>();
-            this.materials = new ArrayList<>();
-            this.tasks = new ArrayList<>();
-            this.vehicles = new ArrayList<>();
-        } else {
-            throw new IllegalArgumentException("Make sure you fill in every field.");
-        }
-
+        this.unitID = unitID;
+        this.name = name;
+        this.description = description;
+        this.shift = shift;
+        this.members = new ArrayList<>();
+        this.materials = new ArrayList<>();
+        this.tasks = new ArrayList<>();
+        this.vehicles = new ArrayList<>();
     }
 
     public int getUnitID() {
@@ -201,6 +196,6 @@ public class Unit implements Serializable {
     }
 
     public void setTask(Task task1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.tasks.add(task1);
     }
 }
