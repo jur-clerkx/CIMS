@@ -5,10 +5,10 @@
  */
 package domain;
 
-import Field_Operations.Domain.Roadmap;
-import Field_Operations.Domain.Task;
-import Field_Operations.Domain.Unit;
-import Global.Domain.PrivateUser;
+import Field_Operations.Roadmap;
+import Field_Operations.Task;
+import Field_Operations.Unit;
+import Network.User;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,22 +17,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -43,7 +36,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    private PrivateUser user;
+    private User user;
     private Unit unit;
 
     private Socket socket;
@@ -110,7 +103,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             password = "apahvohiewaldjfpaoivwe";
 
             //Check if login succeeded
-            user = (PrivateUser) readData();
+            user = (User) readData();
 
             //Get the unit of the user
             sendData("FOUS6");
@@ -251,7 +244,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      *
      * @return Can be null if not logged in
      */
-    public synchronized PrivateUser getUser() {
+    public synchronized User getUser() {
         return this.user;
     }
 
@@ -323,7 +316,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      */
     public synchronized void acceptDenyTask(int taskID, boolean accepted, String reason) {
         Object[] params = new Object[4];
-        params[0] = this.unit.getId();
+        params[0] = this.unit.getUnitID();
         params[1] = taskID;
         if (accepted) {
             params[2] = 1;
@@ -360,7 +353,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         if (getStatus() == 1) {
             try {
                 sendData("FOUS8");
-                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getId());
+                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
                 return (ArrayList<Roadmap>) readData();
             } catch (IOException ex) {
                 System.out.println("IO exception!");

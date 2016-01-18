@@ -5,7 +5,7 @@
  */
 package cims.field.operations.unit.app;
 
-import Field_Operations.Domain.Unit;
+import Field_Operations.Unit;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -50,7 +50,7 @@ public class FXMLUnitOverviewController implements Initializable {
             Stage stage = (Stage)textFieldUnitID.getScene().getWindow();
             stage.close();
         } else {
-            textFieldUnitID.setText("" + unitInfo.getId());
+            textFieldUnitID.setText("" + unitInfo.getUnitID());
             textFieldUnitName.setText(unitInfo.getName());
             textAreaUnitDescription.setText(unitInfo.getDescription());
             textFieldUnitShift.setText("none");
