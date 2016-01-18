@@ -9,6 +9,9 @@ import java.util.List;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 import Situational_Awareness.Domain.Information;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author rick
@@ -41,9 +44,18 @@ public class TwitterSearch {
 
             for (Status tweet : tweets) {
                 System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-                //sort algorythm
+                
+                Date tweeted = tweet.getCreatedAt();
+                
+                if(tweeted.getTime() >= java.lang.System.currentTimeMillis() - 36000000){
                 Information newInfo = new Information(null,tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(), 0, 0, 0, 0, tweet.getUser().getProfileImageURL(), null);
                 informationList.add(newInfo);
+                }
+                else{
+                    System.out.println("information not relevant");
+                }
+                
+                
             }
         }
         catch (Exception te) {
@@ -52,3 +64,4 @@ public class TwitterSearch {
         return informationList;
     }
 }
+
