@@ -66,27 +66,13 @@ public class Server {
                         Socket s = serverSocket.accept();
                         if (searching) {
                             Connection c = new Connection(s);
-                            cleanUpList(c.getUserId());
+                            //cleanUpList(c.getUserId());
                             connections.add(c);
                             LOG.log(Level.INFO, "New Client Connected: {0}", s.getInetAddress());
                         }
                     } catch (IOException e) {
                         LOG.log(Level.WARNING, "IOException occurred: {0}", e.getMessage());
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InvalidKeySpecException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (NoSuchPaddingException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InvalidKeyException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IllegalBlockSizeException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (BadPaddingException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InvalidAlgorithmParameterException ex) {
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | InvalidAlgorithmParameterException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }

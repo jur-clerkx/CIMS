@@ -97,18 +97,18 @@ public class DatabaseMediator {
             try {
                 String query = "SELECT * FROM CIMS.User WHERE username='" + username + "' AND password='" + password + "';";
                 ResultSet rs = executeQuery(query);
-                rs.next();
+                while (rs.next()) {
+                    int user_ID = rs.getInt("id");
+                    String firstname = rs.getString("firstname");
+                    String lastname = rs.getString("lastname");
+                    String gender = rs.getString("gender");
+                    String rank = rs.getString("rank");
+                    String sector = rs.getString("sector");
+                    String dateofbirth = rs.getString("dateOfBirth");
+                    int securityLevel = rs.getInt("level");
 
-                int user_ID = rs.getInt("id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String gender = rs.getString("gender");
-                String rank = rs.getString("rank");
-                String sector = rs.getString("sector");
-                String dateofbirth = rs.getString("dateOfBirth");
-                int securityLevel = rs.getInt("level");
-
-                return new User(user_ID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+                    return new User(user_ID, firstname, lastname, gender, rank, sector, dateofbirth, securityLevel);
+                }
             } catch (SQLException e) {
                 System.out.println("checkLogin: " + e.getMessage());
             } finally {
@@ -154,16 +154,16 @@ public class DatabaseMediator {
     public PublicUser checkPublicLogin(String username, String password) {
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Public_User WHERE username='" + username + "' AND password='" + password + "';";
+                String query = "SELECT * FROM CIMS.Public_user WHERE username='" + username + "' AND password='" + password + "';";
                 ResultSet rs = executeQuery(query);
-                rs.next();
+                while (rs.next()) {
+                    int user_ID = rs.getInt("id");
+                    String firstname = rs.getString("firstname");
+                    String lastname = rs.getString("lastname");
+                    String bsn = rs.getString("BSN_Nr");
 
-                int user_ID = rs.getInt("id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String bsn = rs.getString("BSN_Nr");
-
-                return new PublicUser(user_ID, firstname, lastname, bsn);
+                    return new PublicUser(user_ID, firstname, lastname, bsn);
+                }
             } catch (SQLException e) {
                 System.out.println("checkLogin: " + e.getMessage());
             } finally {
@@ -1152,7 +1152,8 @@ public class DatabaseMediator {
      *
      * @param userId ID of user that is logged on
      * @param o object array with all the information format:
-     * name,description,location,casualties, toxic, danger, impect, image and if its private
+     * name,description,location,casualties, toxic, danger, impect, image and if
+     * its private
      * @return a boolean true if success false if not.
      */
     public boolean createInformation(int userId, Object o) {
@@ -1248,7 +1249,7 @@ public class DatabaseMediator {
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu,toggle);
+                        casualties, toxic, danger, impact, image, pu, toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {
@@ -1292,7 +1293,7 @@ public class DatabaseMediator {
                 Network.PublicUser pu = getPublicUserById(rs.getInt("public_UserId"));
 
                 info = new Information(infoId, task, name, description, location,
-                        casualties, toxic, danger, impact, image, pu,toggle);
+                        casualties, toxic, danger, impact, image, pu, toggle);
             } catch (SQLException e) {
                 System.out.println("getProgress: " + e.getMessage());
             } finally {

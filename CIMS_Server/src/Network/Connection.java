@@ -101,9 +101,11 @@ public class Connection {
                         Object obj = read();
                         if (user.authorized()) {
                             if (obj instanceof String) {
+                                System.out.println("Function: " + obj);
                                 String s = obj.toString();
                                 RequestData(s);
                             } else {
+                                System.out.println("Data rejected, not the correct format");
                                 write("Data rejected, not the correct format");
                             }
                         } else {
@@ -220,6 +222,7 @@ public class Connection {
                 } else {
                     write("Could not create progress");
                 }
+                break;
             case "FOOP2":
                 o = read();
                 if (dbMediator.createUnit(o)) {

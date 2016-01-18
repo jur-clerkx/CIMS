@@ -45,7 +45,7 @@ public class Unit implements Serializable {
     private List<Material> materials;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Vehicle> vehicles;
-    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Task> task;
 
     public Unit() {
