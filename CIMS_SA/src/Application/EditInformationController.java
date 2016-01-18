@@ -46,9 +46,9 @@ public class EditInformationController implements Initializable {
     @FXML
     private ComboBox<Information> comboInformation;
     @FXML
-    private TextField txtID;
-    @FXML
     private TextField txtName;
+    @FXML
+    private TextField txtLastname;
     @FXML
     private TextField txtLocation;
     @FXML
@@ -96,17 +96,12 @@ public class EditInformationController implements Initializable {
                 }
                 info = LoginGuiController.information.get(index);
 
-                txtID.setText("" + info.getId());
-                txtName.setText(info.getName());
+                txtName.setText("" + info.getId());
+                txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                if(info.getImageURL() != null) {
-                    txtURL.setText(info.getImageURL());
-                } else {
-                    txtURL.setText("Application/untitled.png");
-                }
-                
+                txtURL.setText(info.getImageURL());
                 Image newImage = new Image(txtURL.getText());
                 imageView.setImage(newImage);
                 txtArea.setText(Integer.toString(info.getImpact()));
@@ -116,8 +111,8 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtID.setText("" + info.getId());
-                        txtName.setText(info.getName());
+                        txtName.setText("" + info.getId());
+                        txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
@@ -165,8 +160,8 @@ public class EditInformationController implements Initializable {
                         info = LoginGuiController.information.get(indexFound);
                     }
                 }
-                txtID.setText("" + info.getId());
-                txtName.setText(info.getName());
+                txtName.setText("" + info.getId());
+                txtLastname.setText(info.getName());
                 txtDescription.setText(info.getDescription());
                 txtLocation.setText(info.getLocation());
                 txtNRofVictims.setText(Integer.toString(info.getCasualities()));
@@ -181,8 +176,8 @@ public class EditInformationController implements Initializable {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtID.setText("" + info.getId());
-                        txtName.setText(info.getName());
+                        txtName.setText("" + info.getId());
+                        txtLastname.setText(info.getName());
                         txtDescription.setText(info.getDescription());
                         txtLocation.setText(info.getLocation());
                         txtNRofVictims.setText(Integer.toString(info.getCasualities()));
@@ -224,7 +219,7 @@ public class EditInformationController implements Initializable {
     @FXML
     private void RegisterInformation(MouseEvent event
     ) {
-        String name = txtName.getText();
+        String name = txtName.getText() + " " + txtLastname.getText();
 
         boolean Private;
         int danger = 0;
@@ -251,7 +246,7 @@ public class EditInformationController implements Initializable {
         if (simulation) {
             user = new PublicUser("Bas", "Koch", "", "00000");
             Information editedInfo = new Information(info.getTask(), name, txtDescription.getText(), txtLocation.getText(),
-                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), null, user);
+                    Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), name, user);
             /*Information infoOG = LoginGuiController.information.get(0);
              if (infoOG != null) {
              LoginGuiController.information.remove(infoOG);
