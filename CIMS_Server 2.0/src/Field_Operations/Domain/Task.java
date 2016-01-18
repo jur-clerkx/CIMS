@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -43,10 +44,10 @@ public class Task implements Serializable {
     private boolean accepted;
     private String reason;
 
-    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "Task", fetch = FetchType.EAGER)
     private List<Progress> progressList;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Unit> units;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Unit unit;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Roadmap> roadmaps;
 
@@ -183,23 +184,8 @@ public class Task implements Serializable {
      *
      * @return List with units
      */
-    public List<Unit> getUnits() {
-        return this.units;
-    }
-
-    /**
-     * Gets a specific unit
-     *
-     * @param ID id of this unit
-     * @return unit with the specific unit
-     */
-    public Unit getUnit(long ID) {
-        for (Unit unit : units) {
-            if (unit.getId() == ID) {
-                return unit;
-            }
-        }
-        return null;
+    public Unit getUnit() {
+        return this.unit;
     }
 
     /**
@@ -243,9 +229,7 @@ public class Task implements Serializable {
      * @param unit can't be in the list already
      */
     public void addUnit(Unit unit) {
-        if (!this.units.contains(unit)) {
-            this.units.add(unit);
-        }
+        this.unit = unit;
     }
 
     /**
@@ -253,10 +237,8 @@ public class Task implements Serializable {
      *
      * @param unit has to be in the list
      */
-    public void removeUnit(Unit unit) {
-        if (this.units.contains(unit)) {
-            this.units.remove(unit);
-        }
+    public void removeUnit() {
+       this.unit = null;
     }
 
     /**
@@ -303,9 +285,30 @@ public class Task implements Serializable {
         this.location = location;
         this.description = description;
         this.progressList = new ArrayList();
-        this.units = new ArrayList();
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Constructs a task object
+     *
+     * @param name Not longer than 255 characters or null
+     * @param urgency Low, Medium or High
+     * @param status Not longer than 255 characters or null
+     * @param location Not longer than 255 characters or null
+     * @param description Not longer than 255 characters or null
+     */
+    public Task(int id, String name, String urgency, String status, String location, String description) {
+        this.id = id;
+        this.name = name;
+        this.urgency = urgency;
+        this.status = status;
+        this.location = location;
+        this.description = description;
+        this.progressList = new ArrayList();
+    }
+
+>>>>>>> parent of eb53995... bla
     @Override
     public String toString() {
         return "Name: " + this.name + ", Urgency: " + this.urgency + ", Status: " + this.status;

@@ -65,7 +65,7 @@ public class TaskMGR {
         if (!objects[1].equals("Low") && !objects[1].equals("Medium") && !objects[1].equals("High")) {
             return false;
         }
-        taskDAO.create(new Task((String) objects[0], (String) objects[1], 
+        taskDAO.create(new Task((String) objects[0], (String) objects[1],
                 (String) objects[2], (String) objects[3], (String) objects[4]));
         return true;
     }
@@ -92,11 +92,9 @@ public class TaskMGR {
     public ArrayList<Task> findAllTasksByUserId(int id) {
         ArrayList<Task> tasks = new ArrayList<>();
         for (Task task : taskDAO.findAll()) {
-            for (Unit u : task.getUnits()) {
-                for (PrivateUser pu : u.getMembers()) {
-                    if (pu.getUserId() == id) {
-                        tasks.add(task);
-                    }
+            for (PrivateUser pu : task.getUnit().getMembers()) {
+                if (pu.getUserId() == id) {
+                    tasks.add(task);
                 }
             }
         }
