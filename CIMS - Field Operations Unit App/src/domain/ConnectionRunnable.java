@@ -76,7 +76,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             RSAcipher.init(Cipher.ENCRYPT_MODE, publickey);
 
             //Try to connect to server
-            socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1250);
+            socket = new Socket(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.props.getServerURL(), 1234);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
