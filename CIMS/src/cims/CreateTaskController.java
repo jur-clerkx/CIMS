@@ -5,8 +5,8 @@
  */
 package cims;
 
-import Field_Operations.Domain.Task;
-import Field_Operations.Domain.Unit;
+import Field_Operations.Task;
+import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -157,12 +157,12 @@ public class CreateTaskController implements Initializable {
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(taskName, urgencyCode, statusCode, taskLocation, description);
+                task = new Task(taskID,taskName, urgencyCode, statusCode, taskLocation, description);
                 OperatorMainController.myController.createTask(taskName, urgencyCode, description);
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add((int)task.getId());
+                assignedUnits.add((int)task.getTaskID());
                 for (Unit u : AssignedList) {
-                    assignedUnits.add((int)u.getId());
+                    assignedUnits.add((int)u.getUnitID());
                 }
 
                 OperatorMainController.myController.assignTask(assignedUnits.toArray());
@@ -200,10 +200,10 @@ public class CreateTaskController implements Initializable {
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(taskName, urgencyCode, statusCode, taskLocation, description);
+                task = new Task(101,taskName, urgencyCode, statusCode, taskLocation, description);
                 OperatorMainController.active_Tasks.add(task);
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add((int)task.getId());
+                assignedUnits.add((int)task.getTaskID());
                 for (Unit u : AssignedList) {
                     u.setTask(task);
                 }

@@ -5,8 +5,8 @@
  */
 package cims;
 
-import Field_Operations.Domain.Task;
-import Field_Operations.Domain.Unit;
+import Field_Operations.Task;
+import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -92,13 +92,13 @@ public class TaskInfoController implements Initializable {
             selectedTask = null;
             InactiveUnits = FXCollections.observableArrayList();
             for (Task t : OperatorMainController.active_Tasks) {
-                if (t.getId() == ID) {
+                if (t.getTaskID()== ID) {
                     selectedTask = t;
                     fillPage();
                 }
             }
             for (Task t : OperatorMainController.inactive_Task) {
-                if (t.getId() == ID) {
+                if (t.getTaskID() == ID) {
                     selectedTask = t;
                     fillPage();
                 }
@@ -138,9 +138,9 @@ public class TaskInfoController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     if (selectedTask.getStatus() == "Active") {
-                        OperatorMainController.myController.removeActiveTask((int) selectedTask.getId());
+                        OperatorMainController.myController.removeActiveTask((int) selectedTask.getTaskID());
                     } else {
-                        OperatorMainController.myController.removeInactiveTask((int) selectedTask.getId());
+                        OperatorMainController.myController.removeInactiveTask((int) selectedTask.getTaskID());
                     }
                 } else {
                     alert.close();
@@ -149,7 +149,7 @@ public class TaskInfoController implements Initializable {
                 if (selectedTask.getStatus() == "Active") {
                     int index = -1;
                     for (Task t : OperatorMainController.active_Tasks) {
-                        if (t.getId() == selectedTask.getId()) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
                             index = OperatorMainController.active_Tasks.indexOf(t);
                         }
                     }
@@ -157,7 +157,7 @@ public class TaskInfoController implements Initializable {
                 } else {
                     int index = -1;
                     for (Task t : OperatorMainController.inactive_Task) {
-                        if (t.getId() == selectedTask.getId()) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
                             index = OperatorMainController.inactive_Task.indexOf(t);
                         }
                     }
@@ -186,7 +186,7 @@ public class TaskInfoController implements Initializable {
                 String newLocation = textFieldLocation.getText();
                 // Edit currently selected task with new task.
                 if (newLocation != null) {
-                    OperatorMainController.myController.editTask((int) selectedTask.getId(), newLocation);
+                    OperatorMainController.myController.editTask((int) selectedTask.getTaskID(), newLocation);
                     editedTask = selectedTask;
                     editedTask.setLocation(newLocation);
                 }
@@ -200,19 +200,19 @@ public class TaskInfoController implements Initializable {
                 int id = -1;
                 String state = "";
                 for (Task t : OperatorMainController.active_Tasks) {
-                    if (t.getId() == Long.parseLong(textFieldID.getText())) {
+                    if (t.getTaskID() == Long.parseLong(textFieldID.getText())) {
                         id = OperatorMainController.active_Tasks.indexOf(t);
                         state = "true";
                     }
                 }
                 for (Task t : OperatorMainController.inactive_Task) {
-                    if (t.getId() == Long.parseLong(textFieldID.getText())) {
+                    if (t.getTaskID() == Long.parseLong(textFieldID.getText())) {
                         id = OperatorMainController.inactive_Task.indexOf(t);
                         state = "false";
                     }
                 }
 
-                Task t = new Task(textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
+                Task t = new Task(101,textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
 
                 if (state.equals("true")) {
                     OperatorMainController.active_Tasks.remove(id);
@@ -245,9 +245,9 @@ public class TaskInfoController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 if (selectedTask.getStatus() == "Active") {
-                    OperatorMainController.myController.removeActiveTask((int) selectedTask.getId());
+                    OperatorMainController.myController.removeActiveTask((int) selectedTask.getTaskID());
                 } else {
-                    OperatorMainController.myController.removeInactiveTask((int) selectedTask.getId());
+                    OperatorMainController.myController.removeInactiveTask((int) selectedTask.getTaskID());
                 }
             } else {
                 alert.close();
@@ -258,7 +258,7 @@ public class TaskInfoController implements Initializable {
                 String state = "";
                 int index = -1;
                     for (Task t : OperatorMainController.active_Tasks) {
-                        if (t.getId() == selectedTask.getId()) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
                             index = OperatorMainController.active_Tasks.indexOf(t);
                             state = "active";
                         }
@@ -266,7 +266,7 @@ public class TaskInfoController implements Initializable {
                     OperatorMainController.active_Tasks.remove(index);
 
                     for (Task t : OperatorMainController.inactive_Task) {
-                        if (t.getId() == selectedTask.getId()) {
+                        if (t.getTaskID() == selectedTask.getTaskID()) {
                             index = OperatorMainController.inactive_Task.indexOf(t);
                             state = "inactive";
                         }
@@ -315,7 +315,7 @@ public class TaskInfoController implements Initializable {
             if (selectedTask != null) {
                 textFieldName.setText(selectedTask.getName());
                 textAreaDescription.setText(selectedTask.getDescription());
-                textFieldID.setText("" + selectedTask.getId());
+                textFieldID.setText("" + selectedTask.getTaskID());
                 textFieldLocation.setText(selectedTask.getLocation());
                 comboboxUrgency.setPromptText(selectedTask.getUrgency());
                 comboboxStatus.setPromptText(selectedTask.getStatus());

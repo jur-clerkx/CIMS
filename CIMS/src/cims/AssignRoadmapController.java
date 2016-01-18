@@ -6,8 +6,8 @@
 package cims;
 
 
-import Field_Operations.Domain.Roadmap;
-import Field_Operations.Domain.Task;
+import Field_Operations.Roadmap;
+import Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class AssignRoadmapController implements Initializable {
     private void btnAssign(MouseEvent event) {
         if (!Simulation) {
             try {
-                if (OperatorMainController.myController.assignRoadmaps((int)cboxUnits.getSelectionModel().getSelectedItem().getId(),(int) cboxRoadmaps.getSelectionModel().getSelectedItem().getId())) {
+                if (OperatorMainController.myController.assignRoadmaps((int)cboxUnits.getSelectionModel().getSelectedItem().getTaskID(),(int) cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Successfull");
                     alert.setContentText("Roadmap succesfully assigned");
@@ -110,7 +110,7 @@ public class AssignRoadmapController implements Initializable {
             }
         } else {
 
-            OperatorMainController.roadmaps.add(new Roadmap( "UserCreated", "UserCreated"));
+            OperatorMainController.roadmaps.add(new Roadmap(12,"UserCreated", "UserCreated"));
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Roadmap succesfully assigned");

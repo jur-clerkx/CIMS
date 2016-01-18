@@ -5,7 +5,7 @@
  */
 package cims;
 
-import Field_Operations.Domain.Unit;
+import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -89,7 +89,7 @@ public class UnitsController implements Initializable {
 
                             Unit myUnit = row.getItem();
                             try {
-                                OperatorMainController.myController.selectedUnitID = (int)myUnit.getId();
+                                OperatorMainController.myController.selectedUnitID = (int)myUnit.getUnitID();
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
                                 Stage stage = new Stage();
@@ -112,13 +112,13 @@ public class UnitsController implements Initializable {
                         if (event.getClickCount() == 2 && (!row.isEmpty())) {
                             Unit myUnit = row.getItem();
                             try {
-                                OperatorMainController.myController.selectedUnitID = (int)myUnit.getId();
+                                OperatorMainController.myController.selectedUnitID = (int)myUnit.getUnitID();
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
                                 Stage stage = new Stage();
                                 stage.initModality(Modality.APPLICATION_MODAL);
                                 stage.initStyle(StageStyle.DECORATED);
-                                stage.setTitle("Unit" + myUnit.getId());
+                                stage.setTitle("Unit" + myUnit.getUnitID());
                                 stage.setScene(new Scene(root1));
                                 stage.show();
                             } catch (Exception x) {
@@ -156,7 +156,7 @@ public class UnitsController implements Initializable {
 
                             Unit myUnit = row.getItem();
                             try {
-                                OperatorMainController.selectedUnitID = (int)myUnit.getId();
+                                OperatorMainController.selectedUnitID = (int)myUnit.getUnitID();
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
                                 Stage stage = new Stage();
@@ -179,13 +179,13 @@ public class UnitsController implements Initializable {
                         if (event.getClickCount() == 2 && (!row.isEmpty())) {
                             Unit myUnit = row.getItem();
                             try {
-                                OperatorMainController.selectedUnitID = (int)myUnit.getId();
+                                OperatorMainController.selectedUnitID = (int)myUnit.getUnitID();
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
                                 Stage stage = new Stage();
                                 stage.initModality(Modality.APPLICATION_MODAL);
                                 stage.initStyle(StageStyle.DECORATED);
-                                stage.setTitle("Unit" + myUnit.getId());
+                                stage.setTitle("Unit" + myUnit.getUnitID());
                                 stage.setScene(new Scene(root1));
                                 stage.show();
                             } catch (Exception x) {
@@ -234,7 +234,7 @@ public class UnitsController implements Initializable {
         if (!Simulation) {
             try {
                 if (selectedUnit != null) {
-                    OperatorMainController.myController.DisbandUnit((int)selectedUnit.getId());
+                    OperatorMainController.myController.DisbandUnit((int)selectedUnit.getUnitID());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);

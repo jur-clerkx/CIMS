@@ -6,11 +6,11 @@
 package cims;
 
 
-import Field_Operations.Domain.Material;
-import Field_Operations.Domain.Task;
-import Field_Operations.Domain.Unit;
-import Field_Operations.Domain.Vehicle;
-import Global.Domain.PrivateUser;
+import Field_Operations.Material;
+import Field_Operations.Task;
+import Field_Operations.Unit;
+import Field_Operations.Vehicle;
+import Network.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -122,13 +122,13 @@ public class UnitInfoController implements Initializable {
             int ID = OperatorMainController.selectedUnitID;
             mySelectedUnit = null;
             for (Unit i : OperatorMainController.inactive_Units) {
-                if (i.getId() == ID) {
+                if (i.getUnitID()== ID) {
                     mySelectedUnit = i;
                 }
             }
 
             for (Unit i : OperatorMainController.active_Units) {
-                if (i.getId() == ID) {
+                if (i.getUnitID() == ID) {
                     mySelectedUnit = i;
                 }
             }
@@ -180,42 +180,42 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
 
-            Unit myunit = new Unit(textfieldName.getText(), textfieldLocation.getText());
+            Unit myunit = new Unit(101,textfieldName.getText(), textfieldLocation.getText(),"");
             
             
             
             for(int i = 0; i < NRofAmbulancePeople; i++)
             {
-                myunit.addUser(new PrivateUser("test","test,","test","test","Medical","test",0,"test"));
+                myunit.addUser(new User(i+1,"test","test,","test","test","Medical","test",0));
             }
             
             for(int i = 0; i < NrOFPolicemen; i++)
             {
-                myunit.addUser(new PrivateUser("test","test,","test","test","Police","test",0,"test"));
+                myunit.addUser(new User(i+2,"test","test,","test","test","Police","test",0));
             }
             
             for(int i = 0; i < NRofFireFIghters; i++)
             {
-                myunit.addUser(new PrivateUser("test","test,","test","test","Fire","test",0,"test"));
+                myunit.addUser(new User(i+3,"test","test,","test","test","Fire","test",0));
             }
             
             String selectedUnit = "inactive";
             Unit uss = null;
             for (Unit us : OperatorMainController.active_Units) {
-                if (myunit.getId() == us.getId()) {
+                if (myunit.getUnitID()== us.getUnitID()) {
                     selectedUnit = "Active";
                     uss = us;
                 }
             }
 
             for (Unit us : OperatorMainController.inactive_Units) {
-                if (myunit.getId() == us.getId()) {
+                if (myunit.getUnitID() == us.getUnitID()) {
                     selectedUnit = "Inactive";
                     uss = us;
                 }
             }
             if (uss != null) {
-                myunit.setTask(uss.getTasks());
+                myunit.acceptTask(uss.getTasks().get(0));
             }
             if (selectedUnit.equals("Active")) {
                 int i = OperatorMainController.active_Units.indexOf(uss);
@@ -321,7 +321,7 @@ public class UnitInfoController implements Initializable {
         }
         if (mySelectedUnit.getTasks() != null) {
             Task task = (Task) mySelectedUnit.getTasks();
-            textfieldTaskID.setText(Integer.toString((int)task.getId()));
+            textfieldTaskID.setText(Integer.toString((int)task.getTaskID()));
             textfieldTaskname.setText(task.getName());
         }
 
@@ -343,7 +343,7 @@ public class UnitInfoController implements Initializable {
             }
         }
 
-        for (PrivateUser u : mySelectedUnit.getMembers()) {
+        for (User u : mySelectedUnit.getMembers()) {
 
             if (u.getSector().contains("Police")) {
                 policeUsers++;

@@ -5,7 +5,7 @@
  */
 package cims;
 
-import Field_Operations.Domain.Roadmap;
+import Field_Operations.Roadmap;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,7 +64,7 @@ public class RoadmapCreateController implements Initializable {
             }
 
         } else {
-            OperatorMainController.roadmaps.add(new Roadmap( txtName.getText(), txtDescription.getText()));
+            OperatorMainController.roadmaps.add(new Roadmap( 102,txtName.getText(), txtDescription.getText()));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Roadmap succesfully created.");

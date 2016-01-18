@@ -5,9 +5,9 @@
  */
 package cims;
 
-import Field_Operations.Domain.Unit;
-import Field_Operations.Domain.Vehicle;
-import Global.Domain.PrivateUser;
+import Field_Operations.Unit;
+import Field_Operations.Vehicle;
+import Network.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -132,35 +132,38 @@ public class CreateUnitController implements Initializable {
 
             try {
                 int i = 0;
-                Unit u = new Unit(textFieldName.getText(), "");
+                Unit u = new Unit(1,textFieldName.getText(), "","");
                 while (this.NRofAmbulancePeople != i) {
-                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Medical", "1-1-2001", 1, "test"));
+                    u.addUser(new User(101,"dave", "test", "male", "Boss", "Medical", "1-1-2001", 1));
                     i++;
                 }
                 i = 0;
                 while (this.NRofFireFIghters != i) {
-                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Fire", "1-1-2001", 1, "test"));
+                    u.addUser(new User(102,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1));
                     i++;
                 }
                 i = 0;
                 while (this.NrOfPoliceCars != i) {
-                    u.addVehicle(new Vehicle("test","test",2) );
+                    User t = new User(102,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1);
+                    u.addVehicle(new Vehicle(102,"test","test","test",t,1) );
                     i++;
                 }
                 i = 0;
                 
                 while (this.NrOfFireTrucks != i) {
-                    u.addVehicle(new Vehicle("test","test",1) );
+                    User t = new User(102,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1);
+                    u.addVehicle(new Vehicle(102,"test","test","test",t,1) );
                     i++;
                 }
                 i = 0;
                 while (this.NrOfAmbulances != i) {
-                     u.addVehicle(new Vehicle("test","test",3) );
+                    User t = new User(102,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1);
+                     u.addVehicle(new Vehicle(102,"test","test","test",t,1) );
                     i++;
                 }
                 i = 0;
                 while (this.NrOFPolicemen != i) {
-                    u.addUser(new PrivateUser("dave", "test", "male", "Boss", "Police", "1-1-2001", 1, "test"));
+                    u.addUser(new User(102,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1));
                     i++;
                 }
                 i = 0;
