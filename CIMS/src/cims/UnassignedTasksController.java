@@ -75,7 +75,7 @@ public class UnassignedTasksController implements Initializable {
                     tasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
                 }
             } catch (IOException ex) {
-                tasks = FXCollections.observableArrayList();
+                //tasks = FXCollections.observableArrayList();
                 Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
