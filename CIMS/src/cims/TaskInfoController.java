@@ -60,21 +60,25 @@ public class TaskInfoController implements Initializable {
     private ComboBox<String> comboboxStatus;
     @FXML
     private TextArea textAreaDescription;
-    private ListView<Unit> listviewUUnits;
-    private ListView<Unit> listviewAUnits;
 
     ObservableList<Unit> ActiveUnits;
     ObservableList<Unit> InactiveUnits;
     private Task selectedTask;
 
     private boolean Simulation;
+    @FXML
+    private ListView<Unit> LVAvailable;
+    @FXML
+    private ListView<Unit> LVAssigned;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ActiveUnits = FXCollections.observableArrayList(OperatorMainController.active_Units);
+         ActiveUnits = FXCollections.observableArrayList();
+        
+       
         Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             int ID = OperatorMainController.myController.selectedTaskID;
@@ -104,7 +108,7 @@ public class TaskInfoController implements Initializable {
                 }
             }
 
-            //listviewAUnits.setItems(FXCollections.observableArrayList(OperatorMainController.inactive_Units));
+            
         }
     }
 
@@ -115,7 +119,7 @@ public class TaskInfoController implements Initializable {
      */
     @FXML
     private void buttonAdd(MouseEvent event) {
-        Unit selectedUnit = (Unit) listviewUUnits.getSelectionModel().getSelectedItem();
+        Unit selectedUnit = (Unit) LVAvailable.getSelectionModel().getSelectedItem();
         ActiveUnits.add(selectedUnit);
         InactiveUnits.remove(selectedUnit);
 
@@ -309,8 +313,14 @@ public class TaskInfoController implements Initializable {
                 ActiveUnits.addAll(OperatorMainController.myController.getActiveUnits());
                 InactiveUnits.addAll(OperatorMainController.myController.getInactiveUnits());
             } else {
-                ActiveUnits.addAll(OperatorMainController.active_Units);
+                OperatorMainController.active_Tasks.stream().filter((t) -> (t.getId() == OperatorMainController.selectedTaskID)).forEach((t) -> {
+                    
+                    ActiveUnits.addAll(t.getUnits());
+                    LVAssigned.getItems().addAll(this.ActiveUnits);
+                });
+                
                 InactiveUnits.addAll(OperatorMainController.inactive_Units);
+                LVAvailable.getItems().addAll(InactiveUnits);
             }
             if (selectedTask != null) {
                 textFieldName.setText(selectedTask.getName());
@@ -327,7 +337,8 @@ public class TaskInfoController implements Initializable {
             choices.add("Medium");
             status.add("ongoing");
             status.add("open");
-            comboboxStatus.setItems(FXCollections.observableArrayList());
+            comboboxStatus.setItems(FXCollections.observableArrayList(status));
+            comboboxUrgency.setItems(FXCollections.observableArrayList(choices));
 
         } catch (IOException ex) {
             Logger.getLogger(TaskInfoController.class.getName()).log(Level.SEVERE, null, ex);
