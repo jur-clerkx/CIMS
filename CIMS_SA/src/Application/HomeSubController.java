@@ -68,6 +68,7 @@ public class HomeSubController implements Initializable {
                                     myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
+                                    this.cancel();
                                 }
                             }
                         }, 15000, 15000);
@@ -87,7 +88,7 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getAllInformation());
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
