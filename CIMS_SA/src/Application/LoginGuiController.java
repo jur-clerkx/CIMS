@@ -6,10 +6,10 @@
 package Application;
 
 import Connection.ConnectionRunnable;
-import Field_Operations.Domain.Task;
-import Global.Domain.User;
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
+import Field_Operations.Task;
+import Network.User;
+import Situational_Awareness.Information;
+import Network.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class LoginGuiController implements Initializable, Observer {
                     } catch (IOException ex) {
                         System.out.println("Error when opening UserGui");
                     }
-                } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                } else {
                     try {
                         Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
                         Scene scene = new Scene(root);
@@ -165,7 +165,7 @@ public class LoginGuiController implements Initializable, Observer {
                             } catch (IOException ex) {
                                 System.out.println("Error when opening UserGui");
                             }
-                        } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                        } else if (!(CIMS_SA.con.getUser() instanceof User)) {
                             try {
                                 Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
                                 Scene scene = new Scene(root);
@@ -198,20 +198,20 @@ public class LoginGuiController implements Initializable, Observer {
     }
     private ArrayList<Information> fillInformation() {
         ArrayList<Information> dummyInfoList = new ArrayList<Information>();
-        Task task = new Task("Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        User user = new PublicUser("Bas", "Koch", "12345467","");
-        Information simulationInformation = new Information(task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user);
+        Task task = new Task(107,"Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        PublicUser user = new PublicUser(123, "Bas", "Koch","1345567");
+        Information simulationInformation = new Information(135L, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user, false);
         //new Information((long)LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
 
         
         dummyInfoList.add(simulationInformation);
         
-        task = new Task("Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user);
+        task = new Task(129 ,"Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(134L,task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user, false);
         dummyInfoList.add(simulationInformation);
         
-        task = new Task("Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user);
+        task = new Task(130 ,"Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(136L, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
         dummyInfoList.add(simulationInformation);
         return dummyInfoList;
     }

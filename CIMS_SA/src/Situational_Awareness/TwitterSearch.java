@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-import Situational_Awareness.Domain.Information;
+import Situational_Awareness.Information;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,7 +48,7 @@ public class TwitterSearch {
                 Date tweeted = tweet.getCreatedAt();
                 
                 if(tweeted.getTime() >= java.lang.System.currentTimeMillis() - 36000000){
-                Information newInfo = new Information(null,tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(), 0, 0, 0, 0, tweet.getUser().getProfileImageURL(), null);
+                Information newInfo = new Information(tweet.getId(),tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(),tweet.getUser().getProfileImageURL());
                 informationList.add(newInfo);
                 }
                 else{

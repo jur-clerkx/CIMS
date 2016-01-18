@@ -5,8 +5,8 @@
  */
 package Application;
 
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
+import Situational_Awareness.Information;
+import Network.PublicUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -128,7 +128,7 @@ public class SendInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
             } catch (Exception ex) {
 
                 System.out.println("Error filling combobox");
