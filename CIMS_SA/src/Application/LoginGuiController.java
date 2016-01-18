@@ -6,10 +6,10 @@
 package Application;
 
 import Connection.ConnectionRunnable;
-import Field_Operations.Domain.Task;
-import Global.Domain.User;
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
+import Field_Operations.Task;
+import Network.PublicUser;
+import Network.User;
+import Situational_Awareness.Information;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -174,20 +174,20 @@ public class LoginGuiController implements Initializable, Observer {
     }
     private ArrayList<Information> fillInformation() {
         ArrayList<Information> dummyInfoList = new ArrayList<Information>();
-        Task task = new Task("Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        User user = new PublicUser("Bas", "Koch", "12345467","");
-        Information simulationInformation = new Information(task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user);
+        Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        User user = (User) new PublicUser(1, "Bas", "Koch", "12345467");
+        Information simulationInformation = new Information(1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user, false);
         //new Information((long)LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
 
         
         dummyInfoList.add(simulationInformation);
         
-        task = new Task("Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user);
+        task = new Task(1, "Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(1, task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user, false);
         dummyInfoList.add(simulationInformation);
         
-        task = new Task("Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user);
+        task = new Task(1, "Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
+        simulationInformation = new Information(1, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
         dummyInfoList.add(simulationInformation);
         return dummyInfoList;
     }

@@ -5,9 +5,9 @@
  */
 package Application;
 
-import Situational_Awareness.Domain.Information;
-import Global.Domain.PublicUser;
-import Global.Domain.User;
+import Network.PublicUser;
+import Network.User;
+import Situational_Awareness.Information;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.net.URL;
@@ -92,7 +92,7 @@ public class SendInformationController implements Initializable {
         selectedUser = null;
         ComboInformation.setOnAction((event) -> {
             selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
-            txtName.setText("" + selectedInformation.getId());
+            txtName.setText("" + selectedInformation.getID());
             //txtLastname.setText(selectedInformation.getName());
             txtDescription.setText(selectedInformation.getDescription());
             txtLocation.setText(selectedInformation.getLocation());
@@ -118,7 +118,7 @@ public class SendInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUserId()));
+                obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
             } catch (Exception ex) {
 
                 System.out.println("Error filling combobox");
@@ -149,10 +149,10 @@ public class SendInformationController implements Initializable {
             if (!simulation) {
                 obsUserList.addAll(CIMS_SA.con.getUsers());
             } else {
-                User user = new PublicUser("Bas", "Koch", "123456789", "password");
+                User user = (User) new PublicUser(1, "Bas", "Koch", "123456789");
                 ArrayList<User> users = new ArrayList<User>();
                 users.add(user);
-                user = new PublicUser("Jur", "Clerkx", "234567891", "password");
+                user = (User) new PublicUser(1, "Jur", "Clerkx", "234567891");
                 users.add(user);
                 for (User u : users) {
                     PublicUser userTemp = (PublicUser) u;

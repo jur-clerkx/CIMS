@@ -6,7 +6,7 @@
 package Application;
 
 import static Application.MainOperatorController.SelectedInformationID;
-import Situational_Awareness.Domain.Information;
+import Situational_Awareness.Information;
 import Situational_Awareness.TwitterSearch;
 import java.io.IOException;
 import java.net.URL;
@@ -147,7 +147,7 @@ public class MainUserController implements Initializable,Observer {
            
            for (Information info : information){
                
-              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImageURL(), false)){
+              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImage(), false)){
                   System.out.println("Twitter information retrieved");
               }else {
                   System.out.println("Twitter information retrieval error");

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-import Situational_Awareness.Domain.Information;
 /**
  *
  * @author rick
