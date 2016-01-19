@@ -4,17 +4,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id = "MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveUnitsController">
+<AnchorPane fx:id="MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.ActiveUnitsController">
    <children>
       <Separator layoutX="-3.0" layoutY="52.0" prefHeight="13.0" prefWidth="535.0" />
       <Label layoutX="231.0" layoutY="35.0" text="Active Units" />
-      <TableView fx:id="tableviewActiveUnits" layoutX="12.0" layoutY="74.0" prefHeight="174.0" prefWidth="505.0">
+      <TableView fx:id="tableviewActiveUnits" layoutX="12.0" layoutY="74.0" prefHeight="215.0" prefWidth="505.0">
          <columns>
-            <TableColumn fx:id = "tableUnitID" prefWidth="67.0" text="ID" />
-            <TableColumn fx:id = "tableUnitName" minWidth="0.0" prefWidth="437.0" text="Name" />
+            <TableColumn fx:id="tableUnitID" prefWidth="67.0" text="ID" />
+            <TableColumn fx:id="tableUnitName" minWidth="0.0" prefWidth="437.0" text="Name" />
          </columns>
       </TableView>
-      <Button fx:id="buttonNew" layoutX="375.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#newButtonClick" prefHeight="15.0" prefWidth="40.0" text="New" />
-     <Button fx:id="buttonDisband" layoutX="427.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#disbandButtonClick" prefHeight="25.0" prefWidth="88.0" text="Disband" />
    </children>
 </AnchorPane>
