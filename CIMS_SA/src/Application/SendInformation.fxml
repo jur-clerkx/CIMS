@@ -6,8 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane fx:id = "thisAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.SendInformationController">
+<AnchorPane fx:id="thisAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.SendInformationController">
    <children>
       <Separator layoutX="582.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="18.0" />
       <ImageView fx:id="imageView" fitHeight="185.0" fitWidth="235.0" layoutX="626.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
@@ -151,5 +150,6 @@
       <ComboBox fx:id="ComboInformation" layoutX="403.0" layoutY="22.0" prefWidth="150.0" />
       <Label layoutX="82.0" layoutY="26.0" text="User:" />
       <Label layoutX="318.0" layoutY="26.0" text="Information:" />
+      <CheckBox fx:id="checkBoxPrivate" layoutX="640.0" layoutY="284.0" mnemonicParsing="false" text="Private Information" />
    </children>
 </AnchorPane>

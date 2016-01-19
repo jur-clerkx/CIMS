@@ -46,9 +46,9 @@ public class EditInformationController implements Initializable {
     @FXML
     private ComboBox<Information> comboInformation;
     @FXML
-    private TextField txtName;
+    private TextField txtID;
     @FXML
-    private TextField txtLastname;
+    private TextField txtName;
     @FXML
     private TextField txtLocation;
     @FXML
@@ -90,37 +90,21 @@ public class EditInformationController implements Initializable {
             if (simulation) {
                 int index = -1;
                 for (Information infoLoop : LoginGuiController.information) {
-                    if (infoLoop.equals(comboInformation.getSelectionModel().getSelectedItem())) {
+                    Information infoSelectionTemp = comboInformation.getSelectionModel().getSelectedItem();
+                    if (infoLoop.getID() == infoSelectionTemp.getID()) {
                         index = LoginGuiController.information.indexOf(infoLoop);
                     }
                 }
                 info = LoginGuiController.information.get(index);
 
-                txtName.setText("" + info.getID());
-                txtLastname.setText(info.getName());
-                txtDescription.setText(info.getDescription());
-                txtLocation.setText(info.getLocation());
-                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getImage());
-                Image newImage = new Image(txtURL.getText());
-                imageView.setImage(newImage);
-                txtArea.setText(Integer.toString(info.getImpact()));
-                fillRadio();
+                this.setPageInformation(info);
             } else {
                 try {
                     if (CIMS_SA.con.getUser() != null) {
+                        Information infoSelectionTemp = comboInformation.getSelectionModel().getSelectedItem();
 
-                        info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText("" + info.getID());
-                        txtLastname.setText(info.getName());
-                        txtDescription.setText(info.getDescription());
-                        txtLocation.setText(info.getLocation());
-                        txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getImage());
-                        Image newImage = new Image(txtURL.getText());
-                        imageView.setImage(newImage);
-                        txtArea.setText(Integer.toString(info.getImpact()));
-                        fillRadio();
+                        info = CIMS_SA.con.getInformation(infoSelectionTemp.getID());
+                        this.setPageInformation(info);
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +124,7 @@ public class EditInformationController implements Initializable {
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
             try {
-                obsInformationList.addAll(CIMS_SA.con.getInformation((int) CIMS_SA.con.getUser().getUser_ID()));
+                obsInformationList.addAll(CIMS_SA.con.getPublicInformation());
             } catch (Exception ex) {
                 System.out.println("Error filling combobox");
             }
@@ -149,6 +133,19 @@ public class EditInformationController implements Initializable {
         }
 
         comboInformation.getItems().addAll(obsInformationList);
+
+        if (MainOperatorController.SelectedInformationID != 0) {
+            if (!simulation) {
+                int infoID = MainOperatorController.SelectedInformationID;
+                try {
+                    info = CIMS_SA.con.getInformation(infoID);
+                } catch (IOException ex) {
+                    Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.setPageInformation(info);
+            }
+
+        }
 
         if (LoginGuiController.SelectedInfoID != 0) {
             if (simulation) {
@@ -160,32 +157,14 @@ public class EditInformationController implements Initializable {
                         info = LoginGuiController.information.get(indexFound);
                     }
                 }
-                txtName.setText("" + info.getID());
-                txtLastname.setText(info.getName());
-                txtDescription.setText(info.getDescription());
-                txtLocation.setText(info.getLocation());
-                txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                txtURL.setText(info.getImage());
-                Image newImage = new Image(txtURL.getText());
-                imageView.setImage(newImage);
-                txtArea.setText(Integer.toString(info.getImpact()));
-                fillRadio();
+                this.setPageInformation(info);
             } else {
 
                 try {
                     if (CIMS_SA.con.getUser() != null) {
 
                         info = CIMS_SA.con.getInformation(LoginGuiController.SelectedInfoID);
-                        txtName.setText("" + info.getID());
-                        txtLastname.setText(info.getName());
-                        txtDescription.setText(info.getDescription());
-                        txtLocation.setText(info.getLocation());
-                        txtNRofVictims.setText(Integer.toString(info.getCasualities()));
-                        txtURL.setText(info.getImage());
-                        Image newImage = new Image(txtURL.getText());
-                        imageView.setImage(newImage);
-                        txtArea.setText(Integer.toString(info.getImpact()));
-                        fillRadio();
+                        this.setPageInformation(info);
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(EditInformationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,7 +198,8 @@ public class EditInformationController implements Initializable {
     @FXML
     private void RegisterInformation(MouseEvent event
     ) {
-        String name = txtName.getText() + " " + txtLastname.getText();
+        String name = txtName.getText();
+        String editedValue = null;
 
         boolean Private;
         int danger = 0;
@@ -259,6 +239,7 @@ public class EditInformationController implements Initializable {
                 for (Information infoLoop : LoginGuiController.information) {
                     if (infoLoop.getID() == editedInfo.getID()) {
                         infoFound = infoLoop;
+
                     }
                 }
                 LoginGuiController.information.remove(infoFound);
@@ -269,11 +250,45 @@ public class EditInformationController implements Initializable {
             obsInformationList.addAll(LoginGuiController.information);
 
         } else {
-            if (CIMS_SA.con.EditInformation(name, txtDescription.getText(),
-                    txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
-                    toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
-                    (int) this.comboInformation.getSelectionModel().getSelectedItem().getID(), Private)
-                    == true) {
+            Information infoToEdit = this.comboInformation.getSelectionModel().getSelectedItem();
+            boolean result = false;
+            if (!infoToEdit.getDescription().equals(txtDescription.getText())) {
+                result = editStringInServer(infoToEdit.getID(), "description", txtDescription.getText());
+            }
+            if (!infoToEdit.getLocation().equals(txtLocation.getText())) {
+                result = editStringInServer(infoToEdit.getID(), "location", txtLocation.getText());
+            }
+            if (!infoToEdit.getName().equals(name)) {
+                result = editStringInServer(infoToEdit.getID(), "name", name);
+            }
+            if (infoToEdit.getDanger() != danger) {
+                result = editIntInServer(infoToEdit.getID(), "danger", danger);
+            }
+            if (infoToEdit.getToxic() != toxic) {
+                result = editIntInServer(infoToEdit.getID(), "toxic", toxic);
+            }
+            if (infoToEdit.getCasualities() != Integer.parseInt(txtNRofVictims.getText())) {
+                result = editIntInServer(infoToEdit.getID(), "casualties", Integer.parseInt(txtNRofVictims.getText()));
+            }
+            if (infoToEdit.getImpact() != Integer.parseInt(txtArea.getText())) {
+                result = editIntInServer(infoToEdit.getID(), "impect", Integer.parseInt(txtArea.getText()));
+            }
+            if (infoToEdit.getURL() != null) {
+                if (!infoToEdit.getURL().equals(txtURL.getText())) {
+                    result = editStringInServer(infoToEdit.getID(), "image", txtURL.getText());
+                }
+            }
+            if (toggleButton.isSelected()) {
+                result = editIntInServer(infoToEdit.getID(), "private", 1);
+            } else {
+                result = editIntInServer(infoToEdit.getID(), "private", 0);
+            }
+
+            /*result = CIMS_SA.con.EditInformation(name, txtDescription.getText(),
+             txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()),
+             toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(),
+             (int) this.comboInformation.getSelectionModel().getSelectedItem().getID(), Private);*/
+            if (result == true) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Successfull");
                 alert.setContentText("Information succesfully edited");
@@ -281,6 +296,54 @@ public class EditInformationController implements Initializable {
             }
         }
 
+    }
+
+    /**
+     * Fills the page with the information received.
+     *
+     * @param info
+     */
+    private void setPageInformation(Information info) {
+        if (info != null) {
+            txtID.setText("" + info.getID());
+            txtName.setText(info.getName());
+            txtDescription.setText(info.getDescription());
+            txtLocation.setText(info.getLocation());
+            txtNRofVictims.setText(Integer.toString(info.getCasualities()));
+            if (info.getImage() == null) {
+                txtURL.setText(info.getImage());
+
+                Image newImage = new Image(txtURL.getText());
+                imageView.setImage(newImage);
+            }
+            txtArea.setText(Integer.toString(info.getImpact()));
+            fillRadio();
+        }
+
+    }
+
+    /**
+     * Edit the information based on ID
+     *
+     * @param ID ID of the information to edit
+     * @param attribute Attribute that needs to be edited
+     * @param text Text that the attribute is changed by.
+     * @return
+     */
+    private boolean editStringInServer(int ID, String attribute, String text) {
+        return CIMS_SA.con.EditInformationString(ID, attribute, text);
+    }
+
+    /**
+     * Edit the information based on ID
+     *
+     * @param ID ID of the information to edit
+     * @param attribute Attribute that needs to be edited
+     * @param number Number that the attribute is changed by
+     * @return
+     */
+    private boolean editIntInServer(int ID, String attribute, int number) {
+        return CIMS_SA.con.EditInformationInt(ID, attribute, number);
     }
 
     @FXML
