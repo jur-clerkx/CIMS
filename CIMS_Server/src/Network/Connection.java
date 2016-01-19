@@ -102,6 +102,7 @@ public class Connection {
                         if (user.authorized()) {
                             if (obj instanceof String) {
                                 String s = obj.toString();
+                                System.out.println(s);
                                 RequestData(s);
                             } else {
                                 write("Data rejected, not the correct format");
@@ -263,17 +264,17 @@ public class Connection {
             case "FOOP8":
                 o = read();
                 if (dbMediator.assignTask(o)) {
-                    write("Task succesfully created");
+                    write("Task succesfully assigned");
                 } else {
-                    write("Could not create task");
+                    write("Could not assign task");
                 }
                 break;
             case "FOOP9":
                 o = read();
-                if (dbMediator.alterLocationTask(o)) {
-                    write("Task succesfully altered");
+                if (dbMediator.EditTask(o)) {
+                    write("Task succesfully edited");
                 } else {
-                    write("Could not alter task");
+                    write("Could not edit task");
                 }
                 break;
             case "FOUS8":
@@ -298,6 +299,10 @@ public class Connection {
                 } else {
                     write("Could not assign roadmap");
                 }
+                break;
+            case "FOUS11":
+                o = read();
+                write(dbMediator.getProgressByTask(o));
                 break;
         }
     }
@@ -360,6 +365,14 @@ public class Connection {
                 break;
             case "SAPU10":
                 write(dbMediator.GetAllPublicInformation(getUserId()));
+                break;
+            case "SAPU11":
+                o = read();
+                if (dbMediator.EditInformation(o)) {
+                    write("Information succesfully Edit");
+                } else {
+                    write("Could not remove Edit");
+                }
                 break;
         }
     }
