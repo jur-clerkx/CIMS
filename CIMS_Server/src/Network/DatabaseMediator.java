@@ -1149,7 +1149,7 @@ public class DatabaseMediator {
      *
      * @param userId ID of user that is logged on
      * @param o object array with all the information format:
-     * name,description,location,casualties, toxic, danger, impect, image and if
+     * name,description,location,casualties, toxic, danger, impact, image and if
      * its private
      * @return a boolean true if success false if not.
      */
