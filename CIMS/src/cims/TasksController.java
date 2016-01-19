@@ -8,6 +8,7 @@ package cims;
 import Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -75,13 +77,6 @@ public class TasksController implements Initializable {
         if (!Simulation) {
             if (OperatorMainController.myController.user != null) {
                 try {
-                    if (OperatorMainController.myController.getInactiveTasks() != null) {
-                        InactiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveTasks());
-                    }
-                    if (OperatorMainController.myController.getActiveTasks() != null) {
-                        ActiveTasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
-                    }
-
                     ATaskID.setCellValueFactory(new PropertyValueFactory<>("taskID"));
                     ATaskName.setCellValueFactory(new PropertyValueFactory<>("name"));
                     ATaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -103,7 +98,7 @@ public class TasksController implements Initializable {
                                     Parent root1 = (Parent) fxmlLoader.load();
                                     Stage stage = new Stage();
                                     stage.initModality(Modality.APPLICATION_MODAL);
-                                    stage.initStyle(StageStyle.DECORATED);                                    
+                                    stage.initStyle(StageStyle.DECORATED);
                                     stage.setTitle("Task" + myTask.getTaskID());
                                     stage.setScene(new Scene(root1));
                                     stage.show();
@@ -121,7 +116,7 @@ public class TasksController implements Initializable {
                             if (event.getClickCount() == 2 && (!row.isEmpty())) {
                                 Task myTask = row.getItem();
                                 try {
-                                     OperatorMainController.myController.selectedTaskID = (int) myTask.getTaskID();
+                                    OperatorMainController.myController.selectedTaskID = (int) myTask.getTaskID();
                                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                                     Parent root1 = (Parent) fxmlLoader.load();
                                     Stage stage = new Stage();
@@ -137,6 +132,12 @@ public class TasksController implements Initializable {
                         });
                         return row;
                     });
+
+                    ArrayList<Task> inactivelist = OperatorMainController.myController.getInactiveTasks();
+                    ArrayList<Task> activeList = OperatorMainController.myController.getActiveTasks();
+
+                    InactiveTasks = FXCollections.observableArrayList(inactivelist);
+                    ActiveTasks = FXCollections.observableArrayList(activeList);
 
                     UTaskTable.setItems(InactiveTasks);
                     ATaskTable.setItems(ActiveTasks);
@@ -239,13 +240,26 @@ public class TasksController implements Initializable {
         if (!Simulation) {
             try {
                 if (selectedTask != null) {
-                    if (!selectedTask.getUnits().isEmpty()) {
+                    if (selectedTask.getStatus().equals("Completed") || selectedTask.equals("Cancelled")) {
+
                         OperatorMainController.myController.removeActiveTask((int) selectedTask.getTaskID());
                         ActiveTasks.remove(selectedTask);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Can't delete tasks that are still in progress");
+                        alert.showAndWait();
                     }
-                } else if(selectedTask2 != null) {
-                    OperatorMainController.myController.removeInactiveTask((int) selectedTask2.getTaskID());
-                    InactiveTasks.remove(selectedTask);
+                } else if (selectedTask2 != null) {
+                    if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
+                        OperatorMainController.myController.removeInactiveTask((int) selectedTask2.getTaskID());
+                        InactiveTasks.remove(selectedTask);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Can't delete tasks that are still in progress");
+                        alert.showAndWait();
+                    }
 
                 }
             } catch (Exception ex) {

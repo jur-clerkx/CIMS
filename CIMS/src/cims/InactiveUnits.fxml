@@ -8,14 +8,12 @@
     <children>
         <Separator layoutX="-3.0" layoutY="52.0" prefHeight="13.0" prefWidth="535.0" />
         <Label layoutX="231.0" layoutY="35.0" text="Inactive Units" />
-        <TableView fx:id="IUnitTable" layoutX="12.0" layoutY="74.0" prefHeight="174.0" prefWidth="505.0">
+        <TableView fx:id="IUnitTable" layoutX="12.0" layoutY="74.0" prefHeight="218.0" prefWidth="505.0">
             <columns>
-                <TableColumn fx:id = "tableID" prefWidth="67.0" text="ID" />
-                <TableColumn fx:id = "tableUnitName" minWidth="0.0" prefWidth="313.0" text="Name" />
-                <TableColumn fx:id = "tableStatus" prefWidth="124.0" text="Status" />
+                <TableColumn fx:id="tableID" prefWidth="67.0" text="ID" />
+                <TableColumn fx:id="tableUnitName" minWidth="0.0" prefWidth="313.0" text="Name" />
+                <TableColumn fx:id="tableStatus" prefWidth="124.0" text="Status" />
             </columns>
         </TableView>
-        <Button fx:id = "buttonNew" layoutX="375.0" layoutY="261.0" onMouseClicked="#newClick"  mnemonicParsing="false" prefHeight="15.0" prefWidth="40.0" text="New" />
-        <Button fx:id = "buttonDisband" layoutX="427.0" layoutY="261.0" onMouseClicked="#disbandClick"  mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Disband" />
     </children>
 </AnchorPane>

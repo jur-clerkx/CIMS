@@ -37,8 +37,6 @@ public class CreateTaskController implements Initializable {
     @FXML
     private GridPane TaskInfo;
     @FXML
-    private TextField textfieldTaskID;
-    @FXML
     private TextField textfieldTaskName;
     @FXML
     private TextField textfieldTaskLocation;
@@ -129,7 +127,6 @@ public class CreateTaskController implements Initializable {
     @FXML
     private void createButtonClick(MouseEvent event) throws IOException {
         if (!Simulation) {
-            int taskID = Integer.parseInt(textfieldTaskID.getText());
             String taskName = textfieldTaskName.getText();
             String taskLocation = textfieldTaskLocation.getText();
             int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
@@ -151,28 +148,25 @@ public class CreateTaskController implements Initializable {
             }
             String description = textareaDescription.getText();
 
-            if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
+            if (taskName == null || taskLocation == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(taskID,taskName, urgencyCode, statusCode, taskLocation, description);
-                OperatorMainController.myController.createTask(taskName, urgency, description,textfieldTaskLocation.getText());
+                task = new Task(0, taskName, urgencyCode, statusCode, taskLocation, description);
+                OperatorMainController.myController.createTask(taskName, urgency, description, textfieldTaskLocation.getText());
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add((int)task.getTaskID());
+                assignedUnits.add((int) task.getTaskID());
                 for (Unit u : AssignedList) {
-                    assignedUnits.add((int)u.getUnitID());
+                    assignedUnits.add((int) u.getUnitID());
                 }
 
                 OperatorMainController.myController.assignTask(assignedUnits.toArray());
             }
-            Stage stage = (Stage)textareaDescription.getScene().getWindow();
+            Stage stage = (Stage) textareaDescription.getScene().getWindow();
             stage.close();
-        }
-        else
-        {
-            int taskID = Integer.parseInt(textfieldTaskID.getText());
+        } else {
             String taskName = textfieldTaskName.getText();
             String taskLocation = textfieldTaskLocation.getText();
             int urgency = comboboxUrgency.getSelectionModel().getSelectedIndex();
@@ -194,20 +188,25 @@ public class CreateTaskController implements Initializable {
             }
             String description = textareaDescription.getText();
 
-            if ((taskID <= 0 || taskID != (int) taskID) || taskName == null || taskLocation == null) {
+            if (taskName == null || taskLocation == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setContentText("You forgot to fill in the tasks ID, name or location.");
                 alert.showAndWait();
             } else {
-                task = new Task(101,taskName, urgencyCode, statusCode, taskLocation, description);
+                task = new Task(101, taskName, urgencyCode, statusCode, taskLocation, description);
                 OperatorMainController.active_Tasks.add(task);
                 ArrayList<Integer> assignedUnits = new ArrayList<>();
-                assignedUnits.add((int)task.getTaskID());
+                assignedUnits.add((int) task.getTaskID());
                 for (Unit u : AssignedList) {
                     u.setTask(task);
                 }
-
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Successfully Created Task");
+                alert.showAndWait();
+                Stage stage = (Stage) textareaDescription.getScene().getWindow();
+                stage.close();
             }
         }
     }

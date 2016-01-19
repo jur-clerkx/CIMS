@@ -8,6 +8,7 @@ package cims;
 import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,11 +76,13 @@ public class UnitsController implements Initializable {
         if (!Simulation) {
             try {
                 if (OperatorMainController.myController.user != null) {
-                    if (OperatorMainController.myController.getInactiveUnits() != null) {
-                        InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+                    ArrayList<Unit> inactiveList = OperatorMainController.myController.getInactiveUnits();
+                    ArrayList<Unit> activeList  = OperatorMainController.myController.getActiveUnits();
+                    if ( inactiveList != null) {
+                        InactiveUnits = FXCollections.observableArrayList(inactiveList);
                     }
-                    if (OperatorMainController.myController.getActiveUnits() != null) {
-                        ActiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
+                    if (activeList != null) {
+                        ActiveUnits = FXCollections.observableArrayList(activeList);
                     }
                 }
                 AUnitTable.setRowFactory(tv -> {

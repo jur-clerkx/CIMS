@@ -5,6 +5,7 @@
  */
 package Connection;
 
+import Field_Operations.Progress;
 import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
@@ -61,7 +62,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        serverAddress = "localhost";
+        serverAddress = "145.93.84.138";
     }
 
     @Override
@@ -142,7 +143,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             output.writeObject(so);
             output.flush();
         } catch (Exception ex) {
-            System.out.println("tjup");
+            System.out.println(ex.getMessage() + 1);
         }
     }
 
@@ -257,7 +258,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP4";
             sendData(outputMessage);
-            sendData(false);
+            sendData(0);
             Object o = readData();
             if (o instanceof ArrayList) {
                 return (ArrayList<Unit>) o;
@@ -280,7 +281,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         try {
             String outputMessage = "FOOP4";
             sendData(outputMessage);
-            sendData(true);
+            sendData(1);
             Object o = readData();
             if (o instanceof ArrayList) {
                 return (ArrayList<Unit>) o;
@@ -313,7 +314,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -335,7 +336,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -349,9 +350,12 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP7";
             sendData(outputMessage);
             sendData(taskID);
+            readData();
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -366,9 +370,12 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP7";
             sendData(outputMessage);
             sendData(taskID);
+            readData();
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -398,9 +405,10 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
             sendData(outputMessage);
             sendData(myTask);
+            readData();
             return true;
 
-        } catch (IOException ex2) {
+        } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
             return false;
@@ -423,7 +431,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
      * @return True if information was changed
      * @throws IOException
      */
-    public boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, TextField PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
+    public boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
 
         Object[] myUnit = new Object[9];
         myUnit[0] = Name;
@@ -437,7 +445,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         myUnit[8] = AmbulancePeople;
 
         try {
-            String outputMessage = "FOOP1";
+            String outputMessage = "FOOP2";
             String feedback;
             sendData(outputMessage);
             sendData(selectedUnitID);
@@ -490,7 +498,12 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
             sendData(outputMessage);
             sendData(taskID);
-            return (Task) readData();
+            
+           Object o = readData();
+           if(o instanceof Task)
+           {
+               return (Task)o;
+           }
         } catch (IOException | ClassNotFoundException ex2) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
             KillConnection();
@@ -506,13 +519,18 @@ public class ConnectionRunnable extends Observable implements Runnable {
      */
     public void cancelTask(int taskID) throws IOException {
         try {
-            String outputMessage = "FOOP9";
-
+            String outputMessage = "FOUS3";
+            Object[] o = new Object[2];
+            o[0] = taskID;
+            o[1] = "Cancelled";
             sendData(outputMessage);
-            sendData(taskID);
+            sendData(o);
+            readData();
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -529,9 +547,12 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
             sendData(outputMessage);
             sendData(objects);
+            readData();
         } catch (IOException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -543,20 +564,18 @@ public class ConnectionRunnable extends Observable implements Runnable {
      * @return True if information was changed
      * @throws IOException
      */
-    public boolean editTask(int taskID, String location) throws IOException {
-        Object[] myTask = new Object[2];
-        myTask[0] = taskID;
-        myTask[1] = location;
+    public boolean editTask(Object[] object) throws IOException {
+        
 
         try {
             String outputMessage = "FOOP9";
 
             sendData(outputMessage);
-            sendData(myTask);
-
+            sendData(object);
+            readData();
             return true;
 
-        } catch (IOException ex) {
+        } catch (IOException |ClassNotFoundException  ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             KillConnection();
             return false;
@@ -596,9 +615,11 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOUS9";
             sendData(outputMessage);
             try {
-                ArrayList<Roadmap> myRoads = (ArrayList<Roadmap>) readData();
+                Object o = readData();
+                if (o instanceof ArrayList){
+                ArrayList<Roadmap> myRoads = (ArrayList<Roadmap>) o;
                 roadmaps.addAll(myRoads);
-
+                }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -615,8 +636,9 @@ public class ConnectionRunnable extends Observable implements Runnable {
             String outputMessage = "FOOP10";
             sendData(outputMessage);
             sendData(message);
+            readData();
             return true;
-        } catch (IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -625,9 +647,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
     public boolean DisbandUnit(int ID) throws IOException, ClassNotFoundException {
         try {
             sendData("FOOP3");
-            Object[] myObject = new Object[1];
-            myObject[0] = ID;
-            sendData(myObject);
+            
+            sendData(ID);
             String message = (String) readData();
             if (message != null) {
                 return true;
@@ -657,6 +678,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 Logger.getLogger(ConnectionRunnable.class.getName()).log(Level.SEVERE, null, ex);
                 KillConnection();
             }
+        }
+    }
+    
+    public ArrayList<Progress> getProgress(int TaskId) throws IOException{
+        try
+        {
+            sendData("FOUS11");
+            sendData(TaskId);
+            Object o = readData();
+            if(o instanceof ArrayList)
+            {
+                return (ArrayList<Progress>)o;
+            }
+            else return new ArrayList<>();
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Progress Error");
+            return new ArrayList<>();
         }
     }
 
