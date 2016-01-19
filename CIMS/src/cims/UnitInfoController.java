@@ -154,8 +154,10 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
             try {
-                succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), textfieldLocation.getText(), size, getSelectedSpecials(), textfieldPPCPolice, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+                succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), "", size, getSelectedSpecials(),NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
             } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
@@ -319,7 +321,7 @@ public class UnitInfoController implements Initializable {
         } else {
             radiobuttonLarge.setSelected(true);
         }
-        if (mySelectedUnit.getTasks() != null) {
+        if (!mySelectedUnit.getTasks().isEmpty()) {
             Task task = (Task) mySelectedUnit.getTasks();
             textfieldTaskID.setText(Integer.toString((int)task.getTaskID()));
             textfieldTaskname.setText(task.getName());

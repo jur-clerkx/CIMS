@@ -40,7 +40,7 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
          <children>
-            <TextField fx:id="textFieldID" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="task01">
+            <TextField fx:id="textFieldID" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="101">
                <VBox.margin>
                   <Insets left="10.0" top="15.0" />
                </VBox.margin>
@@ -78,9 +78,9 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </ListView>
-            <TextField fx:id="textFieldLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="90.0" text="tast">
+            <TextField fx:id="textFieldLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="108.0" text="tast">
                <VBox.margin>
-                  <Insets top="25.0" />
+                  <Insets left="10.0" top="25.0" />
                </VBox.margin>
             </TextField>
          </children>
@@ -111,12 +111,7 @@
                   <Insets bottom="10.0" left="50.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttonCancel" mnemonicParsing="false" onMouseClicked="#buttonCancel" prefHeight="25.0" prefWidth="62.0" text="Cancel">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="buttonDelete" mnemonicParsing="false" onMouseClicked="#buttonDelete" prefHeight="25.0" prefWidth="62.0" text="Delete">
+            <Button fx:id="buttonCancel" mnemonicParsing="false" onMouseClicked="#buttonCancel" prefHeight="25.0" prefWidth="122.0" text="Cancel Task">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -144,25 +139,45 @@
                   <Insets left="10.0" top="15.0" />
                </VBox.margin>
             </ComboBox>
-            <ComboBox fx:id="comboboxStatus" prefWidth="150.0" promptText="Open">
+            <ComboBox fx:id="comboboxStatus" editable="true" prefWidth="150.0" promptText="Open">
                <VBox.margin>
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </ComboBox>
          </children>
       </VBox>
-      <Label prefHeight="17.0" prefWidth="130.0" text="Description:" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-      </Label>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
-            <TextArea fx:id="textAreaDescription" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="185.0" text="This is example text">
+            <TextArea fx:id="textAreaDescription" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="129.0" prefWidth="259.0" text="This is example text">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </TextArea>
+            <TextArea fx:id="txtFeedback" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="93.0" prefWidth="259.0" text="Feedback...">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </TextArea>
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label prefHeight="17.0" prefWidth="130.0" text="Description:" textAlignment="CENTER">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="60.0" />
+               </VBox.margin>
+            </Label>
+            <Label prefHeight="17.0" prefWidth="130.0" text="Description:" textAlignment="CENTER">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="120.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </children>
