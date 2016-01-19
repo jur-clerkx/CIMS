@@ -6,7 +6,7 @@
 package Application;
 
 import static Application.MainOperatorController.SelectedInformationID;
-import Situational_Awareness.Domain.Information;
+import Situational_Awareness.Information;
 import Situational_Awareness.TwitterSearch;
 import java.io.IOException;
 import java.net.URL;
@@ -142,22 +142,35 @@ public class MainUserController implements Initializable,Observer {
     private void btnTwitter(MouseEvent event) {
         try {
            TwitterSearch ts = new TwitterSearch();
-
+           //get tweet list
             ArrayList<Information> information = ts.twitterFeed("%23" + txtSearch.getText());
            
            for (Information info : information){
-               
-              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImageURL(), false)){
+              //duplicate check 
+              if(dupCheck(info)){ 
+              //create information
+              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImage(), false)){
                   System.out.println("Twitter information retrieved");
               }else {
                   System.out.println("Twitter information retrieval error");
               }
-              
+              }
            }
 
         } catch (Exception ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private boolean dupCheck(Information inf) throws IOException{
+        boolean checkDups = true;
+        ArrayList<Information> chkInfo = CIMS_SA.con.getAllInformation();
+        for(Information oldInfo : chkInfo){
+            if(oldInfo.getDescription().equals(inf.getDescription())){
+                checkDups = false;
+            }
+        }
+        return checkDups;
     }
 
 

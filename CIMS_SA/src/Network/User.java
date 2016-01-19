@@ -5,7 +5,6 @@
  */
 package Network;
 
-import Situational_Awareness.PublicUser;
 import java.io.Serializable;
 
 /**
