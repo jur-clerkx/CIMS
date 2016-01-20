@@ -6,6 +6,7 @@
 package cims;
 
 import Connection.ConnectionRunnable;
+import Field_Operations.Progress;
 import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
@@ -107,13 +108,13 @@ public class OperatorMainController implements Initializable, Observer {
             // Test Tasks
             Task task1 = new Task( 1,"Fire1", "High", "Unassigned", "Eindhoven Airport", "Plane on fire");
             Task task2 = new Task( 2,"Fire2", "High", "Unassigned", "Beukelaan 3", "Kitchen Fire");
-            Task task3 = new Task( 3,"Fire3", "High", "Unassigned", "Ijswendelweg 4-7", "Car Fire");
-            Task task4 = new Task( 4,"Health1", "High", "Heart attack", "Keukenseweg 2004", "Elder man");
-            Task task5 = new Task( 5,"Health2", "Low", "Fall", "AH Eindhoven", "Elderly lady fell");
-            Task task6 = new Task( 6,"Health3", "Low", "Fainting", "Fontys Eindhoven", "Student fainted");
-            Task task7 = new Task( 7,"Robbery", "High", "Single suspect", "ABN-AMRO Eindhoven", "Bankheist");
-            Task task8 = new Task( 8,"Accident", "Medium", "Car crash", "A2 - 54", "Car on car");
-            Task task9 = new Task( 9,"Domestic Dispute", "Low", "Fight", "Heggeweg 24", "People heard screaming");
+            Task task3 = new Task( 3,"Fire3", "High", "Completed", "Ijswendelweg 4-7", "Car Fire");
+            Task task4 = new Task( 4,"Health1", "High", "Completed", "Keukenseweg 2004", "Elder man");
+            Task task5 = new Task( 5,"Health2", "Low", "Unassigned", "AH Eindhoven", "Elderly lady fell");
+            Task task6 = new Task( 6,"Health3", "Low", "Completed", "Fontys Eindhoven", "Student fainted");
+            Task task7 = new Task( 7,"Robbery", "High", "Completed", "ABN-AMRO Eindhoven", "Bankheist");
+            Task task8 = new Task( 8,"Accident", "Medium", "Completed", "A2 - 54", "Car on car");
+            Task task9 = new Task( 9,"Domestic Dispute", "Low", "Unassigned", "Heggeweg 24", "People heard screaming");
 
             // Test Personeel
             User u = new User(101,"dave", "test", "male", "Boss", "Fire", "1-1-2001", 1);
@@ -150,6 +151,9 @@ public class OperatorMainController implements Initializable, Observer {
             task5.addUnit(unit11);
             task9.addUnit(unit12);
             task9.addUnit(unit13);
+            task1.updateProgress(new Progress(101, u2, task1,"Evacuation comes first"));
+            
+            task5.updateProgress(new Progress(101, u2, task1,"Check for broken bones"));
             
             roadmaps.add(roadmap1);
             roadmaps.add(roadmap2);

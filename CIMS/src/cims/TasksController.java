@@ -254,6 +254,10 @@ public class TasksController implements Initializable {
                     if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
                         OperatorMainController.myController.removeInactiveTask((int) selectedTask2.getTaskID());
                         InactiveTasks.remove(selectedTask);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Succes");
+                        alert.setContentText("Deleted");
+                        alert.showAndWait();
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
@@ -266,23 +270,34 @@ public class TasksController implements Initializable {
                 Logger.getLogger(InactiveUnitsController.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (!selectedTask.getUnits().isEmpty()) {
-
-            int index = -1;
-            for (Task t : OperatorMainController.active_Tasks) {
-                if (t.getTaskID() == selectedTask.getTaskID()) {
-                    index = OperatorMainController.active_Tasks.indexOf(t);
+        } else if (selectedTask != null) {
+            if (selectedTask.getStatus().equals("Completed") || selectedTask.equals("Cancelled")) {
+                int index = -1;
+                for (Task t : OperatorMainController.active_Tasks) {
+                    if (t.getTaskID() == selectedTask.getTaskID()) {
+                        index = OperatorMainController.active_Tasks.indexOf(t);
+                    }
                 }
+                OperatorMainController.active_Tasks.remove(index);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succes");
+                alert.setContentText("Deleted");
+                alert.showAndWait();
             }
-            OperatorMainController.active_Tasks.remove(index);
         } else {
-            int index = -1;
-            for (Task t : OperatorMainController.inactive_Task) {
-                if (t.getTaskID() == selectedTask.getTaskID()) {
-                    index = OperatorMainController.inactive_Task.indexOf(t);
+            if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
+                int index = -1;
+                for (Task t : OperatorMainController.inactive_Task) {
+                    if (t.getTaskID() == selectedTask2.getTaskID()) {
+                        index = OperatorMainController.inactive_Task.indexOf(t);
+                    }
                 }
+                OperatorMainController.inactive_Task.remove(index);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succes");
+                alert.setContentText("Deleted");
+                alert.showAndWait();
             }
-            OperatorMainController.inactive_Task.remove(index);
         }
     }
 

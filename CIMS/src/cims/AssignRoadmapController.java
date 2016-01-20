@@ -16,11 +16,14 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -36,12 +39,12 @@ public class AssignRoadmapController implements Initializable {
     private ComboBox<Roadmap> cboxRoadmaps;
     @FXML
     private Button btnAssign;
-    @FXML
-    private Button btnCancel;
 
     private ObservableList taskList;
     private ObservableList roadmapList;
     private boolean Simulation;
+    @FXML
+    private AnchorPane Mainfield;
 
     /**
      * Initializes the controller class.
@@ -105,6 +108,13 @@ public class AssignRoadmapController implements Initializable {
                     alert.setTitle("Successfull");
                     alert.setContentText("Roadmap succesfully assigned");
                     alert.showAndWait();
+                    try {
+                        Node node;
+                        node = (Node) FXMLLoader.load(getClass().getResource("AllRoadmaps.fxml"));
+                        this.Mainfield.getChildren().setAll(node);
+                    } catch (Exception ex) {
+                        System.out.println("error change");
+                    }
                 }
             } catch (IOException ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -122,6 +132,13 @@ public class AssignRoadmapController implements Initializable {
             alert.setTitle("Successfull");
             alert.setContentText("Roadmap succesfully assigned");
             alert.showAndWait();
+            try {
+                Node node;
+                node = (Node) FXMLLoader.load(getClass().getResource("AllRoadmaps.fxml"));
+                this.Mainfield.getChildren().setAll(node);
+            } catch (Exception ex) {
+                System.out.println("error change");
+            }
 
         }
     }
