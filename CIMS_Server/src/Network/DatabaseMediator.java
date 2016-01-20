@@ -553,7 +553,7 @@ public class DatabaseMediator {
                     String query = "SELECT * FROM CIMS.Task_Unit "
                             + "WHERE unitid='" + objects[i] + "' AND taskid= '" + objects[0] + "';";
                     ResultSet rs = executeQuery(query);
-                    if (rs == null) {
+                    if (!rs.next()) {
                         query = "INSERT INTO CIMS.Task_Unit (unitid, taskid) "
                                 + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
                         executeNonQuery(query);
@@ -1538,7 +1538,7 @@ public class DatabaseMediator {
                     String query = "SELECT * FROM CIMS.AssignedRoadmap "
                             + "WHERE roadmapid='" + objects[i] + "' AND taskid= '" + objects[0] + "';";
                     ResultSet rs = executeQuery(query);
-                    if (rs == null) {
+                    if (!rs.next()) {
                         query = "INSERT INTO CIMS.AssignedRoadmap (roadmapId, taskid) "
                                 + "VALUES ('" + objects[i] + "', '" + objects[0] + "');";
                         executeNonQuery(query);
