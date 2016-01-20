@@ -5,9 +5,8 @@
  */
 package Field_Operations;
 
+import Network.User;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  *
@@ -25,5 +24,21 @@ public class Progress implements Serializable {
         this.user = user;
         this.task = task;
         this.message = message;
+    }
+
+    public int getProgressID() {
+        return progressID;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }
