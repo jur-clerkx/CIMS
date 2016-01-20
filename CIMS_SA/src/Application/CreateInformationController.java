@@ -86,7 +86,7 @@ public class CreateInformationController implements Initializable, Observer {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        simulation = LoginGuiController.simulation;
+        simulation = LoginGuiController.isSimulation;
         imageView.setImage(new Image("Application/untitled.png"));
     }
 
@@ -128,13 +128,17 @@ public class CreateInformationController implements Initializable, Observer {
             Task task = new Task(1,"Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
             PublicUser user = new PublicUser(1,"Bas", "Koch", "12345467");
             Information simulationInformation = new Information(1, task, name, txtDescription.getText(), txtLocation.getText(), Integer.parseInt(txtNRofVictims.getText()), toxic, danger, Integer.parseInt(txtArea.getText()), txtURL.getText(), user, false);
-            LoginGuiController.information.add(simulationInformation);
+            LoginGuiController.informationSimulation.add(simulationInformation);
         }
-
+        clearInfo();
+        cancelInfoScreen();
     }
 
     @FXML
     private void Cancel(MouseEvent event) {
+        cancelInfoScreen();
+    }
+    private void cancelInfoScreen() {
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             thisAnchor.getChildren().setAll(node);
@@ -142,10 +146,12 @@ public class CreateInformationController implements Initializable, Observer {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     @FXML
     private void ClearInformation(MouseEvent event) {
-
+        clearInfo();
+        
+    }
+    private void clearInfo() {
         txtArea.clear();
         txtDescription.clear();
         txtLastname.clear();
@@ -153,20 +159,21 @@ public class CreateInformationController implements Initializable, Observer {
         txtNRofVictims.clear();
         txtName.clear();
         txtURL.clear();
-
+        imageView.setImage(new Image("Application/untitled.png"));
+        deselectRadioButtons();
     }
-
     @FXML
     private void MouseExit(MouseEvent event) {
-        if (!txtURL.getText().isEmpty()) {
-            Image img = new Image(txtURL.getText());
-            while (img.getProgress() < 1) {
+        String imageURL = txtURL.getText();
+        if (!imageURL.isEmpty()) {
+            Image img = new Image(imageURL);
+            /*while (img.getProgress() < 1) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(CreateInformationController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            }*/
             if (img.getHeight() == 0) {
                 img = new Image("Application/untitled.png");
             }
@@ -174,6 +181,13 @@ public class CreateInformationController implements Initializable, Observer {
         }
     }
 
+    private void deselectRadioButtons() {
+        radioSmall.setSelected(false);
+        radioMedium.setSelected(false);
+        radioLarge.setSelected(false);
+        radioNo.setSelected(false);
+        radioYes.setSelected(false);
+    }
     @Override
     public void update(Observable o, Object arg) {
         //Check if login is succesfull

@@ -81,8 +81,7 @@ public class SendInformationController implements Initializable {
     @FXML
     private AnchorPane thisAnchor;
     @FXML
-    private ComboBox<Information> ComboInformation;
-    
+    private ComboBox<Information> comboInformation;
 
     public boolean simulation;
 
@@ -91,11 +90,11 @@ public class SendInformationController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        simulation = LoginGuiController.simulation;
+        simulation = LoginGuiController.isSimulation;
         selectedInformation = null;
         selectedUser = null;
-        ComboInformation.setOnAction((event) -> {
-            selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+        comboInformation.setOnAction((event) -> {
+            selectedInformation = comboInformation.getSelectionModel().getSelectedItem();
             txtID.setText("" + selectedInformation.getID());
             //txtLastname.setText(selectedInformation.getName());
             txtDescription.setText(selectedInformation.getDescription());
@@ -103,11 +102,8 @@ public class SendInformationController implements Initializable {
             txtNRofVictims.setText(Integer.toString(selectedInformation.getCasualities()));
             txtArea.setText(Integer.toString(selectedInformation.getImpact()));
             fillRadio();
-            if(selectedInformation.getURL() == null) {
-                imageView.setImage(new Image("untitled.png"));
-            } else {
-                imageView.setImage(new Image(selectedInformation.getURL()));
-            }
+            setImage(selectedInformation.getURL());
+            
         });
         comboUser.setOnAction((event) -> {
             selectedUser = comboUser.getSelectionModel().getSelectedItem();
@@ -125,18 +121,23 @@ public class SendInformationController implements Initializable {
 
         obsInformationList = FXCollections.observableArrayList();
         if (!simulation) {
+            ArrayList<Information> tempInfoList = new ArrayList<Information>();
             try {
-                //obsInformationList.addAll(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
-                obsInformationList.addAll(CIMS_SA.con.getPublicInformation());
+                for(Information infoToAdd: CIMS_SA.con.getPublicInformation()) {
+                    if(infoToAdd != null) {
+                        tempInfoList.add(infoToAdd);
+                    }
+                }
+                obsInformationList.addAll(tempInfoList);
             } catch (Exception ex) {
 
                 System.out.println("Error filling combobox");
             }
         } else {
-            obsInformationList.addAll(LoginGuiController.information);
+            obsInformationList.addAll(LoginGuiController.informationSimulation);
         }
 
-        ComboInformation.getItems().addAll(obsInformationList);
+        comboInformation.getItems().addAll(obsInformationList);
 
         ToggleGroup groupOne = new ToggleGroup();
         ToggleGroup groupTwo = new ToggleGroup();
@@ -173,10 +174,10 @@ public class SendInformationController implements Initializable {
             //obsInformationList.add(new Information(1, 1, "Leggo", "Eindhoven", 4, false, 2, 3));
             //obsUserList.add(new PublicUser(2, "Bas", "Koch", "123456"));
             comboUser.setItems(obsUserList);
-//            ComboInformation.setItems(obsInformationList);
+//            comboInformation.setItems(obsInformationList);
 //
-//            ComboInformation.setOnAction((event) -> {
-//                selectedInformation = ComboInformation.getSelectionModel().getSelectedItem();
+//            comboInformation.setOnAction((event) -> {
+//                selectedInformation = comboInformation.getSelectionModel().getSelectedItem();
 //                txtLocation.setText(selectedInformation.getLocation());
 //                txtDescription.setText(selectedInformation.getDescription());
 //                txtNRofVictims.setText("" + selectedInformation.getCasualities());
@@ -223,8 +224,32 @@ public class SendInformationController implements Initializable {
         }
     }
 
+    private void setImage(String url) {
+        String imageURL = url;
+        Image img;
+        if (imageURL != null) {
+            if (!imageURL.isEmpty()) {
+                img = new Image(imageURL);
+                if (img.getHeight() == 0) {
+                    img = new Image("Application/untitled.png");
+                }
+
+            } else {
+                img = new Image("Application/untitled.png");
+            }
+        } else {
+            img = new Image("Application/untitled.png");
+        }
+
+        imageView.setImage(img);
+    }
+
     @FXML
     private void Cancel(MouseEvent event) {
+        cancelSendInfoScreen();
+    }
+    
+    private void cancelSendInfoScreen() {
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("HomeSub.fxml"));
             thisAnchor.getChildren().setAll(node);
@@ -232,13 +257,12 @@ public class SendInformationController implements Initializable {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     @FXML
     private void SendInfo(MouseEvent event) {
         try {
             if (simulation) {
                 if (selectedUser != null && selectedInformation != null) {
-            
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information sent");
                     alert.setContentText("Information was sent to user.");
@@ -252,11 +276,11 @@ public class SendInformationController implements Initializable {
             } else {
                 if (selectedUser != null && selectedInformation != null) {
                     boolean isPrivate = false;
-                    if(checkBoxPrivate.isSelected()) {
+                    if (checkBoxPrivate.isSelected()) {
                         isPrivate = true;
                     }
                     int privateInteger = 1; // 1 = public
-                    if(isPrivate) {
+                    if (isPrivate) {
                         privateInteger = 0;
                     }
                     if (CIMS_SA.con.sendInfo(selectedUser, selectedInformation, privateInteger) == true) {
@@ -276,7 +300,9 @@ public class SendInformationController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SendInformationController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        cancelSendInfoScreen();
     }
+
     /**
      * Selects the radio buttons according to the value from Information
      */
