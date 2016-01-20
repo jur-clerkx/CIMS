@@ -104,6 +104,8 @@ public class FXMLMainController implements Initializable, Observer {
     private Button buttonInProgress;
     @FXML
     private Button buttonCompleted;
+    @FXML
+    private Button buttonShowInformation;
 
     int counter = 0;
     ArrayList<Task> tasks;
@@ -164,17 +166,20 @@ public class FXMLMainController implements Initializable, Observer {
                 buttonCancelled.setDisable(true);
                 buttonInProgress.setDisable(true);
                 buttonCompleted.setDisable(true);
+                buttonShowInformation.setDisable(true);
             }
-            
+
             buttonSendFeedback.setDisable(false);
             buttonCancelled.setDisable(false);
             buttonInProgress.setDisable(false);
             buttonCompleted.setDisable(false);
+            buttonShowInformation.setDisable(false);
         } else {
             buttonSendFeedback.setDisable(true);
             buttonCancelled.setDisable(true);
             buttonInProgress.setDisable(true);
             buttonCompleted.setDisable(true);
+            buttonShowInformation.setDisable(true);
         }
 
         //Fill current task
@@ -255,6 +260,9 @@ public class FXMLMainController implements Initializable, Observer {
         if (currentTask != null) {
             CIMSFieldOperationsUnitApp.con.updateTaskStatus((int) currentTask.getTaskID(), ((Button) ae.getSource()).getText());
             currentTask.setStatus(((Button) ae.getSource()).getText());
+            if (currentTask.getStatus().equals("Cancelled") || currentTask.getStatus().equals("Completed")) {
+                currentTask = null;
+            }
         }
         updatePanes(null);
     }
@@ -359,7 +367,7 @@ public class FXMLMainController implements Initializable, Observer {
             java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Opens a new window that shows the roadmap to the user
      *
@@ -369,6 +377,31 @@ public class FXMLMainController implements Initializable, Observer {
         CIMSFieldOperationsUnitApp.currentTask = currentTask;
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLShowRoadmap.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            //Hide current window
+            Stage currentstage = (Stage) textAreaReasonDeny.getScene().getWindow();
+            currentstage.hide();
+            //Wait till popup window 
+            stage.showAndWait();
+            updatePanes(null);
+            currentstage.show();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Opens a new window that shows the information to the user
+     *
+     * @param ae
+     */
+    public void handleShowInformation(ActionEvent ae) {
+        CIMSFieldOperationsUnitApp.currentTask = currentTask;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLShowInfo.fxml"));
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);

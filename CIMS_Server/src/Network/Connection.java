@@ -102,7 +102,7 @@ public class Connection {
                         if (user.authorized()) {
                             if (obj instanceof String) {
                                 String s = obj.toString();
-                                System.out.println(s);
+                                System.out.println(socket.getInetAddress() + ": " + s);
                                 RequestData(s);
                             } else {
                                 write("Data rejected, not the correct format");
@@ -221,6 +221,7 @@ public class Connection {
                 } else {
                     write("Could not create progress");
                 }
+                break;
             case "FOOP2":
                 o = read();
                 if (dbMediator.createUnit(o)) {
@@ -304,6 +305,13 @@ public class Connection {
                 o = read();
                 write(dbMediator.getProgressByTask(o));
                 break;
+            case "FOOP11":
+                o = read();
+                if (dbMediator.EditUnit(o)) {
+                    write("Unit succesfully edited");
+                } else {
+                    write("Could not edit unit");
+                }
         }
     }
 

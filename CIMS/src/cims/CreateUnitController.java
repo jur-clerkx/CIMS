@@ -5,6 +5,7 @@
  */
 package cims;
 
+import Field_Operations.Material;
 import Field_Operations.Unit;
 import Field_Operations.Vehicle;
 import Network.User;
@@ -132,7 +133,27 @@ public class CreateUnitController implements Initializable {
 
             try {
                 int i = 0;
-                Unit u = new Unit(1,textFieldName.getText(), "","");
+                Unit u = new Unit(100 + OperatorMainController.inactive_Units.size(),textFieldName.getText(), "","");
+                 if(this.radioButtonFire.isSelected())
+            {
+            u.addMaterial(new Material(1,"","",null,1));
+            }
+            if(this.radioButtonFuel.isSelected())
+            {
+            u.addMaterial(new Material(2,"","",null,1));
+            }
+            if(this.radioButtonGas.isSelected())
+            {
+            u.addMaterial(new Material(3,"","",null,1));
+            }
+            if(this.radioButtonQuake.isSelected())
+            {
+            u.addMaterial(new Material(4,"","",null,1));
+            }
+            if(this.radioButtonTerror.isSelected())
+            {
+            u.addMaterial(new Material(5,"","",null,1));
+            }
                 while (this.NRofAmbulancePeople != i) {
                     u.addUser(new User(101,"dave", "test", "male", "Boss", "Medical", "1-1-2001", 1));
                     i++;

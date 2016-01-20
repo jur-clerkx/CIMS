@@ -27,8 +27,10 @@ public class Task implements Serializable {
         return accepted;
     }
     private ArrayList<Progress> progressList;
+
     /**
      * Constructs a task object
+     *
      * @param taskID Greater than 0
      * @param name Not longer than 255 characters or null
      * @param urgency Low, Medium or High
@@ -114,11 +116,11 @@ public class Task implements Serializable {
         }
         return null;
     }
-    
+
     public ArrayList<Progress> getProgressList() {
         return this.progressList;
     }
-    
+
     /**
      * Adds a unit to the list of units working on the task
      *
@@ -174,5 +176,10 @@ public class Task implements Serializable {
         int infoInt = this.taskID;
         info = infoInt + "||" + this.name + "||" + this.urgency + "||" + this.status + "||" + this.location + "||" + this.description;
         return info;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
