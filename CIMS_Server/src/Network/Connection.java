@@ -304,6 +304,10 @@ public class Connection {
                 o = read();
                 write(dbMediator.getProgressByTask(o));
                 break;
+            case "FOOP11":
+                o = read();
+                write(dbMediator.EditUnit(o));
+                break;
         }
     }
 

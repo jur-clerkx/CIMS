@@ -155,7 +155,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
             out.writeObject(so);
             out.flush();
         } catch (Exception ex) {
-            System.out.println("tjup");
+            System.out.println("Sending data failed!");
+            System.out.println(ex.getMessage());
         }
     }
 

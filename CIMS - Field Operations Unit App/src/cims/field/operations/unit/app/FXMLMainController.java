@@ -255,6 +255,9 @@ public class FXMLMainController implements Initializable, Observer {
         if (currentTask != null) {
             CIMSFieldOperationsUnitApp.con.updateTaskStatus((int) currentTask.getTaskID(), ((Button) ae.getSource()).getText());
             currentTask.setStatus(((Button) ae.getSource()).getText());
+            if(currentTask.getStatus().equals("Cancelled") || currentTask.getStatus().equals("Completed")) {
+                currentTask = null;
+            }
         }
         updatePanes(null);
     }
