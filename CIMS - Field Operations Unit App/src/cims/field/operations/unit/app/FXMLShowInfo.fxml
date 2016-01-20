@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.field.operations.unit.app.FXMLShowInfoController">
+    <stylesheets>
+        <URL value="@fxmlshowinfo.css" />
+    </stylesheets>
+   <children>
+      <SplitPane dividerPositions="0.2909698996655518" prefHeight="400.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="171.0">
+                     <children>
+                        <Label text="Information" />
+                        <ListView fx:id="listViewInfo" onMouseClicked="#handleInfoSelectionChanged" prefHeight="323.0" prefWidth="171.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox prefHeight="398.0" prefWidth="421.0">
+                     <children>
+                        <TextField fx:id="textFieldName" editable="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextArea fx:id="textAreaDescription" editable="false" prefHeight="383.0" prefWidth="421.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
