@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import Situational_Awareness.Information;
+import java.util.HashSet;
 
 /**
  * Database connection class
@@ -1374,14 +1375,15 @@ public class DatabaseMediator {
      */
     public ArrayList<Information> GetAllPublicInformation(int userId) {
         ArrayList<Information> info = new ArrayList<>();
-
         if (openConnection()) {
             try {
-                String query = "SELECT * FROM CIMS.Public_Info WHERE PublicForAll = 1 "
-                        + "OR (public_UserId = '" + userId + "' AND PublicForAll = 0);";
+                String query = "Select i.id from CIMS.Information i where i.public_UserId = '" + userId + "' OR i.id in ("
+                        + "SELECT pi.informationid FROM CIMS.Public_Info pi Where pi.PublicForAll = 1 "
+                        + "OR (pi.public_UserId = '" + userId + "' AND pi.PublicForAll = 0));";
+
                 ResultSet rs = executeQuery(query);
                 while (rs.next()) {
-                    int infoId = rs.getInt("informationid");
+                    int infoId = rs.getInt("id");
                     info.add(getInformationById(infoId));
                 }
             } catch (SQLException e) {
@@ -1394,7 +1396,7 @@ public class DatabaseMediator {
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Roadmaps">
+//<editor-fold defaultstate="collapsed" desc="Roadmaps">
     /**
      *
      * @param o a taskId
