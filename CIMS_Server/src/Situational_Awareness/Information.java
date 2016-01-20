@@ -26,11 +26,10 @@ public class Information implements Serializable{
     private int impact;
     private String image;
     private boolean Private;
-    private Network.PublicUser user;
+    private PublicUser user;
 
     public Information(int ID, Task task, String name, String description, String location, int casualities, int toxic, int danger, int impact, String image, Network.PublicUser user, boolean Private) {
-        if (ID > 0 && description != null && description.length() < 255 && location != null && location.length() < 120 & casualities >= 0 && toxic >= 0
-                && danger >= 0  && impact > 0 && impact < 10000) {
+        
             this.ID = ID;
             this.task = task;
             this.description = description;
@@ -43,10 +42,6 @@ public class Information implements Serializable{
             this.user = user;
             this.name = name;
             this.Private = Private;
-        } else {
-            throw new IllegalArgumentException("Information Exception: A parameter wasn't accepted.");
-        }
-
     }
 
     public String getName() {
