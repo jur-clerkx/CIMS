@@ -5,6 +5,7 @@
  */
 package cims;
 
+import Field_Operations.Progress;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import java.io.IOException;
@@ -53,8 +54,6 @@ public class TaskInfoController implements Initializable {
     @FXML
     private Button buttonCancel;
     @FXML
-    private Button buttonDelete;
-    @FXML
     private ComboBox<String> comboboxUrgency;
     @FXML
     private ComboBox<String> comboboxStatus;
@@ -70,6 +69,8 @@ public class TaskInfoController implements Initializable {
     private ListView<Unit> lvAvailable;
     @FXML
     private ListView<Unit> lvAssigned;
+    @FXML
+    private TextArea txtFeedback;
 
     /**
      * Initializes the controller class.
@@ -85,6 +86,14 @@ public class TaskInfoController implements Initializable {
             selectedTask = null;
             try {
                 selectedTask = OperatorMainController.myController.getTaskInfo(ID);
+                ArrayList<Progress> message = OperatorMainController.myController.getProgress(ID);
+                txtFeedback.clear();
+                String fullMessage = "";
+                for(Progress s : message)
+                {
+                    fullMessage = "send by :   "+s.getUser().getFirstname()+ " :       " + s.getMessage()+ "\r\n" + fullMessage;
+                }
+                txtFeedback.setText(fullMessage);
             } catch (IOException ex) {
                 Logger.getLogger(UnitInfoController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -96,7 +105,7 @@ public class TaskInfoController implements Initializable {
             selectedTask = null;
             InactiveUnits = FXCollections.observableArrayList();
             for (Task t : OperatorMainController.active_Tasks) {
-                if (t.getTaskID()== ID) {
+                if (t.getTaskID() == ID) {
                     selectedTask = t;
                     fillPage();
                 }
@@ -120,8 +129,8 @@ public class TaskInfoController implements Initializable {
     @FXML
     private void buttonAdd(MouseEvent event) {
         Unit selectedUnit = (Unit) lvAvailable.getSelectionModel().getSelectedItem();
-        ActiveUnits.add(selectedUnit);
-        InactiveUnits.remove(selectedUnit);
+        lvAssigned.getItems().add(selectedUnit);
+        lvAvailable.getItems().remove(selectedUnit);
 
         selectedTask.addUnit(selectedUnit);
     }
@@ -190,14 +199,35 @@ public class TaskInfoController implements Initializable {
                 String newLocation = textFieldLocation.getText();
                 // Edit currently selected task with new task.
                 if (newLocation != null) {
-                    OperatorMainController.myController.editTask((int) selectedTask.getTaskID(), newLocation);
                     editedTask = selectedTask;
-                    editedTask.setLocation(newLocation);
-                }
-                // TODO assignTask database.
-                if (editedTask != null) {
-                    for (Unit u : ActiveUnits) {
-                        editedTask.addUnit(u);
+                    if (!textFieldName.getText().equals(editedTask.getName())) {
+                        ArrayList<Object> myChanges = new ArrayList<>();
+                        myChanges.add(editedTask.getTaskID());
+                        myChanges.add("name");
+                        myChanges.add(textFieldName.getText());
+                        OperatorMainController.myController.editTask(myChanges.toArray());
+                    }
+                    if (!textAreaDescription.getText().equals(editedTask.getDescription())) {
+                        ArrayList<Object> myChanges = new ArrayList<>();
+                        myChanges.add(editedTask.getTaskID());
+                        myChanges.add("description");
+                        myChanges.add(textAreaDescription.getText());
+                        OperatorMainController.myController.editTask(myChanges.toArray());
+                    }
+                    if (!textFieldLocation.getText().equals(editedTask.getLocation())) {
+                        ArrayList<Object> myChanges = new ArrayList<>();
+                        myChanges.add(editedTask.getTaskID());
+                        myChanges.add("location");
+                        myChanges.add(textFieldLocation.getText());
+                        OperatorMainController.myController.editTask(myChanges.toArray());
+                    }
+                    if (this.lvAssigned.getItems().size() != editedTask.getUnits().size()) {
+                        Object[] o = new Object[lvAssigned.getItems().size() + 1];
+                        o[0] = selectedTask.getTaskID();
+                        for (int i = 0; i < this.lvAssigned.getItems().size(); i++) {
+                            o[1 + i] = lvAssigned.getItems().get(i).getUnitID();
+                        }
+                        OperatorMainController.myController.assignTask(o);
                     }
                 }
             } else {
@@ -216,7 +246,7 @@ public class TaskInfoController implements Initializable {
                     }
                 }
 
-                Task t = new Task(101,textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
+                Task t = new Task(101, textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
 
                 if (state.equals("true")) {
                     OperatorMainController.active_Tasks.remove(id);
@@ -239,7 +269,6 @@ public class TaskInfoController implements Initializable {
      *
      * @param event
      */
-    @FXML
     private void buttonDelete(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -261,32 +290,29 @@ public class TaskInfoController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 String state = "";
                 int index = -1;
-                    for (Task t : OperatorMainController.active_Tasks) {
-                        if (t.getTaskID() == selectedTask.getTaskID()) {
-                            index = OperatorMainController.active_Tasks.indexOf(t);
-                            state = "active";
-                        }
+                for (Task t : OperatorMainController.active_Tasks) {
+                    if (t.getTaskID() == selectedTask.getTaskID()) {
+                        index = OperatorMainController.active_Tasks.indexOf(t);
+                        state = "active";
                     }
-                    OperatorMainController.active_Tasks.remove(index);
+                }
+                OperatorMainController.active_Tasks.remove(index);
 
-                    for (Task t : OperatorMainController.inactive_Task) {
-                        if (t.getTaskID() == selectedTask.getTaskID()) {
-                            index = OperatorMainController.inactive_Task.indexOf(t);
-                            state = "inactive";
-                        }
+                for (Task t : OperatorMainController.inactive_Task) {
+                    if (t.getTaskID() == selectedTask.getTaskID()) {
+                        index = OperatorMainController.inactive_Task.indexOf(t);
+                        state = "inactive";
                     }
-                   
-                    if(state.equals("active"))
-                    {
+                }
+
+                if (state.equals("active")) {
                     OperatorMainController.active_Tasks.remove(index);
-                    }
-                    else
-                    {
-                        OperatorMainController.inactive_Task.remove(index);
-                    }
-                    Stage stage = (Stage)textAreaDescription.getScene().getWindow();
-                    stage.close();
-                
+                } else {
+                    OperatorMainController.inactive_Task.remove(index);
+                }
+                Stage stage = (Stage) textAreaDescription.getScene().getWindow();
+                stage.close();
+
             }
         }
     }
@@ -299,6 +325,11 @@ public class TaskInfoController implements Initializable {
     @FXML
     private void buttonCancel(MouseEvent event
     ) {
+        try {
+            OperatorMainController.myController.cancelTask(selectedTask.getTaskID());
+        } catch (Exception ex) {
+            System.out.println("Cancel Error");
+        }
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }
@@ -332,7 +363,7 @@ public class TaskInfoController implements Initializable {
             status.add("ongoing");
             status.add("open");
             comboboxStatus.setItems(FXCollections.observableArrayList());
-
+            comboboxUrgency.setItems(FXCollections.observableArrayList(choices));
         } catch (IOException ex) {
             Logger.getLogger(TaskInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }

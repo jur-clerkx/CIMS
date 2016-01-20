@@ -37,7 +37,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
     private String username;
     private String password;
 
-    public User user;
+    public PublicUser user;
     private Unit unit;
     private final String serverAddress;
 
@@ -58,8 +58,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        //serverAddress = "145.93.85.35";
-        serverAddress = "localhost";
+        serverAddress = "145.93.84.138";
+        //serverAddress = "localhost";
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
             sendData(login.split("/"));
 
             //Check if login succeeded
-            user = (User) readData();
+            user = (PublicUser) readData();
 
             if (user == null) {
                 throw new Exception("fail");
@@ -182,8 +182,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
      *
      * @return Can be null if not logged in
      */
-    public synchronized User getUser() {
-        return this.user;
+    public synchronized PublicUser getUser() {
+        return (PublicUser)this.user;
     }
 
     /**
@@ -274,13 +274,20 @@ public class ConnectionRunnable extends Observable implements Runnable {
      * @return True if send
      * @throws IOException
      */
-    public synchronized boolean sendInfo(PublicUser user, Information info) throws IOException {
+    public synchronized boolean sendInfo(PublicUser user, Information info, int privateInteger) throws IOException {
         if (authorized == 1) {
             try {
                 String outputMessage = "SAPU8";
+                
+                Object[] outputObjects = new Object[3];
+                outputObjects[0] = info.getID();
+                outputObjects[1] = user.getUser_ID();
+                outputObjects[2] = privateInteger;
+                
+                
+                
                 sendData(outputMessage);
-                sendData((int)user.getUser_ID());
-                sendData(info.getID());
+                sendData(outputObjects);
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,12 +311,17 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 thisOutputMessage[5] = danger;
                 thisOutputMessage[6] = impact;
                 thisOutputMessage[7] = URL;
-                thisOutputMessage[8] = Private;
+                if(Private == true) {
+                    thisOutputMessage[8] = 0;
+                } else {
+                    thisOutputMessage[8] = 1;
+                }
+                
                 
                 sendData(outputMessage);
                 sendData(thisOutputMessage);
                 result = readData();
-                System.out.println(result.toString());
+                System.out.println("Result Create:" + result.toString());
 
             } catch (IOException | ClassNotFoundException ex1) {
                 Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex1);
@@ -323,11 +335,60 @@ public class ConnectionRunnable extends Observable implements Runnable {
             return false;
         }
     }
-
+    
+    public synchronized boolean EditInformationString(int id, String atrToEdit, String edit) {
+        Object result = null;
+        if(authorized == 1) {
+            try {
+                String outputMessage = "SAPU11";
+                Object[] thisOutputMessage = new Object[3];
+                thisOutputMessage[0] = id;
+                thisOutputMessage[1] = atrToEdit;
+                thisOutputMessage[2] = edit;
+                sendData(outputMessage);
+                sendData(thisOutputMessage);
+                
+                result = readData();
+                
+            }
+            catch(Exception E){
+                System.out.println(E.getMessage());
+            }
+        }
+        if (result != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+   public synchronized boolean EditInformationInt(int id, String atrToEdit, int edit) {
+       Object result = null;
+       if(authorized == 1) {
+           try {
+               String outputMessage = "SAPU11";
+               Object[] thisOutputMessage = new Object[3];
+               thisOutputMessage[0] = id;
+               thisOutputMessage[1] = atrToEdit;
+               thisOutputMessage[2] = edit;
+               sendData(outputMessage);
+               sendData(thisOutputMessage);
+               
+               result = readData();
+           }
+           catch(Exception E) {
+               System.out.println(E.getMessage());
+           }
+       }
+       if (result != null) {
+            return true;
+        } else {
+            return false;
+        }
+   }
+    
     public synchronized boolean EditInformation(String name, String description, String location, int casualties, int toxic, int danger, int impact, String URL, int id, boolean Private) {
         Object result = null;
         if (authorized == 1) {
-
             try {
                 sendData("SAPU4");
                 sendData(id);
@@ -360,7 +421,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
     }
 
-    public synchronized ArrayList<Information> getPublicInformation(int Userid) throws IOException {
+    public synchronized ArrayList<Information> getPublicInformation() throws IOException {
         ArrayList<Information> returnInfo = new ArrayList();
         if (authorized == 1) {
             try {

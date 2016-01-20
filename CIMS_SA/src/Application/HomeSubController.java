@@ -57,7 +57,7 @@ public class HomeSubController implements Initializable {
 
                 if (CIMS_SA.con.getUser() != null) {
                     try {
-                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                        myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation());
                         listAvailableInformation.setItems(myObservableList);
                         t = new Timer();
                         t.scheduleAtFixedRate(new TimerTask() {
@@ -65,7 +65,8 @@ public class HomeSubController implements Initializable {
                             @Override
                             public void run() {
                                 try {
-                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                                    //myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                                    myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation());
                                 } catch (IOException ex) {
                                     Logger.getLogger(HomeSubController.class.getName()).log(Level.SEVERE, null, ex);
                                     this.cancel();
@@ -112,7 +113,8 @@ public class HomeSubController implements Initializable {
         if (!simulation) {
             try {
                 if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                    //ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation((int)CIMS_SA.con.getUser().getUser_ID()));
+                    ObservableList<Information> myObservableList = FXCollections.observableArrayList(CIMS_SA.con.getPublicInformation());
                     listAvailableInformation.setItems(myObservableList);
                 } else {
 
