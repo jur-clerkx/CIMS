@@ -123,12 +123,14 @@ public class UnitInfoController implements Initializable {
             for (Unit i : OperatorMainController.inactive_Units) {
                 if (i.getUnitID() == ID) {
                     mySelectedUnit = i;
+                    OperatorMainController.selectedUnitID = i.getUnitID();
                 }
             }
 
             for (Unit i : OperatorMainController.active_Units) {
                 if (i.getUnitID() == ID) {
                     mySelectedUnit = i;
+                    OperatorMainController.selectedUnitID = i.getUnitID();
                 }
             }
             if (mySelectedUnit != null) {
@@ -190,20 +192,42 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
 
-            Unit myunit = new Unit(101, textfieldName.getText(), textfieldLocation.getText(), "");
+            Unit myunit = new Unit(OperatorMainController.selectedUnitID, textfieldName.getText(),"" , "");
 
             for (int i = 0; i < NRofAmbulancePeople; i++) {
-                myunit.addUser(new User(i + 1, "test", "test,", "test", "test", "Medical", "test", 0));
+                myunit.addUser(new User(i + 10, "test", "test,", "test", "test", "Medical", "test", 0));
             }
 
             for (int i = 0; i < NrOFPolicemen; i++) {
-                myunit.addUser(new User(i + 2, "test", "test,", "test", "test", "Police", "test", 0));
+                myunit.addUser(new User(i + 20, "test", "test,", "test", "test", "Police", "test", 0));
             }
 
             for (int i = 0; i < NRofFireFIghters; i++) {
-                myunit.addUser(new User(i + 3, "test", "test,", "test", "test", "Fire", "test", 0));
+                myunit.addUser(new User(i + 30, "test", "test,", "test", "test", "Fire", "test", 0));
             }
 
+            if(this.radiobuttonAmbulance.isSelected())
+            {
+            myunit.addMaterial(new Material(1,"","",null,1));
+            }
+            if(this.radiobuttonAmbulance.isSelected())
+            {
+            myunit.addMaterial(new Material(2,"","",null,1));
+            }
+            if(this.radiobuttonAmbulance.isSelected())
+            {
+            myunit.addMaterial(new Material(3,"","",null,1));
+            }
+            if(this.radiobuttonAmbulance.isSelected())
+            {
+            myunit.addMaterial(new Material(4,"","",null,1));
+            }
+            if(this.radiobuttonAmbulance.isSelected())
+            {
+            myunit.addMaterial(new Material(5,"","",null,1));
+            }
+            
+            
             String selectedUnit = "inactive";
             Unit uss = null;
             for (Unit us : OperatorMainController.active_Units) {
@@ -219,9 +243,7 @@ public class UnitInfoController implements Initializable {
                     uss = us;
                 }
             }
-            if (uss != null) {
-                myunit.acceptTask(uss.getTasks().get(0));
-            }
+            
             if (selectedUnit.equals("Active")) {
                 int i = OperatorMainController.active_Units.indexOf(uss);
                 OperatorMainController.active_Units.remove(i);
@@ -235,7 +257,7 @@ public class UnitInfoController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
 
-            alert.setContentText("Unit succesfully created.");
+            alert.setContentText("Unit succesfully edited.");
             alert.showAndWait();
             Stage stage = (Stage) buttonCancel.getScene().getWindow();
             stage.close();
@@ -325,9 +347,7 @@ public class UnitInfoController implements Initializable {
             radiobuttonLarge.setSelected(true);
         }
         if (!mySelectedUnit.getTasks().isEmpty()) {
-            Task task = (Task) mySelectedUnit.getTasks();
-            textfieldTaskID.setText(Integer.toString((int) task.getTaskID()));
-            textfieldTaskname.setText(task.getName());
+           
         }
 
         for (Material m : mySelectedUnit.getMaterials()) {

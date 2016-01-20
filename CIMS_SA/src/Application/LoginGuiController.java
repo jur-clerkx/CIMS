@@ -54,36 +54,37 @@ public class LoginGuiController implements Initializable, Observer {
     @FXML
     private Button btnCreate;
     public static ConnectionRunnable myController;
-    public static int SelectedInfoID = 0;
+    public static int SelectedFromAvailableListInfoID = 0;
     private boolean[] result;
-    
-    public static ArrayList<Information> information;
-    public static boolean simulation;
+
+    public static ArrayList<Information> informationSimulation;
+    public static ArrayList<PublicUser> usersSimulation;
+    public static boolean isSimulation;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      information = new ArrayList<>();
+        informationSimulation = new ArrayList<>();
     }
 
     @FXML
     private void Login(MouseEvent event) {
-        if(txtUserIDLogin.getText().equals("Simulation") && txtPasswordLogin.getText().equals("Simulation")) {
-            simulation = true;
-            information = fillInformation();
+        if (txtUserIDLogin.getText().equals("Simulation") && txtPasswordLogin.getText().equals("Simulation")) {
+            isSimulation = true;
+            informationSimulation = fillInformation();
         }
-        if (!simulation) {
+        if (!isSimulation) {
             myController = new ConnectionRunnable(txtUserIDLogin.getText(), txtPasswordLogin.getText());
             CIMS_SA.con = myController;
             CIMS_SA.con.addObserver(this);
             Thread t = new Thread(myController);
             t.setDaemon(true);
             t.start();
-            
-        } 
-        if(CIMS_SA.con != null || simulation == true) {
+
+        }
+        if (CIMS_SA.con != null || isSimulation == true) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
                 Scene scene = new Scene(root);
@@ -98,11 +99,31 @@ public class LoginGuiController implements Initializable, Observer {
                 System.out.println("Error when opening UserGui");
             }
         }
-        
+
     }
 
     @FXML
     private void CreateUser(MouseEvent event) {
+        String newUserFirstname = txtVoornaam.getText();
+        String newUserLastname = txtAchternaam.getText();
+        String newUserBSN = txtBSNNummer.getText();
+        String newUserPassword = txtPasswordCreate.getText();
+
+        if (newUserLastname != null && newUserBSN != null && newUserPassword != null && newUserFirstname != null) {
+            if (!isSimulation) {
+                try {
+                    if (CIMS_SA.con.createPublicUser(newUserFirstname, newUserLastname, newUserPassword, newUserBSN)) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Succes");
+                        alert.setContentText("User Created");
+                        alert.showAndWait();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
     }
 
     @Override
@@ -116,7 +137,7 @@ public class LoginGuiController implements Initializable, Observer {
         if (con.getStatus() == 1) {
             Platform.runLater(() -> {
                 CIMS_SA.con = con;
-                
+
                 if (CIMS_SA.con.getUser() != null) {
                     if (CIMS_SA.con.getUser() instanceof User) {
                         try {
@@ -144,24 +165,23 @@ public class LoginGuiController implements Initializable, Observer {
                         } catch (IOException ex) {
                             Logger.getLogger(LoginGuiController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
-                            try {
-                                Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
-                                Scene scene = new Scene(root);
-                                Stage primaryStage = new Stage();
-                                primaryStage.setTitle("User Information");
-                                primaryStage.setScene(scene);
-                                primaryStage.show();
-                                primaryStage.resizableProperty().set(false);
-                                CIMS_SA.primaryStage.close();
-                            } catch (IOException ex) {
-                                System.out.println("Error when opening UserGui");
-                            }
+                    } else if (CIMS_SA.con.getUser() instanceof PublicUser) {
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("MainOperator.fxml"));
+                            Scene scene = new Scene(root);
+                            Stage primaryStage = new Stage();
+                            primaryStage.setTitle("User Information");
+                            primaryStage.setScene(scene);
+                            primaryStage.show();
+                            primaryStage.resizableProperty().set(false);
+                            CIMS_SA.primaryStage.close();
+                        } catch (IOException ex) {
+                            System.out.println("Error when opening UserGui");
                         }
-
                     }
 
-                
+                }
+
             });
         } else {
             Platform.runLater(new Runnable() {
@@ -175,22 +195,22 @@ public class LoginGuiController implements Initializable, Observer {
             });
         }
     }
+
     private ArrayList<Information> fillInformation() {
         ArrayList<Information> dummyInfoList = new ArrayList<Information>();
         Task task = new Task(1, "Task1", "High", "Open", "Eindhoven", "Fuuuuuuck");
         PublicUser user = new PublicUser(1, "Bas", "Koch", "12345467");
         Information simulationInformation = new Information(1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 0, "", user, false);
-        //new Information((long)LoginGuiController.information.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
+        //new Information((long)LoginGuiController.informationSimulation.size() + 1, task, "Info1", "Fontys", task.getLocation(), 0, 0, 0, 5, null, user, false);
 
-        
         dummyInfoList.add(simulationInformation);
-        
+
         task = new Task(2, "Task2", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(1, task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user, false);
+        simulationInformation = new Information(2, task, "Info2", "Fontys", task.getLocation(), 1, 1, 1, 50, "", user, false);
         dummyInfoList.add(simulationInformation);
-        
+
         task = new Task(3, "Task3", "High", "Open", "Eindhoven", "Fuuuuuuck");
-        simulationInformation = new Information(2, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
+        simulationInformation = new Information(3, task, "Info3", "Fontys", task.getLocation(), 2, 2, 2, 100, null, user, false);
         dummyInfoList.add(simulationInformation);
         return dummyInfoList;
     }

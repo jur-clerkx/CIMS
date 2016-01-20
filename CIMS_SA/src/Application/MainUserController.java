@@ -5,7 +5,7 @@
  */
 package Application;
 
-import static Application.MainOperatorController.SelectedInformationID;
+import static Application.MainOperatorController.SearchedInformationID;
 import Situational_Awareness.Information;
 import Situational_Awareness.TwitterSearch;
 import java.io.IOException;
@@ -100,7 +100,7 @@ public class MainUserController implements Initializable,Observer {
     @FXML
     private void btnSearch(MouseEvent event) {
 
-        SelectedInformationID = Integer.parseInt(txtSearch.getText());
+        SearchedInformationID = Integer.parseInt(txtSearch.getText());
 
         try {
             Node node = (Node) FXMLLoader.load(getClass().getResource("EditInformation.fxml"));

@@ -89,9 +89,8 @@ public class TaskInfoController implements Initializable {
                 ArrayList<Progress> message = OperatorMainController.myController.getProgress(ID);
                 txtFeedback.clear();
                 String fullMessage = "";
-                for(Progress s : message)
-                {
-                    fullMessage = "send by :   "+s.getUser().getFirstname()+ " :       " + s.getMessage()+ "\r\n" + fullMessage;
+                for (Progress s : message) {
+                    fullMessage = "send by :   " + s.getUser().getFirstname() + " :       " + s.getMessage() + "\r\n" + fullMessage;
                 }
                 txtFeedback.setText(fullMessage);
             } catch (IOException ex) {
@@ -116,7 +115,17 @@ public class TaskInfoController implements Initializable {
                     fillPage();
                 }
             }
-
+            try {
+                ArrayList<Progress> message = selectedTask.getProgressList();
+                txtFeedback.clear();
+                String fullMessage = "";
+                for (Progress s : message) {
+                    fullMessage = "send by :   " + s.getUser().getFirstname() + " :       " + s.getMessage() + "\r\n" + fullMessage;
+                }
+                txtFeedback.setText(fullMessage);
+            } catch (Exception ex) {
+                System.out.println("Sim: feedback error");
+            }
             //listviewAUnits.setItems(FXCollections.observableArrayList(OperatorMainController.inactive_Units));
         }
     }
@@ -247,7 +256,7 @@ public class TaskInfoController implements Initializable {
                     }
                 }
 
-                Task t = new Task(101, textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
+                Task t = new Task(selectedTask.getTaskID(), textFieldName.getText(), comboboxUrgency.getSelectionModel().getSelectedItem(), comboboxStatus.getSelectionModel().getSelectedItem(), textFieldLocation.getText(), textAreaDescription.getText());
 
                 if (state.equals("true")) {
                     OperatorMainController.active_Tasks.remove(id);
@@ -345,8 +354,8 @@ public class TaskInfoController implements Initializable {
                 lvAssigned.getItems().addAll(FXCollections.observableArrayList(selectedTask.getUnits()));
                 lvAvailable.getItems().addAll(OperatorMainController.myController.getInactiveUnits());
             } else {
-                ActiveUnits.addAll(OperatorMainController.active_Units);
-                InactiveUnits.addAll(OperatorMainController.inactive_Units);
+                lvAssigned.getItems().addAll(selectedTask.getUnits());
+                lvAvailable.getItems().addAll(OperatorMainController.inactive_Units);
             }
             if (selectedTask != null) {
                 textFieldName.setText(selectedTask.getName());

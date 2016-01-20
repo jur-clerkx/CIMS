@@ -5,53 +5,58 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.AssignRoadmapController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="4.0" prefWidth="113.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="197.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="195.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="112.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+
+<AnchorPane fx:id = "Mainfield" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.AssignRoadmapController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <GridPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="600.0">
          <children>
-            <Label text="Task:">
-               <VBox.margin>
-                  <Insets left="60.0" top="5.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets left="15.0" />
-               </padding>
-            </Label>
-            <ComboBox fx:id="cboxUnits" prefWidth="150.0">
-               <VBox.margin>
-                  <Insets left="15.0" top="5.0" />
-               </VBox.margin>
-            </ComboBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Task:">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="60.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="cboxUnits" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </ComboBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="256.0" prefWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Roadmap">
+                     <VBox.margin>
+                        <Insets left="60.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="cboxRoadmaps" prefWidth="150.0">
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                  </ComboBox>
+               </children>
+            </VBox>
+            <Button fx:id="btnAssign" mnemonicParsing="false" onMouseClicked="#btnAssign" text="Assign" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
-      </VBox>
-      <VBox prefHeight="256.0" prefWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <children>
-            <Label text="Roadmap">
-               <VBox.margin>
-                  <Insets left="60.0" top="5.0" />
-               </VBox.margin>
-            </Label>
-            <ComboBox fx:id="cboxRoadmaps" prefWidth="150.0">
-               <VBox.margin>
-                  <Insets left="15.0" top="5.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets left="15.0" />
-               </padding>
-            </ComboBox>
-         </children>
-      </VBox>
-      <Button fx:id="btnAssign" mnemonicParsing="false" onMouseClicked="#btnAssign" text="Assign" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-     </children>
-</GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="4.0" prefWidth="113.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="197.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="195.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="112.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+   </children>
+</AnchorPane>

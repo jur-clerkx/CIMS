@@ -58,7 +58,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        serverAddress = "145.93.84.138";
+        serverAddress = "145.93.85.97";
         //serverAddress = "localhost";
     }
 
@@ -440,5 +440,23 @@ public class ConnectionRunnable extends Observable implements Runnable {
         }
         return returnInfo;
 
+    }
+    public synchronized boolean createPublicUser(String firstname, String lastname, String password, String BSNNummer) throws IOException {
+        boolean result = false;
+        try {
+            String outputMessage = "SAPU1";
+            Object[] thisOutputMessage = new Object[4];
+            thisOutputMessage[0] = firstname;
+            thisOutputMessage[1] = lastname;
+            thisOutputMessage[2] = BSNNummer;
+            thisOutputMessage[3] = password;
+            sendData(outputMessage);
+            sendData(thisOutputMessage);
+            result = (boolean)readData();
+        } catch (Exception ex) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex);
+                KillConnection();
+            }
+        return result;
     }
 }
