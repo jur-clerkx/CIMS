@@ -41,9 +41,9 @@ public class CreateTaskController implements Initializable {
     @FXML
     private TextField textfieldTaskLocation;
     @FXML
-    private ListView listviewAvailableUnits;
+    private ListView<Unit> listviewAvailableUnits;
     @FXML
-    private ListView listviewAssignedUnits;
+    private ListView<Unit> listviewAssignedUnits;
     @FXML
     private Button buttonAssignUnit;
     @FXML
@@ -103,10 +103,8 @@ public class CreateTaskController implements Initializable {
     private void assignButtonClick(MouseEvent event) {
         Unit selectedUnit = (Unit) listviewAvailableUnits.getSelectionModel().getSelectedItem();
         if (selectedUnit != null) {
-            AvailableList.remove(selectedUnit);
-            AssignedList.add(selectedUnit);
-            listviewAvailableUnits.setItems(AvailableList);
-            listviewAssignedUnits.setItems(AssignedList);
+            listviewAvailableUnits.getItems().remove(selectedUnit);
+            listviewAssignedUnits.getItems().add(selectedUnit);
 
         }
 
@@ -117,10 +115,8 @@ public class CreateTaskController implements Initializable {
         Unit selectedUnit = (Unit) listviewAssignedUnits.getSelectionModel().getSelectedItem();
         if (selectedUnit != null) {
 
-            AssignedList.remove(selectedUnit);
-            AvailableList.add(selectedUnit);
-            listviewAssignedUnits.setItems(AssignedList);
-            listviewAvailableUnits.setItems(AvailableList);
+            listviewAssignedUnits.getItems().remove(selectedUnit);
+            listviewAvailableUnits.getItems().add(selectedUnit);
         }
     }
 
@@ -161,8 +157,15 @@ public class CreateTaskController implements Initializable {
                 for (Unit u : AssignedList) {
                     assignedUnits.add((int) u.getUnitID());
                 }
+                ArrayList<Task> alltasks = OperatorMainController.myController.getActiveTasks();
+                Task createdTask = (Task) alltasks.get(alltasks.size() - 1);
+                Object[] o = new Object[listviewAssignedUnits.getItems().size() + 1];
+                o[0] = createdTask.getTaskID();
+                for (int i = 0; i < this.listviewAssignedUnits.getItems().size(); i++) {
+                    o[1 + i] = listviewAssignedUnits.getItems().get(i).getUnitID();
+                }
+                OperatorMainController.myController.assignTask(o);
 
-                OperatorMainController.myController.assignTask(assignedUnits.toArray());
             }
             Stage stage = (Stage) textareaDescription.getScene().getWindow();
             stage.close();

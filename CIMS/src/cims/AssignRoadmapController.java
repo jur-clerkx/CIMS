@@ -5,7 +5,6 @@
  */
 package cims;
 
-
 import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class AssignRoadmapController implements Initializable {
     @FXML
     private Button btnCancel;
 
-    private ObservableList unitList;
+    private ObservableList taskList;
     private ObservableList roadmapList;
     private boolean Simulation;
 
@@ -52,7 +51,7 @@ public class AssignRoadmapController implements Initializable {
 
         Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
-            unitList = FXCollections.observableArrayList();
+            taskList = FXCollections.observableArrayList();
             roadmapList = FXCollections.observableArrayList();
             try {
                 if (OperatorMainController.myController.user != null) {
@@ -60,30 +59,36 @@ public class AssignRoadmapController implements Initializable {
                     myTasks.addAll(OperatorMainController.myController.getInactiveTasks());
                     ArrayList<Roadmap> myroadmaps = OperatorMainController.myController.getRoadmaps();
                     if (myTasks != null) {
-                        unitList.addAll(myTasks);
+                        taskList.addAll(myTasks);
                     }
                     if (myroadmaps != null) {
                         roadmapList.addAll(myroadmaps);
                     }
-                    cboxUnits.getItems().addAll(unitList);
+                    cboxUnits.getItems().addAll(taskList);
+                    for (Task t : myTasks) {
+                        System.out.println(t.toString() + " is " + t.getTaskID());
+                    }
                     cboxRoadmaps.getItems().addAll(roadmapList);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(AssignRoadmapController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            unitList = FXCollections.observableArrayList();
+            taskList = FXCollections.observableArrayList();
             roadmapList = FXCollections.observableArrayList();
             ArrayList<Task> myTasks = OperatorMainController.active_Tasks;
             myTasks.addAll(OperatorMainController.inactive_Task);
             ArrayList<Roadmap> myroadmaps = OperatorMainController.roadmaps;
             if (myTasks != null) {
-                unitList.addAll(myTasks);
+                taskList.addAll(myTasks);
             }
             if (myroadmaps != null) {
                 roadmapList.addAll(myroadmaps);
             }
-            cboxUnits.getItems().addAll(unitList);
+            cboxUnits.getItems().addAll(taskList);
+            for (Task t : myTasks) {
+                System.out.println(t.toString() + " is " + t.getTaskID());
+            }
             cboxRoadmaps.getItems().addAll(roadmapList);
 
         }
@@ -93,7 +98,9 @@ public class AssignRoadmapController implements Initializable {
     private void btnAssign(MouseEvent event) {
         if (!Simulation) {
             try {
-                if (OperatorMainController.myController.assignRoadmaps((int)cboxUnits.getSelectionModel().getSelectedItem().getTaskID(),(int) cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
+                Task t = cboxUnits.getSelectionModel().getSelectedItem();
+                Roadmap r = cboxRoadmaps.getSelectionModel().getSelectedItem();
+                if (OperatorMainController.myController.assignRoadmaps((int) cboxUnits.getSelectionModel().getSelectedItem().getTaskID(), (int) cboxRoadmaps.getSelectionModel().getSelectedItem().getRoadmapId())) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Successfull");
                     alert.setContentText("Roadmap succesfully assigned");
@@ -110,7 +117,7 @@ public class AssignRoadmapController implements Initializable {
             }
         } else {
 
-            OperatorMainController.roadmaps.add(new Roadmap(12,"UserCreated", "UserCreated"));
+            OperatorMainController.roadmaps.add(new Roadmap(12, "UserCreated", "UserCreated"));
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Successfull");
             alert.setContentText("Roadmap succesfully assigned");

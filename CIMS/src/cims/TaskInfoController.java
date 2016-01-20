@@ -132,7 +132,7 @@ public class TaskInfoController implements Initializable {
         lvAssigned.getItems().add(selectedUnit);
         lvAvailable.getItems().remove(selectedUnit);
 
-        selectedTask.addUnit(selectedUnit);
+        //selectedTask.addUnit(selectedUnit);
     }
 
     /**
@@ -221,6 +221,7 @@ public class TaskInfoController implements Initializable {
                         myChanges.add(textFieldLocation.getText());
                         OperatorMainController.myController.editTask(myChanges.toArray());
                     }
+                    System.out.println(lvAssigned.getItems().size());
                     if (this.lvAssigned.getItems().size() != editedTask.getUnits().size()) {
                         Object[] o = new Object[lvAssigned.getItems().size() + 1];
                         o[0] = selectedTask.getTaskID();
