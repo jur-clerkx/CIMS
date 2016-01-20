@@ -62,7 +62,7 @@ public class ConnectionRunnable extends Observable implements Runnable {
         this.password = password;
         this.authorized = 0;
         this.keepRunning = true;
-        serverAddress = "145.93.84.138";
+        serverAddress = "145.93.85.97"; //"145.93.160.172";
     }
 
     @Override
@@ -431,36 +431,25 @@ public class ConnectionRunnable extends Observable implements Runnable {
      * @return True if information was changed
      * @throws IOException
      */
-    public boolean editUnitInfo(String Name, String Location, int size, String selectedSpecials, int PoliceCars, int FireTruck, int Ambulances, int Policemen, int FireFighters, int AmbulancePeople) throws IOException {
-
-        Object[] myUnit = new Object[9];
-        myUnit[0] = Name;
-        myUnit[1] = Location;
-        myUnit[2] = selectedSpecials;
-        myUnit[3] = PoliceCars;
-        myUnit[4] = FireTruck;
-        myUnit[5] = Ambulances;
-        myUnit[6] = Policemen;
-        myUnit[7] = FireFighters;
-        myUnit[8] = AmbulancePeople;
-
-        try {
-            String outputMessage = "FOOP2";
-            String feedback;
-            sendData(outputMessage);
-            sendData(selectedUnitID);
-            sendData(myUnit);
-            feedback = (String) readData();
-            return feedback.equals("Unit succesfully created");
-
-        } catch (IOException ex2) {
-            Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex2);
-            KillConnection();
-            return false;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(OperatorMainController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+    public boolean editUnitInfo(int unidID,String type,Object changed)
+    {
+        try
+        {
+            sendData("FOOP11");
+            Object[] myarray = new Object[3];
+            myarray[0] = unidID;
+            myarray[1] = type;
+            myarray[2] = changed;
+            sendData(myarray);
+            readData();
         }
+        catch(Exception ex)
+        {
+            System.out.println("Edit error");
+            return false;
+            
+        }
+        return true;
     }
 
     /**
@@ -631,7 +620,8 @@ public class ConnectionRunnable extends Observable implements Runnable {
 
     public boolean assignRoadmaps(int taskID, int roadmapID) throws IOException {
         Object[] message = new Object[2];
-
+        message[0] = taskID;
+        message[1] = roadmapID;
         try {
             String outputMessage = "FOOP10";
             sendData(outputMessage);

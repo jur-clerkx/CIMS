@@ -5,7 +5,6 @@
  */
 package cims;
 
-
 import Field_Operations.Material;
 import Field_Operations.Task;
 import Field_Operations.Unit;
@@ -122,7 +121,7 @@ public class UnitInfoController implements Initializable {
             int ID = OperatorMainController.selectedUnitID;
             mySelectedUnit = null;
             for (Unit i : OperatorMainController.inactive_Units) {
-                if (i.getUnitID()== ID) {
+                if (i.getUnitID() == ID) {
                     mySelectedUnit = i;
                 }
             }
@@ -143,7 +142,10 @@ public class UnitInfoController implements Initializable {
     @FXML
     private void saveClick(MouseEvent event) {
         if (!Simulation) {
-            boolean succes = false;
+            boolean succes1 = false;
+            boolean succes2 = false;
+            boolean succes3 = false;
+            boolean succes4 = false;
             int size = 0;
             if (radiobuttonSmall.isSelected()) {
                 size = 1;
@@ -154,14 +156,20 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
             try {
-                succes = OperatorMainController.myController.editUnitInfo(textfieldName.getText(), "", size, getSelectedSpecials(),NrOfPoliceCars, NrOfFireTrucks, NrOfAmbulances, NrOFPolicemen, NRofFireFIghters, NRofAmbulancePeople);
+                succes1 = OperatorMainController.myController.editUnitInfo(mySelectedUnit.getUnitID(),"name", (Object) textfieldName.getText());
+                succes2 = OperatorMainController.myController.editUnitInfo(mySelectedUnit.getUnitID(),"specials", (Object) this.getSelectedSpecials());
+                
+                String units = "" + NRofFireFIghters + "-" + NrOFPolicemen + "-" + NRofAmbulancePeople;
+                String cars = "" + textfieldFiretrucks.getText() + "-" + textfieldPoliceCars.getText() + "-" + textfieldAmbulances.getText();
+                succes3 = OperatorMainController.myController.editUnitInfo(mySelectedUnit.getUnitID(),"users",  units);
+                succes4 = OperatorMainController.myController.editUnitInfo(mySelectedUnit.getUnitID(),"vehicles",  cars);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-                
+
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            if (succes) {
+            if (succes1 && succes2 && succes3 && succes4) {
                 alert.setContentText("Unit succesfully created.");
                 alert.showAndWait();
                 Stage stage = (Stage) buttonCancel.getScene().getWindow();
@@ -182,29 +190,24 @@ public class UnitInfoController implements Initializable {
             }
             convertToInt();
 
-            Unit myunit = new Unit(101,textfieldName.getText(), textfieldLocation.getText(),"");
-            
-            
-            
-            for(int i = 0; i < NRofAmbulancePeople; i++)
-            {
-                myunit.addUser(new User(i+1,"test","test,","test","test","Medical","test",0));
+            Unit myunit = new Unit(101, textfieldName.getText(), textfieldLocation.getText(), "");
+
+            for (int i = 0; i < NRofAmbulancePeople; i++) {
+                myunit.addUser(new User(i + 1, "test", "test,", "test", "test", "Medical", "test", 0));
             }
-            
-            for(int i = 0; i < NrOFPolicemen; i++)
-            {
-                myunit.addUser(new User(i+2,"test","test,","test","test","Police","test",0));
+
+            for (int i = 0; i < NrOFPolicemen; i++) {
+                myunit.addUser(new User(i + 2, "test", "test,", "test", "test", "Police", "test", 0));
             }
-            
-            for(int i = 0; i < NRofFireFIghters; i++)
-            {
-                myunit.addUser(new User(i+3,"test","test,","test","test","Fire","test",0));
+
+            for (int i = 0; i < NRofFireFIghters; i++) {
+                myunit.addUser(new User(i + 3, "test", "test,", "test", "test", "Fire", "test", 0));
             }
-            
+
             String selectedUnit = "inactive";
             Unit uss = null;
             for (Unit us : OperatorMainController.active_Units) {
-                if (myunit.getUnitID()== us.getUnitID()) {
+                if (myunit.getUnitID() == us.getUnitID()) {
                     selectedUnit = "Active";
                     uss = us;
                 }
@@ -248,22 +251,22 @@ public class UnitInfoController implements Initializable {
     }
 
     private String getSelectedSpecials() {
-        String selected = "F";
+        String selected = "";
 
         if (radiobuttonFuel.isSelected()) {
-            selected += "2";
+            selected += "1";
         }
         if (radiobuttonExplosion.isSelected()) {
-            selected += "3";
+            selected += "2";
         }
         if (radiobuttonGas.isSelected()) {
-            selected += "4";
+            selected += "3";
         }
         if (radiobuttonEarthquake.isSelected()) {
-            selected += "5";
+            selected += "4";
         }
         if (radiobuttonTerrorist.isSelected()) {
-            selected += "6";
+            selected += "5";
         }
         return selected;
     }
@@ -323,7 +326,7 @@ public class UnitInfoController implements Initializable {
         }
         if (!mySelectedUnit.getTasks().isEmpty()) {
             Task task = (Task) mySelectedUnit.getTasks();
-            textfieldTaskID.setText(Integer.toString((int)task.getTaskID()));
+            textfieldTaskID.setText(Integer.toString((int) task.getTaskID()));
             textfieldTaskname.setText(task.getName());
         }
 
@@ -360,7 +363,7 @@ public class UnitInfoController implements Initializable {
         }
 
         for (Vehicle v : mySelectedUnit.getVehicles()) {
-            if (v.getType()== 1) {
+            if (v.getType() == 1) {
                 firetrucks++;
             } else if (v.getType() == 2) {
                 policeCars++;
@@ -375,7 +378,6 @@ public class UnitInfoController implements Initializable {
         textfieldPoliceCars.setText(Integer.toString(policeCars));
         textfieldFiretrucks.setText(Integer.toString(firetrucks));
         textfieldAmbulances.setText(Integer.toString(ambulance));
-        
 
     }
 
