@@ -2,17 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/LoginGuiController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/MainUserController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Connection/ConnectionRunnable.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/EditInformationController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/CreateInformationController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/CIMS_SA.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/SendInformationController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Application/HomeSubController.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Situational_Awareness/TwitterSearch.java</file>
-            <file>file:/C:/Users/rick/Documents/CIMS/CIMS_SA/src/Situational_Awareness/Information.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

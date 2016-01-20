@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import Situational_Awareness.Information;
+import javax.xml.bind.ParseConversionEvent;
 
 /**
  * Database connection class
@@ -926,7 +927,7 @@ public class DatabaseMediator {
     /**
      * Sets personlist of task
      *
-     * @param o int limit off persons to load
+     * @param o Integer limit off persons to load
      * @param type department of person
      * @param unitID id of the unit the person works in
      * @return boolean if success.
@@ -940,7 +941,9 @@ public class DatabaseMediator {
 
         if (openConnection()) {
             try {
-                String query = "SELECT u.id FROM CIMS.User u WHERE u.sector = '" + type + "'AND u.id NOT IN (SELECT uc.id  FROM CIMS.Unit_Containment uc, CIMS.Task t, CIMS.Task_Unit tu WHERE uc.unitId = tu.unitId AND t.id = tu.taskId AND t.active = 1) limit " + amount + ";";
+                String query = "SELECT u.id FROM CIMS.User u WHERE u.sector = '" + type 
+                        + "'AND u.id NOT IN (SELECT uc.id  FROM CIMS.Unit_Containment uc, CIMS.Task t, CIMS.Task_Unit tu "
+                        + "WHERE uc.unitId = tu.unitId AND t.id = tu.taskId AND t.active = 1) limit " + amount + ";";
                 ResultSet rs = executeQuery(query);
                 int i = 0;
                 while (rs.next()) {
@@ -1555,7 +1558,7 @@ public class DatabaseMediator {
     }
 //</editor-fold>
 
-    boolean EditInformation(Object o) {
+    public boolean EditInformation(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -1589,7 +1592,7 @@ public class DatabaseMediator {
         return true;
     }
 
-    boolean EditTask(Object o) {
+    public boolean EditTask(Object o) {
         if (!(o instanceof Object[])) {
             return false;
         }
@@ -1616,6 +1619,101 @@ public class DatabaseMediator {
                 executeNonQuery(query);
             } catch (SQLException e) {
                 System.out.println("EditTask: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     *
+     * @param o objectArray
+     * @return
+     */
+    public boolean EditUnit(Object o) {
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+
+        Object[] objects = (Object[]) o;
+        if (objects.length != 3) {
+            return false;
+        }
+        if (!(objects[0] instanceof Integer) || !(objects[1] instanceof String)) {
+            return false;
+        }
+        String fieldname = (String) objects[1];
+        int unitId = (int) objects[0];
+        if (!"description".equals(fieldname) && !"name".equals(fieldname) && !"location".equals(fieldname)
+                && !"specials".equals(fieldname) && !"vehicle".equals(fieldname) && !"users".equals(fieldname)) {
+            return false;
+        }
+        if (!"specials".equals(fieldname) && !"vehicle".equals(fieldname) && !"users".equals(fieldname)) {
+            if (openConnection()) {
+                try {
+                    String query = "UPDATE CIMS.Task SET " + fieldname + "='" + objects[2] + "' WHERE id='" + unitId + "';";
+                    executeNonQuery(query);
+                } catch (SQLException e) {
+                    System.out.println("EditTask: " + e.getMessage());
+                    return false;
+                } finally {
+                    closeConnection();
+                }
+            }
+        } else {
+            if (null != fieldname) {
+                int index;
+                switch (fieldname) {
+                    case "specials":
+                        updateLists(unitId, "M");
+                        setSpecials(objects[2], unitId);
+                        break;
+                    case "vehicles":
+                        updateLists(unitId, "V");
+                        index = 0;
+                        for (Object object : objects[2].toString().split("-")) {
+                            if (index == 0) {
+                                setCars(object, "M", unitId);
+                            } else if (index == 1) {
+                                setCars(object, "P", unitId);
+                            } else if (index == 2) {
+                                setCars(object, "H", unitId);
+                            }
+                            index++;
+                        }
+                        break;
+                    case "users":
+                        updateLists(unitId, "U");
+                        index = 0;
+                        for (Object object : objects[2].toString().split("-")) {
+                            if (index == 0) {
+                                setPersons(object, "M", unitId);
+                            } else if (index == 1) {
+                                setPersons(object, "P", unitId);
+                            } else if (index == 2) {
+                                setPersons(object, "H", unitId);
+                            }
+                            index++;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean updateLists(int unitId, String type) {
+        if (openConnection()) {
+            try {
+                String query = "DELETE FROM CIMS.Unit_Containment WHERE `type`='" + type + "' AND unitid = '" + unitId + "';";
+                executeNonQuery(query);
+            } catch (SQLException e) {
+                System.out.println("UpdatUnitList 1/2: " + e.getMessage());
+                return false;
             } finally {
                 closeConnection();
             }
