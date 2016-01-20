@@ -142,6 +142,7 @@
                               </VBox>
                               <Button fx:id="buttonSendFeedback" mnemonicParsing="false" onAction="#handleSendFeedback" text="Send feedback" GridPane.rowIndex="2" />
                               <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleShowRoadmap" text="Show roadmaps" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button fx:id="buttonShowInformation" mnemonicParsing="false" onAction="#handleShowInformation" prefHeight="25.0" prefWidth="80.0" text="Show Info" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="103.0" />

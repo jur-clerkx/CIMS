@@ -9,6 +9,7 @@ import Field_Operations.Roadmap;
 import Field_Operations.Task;
 import Field_Operations.Unit;
 import Network.User;
+import Situational_Awareness.Information;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -356,6 +357,30 @@ public class ConnectionRunnable extends Observable implements Runnable {
                 sendData("FOUS8");
                 sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
                 return (ArrayList<Roadmap>) readData();
+            } catch (IOException ex) {
+                System.out.println("IO exception!");
+                setStatus((byte) 2);
+                return null;
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Class not found exception!");
+                setStatus((byte) 2);
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Gets the information that is assigned to the current task
+     * @return An arraylist of information, is null if something failes, can be empty!
+     */
+    public synchronized ArrayList<Information> getInformationByTask() {
+        if (getStatus() == 1) {
+            try {
+                sendData("SAPU6");
+                sendData(cims.field.operations.unit.app.CIMSFieldOperationsUnitApp.currentTask.getTaskID());
+                return (ArrayList<Information>) readData();
             } catch (IOException ex) {
                 System.out.println("IO exception!");
                 setStatus((byte) 2);
