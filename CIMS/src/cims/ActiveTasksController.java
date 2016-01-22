@@ -5,7 +5,6 @@
  */
 package cims;
 
-
 import Field_Operations.Task;
 import java.io.IOException;
 import java.net.URL;
@@ -47,10 +46,6 @@ public class ActiveTasksController implements Initializable {
     @FXML
     private TableView<Task> tableviewActiveTask;
     @FXML
-    private Button buttonDelete;
-    @FXML
-    private Button buttonNew;
-    @FXML
     private AnchorPane MainField;
     @FXML
     private TableColumn<Task, Number> tableId;
@@ -66,6 +61,9 @@ public class ActiveTasksController implements Initializable {
     private ObservableList<Task> tasks;
 
     boolean Simulation;
+    @FXML
+    private Button btnRefresh;
+
     /**
      * Initializes the controller class.
      */
@@ -97,13 +95,13 @@ public class ActiveTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedTaskID = (int)myTask.getTaskID();
+                            OperatorMainController.myController.selectedTaskID = (int) myTask.getTaskID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + (int)myTask.getTaskID());
+                            stage.setTitle("Task: " + (int) myTask.getTaskID());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -126,13 +124,13 @@ public class ActiveTasksController implements Initializable {
 
                         Task myTask = row.getItem();
                         try {
-                            OperatorMainController.selectedTaskID = (int)myTask.getTaskID();
+                            OperatorMainController.selectedTaskID = (int) myTask.getTaskID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TaskInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.DECORATED);
-                            stage.setTitle("Task: " + (int)myTask.getTaskID());
+                            stage.setTitle("Task: " + (int) myTask.getTaskID());
                             stage.setScene(new Scene(root1));
                             stage.show();
                         } catch (Exception x) {
@@ -146,7 +144,6 @@ public class ActiveTasksController implements Initializable {
         }
     }
 
-    @FXML
     private void deleteButtonClick(MouseEvent event) throws IOException {
         if (!Simulation) {
             Task task = (Task) tableviewActiveTask.getSelectionModel().getSelectedItem();
@@ -159,16 +156,14 @@ public class ActiveTasksController implements Initializable {
                 tasks.remove(task);
                 task.operateStatus("Cancelled");
                 if (!Simulation) {
-                    OperatorMainController.myController.removeActiveTask((int)task.getTaskID());
+                    OperatorMainController.myController.removeActiveTask((int) task.getTaskID());
                 }
 
             } else {
                 alert.close();
             }
-        }
-        else
-        {
-            
+        } else {
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
 
@@ -184,7 +179,6 @@ public class ActiveTasksController implements Initializable {
         }
     }
 
-    @FXML
     private void newButtonClick(ActionEvent event) {
         if (!Simulation) {
             try {
@@ -200,5 +194,24 @@ public class ActiveTasksController implements Initializable {
                 System.out.println("Error: " + x.getMessage());
             }
         }
+    }
+
+    @FXML
+    private void Refresh(MouseEvent event) {
+        tableviewActiveTask.getItems().clear();
+        if (!Simulation) {
+            // Database Data:
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    tasks = FXCollections.observableArrayList(OperatorMainController.myController.getActiveTasks());
+                }
+            } catch (IOException ex) {
+                //tasks = FXCollections.observableArrayList();
+                Logger.getLogger(ActiveTasksController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            tasks = FXCollections.observableArrayList(OperatorMainController.active_Tasks);
+        }
+        tableviewActiveTask.setItems(tasks);
     }
 }

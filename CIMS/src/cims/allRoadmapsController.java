@@ -5,7 +5,6 @@
  */
 package cims;
 
-
 import Field_Operations.Roadmap;
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +40,8 @@ public class allRoadmapsController implements Initializable {
     ObservableList<Roadmap> roadmaps;
 
     private boolean Simulation;
+    @FXML
+    private Button btnRefresh;
 
     /**
      * Initializes the controller class.
@@ -88,6 +89,29 @@ public class allRoadmapsController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("An error has occured.");
                 alert.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    private void Refresh(MouseEvent event) {
+        if (!Simulation) {
+            if (OperatorMainController.myController.user != null) {
+                try {
+                    roadmaps = FXCollections.observableArrayList(OperatorMainController.myController.getRoadmaps());
+                } catch (IOException ex) {
+                    Logger.getLogger(allRoadmapsController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (roadmaps != null) {
+                roadmapView.setItems(roadmaps);
+            }
+        } else {
+            roadmaps = FXCollections.observableArrayList(OperatorMainController.roadmaps);
+
+            if (roadmaps != null) {
+                roadmapView.setItems(roadmaps);
             }
         }
     }

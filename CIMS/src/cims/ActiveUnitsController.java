@@ -5,7 +5,6 @@
  */
 package cims;
 
-
 import Field_Operations.Unit;
 import java.io.IOException;
 import java.net.URL;
@@ -42,10 +41,6 @@ public class ActiveUnitsController implements Initializable {
     @FXML
     private TableView tableviewActiveUnits;
     @FXML
-    private Button buttonNew;
-    @FXML
-    private Button buttonDisband;
-    @FXML
     private AnchorPane MainField;
     @FXML
     private TableColumn<Unit, Number> tableUnitID;
@@ -55,6 +50,8 @@ public class ActiveUnitsController implements Initializable {
     ObservableList<Unit> activeUnits;
 
     boolean Simulation;
+    @FXML
+    private Button btnRefresh;
 
     /**
      * Initializes the controller class.
@@ -62,7 +59,7 @@ public class ActiveUnitsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-         Simulation= OperatorMainController.is_Simulation;
+        Simulation = OperatorMainController.is_Simulation;
         if (!Simulation) {
             try {
                 if (OperatorMainController.myController.user != null) {
@@ -84,7 +81,7 @@ public class ActiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedUnitID = (int)myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = (int) myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -115,7 +112,7 @@ public class ActiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.selectedUnitID = (int)myUnit.getUnitID();
+                            OperatorMainController.selectedUnitID = (int) myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -135,7 +132,6 @@ public class ActiveUnitsController implements Initializable {
         }
     }
 
-    @FXML
     private void newButtonClick(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateUnit.fxml"));
@@ -151,14 +147,13 @@ public class ActiveUnitsController implements Initializable {
         }
     }
 
-    @FXML
     private void disbandButtonClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) tableviewActiveUnits.getSelectionModel().getSelectedItem();
 
         if (!Simulation) {
             try {
                 if (selectedUnit != null) {
-                    OperatorMainController.myController.DisbandUnit((int)selectedUnit.getUnitID());
+                    OperatorMainController.myController.DisbandUnit((int) selectedUnit.getUnitID());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
@@ -180,4 +175,21 @@ public class ActiveUnitsController implements Initializable {
         }
     }
 
+    @FXML
+    private void Refresh(MouseEvent event) {
+        tableviewActiveUnits.getItems().clear();
+        if (!Simulation) {
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    activeUnits = FXCollections.observableArrayList(OperatorMainController.myController.getActiveUnits());
+                }
+            } catch (Exception ex) {
+                activeUnits = FXCollections.observableArrayList();
+            }
+        } else {
+            activeUnits = FXCollections.observableArrayList();
+            activeUnits.addAll(OperatorMainController.active_Units);
+        }
+        tableviewActiveUnits.setItems(activeUnits);
+    }
 }

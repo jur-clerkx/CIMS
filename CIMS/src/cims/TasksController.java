@@ -67,6 +67,8 @@ public class TasksController implements Initializable {
     ObservableList<Task> InactiveTasks;
 
     private boolean Simulation;
+    @FXML
+    private Button btnRefresh;
 
     /**
      * Initializes the controller class.
@@ -240,7 +242,7 @@ public class TasksController implements Initializable {
         if (!Simulation) {
             try {
                 if (selectedTask != null) {
-                    if (selectedTask.getStatus().equals("Completed") || selectedTask.equals("Cancelled")) {
+                    if (selectedTask.getStatus().equals("Completed") || selectedTask.getStatus().equals("Cancelled")) {
 
                         OperatorMainController.myController.removeActiveTask((int) selectedTask.getTaskID());
                         ActiveTasks.remove(selectedTask);
@@ -251,7 +253,7 @@ public class TasksController implements Initializable {
                         alert.showAndWait();
                     }
                 } else if (selectedTask2 != null) {
-                    if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
+                    if (selectedTask2.getStatus().equals("Completed") || selectedTask2.getStatus().equals("Cancelled")) {
                         OperatorMainController.myController.removeInactiveTask((int) selectedTask2.getTaskID());
                         InactiveTasks.remove(selectedTask);
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -284,21 +286,45 @@ public class TasksController implements Initializable {
                 alert.setContentText("Deleted");
                 alert.showAndWait();
             }
-        } else {
-            if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
-                int index = -1;
-                for (Task t : OperatorMainController.inactive_Task) {
-                    if (t.getTaskID() == selectedTask2.getTaskID()) {
-                        index = OperatorMainController.inactive_Task.indexOf(t);
-                    }
+        } else if (selectedTask2.getStatus().equals("Completed") || selectedTask2.equals("Cancelled")) {
+            int index = -1;
+            for (Task t : OperatorMainController.inactive_Task) {
+                if (t.getTaskID() == selectedTask2.getTaskID()) {
+                    index = OperatorMainController.inactive_Task.indexOf(t);
                 }
-                OperatorMainController.inactive_Task.remove(index);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Succes");
-                alert.setContentText("Deleted");
-                alert.showAndWait();
             }
+            OperatorMainController.inactive_Task.remove(index);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succes");
+            alert.setContentText("Deleted");
+            alert.showAndWait();
         }
     }
 
+    @FXML
+    private void Refresh(MouseEvent event) {
+        this.ATaskTable.getItems().clear();
+        this.UTaskTable.getItems().clear();
+        if (!Simulation) {
+            if (OperatorMainController.myController.user != null) {
+                try {
+                    ArrayList<Task> inactivelist = OperatorMainController.myController.getInactiveTasks();
+                    ArrayList<Task> activeList = OperatorMainController.myController.getActiveTasks();
+
+                    InactiveTasks = FXCollections.observableArrayList(inactivelist);
+                    ActiveTasks = FXCollections.observableArrayList(activeList);
+
+                    UTaskTable.setItems(InactiveTasks);
+                    ATaskTable.setItems(ActiveTasks);
+                } catch (IOException ex) {
+                    Logger.getLogger(TasksController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            InactiveTasks = FXCollections.observableArrayList(OperatorMainController.inactive_Task);
+            ActiveTasks = FXCollections.observableArrayList(OperatorMainController.active_Tasks);
+        }
+        UTaskTable.setItems(InactiveTasks);
+        ATaskTable.setItems(ActiveTasks);
+    }
 }

@@ -39,10 +39,6 @@ public class InactiveUnitsController implements Initializable {
     @FXML
     private TableView<Unit> IUnitTable;
     @FXML
-    private Button buttonNew;
-    @FXML
-    private Button buttonDisband;
-    @FXML
     private AnchorPane MainField;
     @FXML
     private TableColumn<Unit, String> tableUnitName;
@@ -55,6 +51,8 @@ public class InactiveUnitsController implements Initializable {
 
     //PlaceHolder
     private boolean Simulation;
+    @FXML
+    private Button btnRefresh;
 
     /**
      * Initializes the controller class.
@@ -78,7 +76,7 @@ public class InactiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedUnitID = (int)myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = (int) myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -107,7 +105,7 @@ public class InactiveUnitsController implements Initializable {
 
                         Unit myUnit = row.getItem();
                         try {
-                            OperatorMainController.myController.selectedUnitID =(int)myUnit.getUnitID();
+                            OperatorMainController.myController.selectedUnitID = (int) myUnit.getUnitID();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UnitInfo.fxml"));
                             Parent root1 = (Parent) fxmlLoader.load();
                             Stage stage = new Stage();
@@ -130,7 +128,6 @@ public class InactiveUnitsController implements Initializable {
         }
     }
 
-    @FXML
     private void newClick(MouseEvent event) {
         Node node = null;
         try {
@@ -147,14 +144,13 @@ public class InactiveUnitsController implements Initializable {
         }
     }
 
-    @FXML
     private void disbandClick(MouseEvent event) throws ClassNotFoundException {
         Unit selectedUnit = (Unit) IUnitTable.getSelectionModel().getSelectedItem();
 
         if (!Simulation) {
             try {
                 if (selectedUnit != null) {
-                    OperatorMainController.myController.DisbandUnit((int)selectedUnit.getUnitID());
+                    OperatorMainController.myController.DisbandUnit((int) selectedUnit.getUnitID());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
@@ -167,11 +163,25 @@ public class InactiveUnitsController implements Initializable {
                 alert.setContentText("An error has occured.");
                 alert.showAndWait();
             }
-        }
-        else
-        {
+        } else {
             OperatorMainController.inactive_Units.remove(selectedUnit);
         }
     }
 
+    @FXML
+    private void Refresh(MouseEvent event) {
+        IUnitTable.getItems().clear();
+        if (!Simulation) {
+            try {
+                if (OperatorMainController.myController.user != null) {
+                    InactiveUnits = FXCollections.observableArrayList(OperatorMainController.myController.getInactiveUnits());
+                }
+            } catch (Exception ex) {
+                InactiveUnits = FXCollections.observableArrayList();
+            }
+        } else {
+            InactiveUnits = FXCollections.observableArrayList(OperatorMainController.inactive_Units);
+        }
+        IUnitTable.setItems(InactiveUnits);
+    }
 }

@@ -7,6 +7,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.allRoadmapsController">
    <children>
       <ListView fx:id="roadmapView" layoutX="14.0" layoutY="14.0" prefHeight="377.0" prefWidth="387.0" />
-      <Button fx:id="btnViewRoadmap" onMouseClicked="#mouseClick"   layoutX="468.0" layoutY="190.0" mnemonicParsing="false" text="View" />
+      <Button fx:id="btnViewRoadmap" layoutX="468.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#mouseClick" text="View" />
+      <Button fx:id="btnRefresh" onMouseClicked = "#Refresh" layoutX="468.0" layoutY="228.0" mnemonicParsing="false" text="Refresh" />
    </children>
 </AnchorPane>

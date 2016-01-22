@@ -7,21 +7,21 @@
 
 <AnchorPane fx:id="MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="633.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.TasksController">
    <children>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0" prefWidth="573.0">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="633.0">
          <children>
-            <Label layoutX="227.0" layoutY="25.0" text="Active Task" />
-            <Separator layoutX="-2.0" layoutY="42.0" prefHeight="13.0" prefWidth="535.0" />
-            <Label layoutX="207.0" layoutY="178.0" text="Completed or Cancelled Tasks" />
-            <Button fx:id="buttonNew" layoutX="450.0" layoutY="316.0" mnemonicParsing="false" onMouseClicked="#newClick" prefHeight="15.0" prefWidth="40.0" text="New" />
-            <Button fx:id="buttonDelete" layoutX="506.0" layoutY="316.0" mnemonicParsing="false" onMouseClicked="#deleteClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
-            <TableView fx:id="UTaskTable" layoutX="44.0" layoutY="204.0" prefHeight="108.0" prefWidth="485.0">
+            <Label layoutX="300.0" layoutY="25.0" text="Active Task" />
+            <Separator layoutX="-2.0" layoutY="42.0" prefHeight="13.0" prefWidth="645.0" />
+            <Label layoutX="250.0" layoutY="207.0" text="Completed or Cancelled Tasks" />
+            <Button fx:id="buttonNew" layoutX="506.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#newClick" prefHeight="15.0" prefWidth="40.0" text="New" />
+            <Button fx:id="buttonDelete" layoutX="562.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#deleteClick" prefHeight="25.0" prefWidth="54.0" text="Delete" />
+            <TableView fx:id="UTaskTable" layoutX="45.0" layoutY="229.0" prefHeight="137.0" prefWidth="569.0">
               <columns>
                 <TableColumn fx:id="UTaskID" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="UTaskName" prefWidth="272.0" text="Name" />
                   <TableColumn fx:id="UTaskUrgency" prefWidth="137.0" text="Urgency" />
               </columns>
             </TableView>
-            <TableView fx:id="ATaskTable" layoutX="45.0" layoutY="55.0" prefHeight="115.0" prefWidth="485.0">
+            <TableView fx:id="ATaskTable" layoutX="45.0" layoutY="55.0" prefHeight="146.0" prefWidth="569.0">
               <columns>
                 <TableColumn fx:id="ATaskID" prefWidth="67.0" text="ID" />
                 <TableColumn fx:id="ATaskName" minWidth="0.0" prefWidth="259.0" text="Name" />
@@ -29,6 +29,7 @@
                   <TableColumn fx:id="ATaskUnit" prefWidth="70.0" text="Unit" />
               </columns>
             </TableView>
+            <Button fx:id="btnRefresh" onMouseClicked = "#Refresh"  layoutX="443.0" layoutY="376.0" mnemonicParsing="false" text="Refresh" />
          </children>
       </AnchorPane>
    </children>

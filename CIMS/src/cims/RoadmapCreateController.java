@@ -13,11 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -32,11 +35,11 @@ public class RoadmapCreateController implements Initializable {
     @FXML
     private TextArea txtDescription;
     @FXML
-    private Button btnCancel;
-    @FXML
     private Button btnCreate;
 
     private boolean Simulation;
+    @FXML
+    private AnchorPane MainField;
 
     /**
      * Initializes the controller class.
@@ -55,6 +58,8 @@ public class RoadmapCreateController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Roadmap succesfully created.");
                     alert.showAndWait();
+                    Node node = (Node) FXMLLoader.load(getClass().getResource("AllRoadmaps.fxml"));
+                    MainField.getChildren().setAll(node);
                 }
 
             } catch (IOException ex) {

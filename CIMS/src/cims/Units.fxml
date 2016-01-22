@@ -5,29 +5,30 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="529.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.UnitsController">
+<AnchorPane fx:id="MainField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="368.0" prefWidth="580.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cims.UnitsController">
    <children>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="291.0" prefWidth="517.0">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="580.0">
          <children>
-            <Label layoutX="227.0" layoutY="25.0" text="Active Units" />
-            <Separator layoutX="-2.0" layoutY="42.0" prefHeight="13.0" prefWidth="535.0" />
-            <Label layoutX="213.0" layoutY="151.0" text="Inactive Units" />
-            <Button fx:id= "buttonNew" onMouseClicked="#newClick"  layoutX="382.0" layoutY="265.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="40.0" text="New" />
-            <Button fx:id= "buttonDisband" onMouseClicked="#disbandClick" layoutX="442.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="Disband" />
-            <TableView fx:id = "IUnitTable"   layoutX="14.0" layoutY="178.0" prefHeight="75.0" prefWidth="485.0">
+            <Label layoutX="262.0" layoutY="34.0" text="Active Units" />
+            <Separator layoutX="-2.0" layoutY="42.0" prefHeight="13.0" prefWidth="590.0" />
+            <Label layoutX="254.0" layoutY="174.0" text="Inactive Units" />
+            <Button fx:id="buttonNew" layoutX="451.0" layoutY="326.0" mnemonicParsing="false" onMouseClicked="#newClick" prefHeight="15.0" prefWidth="40.0" text="New" />
+            <Button fx:id="buttonDisband" layoutX="502.0" layoutY="326.0" mnemonicParsing="false" onMouseClicked="#disbandClick" prefHeight="25.0" prefWidth="63.0" text="Disband" />
+            <TableView fx:id="IUnitTable" layoutX="13.0" layoutY="196.0" prefHeight="124.0" prefWidth="553.0">
               <columns>
-                <TableColumn fx:id = "IUnitID" prefWidth="75.0" text="ID" />
-                <TableColumn fx:id = "IUnitName" prefWidth="177.0" text="Name" />
-                <TableColumn fx:id = "IUnitStatus" prefWidth="110.0" text="Status" />
+                <TableColumn fx:id="IUnitID" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="IUnitName" prefWidth="177.0" text="Name" />
+                <TableColumn fx:id="IUnitStatus" prefWidth="110.0" text="Status" />
               </columns>
             </TableView>
-            <TableView fx:id = "AUnitTable" layoutX="13.0" layoutY="60.0" prefHeight="81.0" prefWidth="485.0">
+            <TableView fx:id="AUnitTable" layoutX="13.0" layoutY="60.0" prefHeight="108.0" prefWidth="553.0">
               <columns>
-                <TableColumn fx:id = "AUnitID" prefWidth="67.0" text="ID" />
-                <TableColumn fx:id = "AUnitName" minWidth="0.0" prefWidth="327.0" text="Name" />
-                  <TableColumn fx:id = "AUnitStatus" prefWidth="90.0" text="Status" />
+                <TableColumn fx:id="AUnitID" prefWidth="67.0" text="ID" />
+                <TableColumn fx:id="AUnitName" minWidth="0.0" prefWidth="327.0" text="Name" />
+                  <TableColumn fx:id="AUnitStatus" prefWidth="90.0" text="Status" />
               </columns>
             </TableView>
+            <Button fx:id="btnRefresh"  onMouseClicked= "#Refresh"  layoutX="384.0" layoutY="326.0" mnemonicParsing="false" text="Refresh" />
          </children>
       </AnchorPane>
    </children>
