@@ -42,7 +42,8 @@ public class TwitterSearch {
             List<Status> tweets = result.getTweets();
             //loop tweets to create information
             for (Status tweet : tweets) {
-                System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());               
+                System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                System.out.println(tweet.getCreatedAt().getTime()+ " " + System.currentTimeMillis());
                 if(tweet.getCreatedAt().getTime() >= System.currentTimeMillis() - 3600000) {
                     Information newInfo = new Information(1,null,tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(), 0, 0, 0, 0, tweet.getUser().getOriginalProfileImageURL(), null, false);
                     //add info
@@ -54,5 +55,33 @@ public class TwitterSearch {
             System.out.println("Failed to search tweets: " + te.getMessage());
         }
         return informationList;
+        
     }
+    
+    //gets a single most recent tweet
+   public Information twitterUpdate(String twitterURL){
+          Information newInfo = new Information(1,null," "," "," ", 0, 0, 0, 0, " ", null, false);
+          
+        try {
+            //make query
+            Query query = new Query(twitterURL);
+            QueryResult result;
+            result = twitter.search(query);
+            List<Status> tweets = result.getTweets();
+            
+            long mostRecent = 0L;
+          
+            //loop tweets to create information
+            for (Status tweet : tweets) {
+                if(tweet.getCreatedAt().getTime() >= mostRecent) {
+                    newInfo = new Information(1,null,tweet.getUser().getScreenName(),tweet.getText(),tweet.getUser().getLocation(), 0, 0, 0, 0, tweet.getUser().getOriginalProfileImageURL(), null, false);
+                    mostRecent = tweet.getCreatedAt().getTime();
+                }
+            }
+        }
+        catch (Exception te) {
+            System.out.println("Failed to search tweets: " + te.getMessage());
+        }
+        return newInfo;
+}
 }

@@ -30,13 +30,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import java.util.TimerTask;
+import java.util.Timer;
 
 /**
  * FXML Controller class
  *
  * @author Nick van der Mullen
  */
-public class MainUserController implements Initializable,Observer {
+public class MainUserController implements Initializable, Observer {
 
     @FXML
     private Button btnHome;
@@ -65,6 +67,20 @@ public class MainUserController implements Initializable,Observer {
         } catch (IOException ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(
+                new TimerTask() {
+            public void run() {
+                TwitterSearch ts2 = new TwitterSearch();
+                ts2.twitterUpdate("politie");
+                ts2.twitterUpdate("brandweer");
+                ts2.twitterUpdate("ambulance");
+                ts2.twitterUpdate("ongeluk");
+                System.out.println("autoupdate");
+            }
+        },
+                0,
+                1800000);
     }
 
     @FXML
@@ -112,67 +128,67 @@ public class MainUserController implements Initializable,Observer {
 
     @Override
     public void update(java.util.Observable o, Object arg) {
-       Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
 
-                        Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("LoginGuiController.fxml"));
 
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
 
-                        //Close current window
-                        Stage currentstage = (Stage) txtSearch.getScene().getWindow();
-                        currentstage.close();
+                    //Close current window
+                    Stage currentstage = (Stage) txtSearch.getScene().getWindow();
+                    currentstage.close();
 
-                    } catch (IOException ex) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Login failed.");
-                        alert.showAndWait();
-                    }
+                } catch (IOException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Login failed.");
+                    alert.showAndWait();
                 }
-            });
+            }
+        });
+        
     }
+
     @FXML
     private void btnTwitter(MouseEvent event) {
         try {
-           TwitterSearch ts = new TwitterSearch();
-           //get tweet list
+            TwitterSearch ts = new TwitterSearch();
+            //get tweet list
             ArrayList<Information> information = ts.twitterFeed("%23" + txtSearch.getText());
-           
-           for (Information info : information){
-              //duplicate check 
-              if(dupCheck(info)){ 
-              //create information
-              if(CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImage(), false)){
-                  System.out.println("Twitter information retrieved");
-              }else {
-                  System.out.println("Twitter information retrieval error");
-              }
-              }
-           }
+
+            for (Information info : information) {
+                //duplicate check 
+                if (dupCheck(info)) {
+                    //create information
+                    if (CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImage(), false)) {
+                        System.out.println("Twitter information retrieved");
+                    } else {
+                        System.out.println("Twitter information retrieval error");
+                    }
+                }
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private boolean dupCheck(Information inf) throws IOException{
+
+    private boolean dupCheck(Information inf) throws IOException {
         boolean checkDups = true;
         ArrayList<Information> chkInfo = CIMS_SA.con.getAllInformation();
-        for(Information oldInfo : chkInfo){
-            if(oldInfo.getDescription().equals(inf.getDescription())){
+        for (Information oldInfo : chkInfo) {
+            if (oldInfo.getDescription().equals(inf.getDescription())) {
                 checkDups = false;
             }
         }
         return checkDups;
     }
 
-
 }
-
