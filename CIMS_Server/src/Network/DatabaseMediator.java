@@ -1192,6 +1192,46 @@ public class DatabaseMediator {
         return true;
     }
 
+    public boolean createInformationList(int userId, Object o) {
+
+        if (!(o instanceof Object[])) {
+            return false;
+        }
+        Object[] info = (Object[]) o;
+
+        for (Object i : info) {
+            Object[] l = (Object[]) i;
+            if (l.length != 9) {
+                return false;
+            }
+            if (!(l[0] instanceof String) || !(l[1] instanceof String)
+                    || !(l[2] instanceof String) || !(l[3] instanceof Integer)
+                    || !(l[4] instanceof Integer) || !(l[5] instanceof Integer)
+                    || !(l[6] instanceof Integer) || !(l[7] instanceof String) || !(l[8] instanceof Integer)) {
+                return false;
+            }
+        }
+
+        if (openConnection()) {
+            try {
+                for (Object i : info) {
+                    Object[] l = (Object[]) i;
+                    String query = "INSERT INTO CIMS.Information (public_UserId, name, description, location, casualties, toxic, danger, impect, image, private) VALUES ('"
+                            + userId + "', '" + l[0] + "', '" + l[1] + "', '"
+                            + l[2] + "', '" + l[3] + "', '" + l[4] + "', '"
+                            + l[5] + "', '" + l[6] + "', '" + l[7] + "', '" + l[8] + "');";
+                    executeNonQuery(query);
+                }
+            } catch (SQLException e) {
+                System.out.println("createInformation: " + e.getMessage());
+            } finally {
+                closeConnection();
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Deletes information from db
      *
@@ -1663,45 +1703,43 @@ public class DatabaseMediator {
                     closeConnection();
                 }
             }
-        } else {
-            if (null != fieldname) {
-                int index;
-                switch (fieldname) {
-                    case "specials":
-                        updateLists(unitId, "M");
-                        setSpecials(objects[2], unitId);
-                        break;
-                    case "vehicles":
-                        updateLists(unitId, "V");
-                        index = 0;
-                        for (Object object : objects[2].toString().split("-")) {
-                            if (index == 0) {
-                                setCars(Integer.parseInt(object.toString()), "F", unitId);
-                            } else if (index == 1) {
-                                setCars(Integer.parseInt(object.toString()), "P", unitId);
-                            } else if (index == 2) {
-                                setCars(Integer.parseInt(object.toString()), "H", unitId);
-                            }
-                            index++;
+        } else if (null != fieldname) {
+            int index;
+            switch (fieldname) {
+                case "specials":
+                    updateLists(unitId, "M");
+                    setSpecials(objects[2], unitId);
+                    break;
+                case "vehicles":
+                    updateLists(unitId, "V");
+                    index = 0;
+                    for (Object object : objects[2].toString().split("-")) {
+                        if (index == 0) {
+                            setCars(Integer.parseInt(object.toString()), "F", unitId);
+                        } else if (index == 1) {
+                            setCars(Integer.parseInt(object.toString()), "P", unitId);
+                        } else if (index == 2) {
+                            setCars(Integer.parseInt(object.toString()), "H", unitId);
                         }
-                        break;
-                    case "users":
-                        updateLists(unitId, "U");
-                        index = 0;
-                        for (Object object : objects[2].toString().split("-")) {
-                            if (index == 0) {
-                                setPersons(Integer.parseInt(object.toString()), "F", unitId);
-                            } else if (index == 1) {
-                                setPersons(Integer.parseInt(object.toString()), "P", unitId);
-                            } else if (index == 2) {
-                                setPersons(Integer.parseInt(object.toString()), "H", unitId);
-                            }
-                            index++;
+                        index++;
+                    }
+                    break;
+                case "users":
+                    updateLists(unitId, "U");
+                    index = 0;
+                    for (Object object : objects[2].toString().split("-")) {
+                        if (index == 0) {
+                            setPersons(Integer.parseInt(object.toString()), "F", unitId);
+                        } else if (index == 1) {
+                            setPersons(Integer.parseInt(object.toString()), "P", unitId);
+                        } else if (index == 2) {
+                            setPersons(Integer.parseInt(object.toString()), "H", unitId);
                         }
-                        break;
-                    default:
-                        return false;
-                }
+                        index++;
+                    }
+                    break;
+                default:
+                    return false;
             }
         }
         return true;

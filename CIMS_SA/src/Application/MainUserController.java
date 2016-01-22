@@ -72,10 +72,12 @@ public class MainUserController implements Initializable, Observer {
                 new TimerTask() {
             public void run() {
                 TwitterSearch ts2 = new TwitterSearch();
-                ts2.twitterUpdate("politie");
-                ts2.twitterUpdate("brandweer");
-                ts2.twitterUpdate("ambulance");
-                ts2.twitterUpdate("ongeluk");
+                ArrayList<Information> updatelist = new ArrayList<>();
+                updatelist.add(ts2.twitterUpdate("politie"));
+                updatelist.add(ts2.twitterUpdate("brandweer"));
+                updatelist.add(ts2.twitterUpdate("ambulance"));
+                updatelist.add(ts2.twitterUpdate("ongeluk"));
+                CIMS_SA.con.createInformationList(updatelist);
                 System.out.println("autoupdate");
             }
         },
@@ -153,7 +155,7 @@ public class MainUserController implements Initializable, Observer {
                 }
             }
         });
-        
+
     }
 
     @FXML
@@ -162,19 +164,24 @@ public class MainUserController implements Initializable, Observer {
             TwitterSearch ts = new TwitterSearch();
             //get tweet list
             ArrayList<Information> information = ts.twitterFeed("%23" + txtSearch.getText());
-
+            boolean doublecheck = true;
+            
             for (Information info : information) {
                 //duplicate check 
                 if (dupCheck(info)) {
-                    //create information
-                    if (CIMS_SA.con.createInformation(info.getName(), info.getDescription(), info.getLocation(), 0, 0, 0, 0, info.getImage(), false)) {
-                        System.out.println("Twitter information retrieved");
-                    } else {
-                        System.out.println("Twitter information retrieval error");
-                    }
+                    doublecheck = false;
                 }
             }
-
+            //create information
+            if (doublecheck){
+            if (CIMS_SA.con.createInformationList(information)) {
+                System.out.println("Twitter information retrieved");
+            } else {
+                System.out.println("Twitter information retrieval error");
+            }
+            }else{
+                System.out.println("dupcheck error");
+            }
         } catch (Exception ex) {
             Logger.getLogger(MainOperatorController.class.getName()).log(Level.SEVERE, null, ex);
         }

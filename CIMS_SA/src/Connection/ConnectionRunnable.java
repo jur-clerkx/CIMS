@@ -336,6 +336,51 @@ public class ConnectionRunnable extends Observable implements Runnable {
         }
     }
     
+    
+    public synchronized boolean createInformationList(ArrayList<Information> i) {
+        Object result = null;
+        if (authorized == 1) {
+            try {
+                String outputMessage = "SAPU12";
+                Object[] thisOutputMessage = new Object[i.size()];
+                int objectCount = 0;
+                for(Information I : i){
+                Object[] thisInfo = new Object[9];    
+                thisInfo[0] = I.getName();
+                thisInfo[1] = I.getDescription();
+                thisInfo[2] = I.getLocation();
+                thisInfo[3] = I.getCasualities();
+                thisInfo[4] = I.getToxic();
+                thisInfo[5] = I.getDanger();
+                thisInfo[6] = I.getImpact();
+                thisInfo[7] = I.getURL();
+                thisInfo[8] = 0;
+                thisOutputMessage[objectCount] = thisInfo;
+                objectCount++;
+                }
+                
+                sendData(outputMessage);
+                sendData(thisOutputMessage);
+                result = readData();
+                System.out.println("Result Create:" + result.toString());
+
+            } catch (IOException | ClassNotFoundException ex1) {
+                Logger.getLogger(CIMS_SA.class.getName()).log(Level.SEVERE, null, ex1);
+
+                System.out.println("Error creating new Information");
+            }
+        }
+        if (result != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
     public synchronized boolean EditInformationString(int id, String atrToEdit, String edit) {
         Object result = null;
         if(authorized == 1) {
