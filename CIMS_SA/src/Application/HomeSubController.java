@@ -139,6 +139,7 @@ public class HomeSubController implements Initializable {
 
     @FXML
     private void btnRefresh(MouseEvent event) {
+        myObservableList.clear();
         if (!simulation) {
             try {
                 if (CIMS_SA.con.getUser() instanceof PublicUser) {

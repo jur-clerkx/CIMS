@@ -17,9 +17,12 @@
       <Separator layoutX="591.0" layoutY="241.0" prefHeight="25.0" prefWidth="254.0" />
       <Button fx:id="btnSaveEdit" layoutX="655.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#RegisterInformation" prefHeight="25.0" prefWidth="125.0" text="Save Changes" />
       <Button fx:id="btnCancel" layoutX="656.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#Cancel" prefHeight="25.0" prefWidth="125.0" text="Cancel" />
-      <VBox alignment="TOP_RIGHT" layoutX="22.0" layoutY="22.0" prefHeight="569.0" prefWidth="146.0">
+      <VBox alignment="TOP_RIGHT" layoutX="22.0" layoutY="22.0" prefHeight="586.0" prefWidth="146.0">
          <children>
-            <Label text="Information:" />
+            <Label text="Information:">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Label>
             <Label text="Id:">
                <VBox.margin>
                   <Insets left="20.0" top="30.0" />
@@ -27,7 +30,7 @@
             </Label>
             <Label text="Naam:">
                <VBox.margin>
-                  <Insets left="20.0" top="30.0" />
+                  <Insets left="20.0" top="40.0" />
                </VBox.margin>
             </Label>
             <Label text="Plaats:">
@@ -42,7 +45,7 @@
             </Label>
             <Label text="Number of victims:">
                <VBox.margin>
-                  <Insets left="20.0" top="192.0" />
+                  <Insets left="20.0" top="155.0" />
                </VBox.margin>
             </Label>
             <Label text="Is it poisonous:">
@@ -84,11 +87,11 @@
                   <Insets left="20.0" right="20.0" top="24.0" />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="txtDescription" prefHeight="184.0" prefWidth="338.0">
+            <TextArea fx:id="txtDescription" maxWidth="-Infinity" prefHeight="165.0" prefWidth="338.0" wrapText="true">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="24.0" />
                </VBox.margin>
-            </TextField>
+            </TextArea>
             <TextField fx:id="txtNRofVictims" prefHeight="25.0" prefWidth="230.0">
                <VBox.margin>
                   <Insets left="20.0" right="302.0" top="24.0" />
@@ -152,7 +155,7 @@
             </HBox>
          </children>
       </VBox>
-      <TextField fx:id="txtURL" onMouseExited="#MouseExit" layoutX="626.0" layoutY="216.0" prefHeight="25.0" prefWidth="185.0" promptText="URL" />
+      <TextField fx:id="txtURL" layoutX="626.0" layoutY="216.0" onKeyReleased="#MouseExit" prefHeight="25.0" prefWidth="185.0" promptText="URL" />
       <ToggleButton fx:id="toggleButton" layoutX="692.0" layoutY="522.0" mnemonicParsing="false" text="Private" />
    </children>
 </AnchorPane>

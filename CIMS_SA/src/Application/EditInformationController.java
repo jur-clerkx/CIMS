@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -53,7 +54,7 @@ public class EditInformationController implements Initializable {
     @FXML
     private TextField txtLocation;
     @FXML
-    private TextField txtDescription;
+    private TextArea txtDescription;
     @FXML
     private TextField txtNRofVictims;
     @FXML
@@ -344,6 +345,7 @@ public class EditInformationController implements Initializable {
             txtNRofVictims.setText(Integer.toString(info.getCasualities()));
             setImage(info.getURL());
             txtArea.setText(Integer.toString(info.getImpact()));
+            txtURL.setText(info.getURL());
             fillRadio();
         }
 
